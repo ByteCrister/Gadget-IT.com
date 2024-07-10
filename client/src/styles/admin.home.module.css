@@ -1,0 +1,264 @@
+@import url('https://fonts.googleapis.com/css2?family=Squada+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Squada+One&display=swap');
+
+.adminMainContainer {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    background-color: transparent;
+    /* Ensure transparency if needed */
+    padding-top: 10px;
+}
+
+.uppAndMain {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    align-items: center;
+}
+
+
+
+
+
+
+
+
+
+/*------------------------------------------*/
+.upperSide {
+    /* background-color: rgb(19, 117, 84); */
+    width: 100%;
+    margin-top: 10px;
+    /* display: flex;
+    flex-direction: column; */
+}
+
+.upperSide hr {
+    clear: both;
+}
+
+.contents {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    width: 200px;
+    margin-left: 80%;
+    margin-bottom: 5px;
+    /* background-color: aqua; */
+}
+
+.messageBox {
+    position: relative;
+}
+
+.messageLogo {
+    font-size: 25px;
+    color: #6b6363;
+}
+
+.messageCount {
+    position: absolute;
+    background-color: rgb(9, 255, 0);
+    padding: 2px 8px;
+    color: rgb(255, 255, 255);
+    border-radius: 50%;
+    margin: -10px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+}
+
+.notifications {
+    position: relative;
+}
+
+.bellLogo {
+    font-size: 25px;
+    color: #6b6363;
+}
+
+.notificationCount {
+    position: absolute;
+    background-color: rgb(236, 233, 83);
+    padding: 2px 8px;
+    color: rgb(255, 255, 255);
+    border-radius: 50%;
+    margin: -10px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+}
+
+.adminProfile {
+    background-color: #625656;
+    padding: 5px 10px;
+    border-radius: 50%;
+}
+
+.adminLogo {
+    font-size: 25px;
+    color: #d4bbbb;
+}
+
+.messageBox,
+.notifications,
+.adminProfile {
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------------*/
+.leftSide {
+    background-color: rgb(237, 242, 242);
+    width: 270px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* justify-content:space-around; */
+    align-items: center;
+    gap: 15px;
+}
+
+.log_name {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.logo {
+    font-size: 40px;
+    color: rgb(110, 189, 110);
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.name {
+    font-size: 30px;
+    font-family: "Squada One", sans-serif;
+    font-weight: 700;
+    color: rgb(15, 94, 15);
+}
+
+.search_bar,
+.buttons {
+    background-color: transparent;
+    /* Ensure transparency for these elements */
+}
+
+.search_bar {
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 5px;
+    border-radius: 10px;
+}
+
+#search {
+    border: none;
+    outline: none;
+    color: grey;
+    font-family: "Roboto", sans-serif;
+    margin-left: 10px;
+
+}
+
+.search_logo {
+    color: grey;
+    font-size: 20px;
+}
+
+.button {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    /* background-color: aquamarine; */
+    padding: 10px 190px 10px 10px;
+    width: 150px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.buttons:focus,
+.buttons:focus-within,
+.buttons:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+.buttons:focus .ButtonLogo,
+.buttons:focus-within .ButtonLogo,
+.buttons:hover .ButtonLogo {
+    color: #424040;
+}
+
+.buttons:focus .ButtonName,
+.buttons:focus-within .ButtonName,
+.buttons:hover .ButtonName {
+    color: #3f3c3c;
+}
+
+.active_background {
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 190px 10px 10px;
+    width: 150px;
+    border-radius: 10px;
+    cursor: pointer;
+
+}
+
+.active_logo {
+    color: #3f3c3c;
+    font-size: 20px;
+    
+}
+.active_text{
+    font-size: 15px;
+    font-weight: 500;
+    color: #3f3c3c;
+    font-family: "Roboto", sans-serif;
+    margin-left: 10px;
+}
+
+
+.buttons:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+.ButtonLogo {
+    font-size: 20px;
+    color: rgb(176, 193, 182);
+}
+
+.ButtonName {
+    font-size: 15px;
+    font-weight: 500;
+    color: grey;
+    font-family: "Roboto", sans-serif;
+    margin-left: 10px;
+}

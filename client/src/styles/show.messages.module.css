@@ -1,0 +1,129 @@
+.messageContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(241, 255, 240);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-in-out;
+    opacity: 0;
+    animation-fill-mode: forwards;
+    width: 50%;
+    max-width: 600px;
+}
+
+.closeButton {
+    position: absolute;
+    top: -20px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.messageBox {
+    border: 1px solid #f8ffff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f1fffd;
+}
+.messageBox:hover{
+    background-color: #d2fff8;
+    transition: ease-in-out 0.5s;
+
+}
+
+.messageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.messageTime {
+    font-size: 12px;
+    color: #888;
+}
+
+.userName {
+    font-size: 14px;
+    font-weight: bold;
+}
+.deleteButton {
+    margin: 5px;
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+  }
+
+.toggleButton {
+    background-color: #249e5f;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.messageContent {
+    margin-top: 10px;
+}
+
+.messageContent p {
+    color: #888;
+}
+
+.replyButton {
+    background-color: #165957;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.replySection {
+    margin-top: 10px;
+}
+
+.replyInput {
+    width: 100%;
+    height: 60px;
+    padding: 5px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.sendReplyButton {
+    background-color: #109a15;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: ease-in-out 0.5s;
+}
+
+.sendReplyButton:hover, .toggleButton:hover, .replyButton:hover {
+    background-color: #053606;
+    transition: ease-in-out 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}

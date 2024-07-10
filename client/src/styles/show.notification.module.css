@@ -1,0 +1,103 @@
+.notificationContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(254, 255, 240);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-in-out;
+    opacity: 0;
+    animation-fill-mode: forwards;
+    width: 50%;
+    max-width: 600px;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: -20px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .notificationBox {
+    /* border: 1px solid #ddd; */
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background: #f8ffef;
+    animation: fadeIn 0.5s;
+    cursor: pointer;
+}
+.notificationBox:hover{
+    transition: ease-in-out 0.3s;
+    background: #ebffd1;
+  }
+  
+  
+  .notificationHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.notificationTime, .senderName {
+    margin-right: 10px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 500;
+    color: #bdbdbd;
+
+}
+  
+  .deleteButton {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+  }
+  
+  .notificationContent {
+    margin-top: 10px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #b7c3e7;
+}
+
+.notificationType {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #7ab17a;
+  }
+  
+  .fadeIn {
+    animation: fadeIn 0.5s forwards;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .fadeOut {
+    animation: fadeOut 0.5s forwards;
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  

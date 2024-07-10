@@ -1,0 +1,126 @@
+#blurBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1px);
+  z-index: 999;
+}
+
+
+#mainAdminForm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(255, 255, 255);
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
+  animation-fill-mode: forwards;
+  width: 50%;
+  max-width: 600px;
+}
+
+#adminForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* border: 3px solid #f1f1f1; */
+  padding: 10px;
+}
+
+#AdminFormLogoDiv {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#adminFormLogo {
+  font-size: 40px;
+  color: #ccc;
+
+}
+
+#AdminPasswordContainer {
+  width: 100%;
+}
+
+#AdminTogglePasswordButton {
+  padding: 2px 5px;
+}
+
+#adminName,
+#password {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+
+}
+
+#AdminCheckBox {
+  width: 100%;
+  padding: 5px;
+}
+
+#AdminShowPass {
+  padding: 5px;
+  color: #04AA6D;
+}
+
+#adminFormButton {
+  background-color: #66d3cc;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-size: 15px;
+
+}
+
+
+#adminFormButton:hover,
+#AdminFormSpinner:hover {
+  opacity: 0.8;
+}
+
+#AdminFormSpinner {
+  font-size: 24px;
+  /* Adjust size as needed */
+  color: #04aa6d;
+  /* Adjust color as needed */
+  margin-left: 10px;
+  /* Add spacing if necessary */
+}
+
+
+#AdminErrorMessageBox {
+  width: 100%;
+}
+
+#AdminErrorMessageBox p {
+  color: rgb(255, 113, 113);
+  font-weight: 600;
+}
+
+#AdminCloseButton {
+  cursor: pointer;
+  color: #ffffff;
+  position: absolute;
+  top: -20px;
+  right: 5px;
+  font-size: 20px;
+}
+
+#AdminCloseButton:hover {
+  color: rgb(0, 0, 0);
+}
