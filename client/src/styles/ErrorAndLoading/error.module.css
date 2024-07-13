@@ -1,0 +1,28 @@
+
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+  }
+  .error-title {
+    font-size: 6em;
+    color: #ff4757;
+  }
+  .error-message {
+    font-size: 1.5em;
+    color: #2f3542;
+  }
+  .back-home {
+    margin-top: 20px;
+    text-decoration: none;
+    color: #1e90ff;
+    font-size: 1.2em;
+  }
+  .back-home:hover {
+    text-decoration: underline;
+  }

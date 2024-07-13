@@ -3,6 +3,7 @@ import { RiAdminFill, RiEyeFill, RiEyeCloseFill } from "react-icons/ri"; // Impo
 import { FaSpinner, FaTimes } from 'react-icons/fa'; // Import close icon
 
 import styles from '../../styles/MoreInformation.module.css';
+import { SetAdmin } from '../../api/SetAdmin';
 
 const ShowAdmin = ({handleUpper}) => {
   const [showPass, setShowPass] = useState(false);
@@ -10,13 +11,20 @@ const ShowAdmin = ({handleUpper}) => {
   const [isPasswordShort, setIsPasswordShort] = useState(false);
   const [nameValue, setNameValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
-  const [loading, setLoading] = useState(false); // State to manage loading state
+  const [loading, setLoading] = useState(false); 
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const trimmedName = nameValue.trim();
     const trimmedPassword = passwordValue.trim();
+
+    const values = {
+      email : trimmedName,
+      password : trimmedPassword
+    }
+    SetAdmin(values, handleUpper);
+    
 
     if (trimmedName.length < 5) {
       setIsNameShort(true);

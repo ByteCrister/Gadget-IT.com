@@ -3,21 +3,20 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgb(241, 255, 240);
+    background-color: rgb(222, 255, 255);
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.5s ease-in-out;
-    opacity: 0;
-    animation-fill-mode: forwards;
-    width: 50%;
-    max-width: 600px;
+    width: 65%;
+    min-width: 600px;
+    max-height: 70vh; 
+    overflow-y: auto;
 }
 
 .closeButton {
     position: absolute;
-    top: -20px;
-    right: 5px;
+    top: 40px;
+    right: 200px;
     background: none;
     border: none;
     font-size: 20px;
@@ -25,14 +24,14 @@
 }
 
 .messageBox {
-    border: 1px solid #f8ffff;
+    border: none;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
-    background-color: #f1fffd;
+    background-color: #f2fffd;
 }
 .messageBox:hover{
-    background-color: #d2fff8;
+    background-color: #c1fff6;
     transition: ease-in-out 0.5s;
 
 }
@@ -62,7 +61,7 @@
   }
 
 .toggleButton {
-    background-color: #249e5f;
+    background-color: #83ffea;
     color: white;
     border: none;
     border-radius: 3px;
@@ -117,13 +116,3 @@
     transition: ease-in-out 0.3s;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}

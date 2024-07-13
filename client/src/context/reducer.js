@@ -3,12 +3,28 @@ const reducer = (state, action) => {
 
     switch (action.type) {
 
+
+        case 'set_categories':
+            return {
+                ...state,
+                menuItems: action.payload
+            }
+
+        case 'set_home_view':
+            console.log('from reducer is Admin - '+action.payload.isAdmin + ' is logIn - '+action.payload.isUserLoggedIn + ' userId - '+action.payload.UserID);
+            return {
+                ...state,
+                isAdmin: action.payload.isAdmin,
+                UserID: action.payload.UserID,
+                isUserLoggedIn: action.payload.isUserLoggedIn
+
+            }
+
         case 'toggle_loading':
             return {
                 ...state,
                 isLoading: action.payload
             }
-
         case 'toggle_isError':
             return {
                 ...state,

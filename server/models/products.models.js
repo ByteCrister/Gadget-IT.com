@@ -1,7 +1,10 @@
 const db = require('../models/DB');
 
 module.exports = {
-    getProductsModel : (callback)=>{
-        db.query(`select * from category`, callback);
+    getProductsCategoryModel : (callback)=>{
+        db.query(`SELECT * FROM category`, callback);
+    },
+    getProductsSubCategory : (callback)=>{
+        db.query(`SELECT * FROM sub_category`, callback);
     }
 }

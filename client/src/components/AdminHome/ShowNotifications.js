@@ -8,6 +8,11 @@ const ShowNotifications = ({ handleUpper, handlePage }) => {
     { id: 4, time: '2024-07-10T11:00:00Z', sender: 'Sales', content: 'New order received', type: 'order' },
     { id: 7, time: '2024-07-10T12:00:00Z', sender: 'Support', content: 'New support message', type: 'support' },
     { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
+    { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
+    { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
+    { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
+    { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
+    { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
   ];
 
   const [notifications, setNotifications] = useState(initialNotifications);
@@ -47,10 +52,11 @@ const ShowNotifications = ({ handleUpper, handlePage }) => {
   };
 
   return (
-    <div className={styles.notificationContainer}>
+    <div className={styles.mainOuter}>
       <button className={styles.closeButton} onClick={() => handleUpper(0)}>
         <AiOutlineClose style={{ fontSize: '24px', color: 'red' }} />
       </button>
+      <div className={styles.notificationContainer}>
       {notifications.map((notification) => (
         <div key={notification.id} className={`${styles.notificationBox} ${styles.fadeIn}`} onClick={()=>{ handlePage(notification.id) }}>
           <div className={styles.notificationHeader}>
@@ -66,6 +72,7 @@ const ShowNotifications = ({ handleUpper, handlePage }) => {
           </div>
         </div>
       ))}
+    </div>
     </div>
   );
 }

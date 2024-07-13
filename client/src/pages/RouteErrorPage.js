@@ -2,7 +2,7 @@ import React from 'react'
 
 const RouteErrorPage = () => {
   return (
-    <div>RouteErrorPage</div>
+    <h1>There is something wrong with data fetching...</h1>
   )
 }
 

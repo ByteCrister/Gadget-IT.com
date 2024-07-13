@@ -3,21 +3,20 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgb(254, 255, 240);
+    background-color: rgb(240, 251, 255);
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.5s ease-in-out;
-    opacity: 0;
-    animation-fill-mode: forwards;
-    width: 50%;
-    max-width: 600px;
+    width: 65%;
+    min-width: 600px;
+    max-height: 70vh; 
+    overflow-y: auto;
   }
   
   .closeButton {
     position: absolute;
-    top: -20px;
-    right: 5px;
+    top: 40px;
+    right: 200px;
     background: none;
     border: none;
     font-size: 20px;
@@ -25,17 +24,16 @@
   }
   
   .notificationBox {
-    /* border: 1px solid #ddd; */
+    border: none;
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
-    background: #f8ffef;
-    animation: fadeIn 0.5s;
+    background: #dbfff9;
     cursor: pointer;
 }
 .notificationBox:hover{
     transition: ease-in-out 0.3s;
-    background: #ebffd1;
+    background: #b9fdff;
   }
   
   
@@ -73,31 +71,5 @@
     margin-bottom: 5px;
     font-family: 'Times New Roman', Times, serif;
     color: #7ab17a;
-  }
-  
-  .fadeIn {
-    animation: fadeIn 0.5s forwards;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  .fadeOut {
-    animation: fadeOut 0.5s forwards;
-  }
-  
-  @keyframes fadeOut {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
   }
   

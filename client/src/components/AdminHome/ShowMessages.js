@@ -49,38 +49,41 @@ const ShowMessages = ({ handleUpper }) => {
   };
 
   return (
-    <div className={styles.messageContainer}>
-      <button className={styles.closeButton} onClick={() => { handleUpper(0) }}>
-        <AiOutlineClose style={{ fontSize: '24px', color: 'red' }} />
-      </button>
-      {messages.map((message) => (
-        <div key={message.id} className={`${styles.messageBox} ${styles.fadeIn}`}>
-          <div className={styles.messageHeader} onClick={() => toggleExpand(message.id)}>
-            <span className={styles.messageTime}>{timeAgo(message.time)}</span>
-            <span className={styles.userName}>{message.userName}</span>
-            <button className={styles.toggleButton}>
-              {expandedMessageId === message.id ? 'Hide' : 'Show'}
-            </button>
-            <button className={styles.deleteButton} onClick={() => handleDelete(message.id)}>
-              <AiOutlineClose />
-            </button>
-          </div>
-          {expandedMessageId === message.id && (
-            <div className={styles.messageContent}>
-              <p>{message.content}</p>
-              <button className={styles.replyButton} onClick={() => toggleReply(message.id)}>
-                {showReplyId === message.id ? 'Cancel' : 'Reply'}
+    <div>
+        <button className={styles.closeButton} onClick={() => { handleUpper(0) }}>
+          <AiOutlineClose style={{ fontSize: '24px', color: 'red' }} />
+        </button>
+      <div className={styles.messageContainer}>
+        {messages.map((message) => (
+          <div key={message.id} className={`${styles.messageBox} ${styles.fadeIn}`}>
+            <div className={styles.messageHeader} onClick={() => toggleExpand(message.id)}>
+              <span className={styles.messageTime}>{timeAgo(message.time)}</span>
+              <span className={styles.userName}>{message.userName}</span>
+              <button className={styles.toggleButton}>
+                {expandedMessageId === message.id ? 'Hide' : 'Show'}
               </button>
-              {showReplyId === message.id && (
-                <div className={styles.replySection}>
-                  <textarea placeholder="Write your reply..." className={styles.replyInput}></textarea>
-                  <button className={styles.sendReplyButton}>Send Reply</button>
-                </div>
-              )}
+              <button className={styles.deleteButton} onClick={() => handleDelete(message.id)}>
+                <AiOutlineClose />
+              </button>
             </div>
-          )}
-        </div>
-      ))}
+            {expandedMessageId === message.id && (
+              <div className={styles.messageContent}>
+                <p>{message.content}</p>
+                <button className={styles.replyButton} onClick={() => toggleReply(message.id)}>
+                  {showReplyId === message.id ? 'Cancel' : 'Reply'}
+                </button>
+                {showReplyId === message.id && (
+                  <div className={styles.replySection}>
+                    <textarea placeholder="Write your reply..." className={styles.replyInput}></textarea>
+                    <button className={styles.sendReplyButton}>Send Reply</button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 }
