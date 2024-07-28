@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const LoginPost = async (handleLoginStates, values, dispatch, handleUserEntryPage) => {
-    
+    // alert(JSON.stringify(values, null, 2));
     handleLoginStates({
         isButtonLoading: true,
         emailNotFound: false,
@@ -34,6 +34,10 @@ export const LoginPost = async (handleLoginStates, values, dispatch, handleUserE
             if (data.userId !== 'false') {
                 userId = data.userId;
             }
+
+            window.localStorage.setItem('_isAdmin', JSON.stringify(isAdmin));
+            window.localStorage.setItem('_isUserLoggedIn', JSON.stringify(isUserLoggedIn));
+            window.localStorage.setItem('_userId', JSON.stringify(userId));
 
             dispatch({ type: 'set_home_view', payload: { isAdmin: isAdmin, isUserLoggedIn: isUserLoggedIn, UserID: userId } })
             handleUserEntryPage(0);

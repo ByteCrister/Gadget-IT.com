@@ -1,0 +1,231 @@
+/* PageTwo.module.css */
+.mainPageTwoContainer {
+    padding: 20px;
+    position: relative;
+}
+
+.section_1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.section_2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 10px;
+    padding: 16px;
+    /* background-color: #f7f7f7; */
+    /* border-radius: 8px; */
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.searchFieldWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.searchField {
+    width: 100%;
+    height: 40px;
+    padding: 0 40px 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.searchField:focus{
+    outline: none;
+}
+
+.searchIcon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    color: #aaa;
+    pointer-events: none;
+}
+
+.filterButton {
+    margin-left: 16px;
+    padding: 8px 16px;
+    background-color: #b1b1b1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: ease-in-out 0.5s;
+}
+
+.filterButton:hover {
+    background-color: #6a6a6a;
+}
+
+.formControl {
+    margin-right: 16px;
+    min-width: 120px;
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.formControl label{
+    color: #aaa;
+    font-size: 18px;
+}
+.selectField {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    color: #727272;
+    
+}
+.selectField:focus{
+    outline: none;
+}
+
+.AddInventoryButtonContainer button {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    padding: 10px 20px;
+    background-color: #b1b1b1;
+    color: #f3f3f3;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: ease-in-out 0.5s;
+    
+}
+.AddInventoryButtonContainer button:hover{
+    background-color: #6a6a6a;
+
+}
+
+/* ---------------------------------------------- */
+.section_3 {
+    margin-top: 20px;
+    /* background-color: #ddd; */
+    padding-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* height: 70vh; */
+    border-radius: 10px;
+}
+
+.tableContainer {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+   
+}
+
+.tableHeader {
+    background-color: #8d8d8d;
+    color: white;
+   
+}
+
+.tableHeader th {
+    padding: 12px 15px;
+    text-align: left;
+   
+  }
+  
+  /* .tableBody tr:nth-child(even) {
+    background-color: #f8f8f8;
+  } */
+
+
+  .tableBody td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    font-size: 18px;
+    color: #5f5f5f;
+    font-weight: 600;
+  }
+  
+  .actionButtons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .actionButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #c6c6c6;
+    font-size: 18px;
+  }
+  
+  .actionButton:hover {
+    color: #efefef;
+    background-color: #c0c0c0;
+  }
+#TrashIcon:hover{
+    color: red;
+}
+#EditIcon:hover{
+    color: black;
+}
+  #firstColumn, .firstColumn{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* ---------------------------- */
+  .pagination{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 80%;
+    
+}
+
+.pagination button {
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+}
+.pageButton{
+    color: #5f5f5f;
+    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+}
+.active{
+    background-color: rgb(173, 173, 173);
+    color: aliceblue;
+}
+
+.previous, .next, .firstLast{
+    background-color: rgb(193, 193, 193);
+    color: aliceblue;
+}
+
+
+.previous:hover, .next:hover, .firstLast:hover{
+    background-color: rgb(130, 130, 130);
+    cursor: pointer;
+}
+
+.previous:disabled, .next:disabled, button:disabled , .firstLast:disabled{
+    background-color: #cccccc;
+    cursor: not-allowed;
+}

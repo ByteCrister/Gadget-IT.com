@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import RandomErrorPage from "./pages/RandomErrorPage";
 import LoadingPage from "./pages/LoadingPage";
@@ -6,17 +6,9 @@ import AdminRoutes from "./routes/AdminRoutes";
 import UserHomeRoutes from "./routes/UserHomeRoutes";
 import RouteErrorPage from "./pages/RouteErrorPage";
 import { useData } from "./context/useData";
-import { GetHomeView } from "./api/GetHomeView";
 
 function App() {
-  const { dataState, dispatch } = useContext(useData);
-  useEffect(() => {
-    const getHandleHomeView =async ()=>{
-     await GetHomeView(dispatch);
-    }
-    getHandleHomeView();
-  }, [dispatch]);
-
+  const { dataState } = useContext(useData);
 
   return (
     dataState.isError ? <RouteErrorPage />

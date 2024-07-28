@@ -11,7 +11,7 @@ import ForgotPass from '../components/UserHome/ForgotPass';
 
 const UserHomeRoutes = () => {
     const location = useLocation();
-    console.log('Current path '+location.pathname);
+    console.log('Current path ' + location.pathname);
 
     const [userEntryPageState, setUserEntryState] = useState(0);
     const handleUserEntryPage = (newEntryPageNo) => {
@@ -21,9 +21,11 @@ const UserHomeRoutes = () => {
         <div style={{ width: '100%', height: '100vh', position: 'relative' }}>
             <NavBar handleUserEntryPage={handleUserEntryPage} />
             <TopNav />
+
             <Routes>
                 <Route path='/' element={<UserHomePage />} />
             </Routes>
+            
             <Footer />
             {
                 userEntryPageState === 1 ? <UserSignIn handleUserEntryPage={handleUserEntryPage} /> : userEntryPageState === 2 ? <UserLogIn handleUserEntryPage={handleUserEntryPage} /> : userEntryPageState === 3 ? <UserProfile handleUserEntryPage={handleUserEntryPage} /> : userEntryPageState === 4 ? <ForgotPass handleUserEntryPage={handleUserEntryPage} /> : null

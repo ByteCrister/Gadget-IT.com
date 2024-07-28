@@ -1,6 +1,6 @@
 import React from 'react'
 
-import styles from '../../styles/page.one.module.css';
+import styles from '../../styles/AdminHome/page.one.module.css';
 
 import { FcBullish } from "react-icons/fc";
 import { FcSalesPerformance } from "react-icons/fc";

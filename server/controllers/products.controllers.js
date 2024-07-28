@@ -8,7 +8,7 @@ const buildNestedStructure = (categories, subCategories, parentName = null) => {
         .map(category => {
             const categoryUrlPart = createUrlPath([category.category_name]);
             const childCategories = buildNestedStructure(categories, subCategories, category.category_name);
-            
+
             const nested = childCategories.length > 0 ? childCategories : undefined;
 
             return {
@@ -37,6 +37,27 @@ const buildNestedStructure = (categories, subCategories, parentName = null) => {
 };
 
 
+
+const FindTableCategory = (tableName) => {
+    return new Promise((resolve, reject) => {
+        productsModels.getInitialMandatoryColumnsModel(tableName, (err, data) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            } else {
+                let arr = [];
+                data.map((value) => {
+                    arr.push(value.COLUMN_NAME);
+                });
+                console.log(arr);
+                resolve(arr);
+            }
+        });
+    });
+}
+
+
+// -----------------------------------------------------------------------------------
 module.exports = {
     getProductCategories: (req, res) => {
         productsModels.getProductsCategoryModel((error, categories) => {
@@ -59,5 +80,101 @@ module.exports = {
                 res.json(dropdownData);
             })
         })
+    },
+
+    getProductsCategoryNamesController: (req, res) => {
+
+        console.log('runs - getProductsCategoryNamesController');
+
+        productsModels.getProductsCategoryNamesModel((errCategory, categoryName) => {
+            if (errCategory) {
+                console.log(errCategory);
+            } else {
+                productsModels.getProductsSubCategoryNamesModel((errSubCategory, subCategoryName) => {
+                    if (errSubCategory) {
+                        console.log(errSubCategory);
+                    } else {
+                        let category_ = [];
+                        let subCategory_ = [];
+
+                        for (let i = 0; i < categoryName.length; i++) {
+                            let numberOfSubCategory = subCategoryName.filter((value) => {
+                                return value.main_category_name === categoryName[i].category_name;
+                            });
+
+                            if (numberOfSubCategory.length > 0) {
+                                category_.push(categoryName[i].category_name)
+
+                            }
+
+                        }
+                        for (let i = 0; i < subCategoryName.length; i++) {
+                            let numberOfSubCategory = subCategoryName.filter((value) => {
+                                return value.main_category_name === subCategoryName[i].sub_category_name;
+                            });
+
+                            if (numberOfSubCategory.length > 0) {
+                                category_.push(subCategoryName[i].sub_category_name)
+                            } else {
+                                subCategory_.push(subCategoryName[i])
+
+                            }
+
+                        }
+
+                        // console.log(subCategory_);
+                        res.json({ categoryName: category_, subCategoryName: subCategory_ });
+                    }
+                })
+            }
+        })
+    },
+
+    getProductKeyValues: async (req, res) => {
+        console.log('category - ' + req.params.mainCategory);
+        try {
+            const mainCategoryList = await new Promise((resolve, reject) => {
+                productsModels.getProductsCategoryNamesModel((err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+            const vendorNames = await new Promise((resolve, reject) => {
+                productsModels.getVendorsNames((err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+
+            const isMain = mainCategoryList.some(value => value.category_name == req.params.mainCategory);
+
+            if (!isMain) {
+                const subCategoryList = await new Promise((resolve, reject) => {
+                    productsModels.getProductsSubCategoryNamesModel((err, data) => {
+                        if (err) reject(err);
+                        else resolve(data);
+                    });
+                });
+
+                for (let i = 0; i < subCategoryList.length; i++) {
+                    if (req.params.mainCategory == subCategoryList[i].sub_category_name) {
+
+                        const tableColumnNames = await FindTableCategory(subCategoryList[i].main_category_name);
+                        console.log(tableColumnNames);
+                        return res.json({ tableColumnNames: tableColumnNames, tableName: subCategoryList[i].main_category_name, vendorNames: vendorNames });
+                    }
+                }
+            } else {
+
+                const tableColumnNames = await FindTableCategory(req.params.mainCategory);
+                console.log(tableColumnNames);
+                return res.json({ tableColumnNames: tableColumnNames, tableName: req.params.mainCategory, vendorNames: vendorNames });
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
     }
+
+
 }

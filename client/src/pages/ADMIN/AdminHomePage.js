@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import styles from '../../styles/admin.home.module.css';
+import styles from '../../styles/AdminHome/admin.home.module.css';
 
 import UpperSide from '../../components/AdminHome/UpperSide';
 import LeftSide from '../../components/AdminHome/LeftSide';
@@ -19,7 +19,7 @@ import ShowNotifications from '../../components/AdminHome/ShowNotifications'
 import ShowAdmin from '../../components/AdminHome/ShowAdmin';
 
 const AdminHomePage = () => {
-    const [currentPageNo, setCurrentPage] = useState(1);
+    const [currentPageNo, setCurrentPage] = useState(2);
     const [upperContentNo, setUpperContent] = useState(0);
 
     const handlePage = (newPage) => {
@@ -47,7 +47,7 @@ const AdminHomePage = () => {
             <div className={styles.uppAndMain}>
                 <UpperSide {...oject2} />
 
-                <div style={{width:'100%', position:'relative', height:'90vh'}}>
+                <div style={{width:'100%', position:'relative'}}>
                     {
                         currentPageNo === 1 ? <PageOne />
                             : currentPageNo === 2 ? <PageTwo />

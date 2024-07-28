@@ -10,6 +10,13 @@ const reducer = (state, action) => {
                 menuItems: action.payload
             }
 
+        case 'set_products_render' :
+           return {
+                ...state,
+                categoryName: action.payload.categoryName,
+                subCategoryName : action.payload.subCategoryName
+            }
+
         case 'set_home_view':
             console.log('from reducer is Admin - '+action.payload.isAdmin + ' is logIn - '+action.payload.isUserLoggedIn + ' userId - '+action.payload.UserID);
             return {

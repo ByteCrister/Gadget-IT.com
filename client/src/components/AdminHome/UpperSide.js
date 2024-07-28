@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/admin.home.module.css';
+import styles from '../../styles/AdminHome/admin.home.module.css';
 import { RiMessage2Fill } from "react-icons/ri";
 import { IoNotifications } from "react-icons/io5";
 import { RiAdminFill } from "react-icons/ri";

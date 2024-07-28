@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { RiAdminFill, RiEyeFill, RiEyeCloseFill } from "react-icons/ri"; // Import eye icons for visibility toggle
 import { FaSpinner, FaTimes } from 'react-icons/fa'; // Import close icon
 
-import styles from '../../styles/MoreInformation.module.css';
+import styles from '../../styles/AdminHome/MoreInformation.module.css';
 import { SetAdmin } from '../../api/SetAdmin';
 
 const ShowAdmin = ({handleUpper}) => {

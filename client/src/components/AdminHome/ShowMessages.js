@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/show.messages.module.css';
+import styles from '../../styles/AdminHome/show.messages.module.css';
 import { AiOutlineClose } from 'react-icons/ai';
 
 const ShowMessages = ({ handleUpper }) => {

@@ -6,7 +6,6 @@ module.exports = {
             db.query('SELECT email FROM user WHERE email = ?', [email], callback);
     },
 
-
     newUserEntryModel : (body, callback)=>{
         const { first_name, last_name, email, password } = body;
         console.log('from newUserEntryModel - '+body);
@@ -15,13 +14,11 @@ module.exports = {
         db.query(insertUserQuery,[first_name, last_name, email, password], callback)
     },
 
-
-    
     adminPassMatch : (callback)=>{
         db.query('select admin_password from admin where admin_no = 1', callback);
     },
-    adminEmailMatch : (callback)=>{
-        db.query('select admin_email from admin where admin_no = 1', callback);
+    adminEmailMatch : (email, callback)=>{
+        db.query('select admin_email from admin where admin_email = ? ',[email], callback);
 
     },
 

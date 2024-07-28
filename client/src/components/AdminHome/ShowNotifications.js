@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/show.notification.module.css';
+import styles from '../../styles/AdminHome/show.notification.module.css';
 import { AiOutlineClose } from 'react-icons/ai';
 
 const ShowNotifications = ({ handleUpper, handlePage }) => {

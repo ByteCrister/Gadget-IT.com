@@ -1,0 +1,275 @@
+#mainProductionContainer {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+    width: 100%;
+}
+
+#ProductionTableSection {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+    width: 70%;
+    min-width: 500px;
+    /* background-color: rgb(59, 209, 39); */
+    box-shadow: -1px 1px 5px rgb(212, 212, 212);
+    /* border: 2px solid rgba(0, 0, 0, 0.1); */
+    border-radius: 10px;
+}
+
+#SearchBarSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    /* background-color: rgb(223, 80, 80); */
+    /* border: 2px solid rgb(230, 221, 221); */
+    box-shadow: -1px 1px 2px rgb(212, 212, 212);
+    border-radius: 5px;
+}
+
+#SearchBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    /* background-color: aqua; */
+    width: 60%;
+}
+
+#search {
+    border: none;
+    padding: 10px;
+    width: 90%;
+    color: grey;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#search:focus {
+    outline: none;
+}
+
+#SearchIcon {
+    color: grey;
+    font-weight: 200px;
+}
+
+#SearchBarSection>div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-right: 10px;
+}
+
+#SearchBarSection>div>button {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    border: 1px solid black;
+    height: 30px;
+    width: 50px;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+    border-radius: 10px;
+    
+}
+#SearchBarSection>div>button:hover{
+    background-color: aliceblue;
+    color: rgb(77, 77, 77);
+
+}
+#filterIcon , #refreshIcon{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: grey;
+}
+
+
+
+/* ------------------------------------------------ */
+
+
+.ProductionTable {
+    width: 100%;
+    min-width: 500px; 
+    margin: 20px auto;
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    overflow: auto; /* Enable scrolling if table exceeds container */
+  }
+  
+  .productTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .productTable th, .productTable td {
+    border: 1px solid #cccccc;
+    padding: 10px 12px;
+    text-align: center;
+    color: grey;
+  }
+  
+  .productTable th {
+    background-color: #ececec;
+}
+.productTable th div{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+  
+.productTable td{
+    cursor: pointer;
+    
+  }
+  
+  /* .productTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  } */
+  .productTable tbody tr{
+    transition: ease-in-out 0.2s;
+  }
+  .productTable tbody tr:hover {
+    background-color: #e7e7e7;
+  }
+
+
+    /* ---------------------------- */
+    .pagination{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        width: 80%;
+        
+    }
+    
+    .pagination button {
+        padding: 10px 20px;
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        cursor: pointer;
+    
+    }
+    .pageButton{
+        color: #5f5f5f;
+        font-weight: 600;
+        font-family: 'Times New Roman', Times, serif;
+    }
+    .active{
+        background-color: rgb(173, 173, 173);
+        color: aliceblue;
+    }
+    
+    .previous, .next, .firstLast{
+        background-color: rgb(193, 193, 193);
+        color: aliceblue;
+    }
+    
+    
+    .previous:hover, .next:hover, .firstLast:hover{
+        background-color: rgb(130, 130, 130);
+        cursor: pointer;
+    }
+    
+    .previous:disabled, .next:disabled, button:disabled , .firstLast:disabled{
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+
+    /* -------------------------------------------- */
+    /* PageThree.module.css */
+
+/* Styles for ProductTableManageMainContainer */
+.ProductTableManageMainContainer {
+    margin-top: 20px;
+  }
+  
+  /* Styles for each product entry */
+  .ProductEntry {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Styles for product information section */
+  .ProductInfo {
+    margin-bottom: 10px;
+  }
+  
+  .ProductDetail {
+    margin: 5px 0;
+  }
+  
+  /* Styles for main points section */
+  .MainPoints {
+    margin-bottom: 15px;
+  }
+  
+  .HeadPoint {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .HeadLabel {
+    width: 120px;
+    margin-right: 10px;
+  }
+  
+  .HeadInput {
+    flex: 1;
+    padding: 5px;
+  }
+  
+  .DeleteButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .AddHeadButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .DigitNames {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  
+  .DigitGroup {
+    margin-bottom: 10px;
+  }
+  
+  .DigitLabel {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .DigitInput {
+    width: 100%;
+    padding: 5px;
+  }
+  
+  

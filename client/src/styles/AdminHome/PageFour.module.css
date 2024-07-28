@@ -1,0 +1,405 @@
+#mainSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    position: relative;
+}
+
+#section_1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#section_1 span {
+    font-size: 25px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+    color: grey;
+}
+
+#section_1 button,
+#FilterButton {
+    padding: 8px 16px;
+    background-color: #b1b1b1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: ease-in-out 0.5s;
+}
+
+#section_1 button:focus {
+    outline: none;
+}
+
+#section_1 button:hover,
+#FilterButton:hover {
+    background-color: #6a6a6a;
+}
+
+#OrderButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+#OrderStateButtons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
+}
+
+#OrderStateButtons div {
+    border-radius: 5px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+    /* background-color: #6a6a6a; */
+
+}
+
+#OrderStateButtons div:hover {
+    background-color: #f5f5f5;
+
+}
+
+#OrderStateButtons div span {
+    color: #b1b1b1;
+    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+}
+
+#OrderStateButtons div span:nth-of-type(2) {
+    border: 2px solid rgb(224, 224, 224);
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+.active_button {
+    background-color: #ececec;
+}
+
+.active_button span {
+    color: #353535;
+}
+
+.active_button span:nth-of-type(2) {
+    border-color: #2e2e2e;
+}
+
+/* ------------------------------------------------------ */
+
+#percentage {
+    height: 3px;
+    background-color: #eeeeee;
+    /* background-color: #bbbbbb; */
+    min-width: 100%;
+}
+
+/* ------------------------------------------------------- */
+
+
+
+
+
+.container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding-bottom: 10px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+}
+
+.table th {
+    background-color: #8d8d8d;
+    color: white;
+}
+
+.table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    font-size: 18px;
+    color: #5f5f5f;
+    font-weight: 600;
+}
+
+#HeadCheckBox {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.container table thead tr th div span{
+    color: white;
+}
+/* ----------------------------------------- */
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 80%;
+    margin-top: 10px;
+
+}
+
+.pagination button {
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+}
+
+.pageButton {
+    color: #5f5f5f;
+    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.active {
+    background-color: rgb(173, 173, 173);
+    color: aliceblue;
+}
+
+.previous,
+.next,
+.firstLast {
+    background-color: rgb(193, 193, 193);
+    color: aliceblue;
+}
+
+
+.previous:hover,
+.next:hover,
+.firstLast:hover {
+    background-color: rgb(130, 130, 130);
+    cursor: pointer;
+}
+
+.previous:disabled,
+.next:disabled,
+button:disabled,
+.firstLast:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+
+
+/* -------------------------------------- */
+#ActionText {
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+
+/* ---------------------------------------------- */
+.dropdown {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    color: #333;
+    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.dropdown:focus {
+    outline: none;
+    border-color: #bebebe;
+}
+
+
+
+/* ---------------------------------------------- */
+
+
+#filterFormContainer {
+    text-align: right;
+    margin: 20px auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    min-width: 400px;
+}
+
+#toggleButton {
+    position: absolute;
+    text-align: right;
+    padding: 8px 16px;
+    background-color: #b1b1b1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: ease-in-out 0.5s;
+    /* margin-right: 60px; */
+    left: 83%;
+}
+
+#toggleButton:hover {
+    background-color: #6a6a6a;
+}
+
+
+#filterForm {
+    position: relative;
+    background-color: #f3f3f3;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 400px;
+    box-shadow: 1px 0px 10px rgb(122, 122, 122);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+
+}
+#resetAction, #resetDate{
+    cursor: pointer;
+}
+
+#filterLabel {
+    font-size: 22px;
+    color: #8d8d8d;
+    font-weight: 600;
+}
+
+#dataRange,
+#actionType,
+#inventoryState {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    gap: 20px;
+}
+
+#div_1,
+#div_3, #div_5 {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    /* gap: 10px; */
+    /* background-color: #333; */
+}
+
+#dateRange>div>span,
+#actionType>div>span,
+#inventoryState>div>span {
+    font-size: 18px;
+    color: #8d8d8d;
+    font-weight: 600;
+
+}
+
+#div_2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 10xp;
+    margin-top: 10px;
+}
+
+#div_2 div {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+}
+
+#div_2 div span {
+    font-size: 16px;
+    color: #5f5f5f;
+    font-weight: 700;
+}
+
+#div_2 div input {
+    padding: 6px 15px;
+    background-color: #dfdfdf;
+    border: none;
+    border-radius: 5px;
+    color: #424242;
+}
+
+#actionType div select, #inventoryState div select{
+    padding: 10px;
+   border: none;
+   background-color: #dfdfdf;
+   border-radius: 5px;
+   font-size: 15px;
+   font-weight: 600;
+   font-family: 'Times New Roman', Times, serif;
+   color:#424242 ;
+}
+#actionType div select:focus, #inventoryState div select:focus{
+    outline: none;
+}
+
+#resetAndApply{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+#resetButton, #applyButton{
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: #bebebe;
+    font-weight: 600;
+    color:#424242 ;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+
+}
+#resetButton:hover, #applyButton:hover{
+    background-color: #424242;
+    color: #bebebe;
+}

@@ -1,0 +1,113 @@
+#OrderMainContainer {
+    text-align: right;
+    margin: 20px auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    min-width: 400px;
+    background-color: #f3f3f3;
+    box-shadow: 1px 0px 10px rgb(190, 190, 190);
+    padding: 10px;
+}
+#OrderMainContainer > div{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+#UserEmailInput, #NumberOfCategory{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 10px;
+    width: 100%;
+    justify-content: space-between;
+}
+#UserEmailInput span, #NumberOfCategory span{
+    color: grey;
+    font-size: 25px;
+}
+
+#UserEmailInput input, #NumberOfCategory input{
+    border: none;
+    outline: none;
+    padding: 10px 15px;
+    color: rgb(146, 146, 146);
+    font-weight: 600;
+    background-color: none;
+}
+#NumberOfCategory input{
+    font-size: 12px;
+}
+#NumberOfCategory button{
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: grey;
+    font-size: 15px;
+    cursor: pointer;
+    transition: ease-in-out 0.2s;
+}
+#NumberOfCategory button:hover{
+    background-color: #777777;
+    color:#ffffff ;
+}
+#ReturnInputDiv div{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    margin-top: 10px;
+    border:2px solid #e4e4e4;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+#ProductId, #Quantity{
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+}
+#ProductId input, #Quantity input{
+    border: none;
+    outline: none;
+    padding: 10px 15px;
+    color: rgb(146, 146, 146);
+    font-weight: 600;
+    background-color: none;
+}
+#ProductId span, #Quantity span{
+    color: rgb(173, 173, 173);
+    font-size: 15px;
+}
+#OrderButtons{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+#OrderButtons button{
+    padding: 5px 10px;
+    font-size: 13px;
+    background-color: rgb(196, 196, 196);
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: ease-in-out 0.3s;
+}
+#OrderButtons button:hover{
+    background-color: rgb(107, 107, 107);
+
+}

@@ -80,14 +80,16 @@ module.exports = {
 
     userLogInController: (req, res) => {
         const { email, password } = req.body;
+       console.log(JSON.stringify(req.body, null, 2));
 
-        userModel.adminEmailMatch((adminEmailMatchError, adminEmailResult) => {
+        userModel.adminEmailMatch(email, (adminEmailMatchError, adminEmailResult) => {
 
             if (adminEmailMatchError) {
                 return res.status(500).send('Error finding admin email');
 
             }
-            if (adminEmailResult && adminEmailResult.length > 0) {
+            if (adminEmailResult.length > 0) {
+                console.log('Length - '+adminEmailResult.length);
                 userModel.adminPassMatch((adminPassError, adminPassResult) => {
                     if (adminPassError) {
                         return res.status(500).send('Error finding admin password');
@@ -114,7 +116,7 @@ module.exports = {
                         return res.status(500).send('Error finding user email for login');
                     }
                     if (matchData.length === 0) {
-                        res.send({ message: 'Email Not Found!' })
+                        res.send({ message: 'Email Not Found' })
                     } else {
                         userModel.userPassMatchModal(email, (errorUserPass, passResult) => {
                             if (errorUserPass) {
@@ -130,7 +132,7 @@ module.exports = {
                                         console.error('Error saving session:', err);
                                         return res.status(500).send('Error saving session');
                                     }
-                                    console.log('Session Data:', req.session);
+                                    // console.log('Session Data:', req.session);
                                     res.json({ isAdmin: false, isLogged: true, userId: passResult[0].user_id })
                                 });
                             } else {

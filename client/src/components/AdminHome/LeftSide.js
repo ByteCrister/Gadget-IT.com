@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/admin.home.module.css';
+import styles from '../../styles/AdminHome/admin.home.module.css';
 import { LuCable } from "react-icons/lu";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { LuLayoutDashboard } from "react-icons/lu";
