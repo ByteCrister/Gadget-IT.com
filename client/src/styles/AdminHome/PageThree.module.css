@@ -1,17 +1,73 @@
-#mainProductionContainer {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 5px;
-    width: 100%;
+/* Update the selectors to use classes instead of ids */
+.mainProductionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 5px;
+  width: 100%;
+  position: relative;
 }
+
+.ProductionText {
+  font-size: 25px;
+  font-weight: 600;
+  color: #8f8f8f;
+}
+
+.production_buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.production_button {
+  border: 2px solid rgb(226, 226, 226);
+  outline: none;
+  padding: 10px 15px;
+  background-color: white;
+  color: #5f5f5f;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+}
+
+.production_button:hover {
+  background-color: #e7e7e7;
+  color: white;
+  border: 2px solid rgb(255, 255, 255);
+}
+
+.production_button_active {
+  border: 2px solid rgb(255, 255, 255);
+  outline: none;
+  padding: 10px 15px;
+  background-color: #b4b4b4;
+  color: #f0f0f0;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+}
+.ProductionContents{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* ------------------------------------------------------ */
+
 
 #ProductionTableSection {
     display: flex;
     flex-direction: column;
     padding: 10px;
     gap: 10px;
-    width: 70%;
+    width: 100%;
     min-width: 500px;
     /* background-color: rgb(59, 209, 39); */
     box-shadow: -1px 1px 5px rgb(212, 212, 212);
@@ -118,7 +174,8 @@
   }
   
   .productTable th {
-    background-color: #ececec;
+    background-color: #8d8d8d;
+    color: #ffffff;
 }
 .productTable th div{
     display: flex;
@@ -189,87 +246,3 @@
 
 
     /* -------------------------------------------- */
-    /* PageThree.module.css */
-
-/* Styles for ProductTableManageMainContainer */
-.ProductTableManageMainContainer {
-    margin-top: 20px;
-  }
-  
-  /* Styles for each product entry */
-  .ProductEntry {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-  
-  /* Styles for product information section */
-  .ProductInfo {
-    margin-bottom: 10px;
-  }
-  
-  .ProductDetail {
-    margin: 5px 0;
-  }
-  
-  /* Styles for main points section */
-  .MainPoints {
-    margin-bottom: 15px;
-  }
-  
-  .HeadPoint {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .HeadLabel {
-    width: 120px;
-    margin-right: 10px;
-  }
-  
-  .HeadInput {
-    flex: 1;
-    padding: 5px;
-  }
-  
-  .DeleteButton {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 3px;
-  }
-  
-  .AddHeadButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 3px;
-  }
-  
-  .DigitNames {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
-  }
-  
-  .DigitGroup {
-    margin-bottom: 10px;
-  }
-  
-  .DigitLabel {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .DigitInput {
-    width: 100%;
-    padding: 5px;
-  }
-  
-  

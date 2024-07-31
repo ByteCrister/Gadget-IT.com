@@ -42,10 +42,11 @@ module.exports = {
     newProductPostModel: (table, newKeyValue, tableColumnValue, mandatoryValues, newProductID, callback) => {
         let open = " (";
         let close = ")";
-        let questionMarks = `?, ?, ?, ?, ?`;
-        let columnNames = `product_id, main_category, product_name, image, vendor_no`;
+        let questionMarks = `?, ?, ?, ?, ?, ?`;
+        let columnNames = `product_id, brand, main_category, product_name, image, vendor_no`;
         let arrValues = [];
         arrValues.push(newProductID);
+        arrValues.push(mandatoryValues.brand);
         arrValues.push(mandatoryValues.mainCategory);
         arrValues.push(mandatoryValues.product_name);
         arrValues.push(`data:${mandatoryValues.image.mimeType};base64,${mandatoryValues.image.base64}`);
@@ -75,7 +76,7 @@ module.exports = {
             VALUES ${open} ${questionMarks} ${close};
         `;
 
-        console.log(query);
+        // console.log(query);
         db.query(query, arrValues, callback);
     },
 
@@ -92,7 +93,42 @@ module.exports = {
             }
         });
 
-        console.log(query);
+        // console.log(query);
         db.query(query, callback);
     },
+
+    createNewDescriptionColumn: (productID, tableName, Description, callback) => {
+        let values = ''
+        let query = `
+        insert into description (product_id, product_main_category, head, head_value)
+        values 
+        `
+        Description.map((items, index) => {
+            if (index === Description.length - 1) {
+                values += ` (${productID}, '${tableName}', '${items.head}', '${items.value}'); `
+            } else {
+                values += ` (${productID}, '${tableName}', '${items.head}', '${items.value}'), `
+            }
+        })
+        query += values;
+        // console.log(query);
+
+        db.query(query, callback);
+    },
+
+    insertExtraImages: (category, productID, images, callback) => {
+        let query = `INSERT INTO extra_images (product_id, category, image) VALUES `;
+        const values = [];
+        images.forEach((item, index) => {
+            query += `(?, ?, ?)`;
+            if (index !== images.length - 1) {
+                query += `, `;
+            }
+            values.push(productID, category, `data:${item.mimeType};base64,${item.base64}`);
+        });
+
+        db.query(query, values, callback);
+    }
+
+
 };

@@ -19,7 +19,7 @@ import ShowNotifications from '../../components/AdminHome/ShowNotifications'
 import ShowAdmin from '../../components/AdminHome/ShowAdmin';
 
 const AdminHomePage = () => {
-    const [currentPageNo, setCurrentPage] = useState(2);
+    const [currentPageNo, setCurrentPage] = useState(3);
     const [upperContentNo, setUpperContent] = useState(0);
 
     const handlePage = (newPage) => {

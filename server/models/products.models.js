@@ -20,7 +20,12 @@ module.exports = {
     getVendorsNames: (callback) => {
         db.query(`select * from vendors`, callback);
     },
-
+    getSortingOptions : (category, callback)=>{
+        db.query(`select sorting_column from sorting where category = ?;`, [category], callback);
+    },
+    getKeyFeatures : (category, callback)=>{
+        db.query(`select key_feature_column from key_feature where category = ?;`, [category], callback);
+    },
 
     getInitialMandatoryColumnsModel: (category, callback) => {
         db.query(
@@ -29,5 +34,7 @@ module.exports = {
      WHERE TABLE_SCHEMA = 'gadget_it' AND TABLE_NAME = '${category}';`
             , callback);
 
-    }
+    },
+
+
 }

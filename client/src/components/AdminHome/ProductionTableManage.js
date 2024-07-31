@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from '../../styles/AdminHome/PageThree.module.css';
+import styles from '../../styles/AdminHome/ProductionDetails.module.css';
 
-const ProductionTableManage = ({ data }) => {
+const ProductionTableManage = ({ data, setIsProductionManagement }) => {
   const data1 = data.data1 || [];
-  const data2 = data.data2?.map((value2) => value2.head_points)[0] || [];
+  // const data2 = data.data2?.map((value2) => value2.head_points)[0] || [];
 
   return (
     <section className={styles.ProductTableManageMainContainer}>
@@ -16,7 +16,7 @@ const ProductionTableManage = ({ data }) => {
           </div>
 
           <div className={styles.MainPoints}>
-            {data2.map((value2) => (
+            {/* {data2.map((value2) => (
               <div key={value2.head_name} className={styles.HeadPoint}>
                 <label htmlFor={value2.head_name} className={styles.HeadLabel}>
                   {value2.head_name}
@@ -30,7 +30,7 @@ const ProductionTableManage = ({ data }) => {
                 <button className={styles.DeleteButton}>Delete</button>
               </div>
             ))}
-            <button className={styles.AddHeadButton}>+ Add New Head</button>
+            <button className={styles.AddHeadButton}>+ Add New Head</button> */}
           </div>
 
           <div className={styles.DigitNames}>
@@ -43,7 +43,7 @@ const ProductionTableManage = ({ data }) => {
                 min={0}
                 value={value1.incoming}
                 className={styles.DigitInput}
-                onChange={(e) => console.log(e.target.value)} 
+                onChange={(e) => console.log(e.target.value)}
               />
             </div>
             <div className={styles.DigitGroup}>
@@ -55,7 +55,7 @@ const ProductionTableManage = ({ data }) => {
                 min={0}
                 value={value1.reserved}
                 className={styles.DigitInput}
-                onChange={(e) => console.log(e.target.value)} 
+                onChange={(e) => console.log(e.target.value)}
               />
             </div>
             <div className={styles.DigitGroup}>
@@ -67,7 +67,7 @@ const ProductionTableManage = ({ data }) => {
                 min={0}
                 value={value1.quantity}
                 className={styles.DigitInput}
-                onChange={(e) => console.log(e.target.value)} 
+                onChange={(e) => console.log(e.target.value)}
               />
             </div>
             <div className={styles.DigitGroup}>
@@ -79,9 +79,13 @@ const ProductionTableManage = ({ data }) => {
                 min={0}
                 value={value1.price}
                 className={styles.DigitInput}
-                onChange={(e) => console.log(e.target.value)} 
+                onChange={(e) => console.log(e.target.value)}
               />
             </div>
+          </div>
+          <div className={styles.ProductionChangeButtons}>
+            <button className={styles.buttonChange}>Save Changes</button>
+            <button className={styles.buttonChange} onClick={() => { setIsProductionManagement(false) }}>Back</button>
           </div>
         </div>
       ))}

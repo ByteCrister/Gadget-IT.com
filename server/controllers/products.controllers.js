@@ -122,7 +122,7 @@ module.exports = {
 
                         }
 
-                        // console.log(subCategory_);
+                        // console.log('category - '+category_);
                         res.json({ categoryName: category_, subCategoryName: subCategory_ });
                     }
                 })
@@ -167,12 +167,89 @@ module.exports = {
             } else {
 
                 const tableColumnNames = await FindTableCategory(req.params.mainCategory);
-                console.log(tableColumnNames);
+                // console.log(tableColumnNames);
                 return res.json({ tableColumnNames: tableColumnNames, tableName: req.params.mainCategory, vendorNames: vendorNames });
             }
         } catch (err) {
             console.log(err);
             res.status(500).send('Internal Server Error');
+        }
+    },
+
+    getCategory: async (req, res) => {
+        try {
+            const mainCategory = await new Promise((resolve, reject) => {
+                productsModels.getProductsCategoryNamesModel((err, data) => {
+                    if (err) return reject(err)
+                    else resolve(data);
+                })
+            })
+            const subCategory = await new Promise((resolve, reject) => {
+                productsModels.getProductsSubCategoryNamesModel((err, data) => {
+                    if (err) return reject(err)
+                    else resolve(data);
+                })
+            })
+
+            let category = [];
+            mainCategory.map((items) => {
+                category.push(items.category_name)
+            });
+            subCategory.map((items) => {
+                category.push(items.sub_category_name)
+            });
+
+            // console.log(category);
+            return res.json({ mainCategory: mainCategory, subCategory: subCategory, category: category });
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Error in fetching category information');
+        }
+    },
+
+    getColumnNames: async (req, res) => {
+        try {
+            let columns = [];
+            let sorting = [];
+            let keyFeature= [];
+            const columns_ = await new Promise((resolve, reject) => {
+                productsModels.getInitialMandatoryColumnsModel(req.params.mainCategory, (err, data) => {
+                    if (err) reject(err)
+                    else resolve(data);
+                })
+            });
+
+            columns_.map((items) => {
+                columns.push(items.COLUMN_NAME);
+            });
+
+            const sorting_ = await new Promise((resolve, reject) => {
+                productsModels.getSortingOptions(req.params.mainCategory, (err, data) => {
+                    if (err) reject(err)
+                    else resolve(data);
+                })
+            });
+            sorting_.map((items) => {
+                sorting.push(items.sorting_column);
+            });
+
+            const keyFeature_ =  await new Promise((resolve, reject) => {
+                productsModels.getKeyFeatures(req.params.mainCategory, (err, data) => {
+                    if (err) reject(err)
+                    else resolve(data);
+                })
+            });
+            keyFeature_.map((items)=>{
+                keyFeature.push(items.key_feature_column);
+            })
+
+            // console.log(columns);
+            res.status(200).json({ columns: columns , sorting : sorting, keyFeature : keyFeature});
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Error in fetching column names');
         }
     }
 

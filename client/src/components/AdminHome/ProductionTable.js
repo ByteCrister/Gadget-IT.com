@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { FaSearch } from 'react-icons/fa';
 import { FaFilter } from "react-icons/fa";
@@ -12,12 +12,30 @@ import { AiOutlineShop } from "react-icons/ai";
 
 
 import styles from '../../styles/AdminHome/PageThree.module.css';
+import ProductionTableManage from './ProductionTableManage';
 
 
-const ProductionTable = ({ handleProductionID, productionData }) => {
+const ProductionTable = ({ productionData }) => {
 
 
   // -----------------------------------------------------------------------------------------------------
+  const [isProductionManagement, setIsProductionManagement] = useState(false);
+  const [data, setData] = useState({ data1: null});
+
+  const handleProductionID = (id) => {
+    const data1 = productionData.filter((value) => {
+      return value.productId === id;
+    }).map((value) => { return value; });
+
+
+    setData({ data1: data1});
+  }
+
+  useEffect(() => {
+    // console.log('Updated data:', JSON.stringify(data, null, 2));
+  }, [data]);
+
+  
   const itemsPerPage = 7;
   const [totalPages, setTotalPages] = useState(Math.ceil(productionData.length / itemsPerPage));
   const [currentPage, setCurrentPage] = useState(0);
@@ -84,7 +102,7 @@ const ProductionTable = ({ handleProductionID, productionData }) => {
           </thead>
           <tbody>
             {filteredProducts.map((product) => (
-              <tr key={product.productId} onClick={() => {   handleProductionID(product.productId) }}>
+              <tr key={product.productId} onClick={() => {   handleProductionID(product.productId); setIsProductionManagement(true) }}>
                 <td>{product.productId}</td>
                 <td>{product.productName}</td>
                 <td>{product.category}</td>
@@ -115,6 +133,11 @@ const ProductionTable = ({ handleProductionID, productionData }) => {
           <button className={styles.next} disabled={currentPage === totalPages - 1} onClick={() => handlePrevNext('next')}>Next</button>
           <button className={styles.firstLast} disabled={currentPage === totalPages - 1} onClick={handleLastPage}>{'>'}</button>
         </div>
+
+
+          {
+            isProductionManagement &&  <ProductionTableManage data={data} setIsProductionManagement={setIsProductionManagement} />
+          }
 
     </section>
   )

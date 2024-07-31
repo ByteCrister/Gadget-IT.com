@@ -1,9 +1,8 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import reducer from './reducer';
 import { useData } from './useData';
 import { GetMenuItems } from '../api/GetMenuItems';
 import { AdminRenderApi } from '../api/AdminRenderApi';
-
 
 const initialValues = {
   menuItems: [],
@@ -20,15 +19,23 @@ const initialValues = {
 
 const UseProvider = ({ children }) => {
   const [dataState, dispatch] = useReducer(reducer, initialValues);
+  const [hasInitialized, setHasInitialized] = useState(false);
 
   useEffect(() => {
-    const getMenuItems = async () => {
+    const initializeData = async () => {
+      dispatch({ type: 'toggle_loading', payload: true });
+
       await GetMenuItems(dispatch);
       await AdminRenderApi(dispatch);
-    }
-    getMenuItems();
-  }, []);
 
+      dispatch({ type: 'toggle_loading', payload: false });
+      setHasInitialized(true);
+    };
+
+    if (!hasInitialized) {
+      initializeData();
+    }
+  }, [hasInitialized]);
 
   return (
     <useData.Provider value={{ dataState, dispatch }}>

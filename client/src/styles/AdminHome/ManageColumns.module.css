@@ -1,0 +1,73 @@
+.manageColumnsMainContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}
+
+.manageColumnsSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-width: 350px;
+}
+
+.manageColumnsSection div:nth-child(-n+3),
+.manageColumnsCategory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+}
+
+.manageColumnsSection div label,
+.manageColumnsCategory label {
+    font-size: 18px;
+    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+    color: #c5c5c5;
+}
+
+.manageColumnsSection div select,
+.manageColumnsSection div input,
+.manageColumnsMainContainer select {
+    padding: 5px 15px;
+    outline: none;
+    border: 1px solid rgb(239, 239, 239);
+    border-radius: 5px;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #c5c5c5;
+}
+
+.manageColumnsSection div button {
+    padding: 5px 10px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+    background-color: #858585;
+    color: #f7f7f7;
+    transition: ease-in-out 0.2s;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.manageColumnsSection div button:hover {
+    background-color: #e0e0e0;
+    color: #858585;
+}
+#sortingCheckbox{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid rgb(242, 242, 242);
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+#sortingCheckbox input {
+    cursor: pointer;
+}

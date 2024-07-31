@@ -1,44 +1,57 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styles from '../../styles/AdminHome/PageThree.module.css'
 import ProductionPage from '../../ProductionPage.json';
 import HeadPoints from '../../HeadPoints.json';
 import ProductionTable from '../../components/AdminHome/ProductionTable';
 import ProductionTableManage from '../../components/AdminHome/ProductionTableManage';
-
+import ManageColumns from '../../components/AdminHome/ManageColumns';
+import CreateNewCategory from '../../components/AdminHome/CreateNewCategory';
 
 const PageThree = () => {
-  const [productionData, setProductionData] = useState(ProductionPage);
-  const [headPointData, setHeadPointData] = useState(HeadPoints);
+  const [productionData, setProductionData] = useState(ProductionPage);//table information
+  const [headPointData, setHeadPointData] = useState(HeadPoints);// product information after click
 
-  const [data, setData] = useState({ data1: null, data2: null });
-
-  const handleProductionID = (id) => {
-    const data1 = productionData.filter((value) => {
-      return value.productId === id;
-    }).map((value) => { return value; });
-
-    const data2 = headPointData.filter((value) => {
-      return value.productId === id;
-    }).map((value) => { return value; });
-
-    setData({ data1: data1, data2: data2 });
-
-  }
-  useEffect(() => {
-    // console.log('Updated data:', JSON.stringify(data, null, 2));
-  }, [data]);
+  const [pageThreeCurrentPage, setPageThreeCurrentPage] = useState(2);
 
 
   return (
-    <div id={styles.mainProductionContainer}>
+    <div className={styles.mainProductionContainer}>
+      <span className={styles.ProductionText}>Productions Management</span>
 
-      <ProductionTable handleProductionID={handleProductionID} productionData={productionData} />
+      <div className={styles.production_buttons}>
+        <button
+          className={pageThreeCurrentPage === 1 ? styles.production_button_active : styles.production_button}
+          onClick={() => { setPageThreeCurrentPage(1) }}
+        >
+          Manage Inventory
+        </button>
+        <button
+          className={pageThreeCurrentPage === 2 ? styles.production_button_active : styles.production_button}
+          onClick={() => { setPageThreeCurrentPage(2) }}
+        >
+          Manage Columns && Sorting
+        </button>
+        <button
+          className={pageThreeCurrentPage === 3 ? styles.production_button_active : styles.production_button}
+          onClick={() => { setPageThreeCurrentPage(3) }}
+        >
+          Manage Category's
+        </button>
+      </div>
 
-      <ProductionTableManage data={data} />
 
-
+      <div className={styles.ProductionContents}>
+        {
+          pageThreeCurrentPage === 1 ?
+            <ProductionTable productionData={productionData} />
+            : pageThreeCurrentPage === 2 ?
+              <ManageColumns />
+              : <CreateNewCategory />
+        }
+      </div>
+     
     </div>
   )
 }
 
-export default PageThree
+export default PageThree;

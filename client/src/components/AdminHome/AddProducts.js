@@ -13,10 +13,14 @@ const AddProducts = ({ setAddProductState }) => {
     const [subCategory, setSubCategory] = useState('');
     const [tableName, setTableName] = useState('');
 
+    const [extraImages, setExtraImages] = useState([]);
+
     const [tableColumnValue, setTableColumnValue] = useState([]);
     const [newKeyValue, setNewKeyValue] = useState([]);
+    const [newDescriptionHeadValue, setNewDescriptionHeadValue] = useState([]);
     const [vendors, setVendors] = useState([]);
     const [mandatoryValues, setMandatoryValues] = useState({
+        brand: '',
         mainCategory: '',
         subCategory: '',
         incoming: '',
@@ -27,6 +31,7 @@ const AddProducts = ({ setAddProductState }) => {
         image: null,
         product_name: '',
         vendor: ''
+
     });
 
     const [errors, setErrors] = useState({}); // To store validation errors
@@ -102,7 +107,9 @@ const AddProducts = ({ setAddProductState }) => {
                 columnName !== 'main_category' &&
                 columnName !== 'product_name' &&
                 columnName !== 'image' &&
-                columnName !== 'vendor_no'
+                columnName !== 'vendor_no' &&
+                columnName !== 'brand' &&
+                columnName !== 'hide'
         );
         setTableColumnValue(filteredColumns.map((columnName) => ({
             key: columnName,
@@ -119,6 +126,37 @@ const AddProducts = ({ setAddProductState }) => {
         });
     };
 
+
+
+    // ------------------------------New Description Function-----------------------------------------
+
+    const handleNewDescriptionHeadValue = () => {
+        setNewDescriptionHeadValue((prev) => [
+            ...prev,
+            { head: '', value: '' }
+        ]);
+    };
+
+    const handleDescriptionHeadValue = (e, index, type) => {
+        const { value } = e.target;
+        setNewDescriptionHeadValue((prevState) => {
+            const updatedValues = [...prevState];
+            if (type === 'head') {
+                updatedValues[index].head = value;
+            } else {
+                updatedValues[index].value = value;
+            }
+            return updatedValues;
+        });
+    };
+    const handleDeleteDescriptionHeadValue = (index) => {
+        setNewDescriptionHeadValue((prev) =>
+            prev.filter((_, i) => i !== index)
+        );
+    };
+
+
+    // ----------------------------New Product Column Function----------------------------------------
     const handleNewKeyPoint = () => {
         setNewKeyValue((prev) => [
             ...prev,
@@ -145,9 +183,38 @@ const AddProducts = ({ setAddProductState }) => {
         );
     };
 
+
+    // ------------------------------ New Extra Images ----------------------------------------------
+    const handleExtraImages = () => {
+        setExtraImages((prev) => [...prev, { base64: '', mimeType: '' }]);
+    };
+    const handleNewExtraImage = (e, index) => {
+        const { type, files } = e.target;
+        if (type === 'file') {
+            const file = files[0];
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result.replace(/^data:.+\/(.+);base64,/, '');
+                const mimeType = file.type;
+                setExtraImages((prev) => {
+                    const updatedImages = [...prev];
+                    updatedImages[index] = { base64: base64String, mimeType: mimeType };
+                    return updatedImages;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    const handleDeleteExtraImages = (index) => {
+        setExtraImages((prev) =>
+            prev.filter((_, i) => i !== index));
+    }
+
+    /* ********************** validation *********************** */
     const validateForm = () => {
         const errors = {};
         // Required fields
+        if (!mandatoryValues.brand) errors.brand = "Brand is required.";
         if (!mandatoryValues.product_name) errors.product_name = "Product Name is required.";
         if (!mandatoryValues.incoming) errors.incoming = "Incoming value is required.";
         if (!mandatoryValues.reserved) errors.reserved = "Reserved value is required.";
@@ -160,26 +227,28 @@ const AddProducts = ({ setAddProductState }) => {
         if (!mandatoryValues.vendor) errors.vendor = "Vendor is required.";
 
         setErrors(errors);
-
-        // Return true if no errors
         return Object.keys(errors).length === 0;
     };
 
+
+    // ************************************ Post New Product ********************************************
     const handleAddProduct = () => {
         if (!validateForm()) {
-            return; // Stop execution if validation fails
+            return;
         }
 
         const payload = {
             table: tableName,
             newKeyValue: newKeyValue,
             tableColumnValue: tableColumnValue,
-            mandatoryValues: mandatoryValues
+            mandatoryValues: mandatoryValues,
+            newDescriptionHeadValue: newDescriptionHeadValue,
+            extraImages: extraImages
         };
-        console.log(tableName);
-        console.log(JSON.stringify(newKeyValue));
-        console.log(JSON.stringify(tableColumnValue));
-        console.log(JSON.stringify(mandatoryValues));
+        // console.log(tableName);
+        // console.log(JSON.stringify(extraImages));
+        // console.log(JSON.stringify(tableColumnValue));
+        // console.log(JSON.stringify(mandatoryValues));
 
         axios
             .post('http://localhost:7000/post/new/product', payload)
@@ -191,6 +260,7 @@ const AddProducts = ({ setAddProductState }) => {
                 console.error('Error adding product:', error);
             });
     };
+    // *********************************************************************************
 
     return (
         <div id={style.addProductsMainContainer}>
@@ -225,6 +295,11 @@ const AddProducts = ({ setAddProductState }) => {
                 {isCategorySelected && isSubCategorySelected && (
                     <>
                         <div id={style.InitialValueSet}>
+                            <div>
+                                <label htmlFor='brand'><sup>*</sup>Brand</label>
+                                <input type='text' id='brand' onChange={handleChange} />
+                                {errors.brand && <p className={style.error}>{errors.brand}</p>}
+                            </div>
                             <div>
                                 <label htmlFor='product_name'><sup>*</sup>Product Name</label>
                                 <input type='text' id='product_name' onChange={handleChange} />
@@ -285,6 +360,7 @@ const AddProducts = ({ setAddProductState }) => {
                                 </div>
                             ))}
                         </div>
+                        {/* ---------------------------------------------------------------------------------------------- */}
                         <div id={style.InitialValueSet} style={{ marginTop: '10px' }}>
                             {newKeyValue.map((value, index) => (
                                 <div key={index} style={{ backgroundColor: '#ebebeb', padding: '8px 12px' }}>
@@ -307,6 +383,45 @@ const AddProducts = ({ setAddProductState }) => {
                             ))}
                             <button type='button' id={style.button} onClick={handleNewKeyPoint}>+ Add Key Point</button>
                         </div>
+                        {/* ------------------------------------------------------------------------------------------------ */}
+                        <div id={style.InitialValueSet} style={{ marginTop: '15px' }}>
+                            {newDescriptionHeadValue.map((value, index) => (
+                                <div key={index} style={{ backgroundColor: '#ebebeb', padding: '8px 12px' }}>
+                                    <input
+                                        type='text'
+                                        id='des_head'
+                                        value={value.head}
+                                        onChange={(e) => handleDescriptionHeadValue(e, index, 'head')}
+                                        placeholder='Head'
+                                    />
+                                    <input
+                                        type='text'
+                                        id='des_value'
+                                        value={value.value}
+                                        onChange={(e) => handleDescriptionHeadValue(e, index, 'value')}
+                                        placeholder='Value'
+                                    />
+                                    <button type='button' id={style.button} onClick={() => handleDeleteDescriptionHeadValue(index)}>Delete</button>
+                                </div>
+                            ))}
+                            <button type='button' id={style.button} onClick={handleNewDescriptionHeadValue}>+ Add Description</button>
+                        </div>
+                        {/* ------------------------------------------------------------------------------------------------ */}
+
+                        {/* ------------------------------------------------------------------------------------------------- */}
+                        <div id={style.InitialValueSet} style={{ marginTop: '20px', marginBottom: '20px' }}>
+                            {extraImages.map((item, index) => (
+                                <div key={index} className={style.extra_image_item}>
+                                    <input
+                                        type='file'
+                                        onChange={(e) => handleNewExtraImage(e, index)}
+                                    />
+                                    <button type='button' id={style.button} onClick={() => handleDeleteExtraImages(index)}>Delete</button>
+                                </div>
+                            ))}
+                            <button type='button' id={style.button} onClick={handleExtraImages}>+Add Extra Image</button>
+                        </div>
+                        {/* ------------------------------------------------------------------------------------------------- */}
 
                         <button type='button' id={style.button} onClick={handleAddProduct}>Add Product</button>
 

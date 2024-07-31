@@ -1,0 +1,89 @@
+.createTableMainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 50%;
+    min-width: 400px;
+}
+
+.DifferentOption select,
+.DeleteCategory select {
+    padding: 10px 15px;
+    color: rgb(234, 234, 234);
+    font-size: 15px;
+    color: rgb(133, 133, 133);
+    font-weight: 600;
+    border: 3px solid rgb(234, 234, 234);
+    border-radius: 5px;
+    outline: none;
+}
+
+.CreateNewCategory {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
+}
+
+.CreateNewCategory input,
+.CreateNewCategory button {
+    padding: 10px 15px;
+    font: 600;
+    color: rgb(94, 94, 94);
+    font-size: 15px;
+    background-color: #ececec;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+}
+
+.CreateNewCategory button {
+    cursor: pointer;
+    transition: ease-in-out 0.2s;
+}
+
+.CreateNewCategory button:hover {
+    background-color: #a2a2a2;
+    color: #ececec;
+}
+
+.CreateNewSubCategory, .DeleteCategory, .RenameCategory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 5px;
+}
+
+.RadioOptionMain {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 300px;
+    overflow-y: scroll;
+    height: 300px;
+}
+
+.MainCategorySelectRadio {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    background-color: #f6f6f6;
+    padding: 10px;
+    border-radius: 5px;
+    width: 300px;
+}
+.MainCategorySelectRadio p{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    color: #a2a2a2;
+}
+.CategoryRadio{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
