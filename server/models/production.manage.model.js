@@ -113,6 +113,20 @@ module.exports = {
             callback
         );
     },
+    renameCategoryOfSorting: (oldName, newName, callback) => {
+        db.query(
+            `update sorting set category = ? where category = ?`,
+            [newName, oldName],
+            callback
+        );
+    },
+    renameCategoryOfKeyFeature : (oldName, newName, callback) => {
+        db.query(
+            `update key_feature set category = ? where category = ?`,
+            [newName, oldName],
+            callback
+        );
+    },
 
     addNewColumnModel: (table, newColumn, insertAfter, callback) => {
         const sql = `ALTER TABLE ?? ADD ?? varchar(255) AFTER ??`;

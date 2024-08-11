@@ -168,6 +168,18 @@ module.exports = {
                     else resolve(data)
                 })
             });
+            await new Promise((resolve, reject) => {
+                productionManageModel.renameCategoryOfSorting(req.body.sub, req.body.newName, (err, data) => {
+                    if (err) reject(err)
+                    else resolve(data)
+                })
+            });
+            await new Promise((resolve, reject) => {
+                productionManageModel.renameCategoryOfKeyFeature(req.body.sub, req.body.newName, (err, data) => {
+                    if (err) reject(err)
+                    else resolve(data)
+                })
+            });
             res.status(200).json({ message: "Renaming Category successful" });
 
         } catch (error) {

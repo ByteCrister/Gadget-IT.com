@@ -11,7 +11,7 @@ const PageThree = () => {
   const [productionData, setProductionData] = useState(ProductionPage);//table information
   const [headPointData, setHeadPointData] = useState(HeadPoints);// product information after click
 
-  const [pageThreeCurrentPage, setPageThreeCurrentPage] = useState(2);
+  const [pageThreeCurrentPage, setPageThreeCurrentPage] = useState(1);
 
 
   return (
@@ -49,7 +49,7 @@ const PageThree = () => {
               : <CreateNewCategory />
         }
       </div>
-     
+
     </div>
   )
 }
