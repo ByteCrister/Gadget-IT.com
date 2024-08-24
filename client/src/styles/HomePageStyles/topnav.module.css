@@ -29,6 +29,7 @@ nav {
   padding: 0;
   background-color: #ffffff;
   box-shadow: 5px 0.5px 10px rgb(165, 165, 165);
+
 }
 
 #logo {
@@ -51,6 +52,7 @@ nav ul {
   margin: 0;
   list-style: none;
   position: relative;
+  z-index: 200;
 }
 
 nav ul li {
@@ -58,6 +60,7 @@ nav ul li {
   display: inline-block;
   float: left;
   background-color: #ffffff;
+  z-index: 200;
   
 }
 
@@ -65,26 +68,30 @@ nav a {
   display: block;
   padding: 0 20px;
   color: #919191;
-  font-size: 15px;
+  /* font-size: 5px; */
   line-height: 60px;
   text-decoration: none;
   border-radius: 10px;
   font-weight: 600;
   font-family: 'Times New Roman', Times, serif;
+  transition: ease-in-out 0.2s;
 }
 nav ul li ul li{
-  border-radius: 10px;
+  border-radius: 5px;
+  margin-top: 2px;
+  transition: ease-in-out 0.2s;
+  z-index: 200;
   
 }
-nav ul li ul li:hover {
-  border-radius: 10px;
-  background: #f0feff;
+nav ul li ul li a:hover {
+  border-radius: 5px;
+  background: #ffd343;
   color: #ffffff;
 }
 
 nav a:hover {
   /* background-color: #ffd343; */
-  color: #c2c2c2;
+  color: #ffd343;
   /* padding: 0px 0px; */
 }
 
@@ -92,7 +99,7 @@ nav ul ul {
   display: none;
   position: absolute;
   top: 60px;
-  border-radius: 5px;
+  border-radius: 1.5px;
   /* background-color: #000000; */
 }
 
@@ -113,7 +120,7 @@ nav ul ul ul li {
   left: 170px;
 }
 
-li>a:after {
+nav ul ul li>a:after {
   content: ' +';
 }
 
@@ -137,6 +144,7 @@ li>a:only-child:after {
 
   nav {
     margin: 0;
+    box-shadow: none;
   }
 
   .toggle+a,
@@ -186,7 +194,7 @@ li>a:only-child:after {
 
   nav ul li ul li .toggle,
   nav ul ul a {
-    background-color: #293077;
+    background-color: #1d225e;
   }
 
   nav ul ul {

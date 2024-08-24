@@ -12,12 +12,15 @@ import { TbMessageReport } from "react-icons/tb";
 
 import Users from '../../Users.json';
 import styles from '../../styles/AdminHome/PageSix.module.css';
+import Pagination from '../../HOOKS/Pagination';
 
 const PageSix = () => {
   const [active, setActive] = useState(true);
   const [UserData, setUserData] = useState([]);
   const [activeAction, setActiveAction] = useState(false);
   const [actionUser, setActionUser] = useState(null);
+
+  const [filteredProducts, setFilteredProducts] = useState(Users.users);
 
   useEffect(() => {
     if (active) {
@@ -43,45 +46,10 @@ const PageSix = () => {
     setActiveAction(true);
   };
 
-  // Pagination logic remains the same as in your original code
-  const itemsPerPage = 7;
-  const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
-
-  useEffect(() => {
-    setTotalPages(Math.ceil(UserData.length / itemsPerPage));
-  }, [UserData, itemsPerPage]);
-
-  const paginateData = () => {
-    const startIndex = currentPage * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return UserData.slice(startIndex, endIndex);
-  };
-
-  const handleCurrentPage = (index) => {
-    setCurrentPage(index);
-  };
-
-  const handlePrevNext = (action) => {
-    if (action === 'prev' && currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    } else if (action === 'next' && currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handleFirstPage = () => {
-    setCurrentPage(0);
-  };
-
-  const handleLastPage = () => {
-    setCurrentPage(totalPages - 1);
-  };
-
-  const startPage = Math.floor(currentPage / 3) * 3;
-  const endPage = Math.min(totalPages, startPage + 3);
-
-  const filteredUsers = paginateData();
+  
+  const handleFilteredData = (data)=>{
+    setFilteredProducts((prev)=> data);
+  }
 
   return (
     <>
@@ -136,7 +104,7 @@ const PageSix = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredUsers.map((user) => (
+                {filteredProducts.map((user) => (
                   <tr key={user.user_id}>
                     <td>{user.user_name}</td>
                     <td>{user.user_email}</td>
@@ -154,24 +122,7 @@ const PageSix = () => {
           </div>
         </section>
 
-        <div className={styles.pagination}>
-          <button className={styles.firstLast} disabled={currentPage === 0} onClick={handleFirstPage}>{'<'}</button>
-          <button className={styles.previous} disabled={currentPage === 0} onClick={() => handlePrevNext('prev')}>Previous</button>
-          {Array.from({ length: endPage - startPage }, (_, index) => {
-            const pageIndex = startPage + index;
-            return (
-              <button
-                key={pageIndex}
-                className={pageIndex === currentPage ? styles.active : styles.pageButton}
-                onClick={() => handleCurrentPage(pageIndex)}
-              >
-                {pageIndex + 1}
-              </button>
-            );
-          })}
-          <button className={styles.next} disabled={currentPage === totalPages - 1} onClick={() => handlePrevNext('next')}>Next</button>
-          <button className={styles.firstLast} disabled={currentPage === totalPages - 1} onClick={handleLastPage}>{'>'}</button>
-        </div>
+        <Pagination productsData={Users.users} handleFilteredData={handleFilteredData}/>
 
       </section>
 

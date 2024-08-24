@@ -1,0 +1,178 @@
+.footer,
+.footerContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.footerContainer {
+    background-color: #221f1f;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* justify-content: center; */
+    padding: 25px 15px;
+    width: 100%;
+}
+
+.footerSection {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 10px;
+    min-width: 310px;
+
+    /* background-color: #ef8123; */
+
+}
+
+h2 {
+    color: #ef8123;
+    font-size: medium;
+    letter-spacing: 3px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.contactInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: center;
+}
+
+.phone,
+.storeLocator {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1.5px solid #fff;
+    border-radius: 35px;
+    padding: 20px 35px;
+    color: #fff;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    width: 300px;
+    transition: ease-in-out 0.2s;
+
+}
+
+.phone:hover,
+.storeLocator:hover {
+    border-color: #ff6600;
+}
+
+.stick {
+    height: 25px;
+    width: 1.5px;
+    background-color: #fff;
+}
+
+.socialIcons {
+    display: flex;
+    justify-content: space-between;
+    width: 160px;
+    width: 100%;
+}
+
+.icon {
+    font-size: 24px;
+    color: #fff;
+    margin-right: 10px;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+.icon:hover {
+    color: #ff6600;
+    transition: ease-in-out 0.2s;
+}
+
+.footerSection ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+}
+
+.footerSection ul li {
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: small;
+    line-height: 40px;
+    transition: ease-in-out 0.2s;
+}
+
+.footerSection ul li:hover {
+    color: #ff6600;
+}
+
+.address {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: #fff;
+}
+
+.address p {
+    text-align: left;
+}
+
+.footerBottom {
+    background-color: #000000;
+    text-align: center;
+    width: 100%;
+    color: white;
+    padding: 15px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .footerSection {
+        width: 25%;
+    }
+}
+
+@media (max-width: 992px) {
+    .footerSection {
+        width: 33.33%;
+    }
+
+    .socialIcons {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .footerSection {
+        width: 50%;
+        min-width: unset;
+    }
+
+    .contactInfo,
+    .footerSection ul {
+        align-items: center;
+        text-align: center;
+    }
+
+    .phone,
+    .storeLocator {
+        width: 100%;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .footerSection {
+        width: 100%;
+    }
+
+    .footerContainer {
+        padding: 10px;
+    }
+
+    .footerSection {
+        padding: 5px;
+    }
+}

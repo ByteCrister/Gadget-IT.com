@@ -1,0 +1,99 @@
+.SectionOne {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    width: 100%;
+    padding: 20px;
+}
+.AddMainContainer {
+    width: 60%;
+    margin: auto; 
+    min-width: 300px;
+    z-index: 1;
+}
+
+.subCoverImg {
+    width: 30%;
+    min-width: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.subCoverImg img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+/* -------------------------------------------- */
+@media only screen and (max-width: 768px){
+    .subCoverImg, .AddMainContainer {
+        width: 100%;
+    }
+
+}
+
+.mySwiper {
+    width: 100%;
+    height: auto; /* Ensure height adjusts to image */
+}
+
+/* Ensure the swiper container takes full width */
+.swiper-container {
+    width: 100% !important;
+}
+
+/* Ensure images cover the entire slide */
+.mySwiper img {
+    width: 100% !important;
+    height: auto !important; /* Maintain aspect ratio */
+    object-fit: cover !important; /* Cover the entire slide area */
+}
+
+/* Style for pagination dots */
+.swiper-pagination {
+    bottom: 10px !important; /* Position the pagination dots */
+}
+
+.swiper-pagination-bullet {
+    background-color: #fff !important; /* Default color for dots */
+    width: 12px !important; /* Width of the dots */
+    height: 12px !important; /* Height of the dots */
+    border-radius: 50% !important; /* Make dots round */
+    opacity: 1 !important; /* Ensure dots are fully visible */
+}
+
+.swiper-pagination-bullet-active {
+    background-color: #ff6600 !important; /* Active dot color */
+}
+
+/* Style for the navigation arrows */
+.swiper-button-next, .swiper-button-prev {
+    color: #fff !important; /* Default color for arrows */
+    background-color: rgba(0, 0, 0, 0.5) !important; /* Background color for arrows */
+    border-radius: 50% !important; /* Round the buttons */
+    width: 40px !important; /* Width of the arrow buttons */
+    height: 40px !important; /* Height of the arrow buttons */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2 !important; /* Ensure arrows are on top */
+    opacity: 1 !important; /* Ensure arrows are fully visible */
+}
+
+/* Hover state for the navigation arrows */
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    color: #ff6600 !important; /* Hover color for arrows */
+    background-color: rgba(0, 0, 0, 0.8) !important; /* Darker background on hover */
+}
+
+/* Custom arrow icon (optional) */
+.swiper-button-next::after {
+    content: '>' !important; /* Change to any icon or symbol you prefer */
+    font-size: 20px !important;
+}
+
+.swiper-button-prev::after {
+    content: '<' !important; /* Change to any icon or symbol you prefer */
+    font-size: 20px !important;
+}

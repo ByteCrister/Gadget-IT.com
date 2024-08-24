@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 
 import { FaSearch } from 'react-icons/fa';
 import { FaFilter } from "react-icons/fa";
@@ -13,77 +13,106 @@ import { AiOutlineShop } from "react-icons/ai";
 
 import styles from '../../styles/AdminHome/PageThree.module.css';
 import ProductionTableManage from './ProductionTableManage';
+import { useData } from '../../context/useData';
+import Pagination from '../../HOOKS/Pagination';
+import { GetCategoryName } from '../../HOOKS/GetCategoryName';
+import { SearchProduction } from '../../HOOKS/SearchProduction';
+import { Api_Inventory } from '../../api/Api_Inventory';
+import { Api_Production } from '../../api/Api_Production';
 
 
-const ProductionTable = ({ productionData }) => {
+const ProductionTable = () => {
+  const { dataState, dispatch } = useContext(useData);
 
+  const [productsData, setProductsData] = useState(dataState.Production_Page.TableRows);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
-  // -----------------------------------------------------------------------------------------------------
   const [isProductionManagement, setIsProductionManagement] = useState(false);
-  const [data, setData] = useState({ data1: null});
+  const [filterState, setFilterState] = useState({ state: 0, filterStyle: { backgroundColor: '#c6c6c6' } });
+  const [selectedId, setSelectedId] = useState(null);
+  const [selectCategory, setSelectedCategory] = useState(null);
+  const [hasInitialized, setHasInitialized] = useState(false);
 
-  const handleProductionID = (id) => {
-    const data1 = productionData.filter((value) => {
-      return value.productId === id;
-    }).map((value) => { return value; });
-
-
-    setData({ data1: data1});
-  }
+  const [isRotating, setIsRotating] = useState(false);
+  
+  const searchRef = useRef();
 
   useEffect(() => {
-    // console.log('Updated data:', JSON.stringify(data, null, 2));
-  }, [data]);
-
-  
-  const itemsPerPage = 7;
-  const [totalPages, setTotalPages] = useState(Math.ceil(productionData.length / itemsPerPage));
-  const [currentPage, setCurrentPage] = useState(0);
-  const getVisiblePages = 3;
-
-  // Function to paginate the data
-  const paginateData = () => {
-    const startIndex = currentPage * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return productionData.slice(startIndex, endIndex);
-  };
-
-  const handleCurrentPage = (index) => {
-    setCurrentPage(index);
-  };
-
-  const handlePrevNext = (action) => {
-    if (action === 'prev' && currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    } else if (action === 'next' && currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
+    const initializeData = async () => {
+      console.log('page three renders');
+      setProductsData(dataState.Production_Page.TableRows);
+      setHasInitialized(true);
     }
+    if (!hasInitialized) {
+      initializeData();
+    }
+  }, []);
+
+  // *------------------ Parent Function of Pagination ----------------------------
+  const handleFilteredData = (data) => {
+    setFilteredProducts((prev) => data);
+  }
+  // ******************************************************************************
+
+
+  // *-------------------------- Sort by Filter -----------------------------------
+  const handleFilterState = () => {
+    setFilterState((prev) => ({
+      ...prev,
+      state: prev.state === 5 ? 0 : prev.state + 1
+    }));
+    sortProducts(filterState.state + 1);
   };
-
-  const handleFirstPage = () => {
-    setCurrentPage(0);
+  const sortProducts = (state) => {
+    let sortedData = [...productsData];
+    if (state === 1) {
+      sortedData.sort((a, b) => Number(a.id) - Number(b.id));
+    } else if (state === 2) {
+      sortedData.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (state === 3) {
+      sortedData.sort((a, b) => a.type.localeCompare(b.type));
+    } else if (state === 4) {
+      sortedData.sort((a, b) => Number(a.quantity + a.reserved + a.incoming) - Number(b.quantity + b.reserved + b.incoming));
+    } else if (state === 5) {
+      sortedData.sort((a, b) => a.vendor.localeCompare(b.vendor));
+    }
+    else {
+      sortedData = dataState.Production_Page.TableRows;
+    }
+    setProductsData(sortedData);
   };
+  // ******************************************************************************
 
-  const handleLastPage = () => {
-    setCurrentPage(totalPages - 1);
-  };
 
-  const startPage = Math.floor(currentPage / getVisiblePages) * getVisiblePages;
-  const endPage = Math.min(totalPages, startPage + getVisiblePages);
+  //* ---------------------- searching ---------------------------
+  const handleSearchChange = () => {
+    const search = searchRef.current.value;
+    SearchProduction(search, dataState.Production_Page.TableRows, setProductsData);
+  }
+  // ************************************************************
 
-  const filteredProducts = paginateData();
-  // ----------------------------------------------------------------------------------------------
+
+
+  // *------------------ Refresh Button ---------------------
+  const handleRefresh = async() => {
+    setIsRotating(true);
+    setTimeout(() => setIsRotating(false), 200); 
+    await Api_Inventory(dispatch);
+    await Api_Production(dispatch);
+};
+ 
+
   return (
     <section id={styles.ProductionTableSection}>
 
       <section id={styles.SearchBarSection}>
         <div id={styles.SearchBar}>
           <FaSearch id={styles.SearchIcon} />
-          <input type='text' name='search' id={styles.search} placeholder='Search...'></input>
+          <input type='text' name='search' id={styles.search} ref={searchRef} onChange={handleSearchChange} placeholder='Search...'></input>
         </div>
         <div>
-          <button><FaFilter id={styles.filterIcon} /></button>
-          <button><LuRefreshCcw id={styles.refreshIcon} /></button>
+          <button onClick={handleFilterState}><FaFilter id={styles.filterIcon} /></button>
+          <button><LuRefreshCcw id={styles.refreshIcon} className={isRotating ? styles.rotate : ''}  onClick={handleRefresh} /></button>
         </div>
       </section>
 
@@ -92,22 +121,22 @@ const ProductionTable = ({ productionData }) => {
         <table className={styles.productTable}>
           <thead>
             <tr>
-              <th ><div><MdOutlineInventory2 /><span>Product ID</span></div></th>
-              <th ><div><MdOutlineInventory /><span>Product Name</span></div></th>
-              <th ><div><TbCategory2 /><span>Type</span></div></th>
+              <th style={filterState.state === 1 ? filterState.filterStyle : null}><div><MdOutlineInventory2 /><span>Product ID</span></div></th>
+              <th style={filterState.state === 2 ? filterState.filterStyle : null}><div><MdOutlineInventory /><span>Product Name</span></div></th>
+              <th style={filterState.state === 3 ? filterState.filterStyle : null}><div><TbCategory2 /><span>Type</span></div></th>
               <th ><div><TbAdjustmentsPause /><span>Status</span></div></th>
-              <th ><div><ImListNumbered /><span>Count</span></div></th>
-              <th ><div><AiOutlineShop /><span>Vendor</span></div></th>
+              <th style={filterState.state === 4 ? filterState.filterStyle : null}><div><ImListNumbered /><span>Count</span></div></th>
+              <th style={filterState.state === 5 ? filterState.filterStyle : null}><div><AiOutlineShop /><span>Vendor</span></div></th>
             </tr>
           </thead>
           <tbody>
             {filteredProducts.map((product) => (
-              <tr key={product.productId} onClick={() => {   handleProductionID(product.productId); setIsProductionManagement(true) }}>
-                <td>{product.productId}</td>
-                <td>{product.productName}</td>
-                <td>{product.category}</td>
-                <td>{product.status}</td>
-                <td>{product.count}</td>
+              <tr key={product.id} onClick={() => { setSelectedId(product.id); setSelectedCategory(product.type); setIsProductionManagement(true) }}>
+                <td>{product.id}</td>
+                <td>{product.name}</td>
+                <td>{GetCategoryName(product.type)}</td>
+                <td>{Number(product.quantity) <= 0 ? 'out of stock' : Number(product.reserved) <= Number(product.quantity) ? 'in stock' : 'low stock'}</td>
+                <td>{product.quantity + product.reserved + product.incoming}</td>
                 <td>{product.vendor}</td>
               </tr>
             ))}
@@ -115,29 +144,12 @@ const ProductionTable = ({ productionData }) => {
         </table>
       </section>
 
-      <div className={styles.pagination}>
-          <button className={styles.firstLast} disabled={currentPage === 0} onClick={handleFirstPage}>{'<'}</button>
-          <button className={styles.previous} disabled={currentPage === 0} onClick={() => handlePrevNext('prev')}>Previous</button>
-          {Array.from({ length: endPage - startPage }, (_, index) => {
-            const pageIndex = startPage + index;
-            return (
-              <button
-                key={pageIndex}
-                className={pageIndex === currentPage ? styles.active : styles.pageButton}
-                onClick={() => handleCurrentPage(pageIndex)}
-              >
-                {pageIndex + 1}
-              </button>
-            );
-          })}
-          <button className={styles.next} disabled={currentPage === totalPages - 1} onClick={() => handlePrevNext('next')}>Next</button>
-          <button className={styles.firstLast} disabled={currentPage === totalPages - 1} onClick={handleLastPage}>{'>'}</button>
-        </div>
+      <Pagination productsData={productsData} handleFilteredData={handleFilteredData} />
 
 
-          {
-            isProductionManagement &&  <ProductionTableManage data={data} setIsProductionManagement={setIsProductionManagement} />
-          }
+      {
+        isProductionManagement && <ProductionTableManage id={selectedId} category={selectCategory} setIsProductionManagement={setIsProductionManagement} />
+      }
 
     </section>
   )

@@ -104,7 +104,6 @@ module.exports = {
 
                             if (numberOfSubCategory.length > 0) {
                                 category_.push(categoryName[i].category_name)
-
                             }
 
                         }

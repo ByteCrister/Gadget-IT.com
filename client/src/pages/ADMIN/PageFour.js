@@ -4,15 +4,15 @@ import styles from '../../styles/AdminHome/PageFour.module.css';
 import { IoFilter } from "react-icons/io5";
 import OrderPageFilter from '../../components/AdminHome/OrderPageFilter';
 import NewOrderPlaced from '../../components/AdminHome/NewOrderPlaced';
+import Pagination from '../../HOOKS/Pagination';
 
 const PageFour = () => {
   const [currentOrderPage, setCurrentOrderPage] = useState(1);
   const [mainProducts, setMainProduct] = useState(OrdersTable.orders);
+  const [filteredProducts, setFilteredProducts] = useState(OrdersTable.orders);
 
   const [filterActiveState, setFilterActiveState] = useState(false);
   const [newOrderPage, setNewOrderPage] = useState(false);
-
-
 
   const handleOrderPageData = (state, actionText) => {
     if (state === 1) {
@@ -26,7 +26,9 @@ const PageFour = () => {
     }
   }
 
-
+  const handleFilteredData = (data)=>{
+    setFilteredProducts((prev)=> data);
+  }
 
   const orderCount = {
     AllOrders: OrdersTable.orders.length,
@@ -46,44 +48,6 @@ const PageFour = () => {
     console.log(`Order ${orderIndex} action changed to ${event.target.value}`);
   };
 
-
-  // -----------------------------------------------------------------------------------------------------
-  const itemsPerPage = 7;
-  const [totalPages, setTotalPages] = useState(Math.ceil(mainProducts.length / itemsPerPage));
-  const [currentPage, setCurrentPage] = useState(0);
-  const getVisiblePages = 3;
-
-  // Function to paginate the data
-  const paginateData = () => {
-    const startIndex = currentPage * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return mainProducts.slice(startIndex, endIndex);
-  };
-
-  const handleCurrentPage = (index) => {
-    setCurrentPage(index);
-  };
-
-  const handlePrevNext = (action) => {
-    if (action === 'prev' && currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    } else if (action === 'next' && currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handleFirstPage = () => {
-    setCurrentPage(0);
-  };
-
-  const handleLastPage = () => {
-    setCurrentPage(totalPages - 1);
-  };
-
-  const startPage = Math.floor(currentPage / getVisiblePages) * getVisiblePages;
-  const endPage = Math.min(totalPages, startPage + getVisiblePages);
-
-  const filteredData = paginateData();
   // ----------------------------------------------------------------------------------------------
 
 
@@ -96,7 +60,6 @@ const PageFour = () => {
           <button onClick={() => { setNewOrderPage(!newOrderPage) }}>+New Order</button>
         </section>
         {/* --------------------------------------- */}
-
 
 
 
@@ -179,7 +142,7 @@ const PageFour = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((order, index) => (
+              {filteredProducts.map((order, index) => (
                 <tr key={index}>
                   <td><div id={styles.HeadCheckBox}><input type='checkbox' id={`Table_column-${index}`}></input><span>{order.productName}</span></div></td>
                   <td>{order.productID}</td>
@@ -206,25 +169,8 @@ const PageFour = () => {
           </table>
 
 
-
-          <div className={styles.pagination}>
-            <button className={styles.firstLast} disabled={currentPage === 0} onClick={handleFirstPage}>{'<'}</button>
-            <button className={styles.previous} disabled={currentPage === 0} onClick={() => handlePrevNext('prev')}>Previous</button>
-            {Array.from({ length: endPage - startPage }, (_, index) => {
-              const pageIndex = startPage + index;
-              return (
-                <button
-                  key={pageIndex}
-                  className={pageIndex === currentPage ? styles.active : styles.pageButton}
-                  onClick={() => handleCurrentPage(pageIndex)}
-                >
-                  {pageIndex + 1}
-                </button>
-              );
-            })}
-            <button className={styles.next} disabled={currentPage === totalPages - 1} onClick={() => handlePrevNext('next')}>Next</button>
-            <button className={styles.firstLast} disabled={currentPage === totalPages - 1} onClick={handleLastPage}>{'>'}</button>
-          </div>
+              <Pagination productsData={mainProducts} handleFilteredData={handleFilteredData}/>
+          
         </section>
 
 

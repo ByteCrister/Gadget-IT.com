@@ -2,18 +2,15 @@ import React, { useEffect, useState } from 'react';
 import styles from '../../styles/AdminHome/pageseven.userquestion.module.css';
 import { IoSearchSharp } from "react-icons/io5";
 import UserQuestionsData from '../../UserQuestionsData.json';
+import Pagination from '../../HOOKS/Pagination';
 
 const UserQuestions = () => {
     const [Questions, setQuestions] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState(UserQuestionsData);
 
-    const itemsPerPage = 7;
-    const getVisiblePages = 3;
-    const [totalPages, setTotalPages] = useState(0);
-    const [currentPage, setCurrentPage] = useState(0);
 
     useEffect(() => {
         setQuestions(UserQuestionsData);
-        setTotalPages(Math.ceil(UserQuestionsData.length / itemsPerPage));
     }, []);
 
     const [showAnswerBox, setShowAnswerBox] = useState(false);
@@ -28,49 +25,18 @@ const UserQuestions = () => {
     const handleDelete = (userId) => {
         const updatedQuestions = Questions.filter(question => question.userId !== userId);
         setQuestions(updatedQuestions);
-        setTotalPages(Math.ceil(updatedQuestions.length / itemsPerPage));
-        if (currentPage >= Math.ceil(updatedQuestions.length / itemsPerPage)) {
-            setCurrentPage(Math.max(currentPage - 1, 0));
-        }
     };
 
     const handleSendAnswer = () => {
-        alert(`Answer to question: ${currentQuestion.userQuestion}, Answer: ${answer}`);
+        // alert(`Answer to question: ${currentQuestion.userQuestion}, Answer: ${answer}`);
         setShowAnswerBox(false);
         setAnswer('');
     };
 
-    const paginateData = () => {
-        const startIndex = currentPage * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        return Questions.slice(startIndex, endIndex);
-    };
-
-    const handleCurrentPage = (index) => {
-        setCurrentPage(index);
-    };
-
-    const handlePrevNext = (action) => {
-        if (action === 'prev' && currentPage > 0) {
-            setCurrentPage(currentPage - 1);
-        } else if (action === 'next' && currentPage < totalPages - 1) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const handleFirstPage = () => {
-        setCurrentPage(0);
-    };
-
-    const handleLastPage = () => {
-        setCurrentPage(totalPages - 1);
-    };
-
-    const startPage = Math.floor(currentPage / getVisiblePages) * getVisiblePages;
-    const endPage = Math.min(totalPages, startPage + getVisiblePages);
-
-    const filteredQuestions = paginateData();
-
+    const handleFilteredData = (data)=>{
+        setFilteredProducts((prev)=> data);
+      }
+    
     return (
         <section id={styles.UserSupportQuestionContainer}>
             <section id={styles.QuestionSearchAndSort}>
@@ -104,7 +70,7 @@ const UserQuestions = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredQuestions.map((question, index) => (
+                        {filteredProducts.map((question, index) => (
                             <tr key={index}>
                                 <td>{question.userId}</td>
                                 <td>{question.userName}</td>
@@ -133,26 +99,7 @@ const UserQuestions = () => {
             </section>
 
 
-
-
-            <div className={styles.pagination}>
-                <button className={styles.firstLast} disabled={currentPage === 0} onClick={handleFirstPage}>{'<'}</button>
-                <button className={styles.previous} disabled={currentPage === 0} onClick={() => handlePrevNext('prev')}>Previous</button>
-                {Array.from({ length: endPage - startPage }, (_, index) => {
-                    const pageIndex = startPage + index;
-                    return (
-                        <button
-                            key={pageIndex}
-                            className={pageIndex === currentPage ? styles.active : styles.pageButton}
-                            onClick={() => handleCurrentPage(pageIndex)}
-                        >
-                            {pageIndex + 1}
-                        </button>
-                    );
-                })}
-                <button className={styles.next} disabled={currentPage === totalPages - 1} onClick={() => handlePrevNext('next')}>Next</button>
-                <button className={styles.firstLast} disabled={currentPage === totalPages - 1} onClick={handleLastPage}>{'>'}</button>
-            </div>
+            <Pagination productsData={UserQuestionsData} handleFilteredData={handleFilteredData} />
 
         </section>
     )

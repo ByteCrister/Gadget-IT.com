@@ -1,10 +1,39 @@
+const productInventoryModel = require("../models/product.inventory.model");
 const productPostModels = require("../models/product.post.models");
+const getTableName = (table, MainTables, SubTables) => {
+    const mainTableExists = MainTables.some((item) => item.category_name === table);
+    if (mainTableExists) {
+        return table;
+    } else {
+        const subTable = SubTables.filter((item) => item.sub_category_name === table);
+        if (subTable.length > 0) {
+            return getTableName(subTable[0].main_category_name, MainTables, SubTables);
+        } else {
+            return null;
+        }
+    }
+};
+
 
 module.exports = {
     postNewProductController: async (req, res) => {
         const { table, newKeyValue, tableColumnValue, mandatoryValues, newDescriptionHeadValue, extraImages } = req.body;
 
         try {
+            const MainTables = await new Promise((resolve, reject) => {
+                productInventoryModel.getMainTables((err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+            const SubTables = await new Promise((resolve, reject) => {
+                productInventoryModel.getSubTables((err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+            const Table = getTableName(table, MainTables, SubTables);
+
             // Updating the product ID
             await new Promise((resolve, reject) => {
                 productPostModels.updateProductIDModel((err) => {
@@ -34,7 +63,7 @@ module.exports = {
             if (newKeyValue.length > 0) {
                 // Creating new columns
                 await new Promise((resolve, reject) => {
-                    productPostModels.createNewColumn(table, newKeyValue, (err, result) => {
+                    productPostModels.createNewColumn(Table, newKeyValue, (err, result) => {
                         if (err) reject(err);
                         else resolve(result);
                     });
@@ -43,7 +72,7 @@ module.exports = {
             // Creating new description row
             if (newDescriptionHeadValue.length > 0) {
                 await new Promise((resolve, reject) => {
-                    productPostModels.createNewDescriptionColumn(productId, table, newDescriptionHeadValue, (err, result) => {
+                    productPostModels.createNewDescriptionColumn(productId, Table, newDescriptionHeadValue, (err, result) => {
                         if (err) reject(err);
                         else resolve(result);
                     });
@@ -52,7 +81,7 @@ module.exports = {
 
             // Posting new product
             await new Promise((resolve, reject) => {
-                productPostModels.newProductPostModel(table, newKeyValue, tableColumnValue, mandatoryValues, productId, (err, result) => {
+                productPostModels.newProductPostModel(Table, newKeyValue, tableColumnValue, mandatoryValues, productId, (err, result) => {
                     if (err) reject(err);
                     else resolve(result);
                 });
@@ -62,7 +91,7 @@ module.exports = {
             //inserting new extraImages
             if (extraImages.length > 0) {
                 await new Promise((resolve, reject) => {
-                    productPostModels.insertExtraImages(table, productId, extraImages, (err, data) => {
+                    productPostModels.insertExtraImages(Table, productId, extraImages, (err, data) => {
                         if (err) reject(err)
                         else resolve(data);
                     })

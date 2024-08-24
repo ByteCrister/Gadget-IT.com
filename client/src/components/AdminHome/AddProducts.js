@@ -2,9 +2,11 @@ import React, { useContext, useState } from 'react';
 import style from '../../styles/AdminHome/addproducts.module.css';
 import { useData } from '../../context/useData';
 import axios from 'axios';
+import { Api_Inventory } from '../../api/Api_Inventory';
+import { Api_Production } from '../../api/Api_Production';
 
 const AddProducts = ({ setAddProductState }) => {
-    const { dataState } = useContext(useData);
+    const { dataState, dispatch } = useContext(useData);
 
     const [isCategorySelected, setIsCategorySelected] = useState(false);
     const [isSubCategorySelected, setIsSubCategorySelected] = useState(false);
@@ -254,6 +256,9 @@ const AddProducts = ({ setAddProductState }) => {
             .post('http://localhost:7000/post/new/product', payload)
             .then((response) => {
                 setAddProductState(false);
+                 Api_Inventory(dispatch);
+                 Api_Production(dispatch);
+
                 console.log('Product added successfully:', response.data);
             })
             .catch((error) => {

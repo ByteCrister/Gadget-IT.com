@@ -1,0 +1,63 @@
+.mainDesContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+}
+
+.mainDesContainer > div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+
+}
+.mainDesContainer > div > div{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.mainDesContainer > div > div > div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.mainDesContainer > div > div > div span{
+    color: #8a8a8a;
+    font-weight: 600;
+}
+.mainDesContainer > div input{
+    border: 2px solid rgb(207, 207, 207);
+    outline: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+
+}
+
+.des_button{
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #c8c8c8;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    color: white;
+    transition: ease-in-out 0.2s;
+}
+.des_button:hover{
+    background-color: #8a8a8a;
+
+}
+
+.saveText{
+    font-size: large;
+    font-family: 'Times New Roman', Times, serif;
+    color: red;
+    font-weight: 700;
+}

@@ -1,5 +1,6 @@
-import React, { useContext} from 'react'
+import React, { useContext } from 'react'
 import { useData } from '../../context/useData';
+import SwiperMainAdd from '../../components/UserHome/SwiperMainAdd';
 
 const UserHomePage = () => {
   const { dataState, dispatch } = useContext(useData);
@@ -11,15 +12,20 @@ const UserHomePage = () => {
     window.localStorage.removeItem('_userId');
     window.localStorage.clear();
   }
-  
+
 
   return (
     <div >
+      {/*-------------  Section One : Main Advertisements Swiper ------------*/}
+        <SwiperMainAdd />
 
-          {
-            dataState.isUserLoggedIn ? <button onClick={handleLogout}>Log Out</button> : 'Home'
-          }
-      
+
+        
+
+      {
+        dataState.isUserLoggedIn ? <button onClick={handleLogout}>Log Out</button> : 'Home'
+      }
+
     </div>
   )
 }

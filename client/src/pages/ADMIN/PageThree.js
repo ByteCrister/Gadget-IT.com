@@ -1,16 +1,10 @@
 import React, { useState } from 'react'
 import styles from '../../styles/AdminHome/PageThree.module.css'
-import ProductionPage from '../../ProductionPage.json';
-import HeadPoints from '../../HeadPoints.json';
 import ProductionTable from '../../components/AdminHome/ProductionTable';
-import ProductionTableManage from '../../components/AdminHome/ProductionTableManage';
 import ManageColumns from '../../components/AdminHome/ManageColumns';
 import CreateNewCategory from '../../components/AdminHome/CreateNewCategory';
 
 const PageThree = () => {
-  const [productionData, setProductionData] = useState(ProductionPage);//table information
-  const [headPointData, setHeadPointData] = useState(HeadPoints);// product information after click
-
   const [pageThreeCurrentPage, setPageThreeCurrentPage] = useState(1);
 
 
@@ -43,7 +37,7 @@ const PageThree = () => {
       <div className={styles.ProductionContents}>
         {
           pageThreeCurrentPage === 1 ?
-            <ProductionTable productionData={productionData} />
+            <ProductionTable/>
             : pageThreeCurrentPage === 2 ?
               <ManageColumns />
               : <CreateNewCategory />

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useData } from '../context/useData';
 import styles from '../styles/HomePageStyles/topnav.module.css';
+import { GetCategoryName } from '../HOOKS/GetCategoryName';
 
 const TopNav = () => {
   const { dataState } = useContext(useData);
@@ -18,13 +19,13 @@ const TopNav = () => {
           <li key={item.id}>
             {item.nested.length > 0 ? (
               <>
-                <label htmlFor={`drop-${item.id}`} className={styles.toggle}>{item.title} +</label>
-                <Link to={item.url}>{item.title}</Link>
+                <label htmlFor={`drop-${item.id}`} className={styles.toggle}>{GetCategoryName(item.title)} +</label>
+                <Link to={item.url}>{GetCategoryName(item.title)}</Link>
                 <input type="checkbox" id={`drop-${item.id}`} />
                 <SubMenu items={item.nested} />
               </>
             ) : (
-              <Link to={item.url}>{item.title}</Link>
+              <Link to={item.url}>{GetCategoryName(item.title)}</Link>
             )}
           </li>
         ))}
@@ -39,13 +40,13 @@ const SubMenu = ({ items }) => (
       <li key={item.id}>
         {item.nested && item.nested.length > 0 ? (
           <>
-            <label htmlFor={`drop-${item.id}`} className={styles.toggle}>{item.title} +</label>
-            <Link to={item.url}>{item.title}</Link>
+            <label htmlFor={`drop-${item.id}`} className={styles.toggle}>{GetCategoryName(item.title)} +</label>
+            <Link to={item.url}>{GetCategoryName(item.title)}</Link>
             <input type="checkbox" id={`drop-${item.id}`} />
             <SubMenu items={item.nested} />
           </>
         ) : (
-          <Link to={item.url}>{item.title}</Link>
+          <Link to={item.url}>{GetCategoryName(item.title)}</Link>
         )}
       </li>
     ))}

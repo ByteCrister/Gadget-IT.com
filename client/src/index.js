@@ -8,9 +8,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <UseProvider>
     <BrowserRouter>
-      <React.StrictMode>
         <App />
-      </React.StrictMode>
     </BrowserRouter>
   </UseProvider>
 );

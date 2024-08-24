@@ -2,7 +2,23 @@
 const reducer = (state, action) => {
 
     switch (action.type) {
-
+        case 'set_setting_page' : 
+        return {
+            ...state,
+            Setting_Page : action.payload
+        }
+        
+        case 'set_inventory_page' : 
+        return {
+            ...state,
+            Inventory_Page : action.payload
+        }
+        
+        case 'set_production_page' : 
+        return {
+            ...state,
+            Production_Page : action.payload
+        }
 
         case 'set_categories':
             return {

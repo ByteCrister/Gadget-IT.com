@@ -98,23 +98,32 @@ module.exports = {
     },
 
     createNewDescriptionColumn: (productID, tableName, Description, callback) => {
-        let values = ''
+        let values = '';
         let query = `
-        insert into description (product_id, product_main_category, head, head_value)
-        values 
-        `
-        Description.map((items, index) => {
+        INSERT INTO description (product_id, product_main_category, head, head_value)
+        VALUES 
+        `;
+        
+        // Helper function to escape single quotes
+        function escapeString(str) {
+            return str.replace(/'/g, "''");
+        }
+    
+        Description.forEach((items, index) => {
+            const escapedHead = escapeString(items.head);
+            const escapedValue = escapeString(items.value);
             if (index === Description.length - 1) {
-                values += ` (${productID}, '${tableName}', '${items.head}', '${items.value}'); `
+                values += `(${productID}, '${tableName}', '${escapedHead}', '${escapedValue}');`;
             } else {
-                values += ` (${productID}, '${tableName}', '${items.head}', '${items.value}'), `
+                values += `(${productID}, '${tableName}', '${escapedHead}', '${escapedValue}'), `;
             }
-        })
+        });
+    
         query += values;
-        // console.log(query);
-
+    
+    
         db.query(query, callback);
-    },
+    },    
 
     insertExtraImages: (category, productID, images, callback) => {
         let query = `INSERT INTO extra_images (product_id, category, image) VALUES `;
