@@ -1,6 +1,6 @@
-# **Tech Nexus - Full-Stack E-Commerce Platform**
+# **GadgetIT.com - Full-Stack E-Commerce Platform**
 
-**Tech Nexus** is a comprehensive full-stack e-commerce platform designed for managing gadgets and PC components. The platform includes a dynamic user interface and a powerful admin dashboard, built with React.js, Node.js, Express.js, and MySQL.
+**GadgetIT.com** is a comprehensive full-stack e-commerce platform designed for managing gadgets and PC components. The platform includes a dynamic user interface and a powerful admin dashboard, built with React.js, Node.js, Express.js, and MySQL.
 
 ## **Table of Contents**
 1. [Project Overview](#project-overview)
@@ -17,7 +17,7 @@
 
 ## **Project Overview**
 
-Tech Nexus is an e-commerce platform with a user-friendly frontend and an extensive admin dashboard. It is designed to facilitate the management of products, users, and orders, providing both customers and administrators with a seamless and efficient experience.
+GadgetIT.com is an e-commerce platform with a user-friendly frontend and an extensive admin dashboard. It is designed to facilitate the management of products, users, and orders, providing both customers and administrators with a seamless and efficient experience.
 
 ## **Features**
 
@@ -110,5 +110,5 @@ To set up the project locally:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/tech-nexus.git
-   cd tech-nexus
+   git clone https://github.com/ByteCrister/Gadget-IT.com.git
+   cd GadgetIT.com
