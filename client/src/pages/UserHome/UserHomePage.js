@@ -1,33 +1,61 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useCallback } from 'react';
+import styles from '../../styles/HomePageStyles/UserHomePage.module.css';
 import { useData } from '../../context/useData';
 import SwiperMainAdd from '../../components/UserHome/SwiperMainAdd';
+import UserSupportBoxes from '../../components/UserHome/UserSupportBoxes';
+import UserFeaturedIcons from '../../components/UserHome/UserFeaturedIcons';
+import UserHomeDescription from '../../components/UserHome/UserHomeDescription';
+import ReadyForOrder from '../../components/UserHome/ReadyForOrder';
+import FeaturedProducts from '../../components/UserHome/FeaturedProducts';
+import NewArrival from '../../components/UserHome/NewArrival';
+import ExtraSubAdd from '../../components/UserHome/ExtraSubAdd';
+import { useLocation } from 'react-router-dom';
 
 const UserHomePage = () => {
   const { dataState, dispatch } = useContext(useData);
+  const location = useLocation();
 
-  const handleLogout = () => {
-    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, UserID: false } })
+  const handleLogout = useCallback(() => {
+    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, UserID: false } });
     window.localStorage.removeItem('_isAdmin');
     window.localStorage.removeItem('_isUserLoggedIn');
     window.localStorage.removeItem('_userId');
     window.localStorage.clear();
-  }
+  }, [dispatch]);
 
+  useEffect(() => {
+    dispatch({ type: 'set_path_setting', payload: { prevPath: dataState.pathSettings.currPath, currPath: location.pathname } });
+  }, [dispatch, dataState.pathSettings.currPath, location.pathname]);
 
   return (
-    <div >
+    <section className={styles.userHomeContainer}>
       {/*-------------  Section One : Main Advertisements Swiper ------------*/}
-        <SwiperMainAdd />
+      <SwiperMainAdd />
 
+      {/*-------------  Section Two : User Support Boxes ------------*/}
+      <UserSupportBoxes />
 
-        
+      {/*-------------  Section Three : Featured category Icons ------------*/}
+      <UserFeaturedIcons />
 
-      {
-        dataState.isUserLoggedIn ? <button onClick={handleLogout}>Log Out</button> : 'Home'
-      }
+      {/*-------------  Section Four : Ready for orders product ------------*/}
+      <ReadyForOrder />
 
-    </div>
-  )
-}
+      {/*-------------  Section Five : Featured products ------------*/}
+      <FeaturedProducts />
 
-export default UserHomePage
+      {/*-------------  Section Six : extra sub Advertisements products ------------*/}
+      <ExtraSubAdd />
+
+      {/*-------------  Section Seven : New arrival products ------------*/}
+      <NewArrival />
+
+      {/*-------------  Section Eight : Home Descriptions ------------*/}
+      <UserHomeDescription />
+
+      {dataState.isUserLoggedIn ? <button onClick={handleLogout}>Log Out</button> : 'Home'}
+    </section>
+  );
+};
+
+export default React.memo(UserHomePage);

@@ -4,7 +4,7 @@ import { useData } from '../../context/useData';
 import axios from 'axios';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 
-const ProductionTableManage = ({ id, category, setIsProductionManagement }) => {
+const ProductionTableManage = React.memo(({ id, category, setIsProductionManagement }) => {
   const { dataState } = useContext(useData);
 
   const [mainTable, setMainTable] = useState(dataState.Production_Page.TableFullRows || []);
@@ -348,6 +348,7 @@ const ProductionTableManage = ({ id, category, setIsProductionManagement }) => {
 
     </section>
   );
-};
+}
+)
 
 export default ProductionTableManage;

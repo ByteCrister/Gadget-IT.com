@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Api_Inventory } from '../../api/Api_Inventory';
 import { Api_Production } from '../../api/Api_Production';
 
-const AddProducts = ({ setAddProductState }) => {
+const AddProducts = React.memo(({ setAddProductState }) => {
     const { dataState, dispatch } = useContext(useData);
 
     const [isCategorySelected, setIsCategorySelected] = useState(false);
@@ -256,8 +256,8 @@ const AddProducts = ({ setAddProductState }) => {
             .post('http://localhost:7000/post/new/product', payload)
             .then((response) => {
                 setAddProductState(false);
-                 Api_Inventory(dispatch);
-                 Api_Production(dispatch);
+                Api_Inventory(dispatch);
+                Api_Production(dispatch);
 
                 console.log('Product added successfully:', response.data);
             })
@@ -365,6 +365,7 @@ const AddProducts = ({ setAddProductState }) => {
                                 </div>
                             ))}
                         </div>
+                        
                         {/* ---------------------------------------------------------------------------------------------- */}
                         <div id={style.InitialValueSet} style={{ marginTop: '10px' }}>
                             {newKeyValue.map((value, index) => (
@@ -388,6 +389,7 @@ const AddProducts = ({ setAddProductState }) => {
                             ))}
                             <button type='button' id={style.button} onClick={handleNewKeyPoint}>+ Add Key Point</button>
                         </div>
+
                         {/* ------------------------------------------------------------------------------------------------ */}
                         <div id={style.InitialValueSet} style={{ marginTop: '15px' }}>
                             {newDescriptionHeadValue.map((value, index) => (
@@ -435,6 +437,7 @@ const AddProducts = ({ setAddProductState }) => {
             </form>
         </div>
     );
-};
+}
+)
 
 export default AddProducts;

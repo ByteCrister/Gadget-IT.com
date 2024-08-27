@@ -7,15 +7,26 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
   const [newColumn, setNewColumn] = useState({ insertAfter: '', newColumnName: '' });
   const [deleteColumn, setDeleteColumn] = useState('');
   const [renameColumn, setRenameColumn] = useState({ oldName: '', newName: '' });
-  const [selectedSorting, setSelectedSorting] = useState([]);
+  // const [selectedSorting, setSelectedSorting] = useState([]);
   const [selectKeyFeature, setSelectKeyFeature] = useState([]);
+  const [change_sort_by_names, setChange_sort_by_names] = useState({
+    newSort: [],
+    deleteSort: []
+  });
 
 
   const renderColumns = async () => {
     try {
       const res = await axios.get(`http://localhost:7000/get/columns/${selectedMainCategory}`);
       setAllColumnNames(res.data.columns);
-      setSelectedSorting(res.data.sorting);
+      // setSelectedSorting(res.data.sorting);
+
+      setChange_sort_by_names((prev) => ({
+        ...prev,
+        newSort: res.data.sorting
+      }));
+
+      // console.log(JSON.stringify(res.data.sorting, null, 2));
       setSelectKeyFeature(res.data.keyFeature);
 
       setNewColumn({ insertAfter: '', newColumnName: '' });
@@ -71,23 +82,62 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
     }
   };
 
-  const handleCheckboxChange = async (e, column) => {
+
+  //*--------------------------- get sort no -----------------------
+  const getSortNo = (column) => {
+    const filteredItem = change_sort_by_names.newSort.filter((item) => item.sorting_column === column);
+    return filteredItem.length > 0 ? filteredItem[0].sorting_no : 0
+  }
+
+  //*-------------------------- add new sort --------------------- */
+  const handleAddNewSort = (e, column) => {
+
+    const isChecked = e.target.checked;
+
+    setChange_sort_by_names((prev) => ({
+      ...prev,
+      newSort: isChecked ?
+        [...prev.newSort, { sorting_no: 0, category: selectedMainCategory, sorting_column: column, sort_by_names: '' }]
+        : prev.newSort.filter((item) => item.sorting_column !== column),
+      deleteSort: !isChecked ? [...prev.deleteSort, getSortNo(column)] : prev.deleteSort
+    }));
+
+  }
+  //**--------------------- handleCheckboxChange ----------------------- */
+  const handleSortByChange = (e, column) => {
+
+    setChange_sort_by_names((prev) => ({
+      ...prev,
+      newSort: prev.newSort.map((item) => item.sorting_column === column ? { ...item, sort_by_names: e.target.value } : item
+      )
+    }));
+
+  };
+
+  //* ------------------------- handle save sorting ---------------------
+  const handleSaveSorting = async () => {
     try {
-      if (e.target.checked) {
-        await axios.post('http://localhost:7000/insert/new-sort', { category: selectedMainCategory, newSortColumn: column });
-        setSelectedSorting([...selectedSorting, column]); // Update state
-      } else {
-        await axios.post('http://localhost:7000/remove/sort', { category: selectedMainCategory, column });
-        setSelectedSorting(selectedSorting.filter(item => item !== column)); // Update state
-      }
+      await axios.post('http://localhost:7000/insert/new-sort/crud', { category: selectedMainCategory, change_sort_by_names: change_sort_by_names });
+      renderColumns()
+
     } catch (error) {
       console.log(error);
     }
+  }
+
+  //*------------------------- handle is checked -----------------------
+  const isChecked = (column) => {
+    return change_sort_by_names.newSort.some((item) => item.sorting_column === column);
   };
 
-  const isChecked = (column) => selectedSorting.includes(column);
+  //*---------------------------- handle Get sort values ----------------------------
+  const getSortByValue = (column) => {
+    const filteredItem = change_sort_by_names.newSort.filter((item) => item.sorting_column === column);
+    return filteredItem.length > 0 ? filteredItem[0].sort_by_names : ''
+  };
 
 
+  //*------------------------- handleKeyFeatureCheck -----------------------
   const handleKeyFeatureCheck = async (e, column) => {
     try {
       if (e.target.checked) {
@@ -178,10 +228,18 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
                 value={column}
                 id={`checkbox-${index}`}
                 checked={isChecked(column)}
-                onChange={(e) => handleCheckboxChange(e, column)}
+                onChange={(e) => handleAddNewSort(e, column)}
               />
+              <input type='text'
+                value={getSortByValue(column)}
+                placeholder='[ name1 : n1, n2 ], [ name2 ] ...'
+                onChange={(e) => handleSortByChange(e, column)}>
+
+              </input>
             </div>
+
           ))}
+          <button onClick={handleSaveSorting}>Save Sorting</button>
         </div>
       )}
       {selectState === 5 && (

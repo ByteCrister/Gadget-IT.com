@@ -236,13 +236,26 @@ module.exports = {
     },
 
     insertNewSortingOption: async (req, res) => {
+        const { category, change_sort_by_names } = req.body;
         try {
+
             await new Promise((resolve, reject) => {
-                productionManageModel.insertNewSortingModel(req.body.category, req.body.newSortColumn, (err, data) => {
+                productionManageModel.deleteSortingOptionOfCategory(category, (err, data) => {
                     if (err) reject(err)
                     else resolve(data)
                 })
-            })
+            });
+
+            if (change_sort_by_names.newSort.length > 0) {
+                change_sort_by_names.newSort.map(async (item) => {
+                    await new Promise((resolve, reject) => {
+                        productionManageModel.insertNewSortingModel(item, (err, data) => {
+                            if (err) reject(err)
+                            else resolve(data)
+                        })
+                    })
+                });
+            };
 
             res.status(201).json({ message: 'New Sort Option Created.' });
 
@@ -252,20 +265,20 @@ module.exports = {
         }
     },
 
-    deleteSortingOption: async (req, res) => {
-        try {
-            await new Promise((resolve, reject) => {
-                productionManageModel.deleteSortingOptionModel(req.body.category, req.body.column, (err, data) => {
-                    if (err) reject(err)
-                    else resolve(data)
-                })
-            })
-            res.status(200).json({ message: 'Deleted Sort Option.' });
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({ error: "Failed deleting  Sort option." });
-        }
-    },
+    // deleteSortingOption: async (req, res) => {
+    //     try {
+    //         await new Promise((resolve, reject) => {
+    //             productionManageModel.deleteSortingOptionModel(req.body.category, req.body.column, (err, data) => {
+    //                 if (err) reject(err)
+    //                 else resolve(data)
+    //             })
+    //         })
+    //         res.status(200).json({ message: 'Deleted Sort Option.' });
+    //     } catch (error) {
+    //         console.log(error);
+    //         res.status(500).json({ error: "Failed deleting  Sort option." });
+    //     }
+    // },
 
     insertNewKeyFeature: async (req, res) => {
         try {

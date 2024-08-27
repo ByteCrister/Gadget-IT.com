@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+
+.mainFeaturedContainer {
+    padding: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.mainFeaturedContainer section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainFeaturedContainer section > span {
+    font-size: 25px;
+    font-weight: 400;
+    font-family: "Roboto", sans-serif;
+    text-shadow: 0px 0px 2px rgba(242, 127, 32, 1);
+    animation: glowEffect 3s infinite ease-in-out;
+}
+
+@keyframes glowEffect {
+    0%, 100% {
+        text-shadow: 0px 0px 2px rgba(242, 127, 32, 1);
+        opacity: 1;
+    }
+    50% {
+        text-shadow: 0px 0px 2px rgba(242, 127, 32, 0.2);
+        opacity: 0.2;
+    }
+}
+
+.mainFeaturedContainer div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.mainFeaturedContainer section > div {
+    height: 5px;
+    width: 210px;
+    background-color: #f27f20;
+}

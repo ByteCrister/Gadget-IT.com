@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+.main_sort_section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    font-family: "Rubik", sans-serif;
+    background-color: #f6f6f6;
+    padding: 10px;
+    border-radius: 10px;
+}
+.upper_head_text{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    gap: 5px;
+}
+.head_text{
+    font-family: "Rubik", sans-serif;
+    font-size: 18px;
+    color:rgb(65, 65, 65) ;
+}
+
+.line_div{
+    height: 1.5px;
+    width: 100%;
+    background-color: #ffe2cb;
+}
+
+.down_div{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+.down_div input{
+    max-width: 80px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    outline: none;
+    border: 1px solid #949494;
+}
+
+.main_sort_section button{
+    max-width: 50px;
+    padding: 3px 5px;
+    background-color: #f27f20;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    text-align: center;
+    color: #f6f6f6;
+    cursor: pointer;
+    float: right;
+}
+
+.check_boxes{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.check_boxes div{
+    display: flex;
+    gap: 25px;
+    /* justify-content: center; */
+    align-items: center;
+    color: #949494;
+    font-family: "Rubik", sans-serif;
+}
+
+.show_more{
+    background-color: #e5e5e5;
+    font-size: 12px;
+    padding: 2px;
+    font-family: "Rubik", sans-serif;
+    color: #f27f20;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 3px;
+}

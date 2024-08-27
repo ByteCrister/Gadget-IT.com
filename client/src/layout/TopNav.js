@@ -8,7 +8,7 @@ const TopNav = () => {
   const { dataState } = useContext(useData);
   const { menuItems } = dataState;
 
-  console.log('Menu Items:', menuItems);
+  // console.log('Menu Items:', menuItems);
 
   return (
     <nav id={styles.TopNav}>

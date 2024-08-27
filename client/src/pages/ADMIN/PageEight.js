@@ -8,7 +8,7 @@ import FeaturedCategoryICON from '../../components/AdminHome/FeaturedCategoryICO
 import SelectHomeProducts from '../../components/AdminHome/SelectHomeProducts';
 import HomeViewDescriptions from '../../components/AdminHome/HomeViewDescriptions';
 
-const PageEight = () => {
+const PageEight = React.memo(() => {
   const { dataState, dispatch } = useContext(useData);
 
   const [currentSetting, setCurrentSetting] = useState(1);
@@ -54,5 +54,6 @@ const PageEight = () => {
     </div>
   )
 }
+)
 
 export default PageEight

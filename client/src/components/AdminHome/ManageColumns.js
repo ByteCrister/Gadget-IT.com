@@ -3,7 +3,7 @@ import UseManageColumns from '../../HOOKS/UseManageColumns';
 import styles from '../../styles/AdminHome/ManageColumns.module.css';
 import axios from 'axios';
 
-const ManageColumns = () => {
+const ManageColumns = React.memo(() => {
   const [selectState, setSelectState] = useState(0);
   const [mainCategory, setMainCategory] = useState([]);
   const [selectedMainCategory, setSelectedMainCategory] = useState('');
@@ -46,13 +46,12 @@ const ManageColumns = () => {
           </select>
         </section>
       )}
-      {selectedMainCategory.length > 0 && (
-       <>
+      {selectedMainCategory.length > 0 &&
         <UseManageColumns selectState={selectState} setSelectState={setSelectState} selectedMainCategory={selectedMainCategory} />
-       </>
-      )}
+      }
     </div>
   );
-};
+}
+)
 
 export default ManageColumns;

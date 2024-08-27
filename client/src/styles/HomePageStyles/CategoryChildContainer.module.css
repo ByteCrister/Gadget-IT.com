@@ -1,0 +1,16 @@
+.categoryChildren {
+    text-align: center;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 30px;
+    border: 1px solid #f27f20;
+    color: rgb(93, 93, 93);
+    transition: ease-in-out 0.3s;
+    font-weight: 600;
+
+}
+
+.categoryChildren:hover {
+    background-color: #f27f20;
+    color: aliceblue;
+}

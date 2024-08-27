@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+.MainGroupCarts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.UpperSort {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f6f6f6;
+    font-family: "Rubik", sans-serif;
+}
+.UpperSort div{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.UpperSort>span {
+    font-size: 20px;
+    font-weight: 400;
+    color: #221f1f;
+}
+
+.UpperSort>div span {
+    font-size: 18px;
+    font-weight: 400;
+    color: #221f1f;
+}
+
+.UpperSort>div select {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 15px;
+    border-color: #e6e6e6;
+    outline: none;
+    font-weight: 500;
+
+}
+
+.GroupProductCart {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.FullProductContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    /* background-color: aqua; */
+
+}
+
+.filtering_sorting {
+    width: 330px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-around; */
+    /* align-items: center; */
+    gap: 25px;
+    /* background-color: aqua; */
+}
+
+@media (max-width : 650px) {
+    .filtering_sorting {
+        display: none;
+    }
+}

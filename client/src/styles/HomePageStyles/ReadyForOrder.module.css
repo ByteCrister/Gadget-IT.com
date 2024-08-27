@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700&display=swap');
+
+.readyForOrders {
+    padding: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.readyForOrders > h1 {
+    font-size: 25px;
+    font-weight: 400;
+    font-family: "Roboto", sans-serif;
+}
+
+.fire_icon {
+    color: #f7630c;
+}
+
+.ready_carts {
+    width: 100%;
+    display: flex;
+}
+
+.custom-swiper-button-prev,
+.custom-swiper-button-next {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute; 
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.custom-swiper-button-prev {
+    left: 10px;
+}
+
+.custom-swiper-button-next {
+    right: 10px;
+}
+
+.custom-swiper-button-prev:hover,
+.custom-swiper-button-next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+}
+
+.custom-swiper-button-prev::after,
+.custom-swiper-button-next::after {
+    font-size: 18px;
+    color: #fff; 
+}
+
+@media (max-width: 640px) {
+    .readyForOrders {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ready_carts {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

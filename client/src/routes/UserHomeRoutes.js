@@ -8,6 +8,7 @@ import Footer from '../layout/Footer';
 import NavBar from '../layout/NavBar';
 import TopNav from '../layout/TopNav';
 import ForgotPass from '../components/UserHome/ForgotPass';
+import GroupProducts from '../pages/UserHome/GroupProducts';
 
 const UserHomeRoutes = () => {
     const location = useLocation();
@@ -24,8 +25,9 @@ const UserHomeRoutes = () => {
 
             <Routes>
                 <Route path='/' element={<UserHomePage />} />
+                <Route path='/products/*' element={<GroupProducts />} />
             </Routes>
-            
+
             <Footer />
             {
                 userEntryPageState === 1 ? <UserSignIn handleUserEntryPage={handleUserEntryPage} /> : userEntryPageState === 2 ? <UserLogIn handleUserEntryPage={handleUserEntryPage} /> : userEntryPageState === 3 ? <UserProfile handleUserEntryPage={handleUserEntryPage} /> : userEntryPageState === 4 ? <ForgotPass handleUserEntryPage={handleUserEntryPage} /> : null

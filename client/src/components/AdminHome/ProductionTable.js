@@ -21,7 +21,7 @@ import { Api_Inventory } from '../../api/Api_Inventory';
 import { Api_Production } from '../../api/Api_Production';
 
 
-const ProductionTable = () => {
+const ProductionTable = React.memo(() => {
   const { dataState, dispatch } = useContext(useData);
 
   const [productsData, setProductsData] = useState(dataState.Production_Page.TableRows);
@@ -34,7 +34,7 @@ const ProductionTable = () => {
   const [hasInitialized, setHasInitialized] = useState(false);
 
   const [isRotating, setIsRotating] = useState(false);
-  
+
   const searchRef = useRef();
 
   useEffect(() => {
@@ -94,13 +94,13 @@ const ProductionTable = () => {
 
 
   // *------------------ Refresh Button ---------------------
-  const handleRefresh = async() => {
+  const handleRefresh = async () => {
     setIsRotating(true);
-    setTimeout(() => setIsRotating(false), 200); 
+    setTimeout(() => setIsRotating(false), 200);
     await Api_Inventory(dispatch);
     await Api_Production(dispatch);
-};
- 
+  };
+
 
   return (
     <section id={styles.ProductionTableSection}>
@@ -112,7 +112,7 @@ const ProductionTable = () => {
         </div>
         <div>
           <button onClick={handleFilterState}><FaFilter id={styles.filterIcon} /></button>
-          <button><LuRefreshCcw id={styles.refreshIcon} className={isRotating ? styles.rotate : ''}  onClick={handleRefresh} /></button>
+          <button><LuRefreshCcw id={styles.refreshIcon} className={isRotating ? styles.rotate : ''} onClick={handleRefresh} /></button>
         </div>
       </section>
 
@@ -154,5 +154,6 @@ const ProductionTable = () => {
     </section>
   )
 }
+)
 
 export default ProductionTable

@@ -120,7 +120,7 @@ module.exports = {
             callback
         );
     },
-    renameCategoryOfKeyFeature : (oldName, newName, callback) => {
+    renameCategoryOfKeyFeature: (oldName, newName, callback) => {
         db.query(
             `update key_feature set category = ? where category = ?`,
             [newName, oldName],
@@ -143,22 +143,30 @@ module.exports = {
         db.query(sql, [table, oldName, newName], callback);
     },
 
-    insertNewSortingModel: (category, column, callback) => {
-        db.query(`insert into sorting (category, sorting_column) values (?, ?)`, [category, column], callback);
+    insertNewSortingModel: (item, callback) => {
+        db.query(`
+        insert into sorting (category, sorting_column, sort_by_names)
+        values (?, ?, ?)`,
+            [item.category, item.sorting_column, item.sort_by_names],
+            callback);
     },
 
-    deleteSortingOptionModel: (category, column, callback) => {
-        db.query(`delete from sorting where category = ? and sorting_column = ?`, [category, column], callback);
+    // deleteSortingOptionModel: (sorting_no, callback) => {
+    //     db.query(`delete from sorting where sorting_no = ?`, [sorting_no], callback);
+    // },
+
+    deleteSortingOptionOfCategory: (category, callback) => {
+        db.query(`delete from sorting where category = ?`, [category], callback);
     },
 
     insertNewKeyFeatureModel: (category, column, callback) => {
         db.query(`insert into key_feature (category, key_feature_column) values (?, ?);`, [category, column], callback);
     },
 
-    deleteKeyFeatureModel : (category, column, callback)=>{
+    deleteKeyFeatureModel: (category, column, callback) => {
         db.query(`delete from key_feature where category = ? and key_feature_column = ?`, [category, column], callback);
     },
-    deleteKeyFeaturesOption: (category, callback)=>{
+    deleteKeyFeaturesOption: (category, callback) => {
         db.query(`delete from key_feature where category = ? ;`, [category], callback);
     }
 };

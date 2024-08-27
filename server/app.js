@@ -33,8 +33,11 @@ app.use(express.static('public'));
 
 /****************** All Routes *****************/
 app.use(require('./routes/users.router'));
+app.use(require('./routes/users.home.contents'));
+
 app.use(require('./routes/products.router'));
 app.use(require('./routes/product.post.router'));
+
 app.use(require('./routes/product.inventory.router'));
 app.use(require('./routes/product.production.router'));
 app.use(require('./routes/product.setting.router'));

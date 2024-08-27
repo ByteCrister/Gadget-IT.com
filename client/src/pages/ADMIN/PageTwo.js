@@ -13,7 +13,7 @@ import { SearchInventory } from '../../HOOKS/SearchInventory';
 import axios from 'axios';
 import { Api_Inventory } from '../../api/Api_Inventory';
 
-const PageTwo = () => {
+const PageTwo = React.memo(() => {
   const { dataState, dispatch } = useContext(useData);
 
   const [productsData, setProductsData] = useState(dataState.Inventory_Page);
@@ -56,13 +56,13 @@ const PageTwo = () => {
     isChecked.map((items)=> checked.push({ id: items.id, check: !items.check, table: items.category, hide: items.hide }) );
     setIsChecked(checked);
   }
-  // ***************************************************************************
+  
 
   //* --------------------- Parent Function of Pagination -----------------------
   const handleFilteredData = (data) => {
     setFilteredProducts(data);
   };
-  // ****************************************************************************
+  
 
   // * ------------------------------ Sort by Category --------------------------
   const handleCategoryChange = (event) => {
@@ -73,7 +73,7 @@ const PageTwo = () => {
       setProductsData(dataState.Inventory_Page.filter((item) => item.category === category));
     }
   };
-  // *****************************************************************************
+ 
 
 
   //* ----------------------------- sorting with stock -----------------------------
@@ -90,7 +90,7 @@ const PageTwo = () => {
       setProductsData(dataState.Inventory_Page.filter((item) => item.reserved <= item.quantity));
     }
   };
-  // ******************************************************************************
+  
 
   //* ------------------------ Sort by Filtering ---------------------------
   const handleFilterState = () => {
@@ -113,14 +113,14 @@ const PageTwo = () => {
     }
     setProductsData(sortedData);
   };
-  // ********************************************************************
+ 
 
   //* ---------------------- searching ---------------------------
   const handleSearchChange = () => {
     const search = searchRef.current.value;
     SearchInventory(search, dataState.Inventory_Page, setProductsData);
   }
-  // ************************************************************
+  
 
   //* ------------------- Hide --------------------------
   const handleProductHide = async () => {
@@ -143,10 +143,10 @@ const PageTwo = () => {
       console.log(error);
     }
   };
-  // ********************************************************
+  
 
 
-   //* ------------------- Delete --------------------------
+   //* ------------------- Handle Product Delete --------------------------
    const handleProductDelete = async () => {
     const checkedItems = isChecked.filter((item) => item.check === true);
     try {
@@ -158,7 +158,7 @@ const PageTwo = () => {
       console.log(error);
     }
   };
-  // ********************************************************
+  
 
   return (
     <div className={styles.mainPageTwoContainer}>
@@ -263,6 +263,7 @@ const PageTwo = () => {
       }
     </div>
   );
-};
+}
+)
 
 export default PageTwo;

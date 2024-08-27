@@ -211,7 +211,7 @@ module.exports = {
         try {
             let columns = [];
             let sorting = [];
-            let keyFeature= [];
+            let keyFeature = [];
             const columns_ = await new Promise((resolve, reject) => {
                 productsModels.getInitialMandatoryColumnsModel(req.params.mainCategory, (err, data) => {
                     if (err) reject(err)
@@ -229,22 +229,22 @@ module.exports = {
                     else resolve(data);
                 })
             });
-            sorting_.map((items) => {
-                sorting.push(items.sorting_column);
-            });
+            // sorting_.map((items) => {
+            //     sorting.push(items.sorting_column);
+            // });
 
-            const keyFeature_ =  await new Promise((resolve, reject) => {
+            const keyFeature_ = await new Promise((resolve, reject) => {
                 productsModels.getKeyFeatures(req.params.mainCategory, (err, data) => {
                     if (err) reject(err)
                     else resolve(data);
                 })
             });
-            keyFeature_.map((items)=>{
+            keyFeature_.map((items) => {
                 keyFeature.push(items.key_feature_column);
             })
 
             // console.log(columns);
-            res.status(200).json({ columns: columns , sorting : sorting, keyFeature : keyFeature});
+            res.status(200).json({ columns: columns, sorting: sorting_, keyFeature: keyFeature });
 
         } catch (error) {
             console.log(error);

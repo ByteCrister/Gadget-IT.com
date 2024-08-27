@@ -16,8 +16,8 @@ postProductRouter.post('/rename/category', productionManagementController.rename
 postProductRouter.post('/add/column', productionManagementController.addNewColumn);
 postProductRouter.post('/delete/column', productionManagementController.deleteColumn);
 postProductRouter.post('/rename/column', productionManagementController.renameColumn);
-postProductRouter.post('/insert/new-sort', productionManagementController.insertNewSortingOption);
-postProductRouter.post('/remove/sort', productionManagementController.deleteSortingOption);
+postProductRouter.post('/insert/new-sort/crud', productionManagementController.insertNewSortingOption);
+// postProductRouter.post('/remove/sort', productionManagementController.deleteSortingOption);
 postProductRouter.post('/insert/new-keyFeature', productionManagementController.insertNewKeyFeature);
 postProductRouter.post('/remove/keyFeature', productionManagementController.deleteKeyFeature);
 /* ***************************************************************************************************** */

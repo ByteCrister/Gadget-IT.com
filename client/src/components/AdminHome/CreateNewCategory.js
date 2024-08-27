@@ -3,7 +3,7 @@ import styles from '../../styles/AdminHome/CreateNewTable.module.css';
 import axios from 'axios';
 import CategoryRadioGroup from '../../HOOKS/CategoryRadioGroup';
 
-const CreateNewCategory = () => {
+const CreateNewCategory = React.memo(() => {
     const [currentOption, setCurrentOption] = useState(0);
     const [category, setCategory] = useState([]);
     const [AllMainCategory, setAllMainCategory] = useState([]);
@@ -157,6 +157,7 @@ const CreateNewCategory = () => {
             {renderOptionContent()}
         </div>
     );
-};
+}
+)
 
 export default CreateNewCategory;

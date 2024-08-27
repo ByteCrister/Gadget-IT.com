@@ -4,7 +4,7 @@ import ProductionTable from '../../components/AdminHome/ProductionTable';
 import ManageColumns from '../../components/AdminHome/ManageColumns';
 import CreateNewCategory from '../../components/AdminHome/CreateNewCategory';
 
-const PageThree = () => {
+const PageThree = React.memo(() => {
   const [pageThreeCurrentPage, setPageThreeCurrentPage] = useState(1);
 
 
@@ -37,7 +37,7 @@ const PageThree = () => {
       <div className={styles.ProductionContents}>
         {
           pageThreeCurrentPage === 1 ?
-            <ProductionTable/>
+            <ProductionTable />
             : pageThreeCurrentPage === 2 ?
               <ManageColumns />
               : <CreateNewCategory />
@@ -47,5 +47,5 @@ const PageThree = () => {
     </div>
   )
 }
-
+)
 export default PageThree;
