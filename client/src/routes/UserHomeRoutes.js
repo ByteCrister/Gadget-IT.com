@@ -9,6 +9,8 @@ import NavBar from '../layout/NavBar';
 import TopNav from '../layout/TopNav';
 import ForgotPass from '../components/UserHome/ForgotPass';
 import GroupProducts from '../pages/UserHome/GroupProducts';
+import RandomErrorPage from '../pages/RandomErrorPage';
+import ViewProduct from '../pages/UserHome/ViewProduct';
 
 const UserHomeRoutes = () => {
     const location = useLocation();
@@ -25,15 +27,23 @@ const UserHomeRoutes = () => {
 
             <Routes>
                 <Route path='/' element={<UserHomePage />} />
-                <Route path='/products/*' element={<GroupProducts />} />
+                <Route path='/products/:main-category' element={<GroupProducts />} />
+                <Route path='/products/:category/:sub-category' element={<GroupProducts />} />
+
+                <Route path='/view/:category/:product-id' element={<ViewProduct />} />
+
+                <Route path="*" element={<RandomErrorPage />} />
             </Routes>
 
             <Footer />
             {
-                userEntryPageState === 1 ? <UserSignIn handleUserEntryPage={handleUserEntryPage} /> : userEntryPageState === 2 ? <UserLogIn handleUserEntryPage={handleUserEntryPage} /> : userEntryPageState === 3 ? <UserProfile handleUserEntryPage={handleUserEntryPage} /> : userEntryPageState === 4 ? <ForgotPass handleUserEntryPage={handleUserEntryPage} /> : null
+                userEntryPageState === 1 ? <UserSignIn handleUserEntryPage={handleUserEntryPage} /> :
+                    userEntryPageState === 2 ? <UserLogIn handleUserEntryPage={handleUserEntryPage} /> :
+                        userEntryPageState === 3 ? <UserProfile handleUserEntryPage={handleUserEntryPage} /> :
+                            userEntryPageState === 4 ? <ForgotPass handleUserEntryPage={handleUserEntryPage} /> : null
             }
         </div>
     )
 }
 
-export default UserHomeRoutes
+export default React.memo(UserHomeRoutes);

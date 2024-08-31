@@ -18,7 +18,7 @@ const ProductCart = ({ product }) => {
 
     return (
         <div className={styles['product-cart']}>
-            <Link to={`/view/${product.product_name}/${product.product_id}`} className={styles.mainProductLink}>
+            <Link to={`/view/${product.main_category}/${product.product_id}`} className={styles.mainProductLink}>
                 <div className={styles['discount-info']}>
                     {discount} % OFF
                 </div>

@@ -5,6 +5,8 @@ import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import HomePagination from '../../HOOKS/HomePagination';
 import ProductCart from '../../HOOKS/ProductCart';
 import GroupProductSorting from './GroupProductSorting';
+import { FaFilter } from "react-icons/fa";
+
 
 const MainProductCarts = React.memo(({ MainTable, SubCategory, category }) => {
     const { dataState } = useContext(useData);
@@ -13,6 +15,9 @@ const MainProductCarts = React.memo(({ MainTable, SubCategory, category }) => {
         FilteredProducts: []
     });
     const [staticMain, setStaticMain] = useState([]);
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
+
+
 
     useEffect(() => {
         const isMainCategory = (category) => dataState.categoryName.includes(category);
@@ -28,9 +33,9 @@ const MainProductCarts = React.memo(({ MainTable, SubCategory, category }) => {
                     if (category === MainTable) {
                         return isMainCategory(SubCategory)
                             ? item.main_category === SubCategory
-                            : item.brand.toLowerCase() === SubCategory && item.main_category === MainTable;
+                            : item.sub_category.toLowerCase() === SubCategory && item.main_category === MainTable;
                     }
-                    return item.main_category === category && item.brand.toLowerCase() === SubCategory;
+                    return item.main_category === category && item.sub_category.toLowerCase() === SubCategory;
                 });
 
                 setProducts({
@@ -108,15 +113,34 @@ const MainProductCarts = React.memo(({ MainTable, SubCategory, category }) => {
         }
     }, [staticMain]);
 
+
+    //*-------------------------- toggleFilterPanel --------------------
+    const toggleFilterPanel = useCallback(() => {
+        setIsFilterVisible(!isFilterVisible);
+    }, [isFilterVisible]);
+
+
+    const closeFilterPanel = useCallback(() => {
+        setIsFilterVisible(false);
+    }, []);
+
     return (
         <section className={styles.FullProductContainer}>
-            <div className={styles.filtering_sorting}>
+
+            <div className={`${styles.overlay} ${isFilterVisible ? styles.active : ''}`} onClick={closeFilterPanel}></div>
+
+            <div className={`${styles.filtering_sorting} ${isFilterVisible ? styles.active : ''}`}>
                 <GroupProductSorting MainCategory={MainTable} handleProductFiltersByPrice={handleProductFiltersByPrice} handleCheckProductFilter={handleCheckProductFilter} />
             </div>
 
+
             <section className={styles.MainGroupCarts}>
+
+                <span className={styles.upper_category_name}>{GetCategoryName(SubCategory)}</span>
+
                 <div className={styles.UpperSort}>
-                    <span>{GetCategoryName(SubCategory)}</span>
+                    <span className={styles.category_name}>{GetCategoryName(SubCategory)}</span>
+                    <button className={styles.sort_click_button} onClick={toggleFilterPanel}><FaFilter /> Filter</button>
                     <div>
                         <span>Sort By : </span>
                         <select onChange={handlePriceSort}>

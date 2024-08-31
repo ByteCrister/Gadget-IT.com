@@ -1,33 +1,33 @@
-import React, { useContext } from "react";
-import { useData } from "../context/useData";
+import { useContext } from "react";
 import { GetCategoryName } from "./GetCategoryName";
+import { useData } from "../context/useData";
 
 export const MakeDefendants = (mainCategory, subCategory) => {
   const { dataState } = useContext(useData);
-  console.log('Inside MakeDefendants');
-  console.log('mainCategory:', mainCategory);
-
   if (!dataState || !dataState.productStorage || !dataState.productStorage.subCategory) {
     console.log('Data state is incomplete.');
     return '';
   }
 
   const findParent = (mainCategory, parentArr = []) => {
-    const parent_ = dataState.productStorage.subCategory.find((item) => {
-      return item.sub_category_name === mainCategory;
-    });
+    if (!mainCategory) return parentArr;
 
+    const parent_ = dataState.productStorage.subCategory.find((item) => item.sub_category_name === mainCategory);
     if (parent_) {
       parentArr.push(parent_.main_category_name);
       return findParent(parent_.main_category_name, parentArr);
-    } else {
-      return parentArr;
     }
+    return parentArr;
   };
 
   const parent = findParent(mainCategory, [subCategory, mainCategory]);
-
-  const descendantText = parent.reverse().map((item) => `/${GetCategoryName(item)}`).join('');
+  
+  // Check for undefined or invalid values in parent array
+  const validParent = parent.filter(Boolean); // Removes undefined/null elements
+  const descendantText = validParent.reverse().map((item) => {
+    const categoryName = GetCategoryName(item);
+    return categoryName ? `/${categoryName}` : ''; // Ensure valid strings
+  }).join('');
 
   return descendantText;
 };

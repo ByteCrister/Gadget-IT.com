@@ -95,11 +95,9 @@ The admin dashboard comprises eight main pages:
 - **Frontend**:
   - HTML
   - CSS
-  - Tailwind CSS
   - JavaScript
-  - React.js (optional for future enhancements)
-- **Backend**:
-  - Node.js
+  - React.js 
+- **Backend Server**:
   - Express.js
 - **Database**:
   - MySQL

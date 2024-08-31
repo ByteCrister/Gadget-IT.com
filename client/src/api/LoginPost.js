@@ -40,6 +40,7 @@ export const LoginPost = async (handleLoginStates, values, dispatch, handleUserE
             window.localStorage.setItem('_userId', JSON.stringify(userId));
 
             dispatch({ type: 'set_home_view', payload: { isAdmin: isAdmin, isUserLoggedIn: isUserLoggedIn, UserID: userId } })
+            window.location.href = '/';
             handleUserEntryPage(0);
 
             handleLoginStates({

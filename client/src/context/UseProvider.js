@@ -15,8 +15,6 @@ const initialValues = {
   productStorage: null,
   UserHomeContents: [],
 
-  filteredProductStorage: null,
-
   categoryName: [],
   subCategoryName: [],
 

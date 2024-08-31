@@ -21,7 +21,7 @@ const UserFeaturedIcons = () => {
                 {
                     dataState.UserHomeContents?.featured_icon?.length > 0 &&
                     dataState.UserHomeContents.featured_icon.map((item) => (
-                        <Link key={item.icon_no} to={`/product/${item.main_category}`}>
+                        <Link key={item.icon_no} to={`/products/${item.main_category}`}>
                             <div>
                                 <img src={item.icon} alt={`featured-img-${item.icon_no}`}></img>
                             </div>

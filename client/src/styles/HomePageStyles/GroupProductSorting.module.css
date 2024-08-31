@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
-.main_sort_section{
+.main_sort_section {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -10,31 +10,45 @@
     padding: 10px;
     border-radius: 10px;
 }
-.upper_head_text{
+
+.upper_head_text {
     display: flex;
     flex-direction: column;
     justify-self: center;
     gap: 5px;
 }
-.head_text{
-    font-family: "Rubik", sans-serif;
-    font-size: 18px;
-    color:rgb(65, 65, 65) ;
+
+.upper_head {
+    /* width: 100%; */
+    display: flex;
+    justify-content: space-between;
 }
 
-.line_div{
+.low_and_up_symbol {
+    color: #f27f20;
+    cursor: pointer;
+}
+
+.head_text {
+    font-family: "Rubik", sans-serif;
+    font-size: 18px;
+    color: rgb(65, 65, 65);
+}
+
+.line_div {
     height: 1.5px;
     width: 100%;
     background-color: #ffe2cb;
 }
 
-.down_div{
+.down_div {
     display: flex;
     justify-content: space-around;
     align-items: center;
 
 }
-.down_div input{
+
+.down_div input {
     max-width: 80px;
     padding: 2px 5px;
     border-radius: 3px;
@@ -42,7 +56,7 @@
     border: 1px solid #949494;
 }
 
-.main_sort_section button{
+.main_sort_section button {
     max-width: 50px;
     padding: 3px 5px;
     background-color: #f27f20;
@@ -55,14 +69,14 @@
     float: right;
 }
 
-.check_boxes{
+.check_boxes {
     display: flex;
     flex-direction: column;
     gap: 10px;
 
 }
 
-.check_boxes div{
+.check_boxes div {
     display: flex;
     gap: 25px;
     /* justify-content: center; */
@@ -71,7 +85,7 @@
     font-family: "Rubik", sans-serif;
 }
 
-.show_more{
+.show_more {
     background-color: #e5e5e5;
     font-size: 12px;
     padding: 2px;

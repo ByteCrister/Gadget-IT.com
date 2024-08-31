@@ -43,11 +43,12 @@ module.exports = {
         let open = " (";
         let close = ")";
         let questionMarks = `?, ?, ?, ?, ?, ?`;
-        let columnNames = `product_id, brand, main_category, product_name, image, vendor_no`;
+        let columnNames = `product_id, brand, main_category, sub_category ,product_name, image, vendor_no`;
         let arrValues = [];
         arrValues.push(newProductID);
         arrValues.push(mandatoryValues.brand);
         arrValues.push(mandatoryValues.mainCategory);
+        arrValues.push(mandatoryValues.subCategory);
         arrValues.push(mandatoryValues.product_name);
         arrValues.push(`data:${mandatoryValues.image.mimeType};base64,${mandatoryValues.image.base64}`);
         arrValues.push(mandatoryValues.vendor);

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from '../../styles/HomePageStyles/GroupProductSorting.module.css';
 import { useData } from '../../context/useData';
 import { GetSortObjects } from '../../HOOKS/GetSortObjects';
+import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 
 const GroupProductSorting = ({ MainCategory, handleProductFiltersByPrice, handleCheckProductFilter }) => {
     const { dataState } = useContext(useData);
@@ -9,31 +10,35 @@ const GroupProductSorting = ({ MainCategory, handleProductFiltersByPrice, handle
     const [startingPrice, setStartingPrice] = useState('');
     const [endingPrice, setEndingPrice] = useState('');
     const [error, setError] = useState('');
-    const [selectFilterColumnsValues, setSelectedFilterColumnsValue] = useState([{column : '', value : ''}]);
+    const [selectFilterColumnsValues, setSelectedFilterColumnsValue] = useState([{ column: '', value: '' }]);
     const [sortValueShowMore, setSortValueShowMore] = useState({});
+    const [sectionVisibility, setSectionVisibility] = useState({}); // State to track visibility of checkboxes
 
     useEffect(() => {
         // Find the relevant product table
         const productTable = dataState.productStorage.product_table.find(item => item.table === MainCategory);
-        
+
         if (productTable) {
             const newSortingSections = productTable.product_sorting.filter(item => item.category === MainCategory);
             setSorting_sections(newSortingSections);
 
-            // Initialize the "show more" state for each sorting section
+            // Initialize the "show more" state for each sorting section and visibility state
             const showMoreInitState = {};
+            const visibilityInitState = {};
             newSortingSections.forEach((section) => {
                 const sortObjects = GetSortObjects(section.sort_by_names);
                 sortObjects.forEach((sortValue) => {
                     const key = Object.keys(sortValue)[0];
                     showMoreInitState[key] = { max_length: 4, values: sortValue[key] };
+                    visibilityInitState[key] = true; // Set to true initially (visible)
                 });
             });
             setSortValueShowMore(showMoreInitState);
+            setSectionVisibility(visibilityInitState); // Set initial visibility
         }
     }, [MainCategory, dataState.productStorage.product_table]);
 
-    //* -------------------------- Handle price Filter ----------------------
+    //* Handle price filter
     const handleFilterClick = () => {
         const start = Number(startingPrice);
         const end = Number(endingPrice);
@@ -52,7 +57,7 @@ const GroupProductSorting = ({ MainCategory, handleProductFiltersByPrice, handle
         handleProductFiltersByPrice({ start, end });
     };
 
-    //* --------------------------- Handle checked filter ----------------------
+    //* Handle checked filter
     const handleCheckedFilter = (e, item, sorting_column) => {
         const isChecked = e.target.checked;
         let currentSorts = [...selectFilterColumnsValues];
@@ -67,7 +72,7 @@ const GroupProductSorting = ({ MainCategory, handleProductFiltersByPrice, handle
         handleCheckProductFilter(currentSorts);
     };
 
-    //* --------------------------- Toggle show more/less ----------------------
+    //* Toggle show more/less
     const toggleShowMore = (key) => {
         setSortValueShowMore((prevState) => ({
             ...prevState,
@@ -75,6 +80,14 @@ const GroupProductSorting = ({ MainCategory, handleProductFiltersByPrice, handle
                 ...prevState[key],
                 max_length: prevState[key].max_length === 4 ? prevState[key].values.length : 4
             }
+        }));
+    };
+
+    //* Toggle visibility of checkboxes
+    const toggleSectionVisibility = (key) => {
+        setSectionVisibility((prevState) => ({
+            ...prevState,
+            [key]: !prevState[key] // Toggle visibility
         }));
     };
 
@@ -115,33 +128,41 @@ const GroupProductSorting = ({ MainCategory, handleProductFiltersByPrice, handle
                         const key = Object.keys(sortValue)[0];
                         const values = sortValueShowMore[key]?.values || [];
                         const maxLength = sortValueShowMore[key]?.max_length || 4;
+                        const isVisible = sectionVisibility[key]; // Check visibility state
 
                         return (
                             <section key={key} className={styles.main_sort_section}>
                                 <div className={styles.upper_head_text}>
-                                    <span className={styles.head_text}>{key}</span>
+                                    <div className={styles.upper_head}>
+                                        <span className={styles.head_text}>{key}</span>
+                                        <span className={styles.low_and_up_symbol} onClick={() => toggleSectionVisibility(key)}>
+                                            {isVisible ? <FaChevronUp /> : <FaChevronDown />}
+                                        </span>
+                                    </div>
                                     <div className={styles.line_div}></div>
                                 </div>
 
-                                <div className={styles.check_boxes}>
-                                    {values.slice(0, maxLength).map((value, index) => (
-                                        <div key={index}>
-                                            <input
-                                                type='checkbox'
-                                                onChange={(e) => handleCheckedFilter(e, value, sorting_column)}
-                                            />
-                                            <span>{value}</span>
-                                        </div>
-                                    ))}
-                                    {values.length > 4 && (
-                                        <span
-                                            className={styles.show_more}
-                                            onClick={() => toggleShowMore(key)}
-                                        >
-                                            {maxLength === 4 ? 'Show more...' : 'Show less...'}
-                                        </span>
-                                    )}
-                                </div>
+                                {isVisible && (
+                                    <div className={styles.check_boxes}>
+                                        {values.slice(0, maxLength).map((value, index) => (
+                                            <div key={index}>
+                                                <input
+                                                    type='checkbox'
+                                                    onChange={(e) => handleCheckedFilter(e, value, sorting_column)}
+                                                />
+                                                <span>{value}</span>
+                                            </div>
+                                        ))}
+                                        {values.length > 4 && (
+                                            <span
+                                                className={styles.show_more}
+                                                onClick={() => toggleShowMore(key)}
+                                            >
+                                                {maxLength === 4 ? 'Show more...' : 'Show less...'}
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
                             </section>
                         );
                     });

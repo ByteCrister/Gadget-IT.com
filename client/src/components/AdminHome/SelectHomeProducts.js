@@ -170,6 +170,7 @@ const SelectHomeProducts = () => {
     return (
       <select
         style={{ backgroundColor: getActionText(GetPositionName(productId)) }}
+        className={styles.page_eight_product_select}
         value={GetPositionName(productId)}
         onChange={(e) =>
           handlePosition(e, productId, GetPositionName(productId), productType)

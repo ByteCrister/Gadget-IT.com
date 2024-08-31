@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
-import RandomErrorPage from "./pages/RandomErrorPage";
 import LoadingPage from "./pages/LoadingPage";
 import AdminRoutes from "./routes/AdminRoutes";
 import UserHomeRoutes from "./routes/UserHomeRoutes";
@@ -22,7 +21,7 @@ function App() {
             ) : (
               <Route path="/*" element={<UserHomeRoutes />} />
             )}
-            <Route path="*" element={<RandomErrorPage />} />
+
           </Routes>
         </>
   );

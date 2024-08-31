@@ -9,6 +9,7 @@ module.exports = {
                 hide int(1) not null,
                 brand varchar(100),
                 main_category varchar(100),
+                sub_category varchar(255),
                 product_name varchar(100),
                 image mediumtext,
                 vendor_no int,

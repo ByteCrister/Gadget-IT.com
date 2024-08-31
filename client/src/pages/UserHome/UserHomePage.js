@@ -26,6 +26,7 @@ const UserHomePage = () => {
   useEffect(() => {
     dispatch({ type: 'set_path_setting', payload: { prevPath: dataState.pathSettings.currPath, currPath: location.pathname } });
   }, [dispatch, dataState.pathSettings.currPath, location.pathname]);
+  // dispatch({ type: 'toggle_loading', payload: true });
 
   return (
     <section className={styles.userHomeContainer}>

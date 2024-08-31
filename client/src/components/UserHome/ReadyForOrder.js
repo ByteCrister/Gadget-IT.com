@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { ImFire } from 'react-icons/im';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 
