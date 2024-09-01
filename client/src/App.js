@@ -1,29 +1,35 @@
-import { useContext } from "react";
+import { useContext, lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import LoadingPage from "./pages/LoadingPage";
-import AdminRoutes from "./routes/AdminRoutes";
-import UserHomeRoutes from "./routes/UserHomeRoutes";
-import RouteErrorPage from "./pages/RouteErrorPage";
+import LoadingPage from "./pages/LoadingPage"; 
 import { useData } from "./context/useData";
+
+const RouteErrorPage = lazy(() => import("./pages/RouteErrorPage"));
+const AdminRoutes = lazy(() => import("./routes/AdminRoutes"));
+const UserHomeRoutes = lazy(() => import("./routes/UserHomeRoutes"));
 
 function App() {
   const { dataState } = useContext(useData);
 
-  return (
-    dataState.isError ? <RouteErrorPage />
-      :
-      dataState.isLoading ? <LoadingPage />
-        :
-        <>
-          <Routes>
-            {dataState.isAdmin ? (
-              <Route path="/*" element={<AdminRoutes />} />
-            ) : (
-              <Route path="/*" element={<UserHomeRoutes />} />
-            )}
+  if (dataState.isError) {
+    return (
+      <Suspense fallback={<LoadingPage />}>
+        <RouteErrorPage />
+      </Suspense>
+    );
+  }
 
-          </Routes>
-        </>
+  return dataState.isLoading ? (
+    <LoadingPage />
+  ) : (
+    <Suspense fallback={<LoadingPage />}>
+      <Routes>
+        {dataState.isAdmin ? (
+          <Route path="/*" element={<AdminRoutes />} />
+        ) : (
+          <Route path="/*" element={<UserHomeRoutes />} />
+        )}
+      </Routes>
+    </Suspense>
   );
 }
 

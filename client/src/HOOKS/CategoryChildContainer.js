@@ -28,7 +28,7 @@ const CategoryChildContainer = ({ category }) => {
     return (
         <>
             {categoryChildren.map((item, index) => (
-                <Link to={`/products/${item}`} className={styles.categoryChildren}>
+                <Link to={`/products/${category}/${item}`} className={styles.categoryChildren}>
                     <div key={index}>{GetCategoryName(item)}</div>
                 </Link>
             ))}

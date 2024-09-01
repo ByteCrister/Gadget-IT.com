@@ -16,45 +16,48 @@ const UserHomePage = () => {
   const location = useLocation();
 
   const handleLogout = useCallback(() => {
-    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, UserID: false } });
-    window.localStorage.removeItem('_isAdmin');
-    window.localStorage.removeItem('_isUserLoggedIn');
-    window.localStorage.removeItem('_userId');
-    window.localStorage.clear();
+    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, UserID: null } });
+    window.localStorage.clear(); // Clean up all related items in localStorage in one step
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch({ type: 'set_path_setting', payload: { prevPath: dataState.pathSettings.currPath, currPath: location.pathname } });
-  }, [dispatch, dataState.pathSettings.currPath, location.pathname]);
-  // dispatch({ type: 'toggle_loading', payload: true });
+    dispatch({
+      type: 'set_path_setting',
+      payload: { prevPath: dataState.pathSettings.currPath, currPath: location.pathname },
+    });
+  }, [dispatch, location.pathname]);
 
   return (
     <section className={styles.userHomeContainer}>
-      {/*-------------  Section One : Main Advertisements Swiper ------------*/}
+      {/* Section One: Main Advertisements Swiper */}
       <SwiperMainAdd />
 
-      {/*-------------  Section Two : User Support Boxes ------------*/}
+      {/* Section Two: User Support Boxes */}
       <UserSupportBoxes />
 
-      {/*-------------  Section Three : Featured category Icons ------------*/}
+      {/* Section Three: Featured Category Icons */}
       <UserFeaturedIcons />
 
-      {/*-------------  Section Four : Ready for orders product ------------*/}
+      {/* Section Four: Ready for Orders */}
       <ReadyForOrder />
 
-      {/*-------------  Section Five : Featured products ------------*/}
+      {/* Section Five: Featured Products */}
       <FeaturedProducts />
 
-      {/*-------------  Section Six : extra sub Advertisements products ------------*/}
+      {/* Section Six: Extra Sub Advertisements */}
       <ExtraSubAdd />
 
-      {/*-------------  Section Seven : New arrival products ------------*/}
+      {/* Section Seven: New Arrival Products */}
       <NewArrival />
 
-      {/*-------------  Section Eight : Home Descriptions ------------*/}
+      {/* Section Eight: Home Descriptions */}
       <UserHomeDescription />
 
-      {dataState.isUserLoggedIn ? <button onClick={handleLogout}>Log Out</button> : 'Home'}
+      {dataState.isUserLoggedIn ? (
+        <button onClick={handleLogout}>Log Out</button>
+      ) : (
+        <div>Home</div>
+      )}
     </section>
   );
 };

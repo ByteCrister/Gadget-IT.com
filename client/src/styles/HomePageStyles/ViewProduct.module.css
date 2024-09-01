@@ -324,7 +324,7 @@
 .section_buttons_names {
     width: 100%;
     display: flex;
-    gap: 10%;
+    justify-content: space-between;
 }
 
 .section_buttons_names_span {
@@ -400,17 +400,17 @@ table {
     margin: 0 auto;
 }
 
-table thead th {
+/* table thead th {
     background-color: #009879;
     color: #ffffff;
     font-weight: bold;
     text-align: left;
-    padding: 0px;
-}
+    padding: 5px;
+} */
 
 table tbody tr {
     border-bottom: 1px solid #dddddd;
-    padding: 0px;
+    padding: 5px;
 }
 
 table tbody tr:nth-of-type(even) {
@@ -423,6 +423,8 @@ table td {
     font-family: "Roboto", sans-serif;
     font-weight: 500;
     color: #515151;
+    padding: 8px;
+    font-size: 14px;
 }
 
 @media (max-width: 650px) {

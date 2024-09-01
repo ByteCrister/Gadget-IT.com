@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import styles from '../../styles/AdminHome/admin.home.module.css';
 
 import UpperSide from '../../components/AdminHome/UpperSide';
 import LeftSide from '../../components/AdminHome/LeftSide';
+import LoadingPage from '../LoadingPage';
 
-import PageOne from '../ADMIN/PageOne';
-import PageTwo from '../ADMIN/PageTwo';
-import PageThree from '../ADMIN/PageThree';
-import PageFour from '../ADMIN/PageFour';
-import PageFive from '../ADMIN/PageFive';
-import PageSix from '../ADMIN/PageSix';
-import PageSeven from '../ADMIN/PageSeven';
-import PageEight from '../ADMIN/PageEight';
+// Lazy load components
+const PageOne = lazy(() => import('../ADMIN/PageOne'));
+const PageTwo = lazy(() => import('../ADMIN/PageTwo'));
+const PageThree = lazy(() => import('../ADMIN/PageThree'));
+const PageFour = lazy(() => import('../ADMIN/PageFour'));
+const PageFive = lazy(() => import('../ADMIN/PageFive'));
+const PageSix = lazy(() => import('../ADMIN/PageSix'));
+const PageSeven = lazy(() => import('../ADMIN/PageSeven'));
+const PageEight = lazy(() => import('../ADMIN/PageEight'));
 
-import ShowMessages from '../../components/AdminHome/ShowMessages';
-import ShowNotifications from '../../components/AdminHome/ShowNotifications';
-import ShowAdmin from '../../components/AdminHome/ShowAdmin';
+const ShowMessages = lazy(() => import('../../components/AdminHome/ShowMessages'));
+const ShowNotifications = lazy(() => import('../../components/AdminHome/ShowNotifications'));
+const ShowAdmin = lazy(() => import('../../components/AdminHome/ShowAdmin'));
 
 const AdminHomePage = () => {
     const [currentPageNo, setCurrentPage] = useState(1);
@@ -49,9 +51,12 @@ const AdminHomePage = () => {
 
             <div className={styles.uppAndMain}>
                 <UpperSide content={upperContentNo} handleUpper={handleUpper} />
+
                 <div style={{ width: '100%', position: 'relative' }}>
-                    {pages[currentPageNo]}
-                    {upperContent[upperContentNo] || null}
+                    <Suspense fallback={<LoadingPage />}>
+                        {pages[currentPageNo]}
+                        {upperContent[upperContentNo] || null}
+                    </Suspense>
                 </div>
             </div>
         </div>
