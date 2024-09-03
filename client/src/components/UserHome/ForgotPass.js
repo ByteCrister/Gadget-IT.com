@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useFormik } from 'formik';
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import styles from '../../styles/HomePageStyles/SignIn.module.css';
 import ForgotPassValidation from '../../components/UserHome/ForgotPassValidation';
 import { useData } from '../../context/useData';
@@ -40,48 +41,53 @@ const ForgotPass = ({ handleUserEntryPage }) => {
         <div className={`${styles.blurForm}`}>
             <form className={`${styles['form-wrapper']}`} onSubmit={formik.handleSubmit}>
                 <div className={styles.container}>
-                    <h1 className={styles.Header_name}>Forgot Password</h1>
+                    <span className={styles.Header_name}>Forgot Password</span>
                     <hr />
-                    <label htmlFor="email"><b>Email</b></label><br />
-                    {formik.touched.email && formik.errors.email && <span>{formik.errors.email}</span>}<br />
-                    {dataState.emailNotFound && <span>Email not found. Please try another one.</span>}
-                    <input
-                        type="email"
-                        placeholder="Enter Email"
-                        name="email"
-                        required
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.email}
-                    />
 
-
-
-                    <label htmlFor="password"><b>Set New Password</b></label><br />
-                    {formik.touched.password && formik.errors.password && <span>{formik.errors.password}</span>}<br />
-                    {dataState.emailSend && <span>Email Confirmation sent. Please confirm it.</span>}
-                    <input
-                        type={passwordVisible ? "text" : "password"}
-                        placeholder="Enter Password"
-                        name="password"
-                        required
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.password}
-                    />
-                    <label>
+                    <div>
+                        {formik.touched.email && formik.errors.email && <span><sup>*</sup>{formik.errors.email}</span>}<br />
+                        {dataState.emailNotFound && <span><sup>*</sup>Email not found. Please try another one.</span>}
+                        <label htmlFor="email"><b><sup>*</sup>Email</b></label><br />
                         <input
-                            type="checkbox"
-                            checked={passwordVisible}
-                            onChange={() => setPasswordVisible(!passwordVisible)}
-                        /> Show Password
-                    </label>
-                    <br />
+                            type="email"
+                            placeholder="Enter Email"
+                            name="email"
+                            required
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.email}
+                        />
+                    </div>
+
+
+                    <div>
+                        {formik.touched.password && formik.errors.password && <span><sup>*</sup>{formik.errors.password}</span>}<br />
+                        {dataState.emailSend && <span><sup>*</sup>Email Confirmation sent. Please confirm it.</span>}
+                        <label htmlFor="password"><b><sup>*</sup>Set New Password</b></label><br />
+                        <input
+                            type={passwordVisible ? "text" : "password"}
+                            placeholder="Enter Password"
+                            name="password"
+                            required
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.password}
+                        />
+                    </div>
+
+                    <div className={styles.showPassword}>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={passwordVisible}
+                                onChange={() => setPasswordVisible(!passwordVisible)}
+                            /> Show Password
+                        </label>
+                    </div>
 
 
 
-
-                    <div className={styles.clearfix}>
+                    <section className={styles.clearfix}>
                         <button
                             type="button"
                             className={styles.cancelbtn}
@@ -91,9 +97,9 @@ const ForgotPass = ({ handleUserEntryPage }) => {
                             type="submit"
                             className={styles.signupbtn}
                         >{
-                                dataState.isButtonLoading ? 'Loading... please wait' : 'Send Email Confirmation'
+                                dataState.isButtonLoading ? <AiOutlineLoading3Quarters className={styles.loading_icon}/> : 'Send Email Confirmation'
                             }</button>
-                    </div>
+                    </section>
                 </div>
             </form>
         </div>

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+
 import styles from '../../styles/HomePageStyles/SignIn.module.css';
 import { Link, useLocation } from 'react-router-dom';
 import validationSchema from '../../components/UserHome/SignInValidations';
@@ -7,26 +9,16 @@ import { SignInPost } from '../../api/SignInPost';
 
 const UserSignIn = ({ handleUserEntryPage }) => {
 
-  const location = useLocation();  
+  const location = useLocation();
   const currentRoute = location.pathname;
-  // alert(currentRoute)
 
   const [dataState, setDataState] = useState({
-    isButtonLoading:false,
-    isEmailExist:false,
-    isEmailSend:false,
-    emailNotFound:false
+    isButtonLoading: false,
+    isEmailExist: false,
+    isEmailSend: false,
+    emailNotFound: false,
+    error: false
   })
-  const handlesignInStates = (state_1, state_2, state_3, state_4)=>{
-    setDataState({
-      isButtonLoading: state_1,
-      isEmailExist: state_2,
-      isEmailSend: state_3,
-      emailNotFound: state_4
-
-    })
-
-  }
 
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -39,12 +31,12 @@ const UserSignIn = ({ handleUserEntryPage }) => {
       password: ''
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      SignInPost(handlesignInStates,dataState, {...values, currentRoute});
+    onSubmit: async (values) => {
+      await SignInPost(setDataState, { ...values, currentRoute });
     },
   });
 
-  
+
 
 
 
@@ -52,74 +44,87 @@ const UserSignIn = ({ handleUserEntryPage }) => {
     <div className={`${styles.blurForm}`}>
       <form className={`${styles['form-wrapper']}`} onSubmit={formik.handleSubmit}>
         <div className={styles.container}>
-          <h1 className={styles.Header_name}>Sign Up</h1>
-          <p className={styles.para_head}>Please fill in this form to create an account.</p>
+          <span className={styles.Header_name}>Sign Up</span>
+          <p className={styles.para_head}><sup>*</sup>Please fill this form to create an account.</p>
           <hr />
 
-          <label htmlFor="firstName"><b>First Name</b></label><br />
-          {formik.touched.firstName && formik.errors.firstName && <span>{formik.errors.firstName}</span>}<br />
-          <input
-            type="text"
-            placeholder="Enter First Name"
-            name="firstName"
-            required
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.firstName}
-          />
-
-          <label htmlFor="lastName"><b>Last Name</b></label><br />
-          {formik.touched.lastName && formik.errors.lastName && <span>{formik.errors.lastName}</span>}<br />
-          <input
-            type="text"
-            placeholder="Enter Last Name"
-            name="lastName"
-            required
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.lastName}
-          />
-
-          <label htmlFor="email"><b>Email</b></label><br />
-          {formik.touched.email && formik.errors.email && <span>{formik.errors.email}</span>}<br />
-          {dataState.isEmailExist && <span>Email already exists or there is an issue with this email. Please try another one.</span>}
-          {dataState.emailNotFound && <span>Email Not Found. Please try with another email.</span>}
-          <input
-            type="email"
-            placeholder="Enter Email"
-            name="email"
-            required
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.email}
-          />
-
-          <label htmlFor="password"><b>Password</b></label><br />
-          {formik.touched.password && formik.errors.password && <span>{formik.errors.password}</span>}<br />
-          <input
-            type={passwordVisible ? "text" : "password"}
-            placeholder="Enter Password"
-            name="password"
-            required
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.password}
-          />
-          <label>
+          <div>
+            {formik.touched.firstName && formik.errors.firstName && <span><sup>*</sup>{formik.errors.firstName}</span>}<br />
+            <label htmlFor="firstName"><b><sup>*</sup>First Name</b></label><br />
             <input
-              type="checkbox"
-              checked={passwordVisible}
-              onChange={() => setPasswordVisible(!passwordVisible)}
-            /> Show Password
-          </label>
+              type="text"
+              placeholder="first name"
+              name="firstName"
+              required
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.firstName}
+            />
+          </div>
+
+          <div>
+            {formik.touched.lastName && formik.errors.lastName && <span><sup>*</sup>{formik.errors.lastName}</span>}<br />
+            <label htmlFor="lastName"><b><sup>*</sup>Last Name</b></label><br />
+            <input
+              type="text"
+              placeholder="last name"
+              name="lastName"
+              required
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.lastName}
+            />
+          </div>
+
+          <div>
+            {formik.touched.email && formik.errors.email && <span><sup>*</sup>{formik.errors.email}</span>}<br />
+            {dataState.isEmailExist && <span><sup>*</sup>Email already exists or there is an issue with this email. Please try another one.</span>}
+            {dataState.emailNotFound && <span><sup>*</sup>Email Not Found. Please try with another email.</span>}
+            <label htmlFor="email"><b><sup>*</sup>Email</b></label><br />
+            <input
+              type="email"
+              placeholder="email"
+              name="email"
+              required
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+            />
+          </div>
+
+          <div>
+            {formik.touched.password && formik.errors.password && <span><sup>*</sup>{formik.errors.password}</span>}<br />
+            <label htmlFor="password"><b><sup>*</sup>Password</b></label><br />
+            <input
+              type={passwordVisible ? "text" : "password"}
+              placeholder="password"
+              name="password"
+              required
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+            />
+          </div>
+
+          <div className={styles.showPassword}>
+            <label>
+              <input
+                type="checkbox"
+                checked={passwordVisible}
+                onChange={() => setPasswordVisible(!passwordVisible)}
+              />
+              Show Password
+            </label>
+          </div>
 
           <br />
-          {dataState.isEmailSend && <span>Email Confirmation sent. Please confirm it.</span>}
+          {dataState.isEmailSend && <span className={styles.returnMessage}><sup>*</sup>Email Confirmation sent. Please confirm it.</span>}
+          {dataState.error && <span className={styles.returnMessage}><sup>*</sup>There is something wrong!</span>}
           <br />
 
-          <p>I already have an account <Link onClick={() => handleUserEntryPage(2)} style={{ color: 'dodgerblue' }}>Log In</Link>.</p>
+          <p>I already have an account <Link onClick={() => handleUserEntryPage(2)}>Log In</Link>.</p>
 
-          <div className={styles.clearfix}>
+          <section className={styles.clearfix}>
             <button
               type="button"
               className={styles.cancelbtn}
@@ -129,9 +134,9 @@ const UserSignIn = ({ handleUserEntryPage }) => {
               type="submit"
               className={styles.signupbtn}
             >{
-              dataState.isButtonLoading ? 'Loading...please wait' : 'Sign In'
-            }</button>
-          </div>
+                dataState.isButtonLoading ? <AiOutlineLoading3Quarters className={styles.loading_icon}/> : 'Sign In'
+              }</button>
+          </section>
         </div>
       </form>
     </div>

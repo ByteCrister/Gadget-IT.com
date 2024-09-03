@@ -15,17 +15,18 @@ exports.SendUserMail = (To, subject, link) => {
             from: `"GADGET IT.com" <${process.env.EMAIL}>`,
             to: To,
             subject: subject,
-            html: `<h2>Please click on confirm - <a href=${link}><b>Confirm</b></a></h2>`
+            html: ` <h2>Please click on confirm - <a href="${link}"><b>Confirm</b></a></h2>
+        <p>This confirmation link will expire in <strong>5 minutes</strong>.</p>`
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.error('Error sending email:', error);
-                reject(false);  
+                reject(false);
             } else {
                 console.log('Message sent: %s', info.messageId);
                 console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                resolve(true);  
+                resolve(true);
             }
         });
     });

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 .blurForm {
   position: fixed;
   top: 0;
@@ -12,102 +14,121 @@
   justify-content: center;
 }
 
-
-.form-wrapper {
-  width: 40%;
+.container{
+  display: flex;
+  flex-direction: column;
+  width: 30%;
   min-width: 350px;
-  background-color: #ffffff;
-  padding: 20px;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  max-height: 80vh; /* Ensure it doesn't overflow */
-  overflow-y: auto; /* Scroll if content overflows */
-  box-sizing: border-box; /* Include padding in the element's total width and height */
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+  font-family: "Roboto", sans-serif;
+  border-radius: 5px;
 }
 
-.Header_name {
-  color: grey;
-  font-size: 40px;
-  margin-top: 0; /* Remove margin-top if there's any */
-}
-
-.para_head {
-  color: grey;
+.Header_name{
+  font-size: 25px;
+  font-family: "Roboto", sans-serif;
+  color: #f27f20;
   font-weight: 600;
 }
-
-.container label {
-  color: grey;
-}
-.container span{
+.para_head sup, .container div span ,.container div span sup, .container div label b sup{
   color: red;
   font-weight: 600;
 }
-
-.logoName {
-  font-size: 20px;
-  color: yellow;
+.para_head{
+  font-family: "Roboto", sans-serif;
 }
 
-.form-wrapper input[type="text"],
-.form-wrapper input[type="email"],
-.form-wrapper input[type="password"] {
+.container div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
+}
+.container div label{
+  color: rgb(71, 71, 71);
+  font-size: 14px;
+}
+.container div input{
+  outline: none;
   border: none;
-  background: #f1f1f1;
-  color: grey;
+  background-color: aliceblue;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+  color: rgb(71, 71, 71);
+  
+}
+
+.showPassword label{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Roboto", sans-serif;
+  color: rgb(71, 71, 71);
+  font-weight: 600;
+}
+.showPassword label input{
+  cursor: pointer;
+}
+
+.container p{
+  color: rgb(71, 71, 71);
+  font-weight: 500;
+  font-family: "Roboto", sans-serif;
+}
+.container p a{
+  text-decoration: none;
+  color: #f27f20;
+}
+.container p a:hover{
+  text-decoration: underline;
+}
+.clearfix{
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+
+}
+
+.cancelbtn, .signupbtn{
+  padding: 5px 10px;
+  outline: none;
+  border: none;
+  background-color: #f27f20;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: ease-in-out 0.2s;
+  font-family: "Roboto", sans-serif;
   font-weight: 600;
 }
 
-.form-wrapper input[type="text"]:focus,
-.form-wrapper input[type="email"]:focus,
-.form-wrapper input[type="password"]:focus {
-  background-color: #ddd;
-  outline: none;
+.cancelbtn:hover{
+  background-color: rgb(223, 223, 223);
+  color: grey;
 }
 
-.form-wrapper hr {
-  border: 1px solid #f1f1f1;
-  margin-bottom: 25px;
+.signupbtn:hover{
+  background-color: rgb(225, 225, 225);
+  color: #f27f20;
 }
-
-.form-wrapper button {
-  background-color: #a9c52b;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
+.returnMessage{
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  color: rgb(245, 92, 92);
 }
-
-.form-wrapper button:hover {
-  opacity: 1;
+.loading_icon{
+  animation: spin 1s linear infinite; 
 }
-
-.form-wrapper .cancelbtn {
-  padding: 14px 20px;
-  background-color: #f44336;
-}
-
-.form-wrapper .cancelbtn,
-.form-wrapper .signupbtn {
-  float: left;
-  width: 50%;
-}
-
-.form-wrapper .clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-@media screen and (max-width: 300px) {
-  .form-wrapper .cancelbtn,
-  .form-wrapper .signupbtn {
-    width: 100%;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

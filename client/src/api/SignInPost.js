@@ -1,8 +1,14 @@
 import axios from 'axios';
 
-export const SignInPost = async (handlesignInStates, dataState, values ) => {
-    handlesignInStates(true, dataState.isEmailExist, dataState.isEmailSend, dataState.emailNotFound);
-    
+export const SignInPost = async (setDataState, values) => {
+    setDataState((prev) => ({
+        isButtonLoading: true,
+        isEmailExist: false,
+        isEmailSend: false,
+        emailNotFound: false,
+        error: false
+    }));
+
     try {
 
         const response = await axios.post('http://localhost:7000/user/registration', values);
@@ -10,18 +16,36 @@ export const SignInPost = async (handlesignInStates, dataState, values ) => {
         console.log(data.message);
 
         if (data.message === 'Email already exists') {
-            handlesignInStates(false, true, false, false);
+            setDataState((prev) => ({
+                ...prev,
+                isEmailExist: true
+            }));
 
-        } else if (data.message === 'Email Confirmation Send') {
-            handlesignInStates(false, false, true, false);
+        } else if (data.message === 'Email Confirmation Sent') {
+            setDataState((prev) => ({
+                ...prev,
+                isEmailSend: true
+            }));
 
         } else {
-            handlesignInStates(false, false, false, true);
+            setDataState((prev) => ({
+                ...prev,
+                emailNotFound: true
+            }));
+
         }
+        setDataState((prev) => ({
+            ...prev,
+            isButtonLoading: false
+        }));
 
     } catch (error) {
         console.log(error);
-        handlesignInStates(false, true, false);
+        setDataState((prev) => ({
+            ...prev,
+            error: true,
+            isButtonLoading: false
+        }));
     }
 
 
