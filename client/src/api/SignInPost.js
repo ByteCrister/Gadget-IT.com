@@ -47,7 +47,4 @@ export const SignInPost = async (setDataState, values) => {
             isButtonLoading: false
         }));
     }
-
-
-
 }

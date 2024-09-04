@@ -1,27 +1,18 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import styles from '../../styles/HomePageStyles/SignIn.module.css';
 import ForgotPassValidation from '../../components/UserHome/ForgotPassValidation';
-import { useData } from '../../context/useData';
 import { ForgotPassApi } from '../../api/ForgotPassApi';
 
 const ForgotPass = ({ handleUserEntryPage }) => {
 
-    const { dispatch } = useContext(useData)
-
     const [dataState, setDataState] = useState({
         isButtonLoading: false,
         emailNotFound: false,
-        emailSend: false
+        emailSend: false,
+        error : false
     });
-
-    const handleLoginStates = (newState) => {
-        setDataState(prevState => ({
-            ...prevState,
-            ...newState
-        }));
-    };
 
     const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -31,9 +22,8 @@ const ForgotPass = ({ handleUserEntryPage }) => {
             password: '',
         },
         validationSchema: ForgotPassValidation,
-        onSubmit: (values) => {
-            // alert(JSON.stringify(values, null, 2));
-            ForgotPassApi(values, handleLoginStates);
+        onSubmit: async (values) => {
+            await ForgotPassApi(values, setDataState);
         },
     });
 
@@ -63,6 +53,7 @@ const ForgotPass = ({ handleUserEntryPage }) => {
                     <div>
                         {formik.touched.password && formik.errors.password && <span><sup>*</sup>{formik.errors.password}</span>}<br />
                         {dataState.emailSend && <span><sup>*</sup>Email Confirmation sent. Please confirm it.</span>}
+                        {dataState.error && <span><sup>*</sup>Internal server error. Please check you internet connection.</span>}
                         <label htmlFor="password"><b><sup>*</sup>Set New Password</b></label><br />
                         <input
                             type={passwordVisible ? "text" : "password"}

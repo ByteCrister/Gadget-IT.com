@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import styles from '../../styles/HomePageStyles/SignIn.module.css';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import validationSchema from '../../components/UserHome/SignInValidations';
 import { SignInPost } from '../../api/SignInPost';
 
 const UserSignIn = ({ handleUserEntryPage }) => {
 
+  const navigate = useNavigate();
   const location = useLocation();
   const currentRoute = location.pathname;
 
@@ -36,9 +37,20 @@ const UserSignIn = ({ handleUserEntryPage }) => {
     },
   });
 
+  useEffect(() => {
+    if (dataState.isEmailSend) {
+      const timer = setTimeout(() => {
+        // Open a new tab
+        window.open('/', '_blank');
+        
+        // Attempt to close the current tab
+        // Note: This might not work in all cases due to browser restrictions
+        window.close();
+      }, 120000); // 2 minutes in milliseconds
 
-
-
+      return () => clearTimeout(timer); // Cleanup the timer if component unmounts
+    }
+  }, [dataState.isEmailSend]);
 
   return (
     <div className={`${styles.blurForm}`}>
@@ -78,7 +90,7 @@ const UserSignIn = ({ handleUserEntryPage }) => {
 
           <div>
             {formik.touched.email && formik.errors.email && <span><sup>*</sup>{formik.errors.email}</span>}<br />
-            {dataState.isEmailExist && <span><sup>*</sup>Email already exists or there is an issue with this email. Please try another one.</span>}
+            {dataState.isEmailExist && <span><sup>*</sup>Email already exists. Please try with another one.</span>}
             {dataState.emailNotFound && <span><sup>*</sup>Email Not Found. Please try with another email.</span>}
             <label htmlFor="email"><b><sup>*</sup>Email</b></label><br />
             <input

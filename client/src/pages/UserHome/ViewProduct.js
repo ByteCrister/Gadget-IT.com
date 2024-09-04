@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo } from 'react';
+import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useData } from '../../context/useData';
 import styles from '../../styles/HomePageStyles/ViewProduct.module.css';
@@ -55,15 +55,16 @@ const ViewProduct = () => {
         const productKeyFeature = ProductTable.product_keyFeature?.filter(item => item.category === MainTable);
         const extraImages = ProductTable.product_extraImages?.filter(item => Number(item.product_id) === Number(product_id)).map(item => item.image);
 
-        const relatedProducts = ProductTable.table_products?.filter(item => item.sub_category === productInformation.sub_category);
+        const relatedProducts = ProductTable.table_products?.filter(item => item.sub_category === productInformation.sub_category && item.main_category === category);
 
-        setViewProduct({
-            productInformation,
+        setViewProduct((prev) => ({
+            ...prev,
+            productInformation: productInformation,
             description: productDescription,
             images: [...productImages, ...extraImages],
             keyFeature: productKeyFeature,
             product_prices: dataState.productStorage.product_prices?.find(item => item.product_id === Number(product_id))
-        });
+        }));
 
         setMainTableData(relatedProducts || []);
 
@@ -76,9 +77,30 @@ const ViewProduct = () => {
         });
     }, [dispatch, location.pathname, dataState.pathSettings.currPath]);
 
+
+    const getPrices = useCallback((product_id) => {
+        const productPrice = dataState.productStorage.product_prices.find((item) => item.product_id === product_id);
+        return productPrice ? productPrice.price : null;
+    }, [dataState.productStorage.product_prices]);
+
     const relatedProductsMemo = useMemo(() => {
-        return MainTableData?.filter(item => item.product_id !== viewProduct.productInformation.product_id);
-    }, [MainTableData, viewProduct.productInformation.product_id]);
+        const viewProductPrice = Number(viewProduct.product_prices.price);
+
+        const lowerBound = viewProductPrice - (20 / 100) * viewProductPrice;
+        const upperBound = viewProductPrice + (30 / 100) * viewProductPrice;
+
+        return MainTableData.filter(item => item.product_id !== viewProduct.productInformation.product_id &&
+            getPrices(item.product_id) >= lowerBound &&
+            getPrices(item.product_id) <= upperBound);
+    }, [MainTableData, getPrices, viewProduct.productInformation.product_id, viewProduct.product_prices.price]);
+
+    useEffect(() => {
+        console.log("MainTableData:", MainTableData);
+        console.log("viewProduct.productInformation.price:", viewProduct.productInformation.price);
+    }, [MainTableData, viewProduct.productInformation.price]);
+
+
+
 
     if (isInvalidCategory) {
         return <RandomErrorPage />;
@@ -102,9 +124,9 @@ const ViewProduct = () => {
 
 
             {/* -------------------------------------- related products ---------------------------------------- */}
-            {MainTableData.length > 0 && (
+            {relatedProductsMemo && relatedProductsMemo.length > 0 && (
                 <section className={styles.readyForOrders}>
-                    <h1>Related Products</h1>
+                    <span className={styles.product_cart_head}>Related Products</span>
                     <Swiper
                         slidesPerView={1}
                         spaceBetween={10}
@@ -167,6 +189,7 @@ const ViewProduct = () => {
                             <div className={styles.section_hr}></div>
                         </div>
 
+                        {/*-------------- product main information ---------------  */}
                         <table>
                             <tbody>
                                 {Object.entries(viewProduct.productInformation).map(([key, value]) => (
@@ -185,11 +208,12 @@ const ViewProduct = () => {
                                 ))}
                             </tbody>
                         </table>
+                        {/* ------------------------------------------------- */}
                     </div>
                 </section>
 
                 <section className={styles.recent_views}>
-                    Hi, this is me!
+                    Recent View product's Container
                 </section>
             </section>
         </section>

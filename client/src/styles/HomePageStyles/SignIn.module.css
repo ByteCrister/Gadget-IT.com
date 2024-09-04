@@ -36,7 +36,8 @@
 }
 .para_head sup, .container div span ,.container div span sup, .container div label b sup{
   color: red;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 13px;
 }
 .para_head{
   font-family: "Roboto", sans-serif;

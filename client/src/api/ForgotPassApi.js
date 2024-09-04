@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-export const ForgotPassApi = async (values, handleLoginStates) => {
-    // alert(JSON.stringify(values, null, 2));
+export const ForgotPassApi = async (values, setDataState) => {
 
-    handleLoginStates({
+    setDataState((prev) => ({
+        ...prev,
         isButtonLoading: true,
         emailNotFound: false,
-        emailSend: false
-    });
+        emailSend: false,
+        error : false
+    }));
 
     try {
         const response = await axios.post('http://localhost:7000/user/forgot/password', values);
@@ -15,24 +16,26 @@ export const ForgotPassApi = async (values, handleLoginStates) => {
 
         console.log('Forgot pass message : ' + data.message);
         if (data.message === 'Email not found') {
-            handleLoginStates({
-                isButtonLoading: false,
-                emailNotFound: true,
-                emailSend: false
-            });
+            setDataState((prev) => ({
+                ...prev,
+                emailNotFound: true
+            }));
         } else if (data.message === 'Email Send') {
-            handleLoginStates({
-                isButtonLoading: false,
-                emailNotFound: false,
+            setDataState((prev) => ({
+                ...prev,
                 emailSend: true
-            });
+            }))
         }
+        setDataState((prev) => ({
+            ...prev,
+            isButtonLoading: false
+        }));
     } catch (error) {
         console.log(error);
-        handleLoginStates({
+        setDataState((prev) => ({
+            ...prev,
             isButtonLoading: false,
-            emailNotFound: true,
-            emailSend: false
-        });
+            error: true
+        }));
     }
 };

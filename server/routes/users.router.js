@@ -8,8 +8,10 @@ userRouter.post('/user/registration', userControllers.userPostRegistrationContro
 userRouter.get('/new/user/confirm', userControllers.newUserRegistrationController);
 
 userRouter.post('/user/log-in', userControllers.userLogInController);
+
 userRouter.post('/user/forgot/password', userControllers.UserForgotPasswordController);
 userRouter.get('/user/new/pass/confirm', userControllers.UserNewPass);
+
 userRouter.post('/admin/email-password', userControllers.SetNewAdminPasswordEmailController);
 
 

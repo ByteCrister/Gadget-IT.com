@@ -19,12 +19,17 @@ module.exports = {
 
         try {
             //* Check if email already exists
-            const EmailExistResult = await userModel.userEmailExistModel(email);
+            const EmailExistResult = await new Promise((resolve, reject) => {
+                userModel.userEmailExistModel(email, (err, data) => {
+                    if (err) reject(err)
+                    resolve(data)
+                });
+            });
 
             if (EmailExistResult && EmailExistResult.length > 0) {
                 //* Email already exists in the database
                 console.log('Email exists - ' + EmailExistResult.length);
-                return res.status(409).json({ message: 'Email already exists' });
+                return res.json({ message: 'Email already exists' });
             }
 
             //* Hash the password
@@ -110,12 +115,14 @@ module.exports = {
             console.log('New user registered with id:', req.session.userId);
 
             //* Redirect the user to the specified route
-            return res.redirect('http://localhost:3000' + route);
+            return res.redirect('http://localhost:3000');
 
         } catch (error) {
             //* Handle token expiration or invalid token errors
             if (error.name === 'TokenExpiredError') {
-                return res.status(400).json({ message: 'Confirmation link expired' });
+                return res.status(400).send(`<d style="display: flex; justify-content: center; align-items: center; height:100vh">
+                    <h1>Confirmation link expired!!</h1>
+                    </div>`);
             } else {
                 console.error('Error in newUserRegistrationController:', error);
                 return res.status(400).json({ message: 'Invalid or malformed token' });
@@ -149,16 +156,12 @@ module.exports = {
                     });
                 });
 
-                if (!adminPassResult || adminPassResult.length === 0) {
-                    return res.json({ message: 'Admin password not found' });
-                }
-
                 const isPasswordMatch = bcrypt.compareSync(password, adminPassResult[0].admin_password);
                 if (isPasswordMatch) {
                     //* Admin login successful
-                    await createSession(req, true, null);
                     return res.json({ isAdmin: true, isLogged: true, userId: null, path: path });
                 } else {
+                    console.log('Invalid admin password');
                     return res.json({ message: 'Invalid admin password' });
                 }
             }
@@ -191,7 +194,6 @@ module.exports = {
             const isUserPasswordMatch = bcrypt.compareSync(password, userPassResult[0].password);
             if (isUserPasswordMatch) {
                 //* User login successful
-                // await createSession(req, false, userPassResult[0].user_id);
                 return res.json({ isAdmin: false, isLogged: true, userId: userPassResult[0].user_id, path: path });
             } else {
                 return res.json({ message: 'Invalid user password' });
@@ -205,63 +207,83 @@ module.exports = {
     // * --------------------------------------- end of user/admin log in ----------------------------------------------- *
 
 
+
+    // * -------------------------------------- reset password if forgot ------------------------------------ *
     UserForgotPasswordController: async (req, res) => {
         const { email, password } = req.body;
+
         try {
-            userModel.userEmailExistModel(email, async (emailExistError, EmailExistResult) => {
-
-                if (emailExistError) {
-                    console.log(emailExistError);
-
-                } else if (EmailExistResult && EmailExistResult.length > 0) {
-
-                    const hash = await bcrypt.hash(password, saltRounds);
-
-                    const confirmationLink = `http://localhost:7000/user/new/pass/confirm?email=${encodeURIComponent(email)}&password=${encodeURIComponent(hash)}`;
-                    const emailSent = await SendUserMail(email, 'Forgot Password', confirmationLink);
-                    console.log('Is email send ? ' + emailSent + '\n');
-
-                    if (emailSent) {
-                        res.send({ message: 'Email Send' });
-                    } else {
-                        res.send({ message: 'Email not found' });
-                    }
-                } else {
-                    res.send({ message: 'Email not found' });
-                }
-
+            const user = await new Promise((resolve, reject) => {
+                userModel.userEmailExistModel(email, (err, data) => {
+                    if (err) reject(err)
+                    resolve(data)
+                });
             });
 
+            if (user && user.length === 0) {
+                return res.status(200).json({ message: 'Email not found' });
+            }
+
+            const hash = await bcrypt.hash(password, saltRounds);
+
+            //* Generate JWT token with expiration of 5 minutes
+            const token = jwt.sign({ email, password: hash }, secretKey, { expiresIn: '5m' });
+
+            const confirmationLink = `http://localhost:7000/user/new/pass/confirm?token=${token}`;
+            const emailSent = await SendUserMail(email, 'Forgot Password', confirmationLink);
+
+            console.log(`Is email send : ` + emailSent);
+            if (emailSent) {
+                return res.status(200).json({ message: 'Email Send' });
+            } else {
+                return res.status(500).json({ message: 'Error sending email' });
+            }
         } catch (error) {
             console.error('Error in user password change:', error);
-            res.status(500).json({ message: 'Error in user password change', error: error.message });
+            return res.status(500).json({ message: 'Internal Server Error', error: error.message });
         }
     },
 
-    UserNewPass: (req, res) => {
-        const { email, password } = req.query;
+    UserNewPass: async (req, res) => {
+        try {
+            const { token } = req.query;
 
-        userModel.userNewPasswordModel(email, password, (err, result) => {
-            if (err) {
-                console.log('error in user set new password ' + err);
+            // Verify and decode the token
+            const decoded = jwt.verify(token, secretKey);
+            const { email, password } = decoded;
+
+            const updated = await new Promise((resolve, reject) => {
+                userModel.userNewPasswordModel(email, password, (err, data) => {
+                    if (err) reject(err)
+                    resolve(data)
+                });
+            });
+            if (updated) {
+                console.log('Password updated for:', email);
+                return res.redirect('http://localhost:3000');
+            } else {
+                throw new Error('Failed to update password');
             }
-            console.log('pass updated - ' + email);
-            res.redirect('http://localhost:3000');
-        })
+        } catch (error) {
+            console.error('Error in user set new password:', error);
+            return res.status(500).json({ message: 'Failed to set new password', error: error.message });
+        }
     },
+    // * -------------------------------------- end of reset password -------------------------------------------- *
 
     SetNewAdminPasswordEmailController: async (req, res) => {
         const password = await bcrypt.hash(req.body.password, saltRounds);
         const email = req.body.email
-        userModel.setNewAdminPasswordEmailModel(email, password, (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send(err);
-            } else {
-                res.send({ result });
-            }
-        })
-
+        try {
+            await new Promise((resolve, reject) => {
+                userModel.setNewAdminPasswordEmailModel(email, password, (err, data) => {
+                    if (err) return reject(err)
+                    return resolve(data)
+                });
+            });
+        } catch (error) {
+            res.status(500).json({ success: false, message: 'error on setting admin new email and password. -> ' + error })
+        }
     }
 
-}
+};

@@ -3,6 +3,7 @@ import axios from 'axios';
 export const LoginPost = async (setDataState, values, dispatch, handleUserEntryPage) => {
 
     setDataState((prev) => ({
+        ...prev,
         isButtonLoading: true,
         emailNotFound: false,
         passNotMatch: false,
@@ -47,8 +48,6 @@ export const LoginPost = async (setDataState, values, dispatch, handleUserEntryP
             dispatch({ type: 'set_home_view', payload: { isAdmin: isAdmin, isUserLoggedIn: isUserLoggedIn, UserID: userId } })
             if (isAdmin) {
                 window.location.href = '/';
-            } else {
-                window.location.href = data.path;
             }
             handleUserEntryPage(0);
         }

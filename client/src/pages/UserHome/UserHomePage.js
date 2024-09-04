@@ -56,7 +56,7 @@ const UserHomePage = () => {
       {dataState.isUserLoggedIn ? (
         <button onClick={handleLogout}>Log Out</button>
       ) : (
-        <div>Home</div>
+        null
       )}
     </section>
   );
