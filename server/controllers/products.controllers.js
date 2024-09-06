@@ -84,8 +84,6 @@ module.exports = {
 
     getProductsCategoryNamesController: (req, res) => {
 
-        console.log('runs - getProductsCategoryNamesController');
-
         productsModels.getProductsCategoryNamesModel((errCategory, categoryName) => {
             if (errCategory) {
                 console.log(errCategory);

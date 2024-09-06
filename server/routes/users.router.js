@@ -2,6 +2,9 @@ const userControllers = require('../controllers/user.controllers');
 
 const userRouter = require('express').Router();
 
+userRouter.get('/', userControllers.getHomeState);
+userRouter.delete('/reset-home-state', userControllers.removeCookies);
+
 userRouter.get('/user/home/view', userControllers.UserHomeViewController);
 
 userRouter.post('/user/registration', userControllers.userPostRegistrationController);

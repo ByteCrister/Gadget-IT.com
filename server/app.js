@@ -5,6 +5,7 @@ const session = require('express-session');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const cookieParser = require('cookie-parser');
 
 app.use(session({
     secret: process.env.Session_secret,
@@ -26,7 +27,11 @@ app.use((req, res, next) => {
 /************** required environment setup *****************/
 app.use(express.urlencoded({ extended: true, limit: '10mb' })); 
 app.use(express.json({ limit: '10mb' })); 
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true 
+}));
 app.use(express.static('public'));
 app.use(passport.initialize());
 require('./config/passport');

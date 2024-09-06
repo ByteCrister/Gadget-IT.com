@@ -53,7 +53,6 @@ const reducer = (state, action) => {
             }
 
         case 'set_home_view':
-            console.log('from reducer is Admin - ' + action.payload.isAdmin + ' is logIn - ' + action.payload.isUserLoggedIn + ' userId - ' + action.payload.UserID);
             return {
                 ...state,
                 isAdmin: action.payload.isAdmin,
