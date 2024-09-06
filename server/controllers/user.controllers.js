@@ -10,34 +10,10 @@ const { SendUserMail } = require('./send.mail.controller.js');
 const saltRounds = 10;
 
 module.exports = {
-    getHomeState: (req, res) => {
-        try {
-            const isAdmin = req.cookies.isAdmin || false;
-            const isLogged = req.cookies.isLogged || false;
-            const token = req.cookies.token || false;
-
-            res.json({
-                isAdmin: isAdmin,
-                isLogged: isLogged,
-                token: token
-            });
-
-        } catch (error) {
-            res.status(500).send({ success: false, message: 'Error on fetching home state.' });
-        }
-    },
 
     UserHomeViewController: (req, res) => {
         console.log('User homeView get - isAdmin: ' + req.session.isAdmin + ', is logIn:  ' + req.session.isLogged + ', User ID:  ' + req.session.userId);
         res.json({ isAdmin: req.session.isAdmin, isLogged: req.session.isLogged, userId: req.session.userId });
-    },
-
-    removeCookies: (req, res) => {
-        res.clearCookie('isAdmin');
-        res.clearCookie('isLogged');
-        res.clearCookie('token');
-
-        res.status(200).json({ message: 'Cookies are cleared' });
     },
 
     // * -------------------------------------------- start of new user register -------------------------------------------- *
@@ -121,7 +97,25 @@ module.exports = {
                 });
             });
 
-            console.log('New user registered with id:', results.insertId);
+            console.log('User saved:', results);
+
+            //* Setup session for the user
+            req.session.isAdmin = false;
+            req.session.isLogged = true;
+            req.session.userId = results.insertId;
+
+            //* Save the session
+            await new Promise((resolve, reject) => {
+                req.session.save((err) => {
+                    if (err) {
+                        console.error('Error saving session:', err);
+                        return reject(err);
+                    }
+                    resolve();
+                });
+            });
+
+            console.log('New user registered with id:', req.session.userId);
 
             //* Redirect the user to the specified route
             return res.redirect('http://localhost:3000');
@@ -168,19 +162,6 @@ module.exports = {
                 const isPasswordMatch = bcrypt.compareSync(password, adminPassResult[0].admin_password);
                 if (isPasswordMatch) {
                     //* Admin login successful
-                    res.cookie('isAdmin', true, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === 'production',
-                        sameSite: 'Strict',
-                        maxAge: 30 * 24 * 60 * 60 * 1000 //* 30 days
-                    });
-
-                    res.cookie('isLogged', false, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === 'production',
-                        sameSite: 'Strict',
-                        maxAge: 30 * 24 * 60 * 60 * 1000
-                    });
                     return res.status(200).json({ isAdmin: true, isLogged: true, token: process.env.ADMIN_TOKEN });
                 } else {
                     console.log('Invalid admin password');
@@ -216,31 +197,13 @@ module.exports = {
             const isUserPasswordMatch = bcrypt.compareSync(password, userPassResult[0].password);
             if (isUserPasswordMatch) {
                 //* User login successful
+
                 const payload = {
                     user_id: userPassResult[0].user_id,
                     email: userPassResult[0].email
                 };
-                res.cookie('isAdmin', false, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'Strict',
-                    maxAge: 30 * 24 * 60 * 60 * 1000 //* 30 days
-                });
-
-                res.cookie('isLogged', true, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'Strict',
-                    maxAge: 30 * 24 * 60 * 60 * 1000
-                });
 
                 const token = jwt.sign(payload, secretKey, { expiresIn: '30d' });
-                res.cookie('token', token, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'Strict',
-                    maxAge: 30 * 24 * 60 * 60 * 1000
-                });
                 return res.json({ isAdmin: false, isLogged: true, token: 'Bearer ' + token });
             } else {
                 return res.json({ message: 'Invalid user password' });

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import styles from '../../styles/AdminHome/PageEight.module.css';
 
@@ -7,18 +7,18 @@ import AdvertisementImages from '../../components/AdminHome/AdvertisementImages'
 import FeaturedCategoryICON from '../../components/AdminHome/FeaturedCategoryICON';
 import SelectHomeProducts from '../../components/AdminHome/SelectHomeProducts';
 import HomeViewDescriptions from '../../components/AdminHome/HomeViewDescriptions';
-import { Reset_HomeState } from '../../api/Reset_HomeState';
 
 const PageEight = React.memo(() => {
-  const { dataState, dispatch } = useContext(useData);
+  const { dispatch } = useContext(useData);
 
   const [currentSetting, setCurrentSetting] = useState(1);
 
 
   // *---------------- Admin LogOut ------------------------
-  const handleLogout = useCallback(async () => {
-    await Reset_HomeState(dispatch);
-  }, [dispatch]);
+  const handleLogout = () => {
+    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, token: false } })
+    window.localStorage.clear();
+  }
 
   return (
     <div>

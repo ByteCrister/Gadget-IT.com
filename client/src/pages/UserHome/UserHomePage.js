@@ -10,14 +10,14 @@ import FeaturedProducts from '../../components/UserHome/FeaturedProducts';
 import NewArrival from '../../components/UserHome/NewArrival';
 import ExtraSubAdd from '../../components/UserHome/ExtraSubAdd';
 import { useLocation } from 'react-router-dom';
-import { Reset_HomeState } from '../../api/Reset_HomeState';
 
 const UserHomePage = () => {
   const { dataState, dispatch } = useContext(useData);
   const location = useLocation();
 
-  const handleLogout = useCallback(async () => {
-    await Reset_HomeState(dispatch)
+  const handleLogout = useCallback(() => {
+    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, token : false } });
+    window.localStorage.clear(); 
   }, [dispatch]);
 
   useEffect(() => {
