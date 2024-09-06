@@ -16,8 +16,8 @@ const UserHomePage = () => {
   const location = useLocation();
 
   const handleLogout = useCallback(() => {
-    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, UserID: null } });
-    window.localStorage.clear(); // Clean up all related items in localStorage in one step
+    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, token : false } });
+    window.localStorage.clear(); 
   }, [dispatch]);
 
   useEffect(() => {

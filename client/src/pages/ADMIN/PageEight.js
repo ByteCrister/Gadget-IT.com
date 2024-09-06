@@ -16,10 +16,7 @@ const PageEight = React.memo(() => {
 
   // *---------------- Admin LogOut ------------------------
   const handleLogout = () => {
-    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, UserID: false } })
-    window.localStorage.removeItem('_isAdmin');
-    window.localStorage.removeItem('_isUserLoggedIn');
-    window.localStorage.removeItem('_userId');
+    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, token: false } })
     window.localStorage.clear();
   }
 

@@ -57,9 +57,8 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 isAdmin: action.payload.isAdmin,
-                UserID: action.payload.UserID,
-                isUserLoggedIn: action.payload.isUserLoggedIn
-
+                isUserLoggedIn: action.payload.isUserLoggedIn,
+                token: action.payload.token
             }
 
         case 'toggle_loading':
@@ -71,6 +70,11 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 isError: action.payload
+            }
+        case 'toggle_isServerIssue':
+            return {
+                ...state,
+                isServerIssue: action.payload
             }
 
         case 'admin_loggedIn':

@@ -1,38 +1,45 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react';
 import { Routes, Route } from "react-router-dom";
-import RouteErrorPage from "../pages/RouteErrorPage";
-import RandomErrorPage from '../pages/RandomErrorPage'
-import LoadingPage from '../pages/LoadingPage';
-import AdminRoutes from '../routes/AdminRoutes';
-import UserHomeRoutes from '../routes/UserHomeRoutes';
 import { useData } from '../context/useData';
 
+//* Lazy load components to improve performance by loading only when needed
+const RouteErrorPage = React.lazy(() => import('../pages/RouteErrorPage'));
+const RandomErrorPage = React.lazy(() => import('../pages/RandomErrorPage'));
+const LoadingPage = React.lazy(() => import('../pages/LoadingPage'));
+const AdminRoutes = React.lazy(() => import('../routes/AdminRoutes'));
+const ServerIssuePage = React.lazy(() => import('../pages/ServerIssuePage'));
+const UserHomeRoutes = React.lazy(() => import('../routes/UserHomeRoutes'));
 
 const RoutesHandle = () => {
-  const { dataState, dispatch} = useContext(useData);
-    const isAdmin = dataState;
-    console.log(dispatch);
+  const { dataState } = useContext(useData);
 
-
-    const isError = false;
-    const isLoading = false;
-
+  //* useMemo to memoize condition-based component rendering
+  const renderContent = useMemo(() => {
+    if (dataState.isError) {
+      return <RandomErrorPage />;
+    } else if (dataState.isLoading) {
+      return <LoadingPage />;
+    } else if (dataState.isServerIssue) {
+      return <ServerIssuePage />;
+    } else {
+      return (
+        <Routes>
+          {dataState.isAdmin ? (
+            <Route path="/*" element={<AdminRoutes />} />
+          ) : (
+            <Route path="/*" element={<UserHomeRoutes />} />
+          )}
+          <Route path="*" element={<RouteErrorPage />} />
+        </Routes>
+      );
+    }
+  }, [dataState]);
 
   return (
-    isError ? <RandomErrorPage />
-      :
-      isLoading ? <LoadingPage />
-        :
-        <>
-          <Routes>
-            {isAdmin ? (
-              <Route path="/*" element={<AdminRoutes />} />
-            ) : (
-              <Route path="/*" element={<UserHomeRoutes />} />
-            )}
-            <Route path="*" element={<RouteErrorPage />} />
-          </Routes></>
-  )
-}
+    <React.Suspense fallback={<LoadingPage />}>
+      {renderContent}
+    </React.Suspense>
+  );
+};
 
-export default RoutesHandle
+export default React.memo(RoutesHandle);

@@ -7,8 +7,8 @@ export const LoginPost = async (setDataState, values, dispatch, handleUserEntryP
         isButtonLoading: true,
         emailNotFound: false,
         passNotMatch: false,
-        adminPassNotMatched : false,
-        isExternalError : false
+        adminPassNotMatched: false,
+        isExternalError: false
     }));
 
     try {
@@ -34,18 +34,13 @@ export const LoginPost = async (setDataState, values, dispatch, handleUserEntryP
             }));
         }
         else {
-            let userId = false;
+            const token = data.token;
             const isAdmin = data.isAdmin === "true" || data.isAdmin === true;
             const isUserLoggedIn = data.isLogged === "true" || data.isLogged === true;
-            if (data.userId !== 'false') {
-                userId = data.userId;
-            }
 
-            window.localStorage.setItem('_isAdmin', JSON.stringify(isAdmin));
-            window.localStorage.setItem('_isUserLoggedIn', JSON.stringify(isUserLoggedIn));
-            window.localStorage.setItem('_userId', JSON.stringify(userId));
+            window.localStorage.setItem('token', JSON.stringify(token));
 
-            dispatch({ type: 'set_home_view', payload: { isAdmin: isAdmin, isUserLoggedIn: isUserLoggedIn, UserID: userId } })
+            dispatch({ type: 'set_home_view', payload: { isAdmin: isAdmin, isUserLoggedIn: isUserLoggedIn, token: token } })
             if (isAdmin) {
                 window.location.href = '/';
             }

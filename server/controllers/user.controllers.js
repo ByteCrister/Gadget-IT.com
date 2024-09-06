@@ -1,7 +1,10 @@
 const bcrypt = require('bcrypt');
 const userModel = require('../models/user.model');
 require('dotenv').config();
+
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
+
 const secretKey = process.env.JWT_SECRET_KEY;
 const { SendUserMail } = require('./send.mail.controller.js');
 const saltRounds = 10;
@@ -159,7 +162,7 @@ module.exports = {
                 const isPasswordMatch = bcrypt.compareSync(password, adminPassResult[0].admin_password);
                 if (isPasswordMatch) {
                     //* Admin login successful
-                    return res.json({ isAdmin: true, isLogged: true, userId: null, path: path });
+                    return res.status(200).json({ isAdmin: true, isLogged: true, token: process.env.ADMIN_TOKEN });
                 } else {
                     console.log('Invalid admin password');
                     return res.json({ message: 'Invalid admin password' });
@@ -194,7 +197,14 @@ module.exports = {
             const isUserPasswordMatch = bcrypt.compareSync(password, userPassResult[0].password);
             if (isUserPasswordMatch) {
                 //* User login successful
-                return res.json({ isAdmin: false, isLogged: true, userId: userPassResult[0].user_id, path: path });
+
+                const payload = {
+                    user_id: userPassResult[0].user_id,
+                    email: userPassResult[0].email
+                };
+
+                const token = jwt.sign(payload, secretKey, { expiresIn: '30d' });
+                return res.json({ isAdmin: false, isLogged: true, token: 'Bearer ' + token });
             } else {
                 return res.json({ message: 'Invalid user password' });
             }
