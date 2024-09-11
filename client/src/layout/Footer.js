@@ -65,7 +65,7 @@ const Footer = () => {
         <div className={styles.footerSection}>
           <h2>Stay Connected</h2>
           <section className={styles.address}>
-            <p>Apple Gadgets</p>
+            <p>GadgetIT.com</p>
             <p>Basement 2, Shop 26, Bashundhara City Shopping Complex</p>
             <p>Level 6, Block D, Shop 72-73, Bashundhara City Shopping Complex</p>
             <p>Level 4, Zone A (West Court), Shop 2BD, Jamuna Future Park</p>

@@ -11,7 +11,7 @@ opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = process.env.JWT_SECRET_KEY;
 
 passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-    db.query('SELECT * FROM users WHERE user_id = ?', [jwt_payload.user_id], (err, user) => {
+    db.query('SELECT * FROM user WHERE user_id = ?', [jwt_payload.user_id], (err, user) => {
         if (err) {
             return done(err, false);
         }

@@ -1,8 +1,13 @@
 import axios from 'axios'
 
-export const Home_State = async (dispatch) => {
+export const Home_State = async (dispatch, token) => {
+    console.log(token);
     try {
-        const response = await axios.get('http://localhost:7000/', { withCredentials: true });
+        const response = await axios.get('http://localhost:7000/', {
+            headers: {
+              Authorization: token
+            }
+          });
         console.log(response.data);
         dispatch({
             type: 'set_home_view', payload: {
@@ -13,6 +18,10 @@ export const Home_State = async (dispatch) => {
         });
 
     } catch (error) {
-        console.log('Home_State fetch error - ' + error);
+        if (error.response) {
+            console.log('Response Error:', error.response.status, error.response.data);
+        } else {
+            console.log('Error:', error.message);
+        }
     }
 };

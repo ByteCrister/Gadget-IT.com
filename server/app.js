@@ -1,26 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const session = require('express-session');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-
-app.use(session({
-    secret: process.env.Session_secret,
-    resave: false,
-    saveUninitialized: true
-}));
-
-/*----------------------Initialize session variables---------------------*/
-app.use((req, res, next) => {
-    req.session.isAdmin = req.session.isAdmin || false;
-    req.session.isLogged = req.session.isLogged || false;
-    req.session.userId = req.session.userId || false;
-    req.session.save();
-
-    next();
-});
 
 
 /************** required environment setup *****************/

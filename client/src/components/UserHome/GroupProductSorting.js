@@ -12,33 +12,36 @@ const GroupProductSorting = ({ MainCategory, handleProductFiltersByPrice, handle
     const [error, setError] = useState('');
     const [selectFilterColumnsValues, setSelectedFilterColumnsValue] = useState([{ column: '', value: '' }]);
     const [sortValueShowMore, setSortValueShowMore] = useState({});
-    const [sectionVisibility, setSectionVisibility] = useState({}); // State to track visibility of checkboxes
+    const [sectionVisibility, setSectionVisibility] = useState({});
 
     useEffect(() => {
-        // Find the relevant product table
+        //* Find the relevant product table
         const productTable = dataState.productStorage.product_table.find(item => item.table === MainCategory);
 
         if (productTable) {
             const newSortingSections = productTable.product_sorting.filter(item => item.category === MainCategory);
             setSorting_sections(newSortingSections);
 
-            // Initialize the "show more" state for each sorting section and visibility state
+            //* Initialize "show more" state for each sorting section and visibility state
             const showMoreInitState = {};
             const visibilityInitState = {};
+
+
             newSortingSections.forEach((section) => {
                 const sortObjects = GetSortObjects(section.sort_by_names);
                 sortObjects.forEach((sortValue) => {
                     const key = Object.keys(sortValue)[0];
                     showMoreInitState[key] = { max_length: 4, values: sortValue[key] };
-                    visibilityInitState[key] = true; // Set to true initially (visible)
+                    visibilityInitState[key] = true; 
                 });
             });
+            
             setSortValueShowMore(showMoreInitState);
-            setSectionVisibility(visibilityInitState); // Set initial visibility
+            setSectionVisibility(visibilityInitState);
         }
     }, [MainCategory, dataState.productStorage.product_table]);
 
-    //* Handle price filter
+    //* Handle price_filter
     const handleFilterClick = () => {
         const start = Number(startingPrice);
         const end = Number(endingPrice);
@@ -57,7 +60,7 @@ const GroupProductSorting = ({ MainCategory, handleProductFiltersByPrice, handle
         handleProductFiltersByPrice({ start, end });
     };
 
-    //* Handle checked filter
+    //* Handle checked_filter
     const handleCheckedFilter = (e, item, sorting_column) => {
         const isChecked = e.target.checked;
         let currentSorts = [...selectFilterColumnsValues];
@@ -72,7 +75,7 @@ const GroupProductSorting = ({ MainCategory, handleProductFiltersByPrice, handle
         handleCheckProductFilter(currentSorts);
     };
 
-    //* Toggle show more/less
+    //* Toggle show_more/less
     const toggleShowMore = (key) => {
         setSortValueShowMore((prevState) => ({
             ...prevState,
@@ -83,11 +86,11 @@ const GroupProductSorting = ({ MainCategory, handleProductFiltersByPrice, handle
         }));
     };
 
-    //* Toggle visibility of checkboxes
+    //* Toggle visibility
     const toggleSectionVisibility = (key) => {
         setSectionVisibility((prevState) => ({
             ...prevState,
-            [key]: !prevState[key] // Toggle visibility
+            [key]: !prevState[key] 
         }));
     };
 
@@ -128,7 +131,7 @@ const GroupProductSorting = ({ MainCategory, handleProductFiltersByPrice, handle
                         const key = Object.keys(sortValue)[0];
                         const values = sortValueShowMore[key]?.values || [];
                         const maxLength = sortValueShowMore[key]?.max_length || 4;
-                        const isVisible = sectionVisibility[key]; // Check visibility state
+                        const isVisible = sectionVisibility[key]; 
 
                         return (
                             <section key={key} className={styles.main_sort_section}>

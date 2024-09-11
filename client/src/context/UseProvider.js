@@ -31,11 +31,11 @@ const initialValues = {
 
   isLoading: false,
   isError: false,
-  isServerIssue : false,
+  isServerIssue: false,
 
   token: token,
-  isAdmin: token && token.length > 0,
-  isUserLoggedIn: token && token === admin_token
+  isAdmin: token && token === admin_token,
+  isUserLoggedIn: token && token.length > 0
 };
 
 const UseProvider = ({ children }) => {

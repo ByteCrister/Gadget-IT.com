@@ -36,8 +36,8 @@ const UpperImage = ({ viewProduct, product_id }) => {
                             <div
                                 className={styles.magnifier}
                                 style={{
-                                    top: `${magnifyPosition.y - 0}px`,
-                                    left: `${magnifyPosition.x - 0}px`,
+                                    top: `${magnifyPosition.y}px`,
+                                    left: `${magnifyPosition.x}px`,
                                     backgroundImage: `url(${viewProduct.images[currentImage]})`,
                                     backgroundSize: `${mainImageRef.current?.clientWidth * 2}px ${mainImageRef.current?.clientHeight * 2
                                         }px`,
