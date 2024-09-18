@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import style from '../../styles/AdminHome/addproducts.module.css';
 import { useData } from '../../context/useData';
 import axios from 'axios';
@@ -38,7 +38,7 @@ const AddProducts = React.memo(({ setAddProductState }) => {
 
     const [errors, setErrors] = useState({}); // To store validation errors
 
-    const handleCategoryChange = (e) => {
+    const handleCategoryChange =useCallback( (e) => {
         const value = e.target.value;
         if (value) {
             const filteredSubCategories = dataState.subCategoryName.filter(
@@ -52,9 +52,9 @@ const AddProducts = React.memo(({ setAddProductState }) => {
             setIsCategorySelected(false);
             setIsSubCategorySelected(false);
         }
-    };
+    }, [dataState.subCategoryName]);
 
-    const handleSubCategoryChange = (e) => {
+    const handleSubCategoryChange = useCallback((e) => {
         const value = e.target.value;
         if (value) {
             axios
@@ -74,9 +74,9 @@ const AddProducts = React.memo(({ setAddProductState }) => {
         } else {
             setIsSubCategorySelected(false);
         }
-    };
+    }, [mainCategory]);
 
-    const handleChange = (e) => {
+    const handleChange = useCallback((e) => {
         const { id, value, type, files } = e.target;
         if (type === 'file') {
             const file = files[0];
@@ -100,9 +100,9 @@ const AddProducts = React.memo(({ setAddProductState }) => {
                 [id]: value
             }));
         }
-    };
+    }, []);
 
-    const setKeyAndValue = (columns) => {
+    const setKeyAndValue = useCallback((columns) => {
         const filteredColumns = columns.filter(
             (columnName) =>
                 columnName !== 'product_id' &&
@@ -117,29 +117,29 @@ const AddProducts = React.memo(({ setAddProductState }) => {
             key: columnName,
             value: ''
         })));
-    };
+    }, []);
 
-    const handleInitialProductKeyValue = (e, index) => {
+    const handleInitialProductKeyValue = useCallback((e, index) => {
         const { value } = e.target;
         setTableColumnValue((prevState) => {
             const updatedValues = [...prevState];
             updatedValues[index].value = value;
             return updatedValues;
         });
-    };
+    }, []);
 
 
 
-    // ------------------------------New Description Function-----------------------------------------
+    //* ------------------------------New Description Function-----------------------------------------
 
-    const handleNewDescriptionHeadValue = () => {
+    const handleNewDescriptionHeadValue = useCallback(() => {
         setNewDescriptionHeadValue((prev) => [
             ...prev,
             { head: '', value: '' }
         ]);
-    };
+    }, []);
 
-    const handleDescriptionHeadValue = (e, index, type) => {
+    const handleDescriptionHeadValue = useCallback((e, index, type) => {
         const { value } = e.target;
         setNewDescriptionHeadValue((prevState) => {
             const updatedValues = [...prevState];
@@ -150,23 +150,24 @@ const AddProducts = React.memo(({ setAddProductState }) => {
             }
             return updatedValues;
         });
-    };
-    const handleDeleteDescriptionHeadValue = (index) => {
+    }, []);
+
+    const handleDeleteDescriptionHeadValue = useCallback((index) => {
         setNewDescriptionHeadValue((prev) =>
             prev.filter((_, i) => i !== index)
         );
-    };
+    }, []);
 
 
-    // ----------------------------New Product Column Function----------------------------------------
-    const handleNewKeyPoint = () => {
+    //* ----------------------------New Product Column Function----------------------------------------
+    const handleNewKeyPoint = useCallback(() => {
         setNewKeyValue((prev) => [
             ...prev,
             { key: '', value: '' }
         ]);
-    };
+    }, []);
 
-    const handleManageNewKeyValue = (e, index, type) => {
+    const handleManageNewKeyValue = useCallback((e, index, type) => {
         const { value } = e.target;
         setNewKeyValue((prevState) => {
             const updatedValues = [...prevState];
@@ -177,20 +178,21 @@ const AddProducts = React.memo(({ setAddProductState }) => {
             }
             return updatedValues;
         });
-    };
+    }, []);
 
-    const handleDeleteKeyValue = (index) => {
+    const handleDeleteKeyValue = useCallback((index) => {
         setNewKeyValue((prev) =>
             prev.filter((_, i) => i !== index)
         );
-    };
+    }, []);
 
 
-    // ------------------------------ New Extra Images ----------------------------------------------
-    const handleExtraImages = () => {
+    //* ------------------------------ New Extra Images ----------------------------------------------
+    const handleExtraImages = useCallback(() => {
         setExtraImages((prev) => [...prev, { base64: '', mimeType: '' }]);
-    };
-    const handleNewExtraImage = (e, index) => {
+    }, []);
+
+    const handleNewExtraImage = useCallback((e, index) => {
         const { type, files } = e.target;
         if (type === 'file') {
             const file = files[0];
@@ -206,11 +208,11 @@ const AddProducts = React.memo(({ setAddProductState }) => {
             };
             reader.readAsDataURL(file);
         }
-    };
-    const handleDeleteExtraImages = (index) => {
+    },[]);
+    const handleDeleteExtraImages = useCallback((index) => {
         setExtraImages((prev) =>
             prev.filter((_, i) => i !== index));
-    }
+    }, []);
 
     /* ********************** validation *********************** */
     const validateForm = () => {
@@ -265,7 +267,6 @@ const AddProducts = React.memo(({ setAddProductState }) => {
                 console.error('Error adding product:', error);
             });
     };
-    // *********************************************************************************
 
     return (
         <div id={style.addProductsMainContainer}>

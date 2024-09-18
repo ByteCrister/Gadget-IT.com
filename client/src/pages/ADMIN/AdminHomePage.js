@@ -45,8 +45,11 @@ const AdminHomePage = () => {
 
     return (
         <div className={styles.adminMainContainer}>
-            <div className={styles.leftSide}>
-                <LeftSide page={currentPageNo} handlePage={handlePage} />
+            <div className={styles.outerLeft}>
+                <div className={styles.leftSide}>
+                    <LeftSide page={currentPageNo} handlePage={handlePage} />
+                </div>
+                <div className={styles.innerLeft}></div>
             </div>
 
             <div className={styles.uppAndMain}>

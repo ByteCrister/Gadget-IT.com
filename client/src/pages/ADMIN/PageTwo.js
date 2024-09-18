@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
 import styles from '../../styles/AdminHome/PageTwo.module.css';
 import { FaEyeSlash } from "react-icons/fa6";
 import { FaSearch } from 'react-icons/fa';
@@ -25,59 +25,61 @@ const PageTwo = React.memo(() => {
   const searchRef = useRef();
 
   useEffect(() => {
-      console.log('page two renders');
-      setProductsData(dataState.Inventory_Page);
-      initializeCheck();
-      sortProducts(filterState.state);
-    
+    console.log('page two renders');
+    setProductsData(dataState.Inventory_Page);
+    initializeCheck();
+    sortProducts(filterState.state);
+
   }, [dataState, dispatch]);
 
 
   //* ------------------------------ product checked ------------------------
-  const initializeCheck = () => {
+  const initializeCheck = useCallback(() => {
     let check = [];
     dataState.Inventory_Page.map((items) => check.push({ id: items.id, check: false, table: items.category, hide: items.hide }));
     setIsChecked(check);
-  }
+  }, [dataState.Inventory_Page]);
 
-  const handleCheckboxChange = (id) => {
+  const handleCheckboxChange = useCallback((id) => {
     setIsChecked((prev) =>
       prev.map((item) =>
         item.id === id ? { ...item, check: !item.check, hide: item.hide === 0 ? 1 : 0 } : item
       )
     );
-  };
-  const checkOrNot = (id) => {
+  }, []);
+
+  const checkOrNot = useCallback((id) => {
     const item = isChecked.find((items) => items.id === id);
     return item ? item.check : false;
-  }
-  const handleAllChecked = ()=>{
+  }, [isChecked]);
+
+  const handleAllChecked = useCallback(() => {
     let checked = [];
-    isChecked.map((items)=> checked.push({ id: items.id, check: !items.check, table: items.category, hide: items.hide }) );
+    isChecked.map((items) => checked.push({ id: items.id, check: !items.check, table: items.category, hide: items.hide }));
     setIsChecked(checked);
-  }
-  
+  }, [isChecked]);
+
 
   //* --------------------- Parent Function of Pagination -----------------------
   const handleFilteredData = (data) => {
     setFilteredProducts(data);
   };
-  
+
 
   // * ------------------------------ Sort by Category --------------------------
-  const handleCategoryChange = (event) => {
+  const handleCategoryChange = useCallback((event) => {
     const category = event.target.value;
     if (category.length === 0) {
       setProductsData(dataState.Inventory_Page);
     } else {
       setProductsData(dataState.Inventory_Page.filter((item) => item.category === category));
     }
-  };
- 
+  }, [dataState.Inventory_Page]);
+
 
 
   //* ----------------------------- sorting with stock -----------------------------
-  const handleStockChange = (event) => {
+  const handleStockChange = useCallback((event) => {
     const stock = event.target.value;
 
     if (stock.length === 0) {
@@ -89,8 +91,8 @@ const PageTwo = React.memo(() => {
     } else {
       setProductsData(dataState.Inventory_Page.filter((item) => item.reserved <= item.quantity));
     }
-  };
-  
+  }, [dataState.Inventory_Page]);
+
 
   //* ------------------------ Sort by Filtering ---------------------------
   const handleFilterState = () => {
@@ -113,14 +115,14 @@ const PageTwo = React.memo(() => {
     }
     setProductsData(sortedData);
   };
- 
+
 
   //* ---------------------- searching ---------------------------
   const handleSearchChange = () => {
     const search = searchRef.current.value;
     SearchInventory(search, dataState.Inventory_Page, setProductsData);
   }
-  
+
 
   //* ------------------- Hide --------------------------
   const handleProductHide = async () => {
@@ -133,32 +135,32 @@ const PageTwo = React.memo(() => {
       }
       return product;
     });
-    
+
     setProductsData(updatedProductsData);
     // console.log(JSON.stringify(checkedItems, null, 2));
     try {
-      await axios.post('http://localhost:7000/update/hide', { checkedItems : checkedItems });
+      await axios.post('http://localhost:7000/update/hide', { checkedItems: checkedItems });
       await Api_Inventory(dispatch);
     } catch (error) {
       console.log(error);
     }
   };
-  
 
 
-   //* ------------------- Handle Product Delete --------------------------
-   const handleProductDelete = async () => {
+
+  //* ------------------- Handle Product Delete --------------------------
+  const handleProductDelete = async () => {
     const checkedItems = isChecked.filter((item) => item.check === true);
     try {
       await axios.post('http://localhost:7000/delete/products', { checkedItems });
       await Api_Inventory(dispatch);
       setProductsData((prevData) => prevData.filter((item) => !checkedItems.some((checkedItem) => checkedItem.id === item.id)));
-      initializeCheck(); 
+      initializeCheck();
     } catch (error) {
       console.log(error);
     }
   };
-  
+
 
   return (
     <div className={styles.mainPageTwoContainer}>
@@ -245,7 +247,7 @@ const PageTwo = React.memo(() => {
                       }
                     </button>
                     <button className={styles.actionButton}>
-                      <FaTrash id={styles.TrashIcon} onClick={handleProductDelete}/>
+                      <FaTrash id={styles.TrashIcon} onClick={handleProductDelete} />
                     </button>
                   </div>
                 </td>

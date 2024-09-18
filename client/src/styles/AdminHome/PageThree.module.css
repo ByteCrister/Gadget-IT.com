@@ -179,7 +179,13 @@
   border: 1px solid #cccccc;
   padding: 10px 12px;
   text-align: center;
-  color: grey;
+}
+
+.productTable td {
+  font-size: 18px;
+  color: #5f5f5f;
+  font-weight: 600;
+
 }
 
 .productTable th {

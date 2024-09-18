@@ -1,4 +1,4 @@
-const db = require("./DB");
+const db = require("../config/DB");
 
 module.exports = {
     CreateNewCategoryModel: (categoryName, callback) => {

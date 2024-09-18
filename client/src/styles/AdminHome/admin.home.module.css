@@ -121,16 +121,19 @@
 
 
 /*------------------------------------------*/
-.leftSide {
-    background-color: rgb(237, 242, 242);
+.innerLeft, .leftSide{
     width: 270px;
     height: 100vh;
+}
+.leftSide {
+    background-color: rgb(237, 242, 242);
     display: flex;
     flex-direction: column;
-    /* justify-content:space-around; */
     align-items: center;
     gap: 15px;
+    position: fixed;
 }
+
 
 .log_name {
     padding: 10px;

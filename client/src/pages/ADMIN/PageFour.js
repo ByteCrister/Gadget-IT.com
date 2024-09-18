@@ -26,8 +26,8 @@ const PageFour = () => {
     }
   }
 
-  const handleFilteredData = (data)=>{
-    setFilteredProducts((prev)=> data);
+  const handleFilteredData = (data) => {
+    setFilteredProducts((prev) => data);
   }
 
   const orderCount = {
@@ -169,8 +169,8 @@ const PageFour = () => {
           </table>
 
 
-              <Pagination productsData={mainProducts} handleFilteredData={handleFilteredData}/>
-          
+          <Pagination productsData={mainProducts} handleFilteredData={handleFilteredData} />
+
         </section>
 
 

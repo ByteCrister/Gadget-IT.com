@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
 const secretKey = process.env.JWT_SECRET_KEY;
-const { SendUserMail } = require('./send.mail.controller.js');
+const { SendUserMail } = require('../config/send.mail.controller.js');
 const saltRounds = 10;
 
 module.exports = {

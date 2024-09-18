@@ -1,5 +1,4 @@
-const { query } = require('express');
-const db = require('./DB');
+const db = require('../config/DB');
 module.exports = {
     getProductionModel: (table, callback) => {
         const query = `
