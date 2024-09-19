@@ -1,6 +1,12 @@
 const db = require("../config/DB");
 
 module.exports = {
+    getMainCategory : (callback)=>{
+        db.query('select category_name from category ;', callback);
+    },
+    getSubCategory : (callback)=>{
+        db.query('select sub_category_name from sub_category ;', callback);
+    },
     CreateNewCategoryModel: (categoryName, callback) => {
         db.query(
             `create table ${categoryName}
@@ -20,6 +26,10 @@ module.exports = {
         );
     },
 
+    getMainCategoryNames: (category, callback) => {
+        db.query('select * from category where category_name = ? ;', [category], callback);
+    },
+
     insertNewMainCategoryModel: (categoryName, callback) => {
         db.query(
             `insert into category(category_name)
@@ -36,6 +46,9 @@ module.exports = {
             [sub, main],
             callback
         );
+    },
+    deleteProductsWithSubNames: (SubCategory, MainCategory, callback) => {
+        db.query(`delete from ${MainCategory} where sub_category = ? ;`, [SubCategory], callback);
     },
 
     deleteMainCategoryTable: (table, callback) => {
@@ -74,13 +87,40 @@ module.exports = {
             callback
         );
     },
-
-    deleteSortingOptions: (category, callback) => {
+    deleteSingleSubCategory: (SubCategory, MainCategory, callback) => {
+        console.log(`delete from sub_category where sub_category_name = ${SubCategory} and main_category_name = ${MainCategory} ;`);
         db.query(
-            `delete from sorting where category = ? ;`
+            `delete from sub_category where sub_category_name = ? and main_category_name = ? ;`,
+            [SubCategory, MainCategory],
+            callback
+        );
+    },
+
+    deleteExtraImages: (category, callback) => {
+        db.query(
+            `delete from extra_images where category = ? ;`
             , [category]
             , callback
         );
+    },
+    deleteFeaturedCategory: (category, callback) => {
+        db.query(
+            `delete from featured_category_icon where main_category = ? ;`
+            , [category]
+            , callback
+        );
+    },
+    deleteHome_product_select: (category, callback) => {
+        db.query(
+            `delete from home_product_select where main_category = ? ;`
+            , [category]
+            , callback
+        );
+    },
+
+    deleteColumnModel: (table, column, callback) => {
+        const sql = `ALTER TABLE ?? DROP COLUMN ??`;
+        db.query(sql, [table, column], callback);
     },
 
     renameMainCategoryTable: (oldName, newName, callback) => {
@@ -128,15 +168,31 @@ module.exports = {
             callback
         );
     },
+    renameExtraImages: (oldName, newName, callback) => {
+        db.query(
+            `update extra_images set category = ? where category = ?`,
+            [newName, oldName],
+            callback
+        );
+    },
+    renameFeaturedIcons: (oldName, newName, callback) => {
+        db.query(
+            `update featured_category_icon set main_category = ? where main_category = ?`,
+            [newName, oldName],
+            callback
+        );
+    },
+    renameHomeProduct: (oldName, newName, callback) => {
+        db.query(
+            `update home_product_select set main_category = ? where main_category = ?`,
+            [newName, oldName],
+            callback
+        );
+    },
 
     addNewColumnModel: (table, newColumn, insertAfter, callback) => {
         const sql = `ALTER TABLE ?? ADD ?? varchar(255) AFTER ??`;
         db.query(sql, [table, newColumn, insertAfter], callback);
-    },
-
-    deleteColumnModel: (table, column, callback) => {
-        const sql = `ALTER TABLE ?? DROP COLUMN ??`;
-        db.query(sql, [table, column], callback);
     },
 
     renameColumnModel: (table, oldName, newName, callback) => {

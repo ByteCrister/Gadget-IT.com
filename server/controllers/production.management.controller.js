@@ -1,4 +1,18 @@
 const productionManageModel = require("../models/production.manage.model");
+const getTableName = (table, MainTables, SubTables) => {
+    const mainTableExists = MainTables.some((item) => item.category_name === table);
+    if (mainTableExists) {
+        return table;
+    } else {
+        const subTable = SubTables.filter((item) => item.sub_category_name === table);
+        if (subTable.length > 0) {
+            return getTableName(subTable[0].main_category_name, MainTables, SubTables);
+        } else {
+            return null;
+        }
+    }
+};
+
 
 const DeletingSubCategory = async (category, subCategoryArr) => {
     try {
@@ -77,6 +91,7 @@ module.exports = {
     },
 
     DeleteCategory: async (req, res) => {
+        console.log('Main : ' + req.body.main + '  Sub : ' + req.body.sub);
         try {
             if (req.body.main === req.body.sub) {
                 //Delete the main category table
@@ -102,7 +117,7 @@ module.exports = {
                 });
                 //Delete all sorting options
                 await new Promise((resolve, reject) => {
-                    productionManageModel.deleteSortingOptions(req.body.main, (err, data) => {
+                    productionManageModel.deleteSortingOptionOfCategory(req.body.main, (err, data) => {
                         if (err) reject(err)
                         else resolve(data)
                     })
@@ -114,12 +129,65 @@ module.exports = {
                         else resolve(data)
                     })
                 });
+                //Delete from extra_images 
+                await new Promise((resolve, reject) => {
+                    productionManageModel.deleteExtraImages(req.body.main, (err, data) => {
+                        if (err) reject(err)
+                        else resolve(data)
+                    })
+                });
+                //Delete from featured category icon's 
+                await new Promise((resolve, reject) => {
+                    productionManageModel.deleteFeaturedCategory(req.body.main, (err, data) => {
+                        if (err) reject(err)
+                        else resolve(data)
+                    })
+                });
+                //Delete from home product select
+                await new Promise((resolve, reject) => {
+                    productionManageModel.deleteHome_product_select(req.body.main, (err, data) => {
+                        if (err) reject(err)
+                        else resolve(data)
+                    })
+                });
+
+
                 //Delete sub category's of this main category
                 await DeletingSubCategory(req.body.main, [req.body.main]);
             } else {
+                // Deleting product's with this sub category names
+                const ReturnedNames = await new Promise((resolve, reject) => {
+                    productionManageModel.getMainCategoryNames(req.body.main, (err, data) => {
+                        if (err) reject(err)
+                        resolve(data);
+                    });
+                });
+                if (ReturnedNames && ReturnedNames.length > 0) {
+                    productionManageModel.deleteProductsWithSubNames(req.body.sub, req.body.main, (err, data) => {
+                        if (err) reject(err)
+                        resolve(data);
+                    });
+                } else {
+                    //Have to find out the table name first
+                    const MainCategory = productionManageModel.getMainCategory((err, data) => {
+                        if (err) reject(err)
+                        resolve(data);
+                    });
+                    const SubCategory = productionManageModel.getSubCategory((err, data) => {
+                        if (err) reject(err)
+                        resolve(data);
+                    });
+
+                    const MainTable = getTableName(req.body.sub, MainCategory, SubCategory);
+                    productionManageModel.deleteProductsWithSubNames(req.body.sub, MainTable, (err, data) => {
+                        if (err) reject(err)
+                        resolve(data);
+                    });
+
+                }
                 //Delete this subCategory and it's other sub category's
                 await new Promise((resolve, reject) => {
-                    productionManageModel.deleteSubCategory(req.body.sub, (err, data) => {
+                    productionManageModel.deleteSingleSubCategory(req.body.sub, req.body.main, (err, data) => {
                         if (err) reject(err)
                         else resolve(data)
                     })
@@ -135,7 +203,10 @@ module.exports = {
     },
 
     renameCategoryController: async (req, res) => {
+        console.log('Main : ' + req.body.main + '  Sub : ' + req.body.sub);
         try {
+            //* Is current category main or sub?
+            const CurrentCategory = req.body.main === req.body.sub ? req.body.main : req.body.sub
             if (req.body.main === req.body.sub) {
                 await new Promise((resolve, reject) => {
                     productionManageModel.renameMainCategoryTable(req.body.main, req.body.newName, (err, data) => {
@@ -149,33 +220,52 @@ module.exports = {
                         else resolve(data)
                     })
                 })
-            }
+            };
+
             await new Promise((resolve, reject) => {
-                productionManageModel.renameSubCategoryOfMainName(req.body.sub, req.body.newName, (err, data) => {
+                productionManageModel.renameSubCategoryOfMainName(CurrentCategory, req.body.newName, (err, data) => {
                     if (err) reject(err)
                     else resolve(data)
                 })
             });
             await new Promise((resolve, reject) => {
-                productionManageModel.renameSubCategoryOfSubName(req.body.sub, req.body.newName, (err, data) => {
+                productionManageModel.renameSubCategoryOfSubName(CurrentCategory, req.body.newName, (err, data) => {
                     if (err) reject(err)
                     else resolve(data)
                 })
             });
             await new Promise((resolve, reject) => {
-                productionManageModel.renameSubCategoryOnDescription(req.body.sub, req.body.newName, (err, data) => {
+                productionManageModel.renameSubCategoryOnDescription(CurrentCategory, req.body.newName, (err, data) => {
                     if (err) reject(err)
                     else resolve(data)
                 })
             });
             await new Promise((resolve, reject) => {
-                productionManageModel.renameCategoryOfSorting(req.body.sub, req.body.newName, (err, data) => {
+                productionManageModel.renameCategoryOfSorting(CurrentCategory, req.body.newName, (err, data) => {
                     if (err) reject(err)
                     else resolve(data)
                 })
             });
             await new Promise((resolve, reject) => {
-                productionManageModel.renameCategoryOfKeyFeature(req.body.sub, req.body.newName, (err, data) => {
+                productionManageModel.renameCategoryOfKeyFeature(CurrentCategory, req.body.newName, (err, data) => {
+                    if (err) reject(err)
+                    else resolve(data)
+                })
+            });
+            await new Promise((resolve, reject) => {
+                productionManageModel.renameExtraImages(CurrentCategory, req.body.newName, (err, data) => {
+                    if (err) reject(err)
+                    else resolve(data)
+                })
+            });
+            await new Promise((resolve, reject) => {
+                productionManageModel.renameFeaturedIcons(CurrentCategory, req.body.newName, (err, data) => {
+                    if (err) reject(err)
+                    else resolve(data)
+                })
+            });
+            await new Promise((resolve, reject) => {
+                productionManageModel.renameHomeProduct(CurrentCategory, req.body.newName, (err, data) => {
                     if (err) reject(err)
                     else resolve(data)
                 })
@@ -264,21 +354,6 @@ module.exports = {
             res.status(500).json({ error: "Failed inserting new Sort." });
         }
     },
-
-    // deleteSortingOption: async (req, res) => {
-    //     try {
-    //         await new Promise((resolve, reject) => {
-    //             productionManageModel.deleteSortingOptionModel(req.body.category, req.body.column, (err, data) => {
-    //                 if (err) reject(err)
-    //                 else resolve(data)
-    //             })
-    //         })
-    //         res.status(200).json({ message: 'Deleted Sort Option.' });
-    //     } catch (error) {
-    //         console.log(error);
-    //         res.status(500).json({ error: "Failed deleting  Sort option." });
-    //     }
-    // },
 
     insertNewKeyFeature: async (req, res) => {
         try {
