@@ -86,6 +86,22 @@ module.exports = {
             const { firstName, lastName, email, password, route } = decoded;
             console.log('Decoded token:', decoded);
 
+            const EmailExistResult = await new Promise((resolve, reject) => {
+                userModel.userEmailExistModel(email, (err, data) => {
+                    if (err) reject(err)
+                    resolve(data)
+                });
+            });
+
+            if (EmailExistResult && EmailExistResult.length > 0) {
+                //* Email already exists in the database
+                console.log('Email exists - ' + EmailExistResult.length);
+                return res.status(400).send(`<d style="display: flex; justify-content: center; align-items: center; height:100vh">
+                    <h2>You have already an account!! Try with another one.</h2>
+                    </div>`);
+            }
+
+
             //* Insert new user into the database
             const results = await new Promise((resolve, reject) => {
                 userModel.newUserEntryModel({ first_name: firstName, last_name: lastName, email, password }, (err, results) => {
@@ -99,12 +115,6 @@ module.exports = {
 
             console.log('User saved:', results);
 
-            //* Setup session for the user
-            req.session.isAdmin = false;
-            req.session.isLogged = true;
-            req.session.userId = results.insertId;
-
-            //* Save the session
             await new Promise((resolve, reject) => {
                 req.session.save((err) => {
                     if (err) {
@@ -117,7 +127,7 @@ module.exports = {
 
             console.log('New user registered with id:', req.session.userId);
 
-            //* Redirect the user to the specified route
+            //* Redirect the user to the home route
             return res.redirect('http://localhost:3000');
 
         } catch (error) {
@@ -128,7 +138,7 @@ module.exports = {
                     </div>`);
             } else {
                 console.error('Error in newUserRegistrationController:', error);
-                return res.status(400).json({ message: 'Invalid or malformed token' });
+                return res.status(400).json({ message: 'Invalid or malformed token. Please try again later' });
             }
         }
     },
@@ -218,7 +228,7 @@ module.exports = {
 
 
 
-    // * -------------------------------------- reset password if forgot ------------------------------------ *
+    // * -------------------------------------- reset password ------------------------------------ *
     UserForgotPasswordController: async (req, res) => {
         const { email, password } = req.body;
 
@@ -258,7 +268,7 @@ module.exports = {
         try {
             const { token } = req.query;
 
-            // Verify and decode the token
+            //* Verify and decode the token
             const decoded = jwt.verify(token, secretKey);
             const { email, password } = decoded;
 
