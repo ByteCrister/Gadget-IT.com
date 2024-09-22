@@ -10,38 +10,34 @@ import { User_Home } from '../api/User_Home';
 import { User_Products } from '../api/User_Products';
 
 const admin_token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`;
-const token = JSON.parse(window.localStorage.getItem('token')) || false;
+const tokenString = window.localStorage.getItem('token');
+const token = tokenString ? JSON.parse(tokenString) : false;
+const isValidToken = token && typeof token === 'string' && token.length > 0;
 
 const initialValues = {
   menuItems: [],
-
   productStorage: null,
   UserHomeContents: [],
-
   categoryName: [],
   subCategoryName: [],
-
   Inventory_Page: [],
   Production_Page: [],
   Setting_Page: [],
-
-
   pathSettings: { prevPath: '/', currPath: '/' },
-
-
   isLoading: false,
   isError: false,
   isServerIssue: false,
-
   token: token,
-  isAdmin: token && token === admin_token,
-  isUserLoggedIn: token && token.length > 0
+  isAdmin: isValidToken && token === admin_token, 
+  isUserLoggedIn: isValidToken 
 };
+
 
 const UseProvider = ({ children }) => {
   const [dataState, dispatch] = useReducer(reducer, initialValues);
 
   useEffect(() => {
+    console.log('Provider runs...');
     const initializeData = async () => {
       dispatch({ type: 'toggle_loading', payload: true });
 

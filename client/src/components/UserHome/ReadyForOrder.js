@@ -20,19 +20,45 @@ const ReadyForOrder = () => {
         <section className={styles.readyForOrders}>
             <h1>Ready for Order <ImFire className={styles.fire_icon} /></h1>
             <Swiper
-                slidesPerView={1}
-                spaceBetween={10}
+                slidesPerView={5}
+                spaceBetween={35}
                 navigation={true}
+                centeredSlides={true}
                 autoplay={{
                     delay: 10000,
                     disableOnInteraction: false,
                 }}
                 modules={[Navigation, Autoplay]}
                 breakpoints={{
-                    640: { slidesPerView: 2, spaceBetween: 5 },
-                    768: { slidesPerView: 3, spaceBetween: 10 },
-                    1024: { slidesPerView: 4, spaceBetween: 20 },
-                    1280: { slidesPerView: 6, spaceBetween: 30 }
+                    0: {
+                        slidesPerView: 1,
+                        centeredSlides: true,  
+                        spaceBetween : 0
+                    },
+                    400: {
+                        slidesPerView: 2,
+                        centeredSlides: false, 
+                    },
+                    639: {
+                        slidesPerView: 3,
+                        centeredSlides: false,
+                    },
+                    865: {
+                        slidesPerView: 4,
+                        centeredSlides: false,
+                    },
+                    1000: {
+                        slidesPerView: 5,
+                        centeredSlides: false,
+                    },
+                    1500: {
+                        slidesPerView: 6,
+                        centeredSlides: false,
+                    },
+                    1700: {
+                        slidesPerView: 7,
+                        centeredSlides: false,
+                    }
                 }}
                 className={styles.ready_carts}
             >

@@ -7,25 +7,14 @@ import UpperImage from '../../components/UserHome/UpperImage';
 import UpperFeature from '../../components/UserHome/UpperFeature';
 import { IoHomeSharp } from 'react-icons/io5';
 import { MakeDefendants } from '../../HOOKS/MakeDefendants';
-import ProductCart from '../../HOOKS/ProductCart';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+
+
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import RandomErrorPage from '../RandomErrorPage';
+import ViewProductSwiper from '../../components/UserHome/ViewProductSwiper';
 
 const ViewProduct = () => {
     const { dataState, dispatch } = useContext(useData);
-    const [viewProduct, setViewProduct] = useState({
-        images: [],
-        productInformation: {},
-        description: [],
-        ratings: [],
-        askedQuestion: [],
-        keyFeature: [],
-        product_prices: {}
-    });
     const [MainTableData, setMainTableData] = useState([]);
     const [currSectionState, setCurrSectionState] = useState(1);
 
@@ -35,13 +24,23 @@ const ViewProduct = () => {
     const { category, 'product-id': product_id } = useParams();
 
 
+    const [viewProduct, setViewProduct] = useState({
+        images: [],
+        productInformation: {},
+        description: [],
+        ratings: [],
+        askedQuestion: [],
+        keyFeature: [],
+        product_prices: {}
+    });
+
     useEffect(() => {
         if (!category) {
             setIsInvalidCategory(true);
             return;
         }
 
-        if (!dataState || !category || !product_id) return;
+        if (!dataState || !dataState.productStorage || !category || !product_id) return;
 
         const MainTable = GetMainTable(category, dataState.productStorage.category, dataState.productStorage.subCategory);
         if (!MainTable) return;
@@ -57,17 +56,19 @@ const ViewProduct = () => {
 
         const relatedProducts = ProductTable.table_products?.filter(item => item.sub_category === productInformation.sub_category && item.main_category === category);
 
+        const productPrices = dataState.productStorage.product_prices?.find(item => item.product_id === Number(product_id)) || {};
+        console.log(productPrices);
+
         setViewProduct((prev) => ({
             ...prev,
-            productInformation: productInformation,
-            description: productDescription,
+            productInformation: productInformation || {},
+            description: productDescription || [],
             images: [...productImages, ...extraImages],
-            keyFeature: productKeyFeature,
-            product_prices: dataState.productStorage.product_prices?.find(item => item.product_id === Number(product_id))
+            keyFeature: productKeyFeature || [],
+            product_prices: productPrices
         }));
 
         setMainTableData(relatedProducts || []);
-
     }, [category, product_id, dataState]);
 
     useEffect(() => {
@@ -84,7 +85,7 @@ const ViewProduct = () => {
     }, [dataState.productStorage.product_prices]);
 
     const relatedProductsMemo = useMemo(() => {
-        const viewProductPrice = Number(viewProduct.product_prices.price);
+        const viewProductPrice = Number(viewProduct.product_prices?.price || 0);
 
         const lowerBound = viewProductPrice - (20 / 100) * viewProductPrice;
         const upperBound = viewProductPrice + (30 / 100) * viewProductPrice;
@@ -127,26 +128,7 @@ const ViewProduct = () => {
             {relatedProductsMemo && relatedProductsMemo.length > 0 && (
                 <section className={styles.readyForOrders}>
                     <span className={styles.product_cart_head}>Related Products</span>
-                    <Swiper
-                        slidesPerView={1}
-                        spaceBetween={10}
-                        navigation
-                        autoplay={{ delay: 10000, disableOnInteraction: false }}
-                        modules={[Navigation, Autoplay]}
-                        breakpoints={{
-                            640: { slidesPerView: 2, spaceBetween: 5 },
-                            768: { slidesPerView: 3, spaceBetween: 10 },
-                            1024: { slidesPerView: 4, spaceBetween: 20 },
-                            1280: { slidesPerView: 6, spaceBetween: 30 }
-                        }}
-                        className={styles.ready_carts}
-                    >
-                        {relatedProductsMemo.map(item => (
-                            <SwiperSlide key={item.product_id}>
-                                <ProductCart product={item} />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
+                    <ViewProductSwiper relatedProductsMemo={relatedProductsMemo} />
                 </section>
             )}
 

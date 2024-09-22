@@ -12,6 +12,7 @@ const UpperImage = ({ viewProduct, product_id }) => {
         const rect = mainImageRef.current.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
+        console.log("X : " + x + " Y : " + y + "  clientX : " + e.clientX + "  clientY : " + e.clientY + "   left : " + rect.left + "   top : " + rect.top);
         setMagnifyPosition({ x, y });
     };
 

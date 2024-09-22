@@ -42,7 +42,7 @@ const UserHomeRoutes = () => {
     };
 
     return (
-        <div style={{ width: '100%', height: '100vh', position: 'relative' }}>
+        <div style={{ position: 'relative' }}>
             <NavBar handleUserEntryPage={handleUserEntryPage} />
             <TopNav />
 

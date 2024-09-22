@@ -283,10 +283,15 @@
 .ready_carts {
     width: 100%;
     display: flex;
-    gap: 5px;
+    gap: 20px;
     justify-content: space-evenly;
     align-items: center;
 }
+.swiper_button_next, .swiper_button_prev {
+    background-color: #f7630c;
+    border-radius: 50%;
+}
+
 
 /* ----------------------- end ------------------------ */
 

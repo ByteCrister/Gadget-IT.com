@@ -69,7 +69,7 @@
 
 }
 
-/* Default for larger screens */
+/*** Default for larger screens */
 .filtering_sorting {
     width: 330px;
     display: flex;
