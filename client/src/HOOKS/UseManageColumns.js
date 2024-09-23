@@ -153,6 +153,43 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
   };
   const isCheckedKeyFeature = (column) => selectKeyFeature.includes(column);
 
+
+  const isValid = (e)=>{
+    const trimmed_value = e.target.value.trim();
+    const last_letter = trimmed_value.toLowerCase().charAt(trimmed_value.length - 1);
+    const accepted_letters = 'abcdefghijklmnopqrstuvwxyz_';
+    return accepted_letters.includes(last_letter);
+
+  };
+
+  const handleNewColumnName = (e)=>{
+    const key = e.nativeEvent.inputType;
+    if (key === 'deleteContentBackward') {
+      setNewColumn((prev)=>({
+            ...prev,
+            newColumnName : prev.newColumnName.slice(0, -1)
+        }));
+        return;
+    }
+    if(isValid(e)){
+      setNewColumn({ ...newColumn, newColumnName: e.target.value.trim().toLowerCase() });
+    }
+  };
+  const handleRenameColumn = (e)=>{
+    const key = e.nativeEvent.inputType;
+    if (key === 'deleteContentBackward') {
+      setRenameColumn((prev)=>({
+            ...prev,
+            newName : prev.newName.slice(0, -1)
+        }));
+        return;
+    }
+    if(isValid(e)){
+      setRenameColumn({ ...renameColumn, newName: e.target.value.trim().toLowerCase() });
+    }
+  };
+  
+
   return (
     <section className={styles.manageColumnsSection}>
       {selectState === 1 && (
@@ -173,7 +210,7 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
           <input
             type="text"
             value={newColumn.newColumnName}
-            onChange={(e) => setNewColumn({ ...newColumn, newColumnName: e.target.value.trim().toLowerCase() })}
+            onChange={(e) => handleNewColumnName(e)}
           />
           <button onClick={handleAddColumn}>Add Column</button>
         </div>
@@ -213,7 +250,7 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
             type="text"
             placeholder="New Name"
             value={renameColumn.newName}
-            onChange={(e) => setRenameColumn({ ...renameColumn, newName: e.target.value.trim().toLowerCase() })}
+            onChange={(e) => handleRenameColumn(e)}
           />
           <button onClick={handleRename}>Rename</button>
         </div>

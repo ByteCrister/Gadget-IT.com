@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import reducer from './reducer';
 import { useData } from './useData';
 import { GetMenuItems } from '../api/GetMenuItems';

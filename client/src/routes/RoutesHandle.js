@@ -2,7 +2,6 @@ import React, { useContext, useMemo } from 'react';
 import { Routes, Route } from "react-router-dom";
 import { useData } from '../context/useData';
 
-//* Lazy load components to improve performance by loading only when needed
 const RouteErrorPage = React.lazy(() => import('../pages/RouteErrorPage'));
 const RandomErrorPage = React.lazy(() => import('../pages/RandomErrorPage'));
 const LoadingPage = React.lazy(() => import('../pages/LoadingPage'));
@@ -12,8 +11,7 @@ const UserHomeRoutes = React.lazy(() => import('../routes/UserHomeRoutes'));
 
 const RoutesHandle = () => {
   const { dataState } = useContext(useData);
-
-  //* useMemo to memoize condition-based component rendering
+  
   const renderContent = useMemo(() => {
     if (dataState.isError) {
       return <RandomErrorPage />;

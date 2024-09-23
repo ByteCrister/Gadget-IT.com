@@ -1,9 +1,14 @@
-export const GetCategoryName = (name) => {
-    let formatted = name.replace(/_/g, ' ');
+export const GetCategoryName = (category) => {
+    let name = '';
+    let names = '';
+    category.split('_').forEach((item_name, index) => {
+        name = item_name === 'and' ? item_name.charAt(0) : item_name.charAt(0).toUpperCase();
+        if (index === 0) {
+            names += name + item_name.substring(1);
+        } else {
+            names += ' ' + name + item_name.substring(1);
+        }
+    });;
 
-    formatted = formatted.split(' ').map(word => {
-        return word.toLowerCase() === 'and' ? word : word.charAt(0).toUpperCase() + word.slice(1);
-    }).join(' ');
-
-    return formatted;
+    return names;
 }
