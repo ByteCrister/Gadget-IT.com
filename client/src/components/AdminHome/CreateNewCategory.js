@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../../styles/AdminHome/CreateNewTable.module.css';
 import axios from 'axios';
 import CategoryRadioGroup from '../../HOOKS/CategoryRadioGroup';
@@ -12,9 +12,9 @@ const CreateNewCategory = React.memo(() => {
     const [selectedDeleteCategory, setSelectedDeleteCategory] = useState({ main: '', sub: '' });
 
     const [AllCategoryRef, setAllCategoryRef] = useState({
-        newCategoryRef : '',
-        newSubRef : '',
-        renamedCategoryRef : ''
+        newCategoryRef: '',
+        newSubRef: '',
+        renamedCategoryRef: ''
     });
 
     useEffect(() => {
@@ -78,36 +78,35 @@ const CreateNewCategory = React.memo(() => {
         setRenameCategory({ main: '', sub: '' });
     };
 
-    const handleCategoryInput = (e, Ref_name) => {
+
+    const handleCategoryInput = (e) => {
         const key = e.nativeEvent.inputType;
         if (key === 'deleteContentBackward') {
-            setAllCategoryRef((prev)=>({
+            setAllCategoryRef((prev) => ({
                 ...prev,
-                [Ref_name] : prev[Ref_name].slice(0, -1)
+                [e.target.id]: prev[e.target.id].slice(0, -1)
             }));
             return;
         }
-
         const trimmed_value = e.target.value.trim();
         const last_letter = trimmed_value.toLowerCase().charAt(trimmed_value.length - 1);
         const accepted_letters = 'abcdefghijklmnopqrstuvwxyz_';
         const isValid = accepted_letters.includes(last_letter);
         if (isValid) {
-            setAllCategoryRef((prev)=>({
+            setAllCategoryRef((prev) => ({
                 ...prev,
-                [Ref_name] : prev[Ref_name] + last_letter
+                [e.target.id]: prev[e.target.id] + last_letter
             }));
-            return;
         }
 
-    }
+    };
 
     const renderOptionContent = () => {
         switch (currentOption) {
             case 1:
                 return (
                     <div className={styles.CreateNewCategory}>
-                        <input type='text' placeholder='enter new category_name' value={AllCategoryRef.newCategoryRef} onChange={(e) => handleCategoryInput(e, 'newCategoryRef')} />
+                        <input type='text' id='newCategoryRef' placeholder='enter new category_name' value={AllCategoryRef.newCategoryRef} onChange={(e) => handleCategoryInput(e)} />
                         <button onClick={handleCreateNewCategory}>Create</button>
                     </div>
                 );
@@ -123,7 +122,7 @@ const CreateNewCategory = React.memo(() => {
                         />
                         {selectedMainCategory && (
                             <div className={styles.CreateNewCategory}>
-                                <input type='text' placeholder='new sub category_name' value={AllCategoryRef.newSubRef} onChange={(e)=> handleCategoryInput(e, 'newSubRef')}/>
+                                <input type='text' id='newSubRef' placeholder='new sub category_name' value={AllCategoryRef.newSubRef} onChange={(e) => handleCategoryInput(e)} />
                                 <button onClick={handleNewSubCategory}>Create</button>
                             </div>
                         )}
@@ -158,7 +157,7 @@ const CreateNewCategory = React.memo(() => {
                         />
                         {renameCategory.main && (
                             <div className={styles.CreateNewCategory}>
-                                <input type='text' placeholder='new name ?' value={AllCategoryRef.renamedCategoryRef} onChange={(e)=> handleCategoryInput(e, 'renamedCategoryRef')}/>
+                                <input type='text' id='renamedCategoryRef' placeholder='new name ?' value={AllCategoryRef.renamedCategoryRef} onChange={(e) => handleCategoryInput(e)} />
                                 <button onClick={handleRenameChangeState}>Rename</button>
                             </div>
                         )}

@@ -21,7 +21,7 @@ const PageTwo = React.memo(() => {
 
   const [isChecked, setIsChecked] = useState([]);
   const [addProductState, setAddProductState] = useState(false);
-  const [filterState, setFilterState] = useState({ state: 0, filterStyle: { backgroundColor: 'grey' } });
+  const [filterState, setFilterState] = useState({ state: 0, filterStyle: { backgroundColor: '#5d5d5d' } });
   const searchRef = useRef();
 
   useEffect(() => {
@@ -238,7 +238,7 @@ const PageTwo = React.memo(() => {
                 <td>{data.incoming}</td>
                 <td>{data.reserved}</td>
                 <td>{data.quantity}</td>
-                <td>${data.price}</td>
+                <td>{data.price}৳</td>
                 <td>
                   <div className={styles.actionButtons}>
                     <button className={styles.actionButton} onClick={handleProductHide}>

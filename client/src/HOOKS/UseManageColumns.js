@@ -4,9 +4,15 @@ import axios from 'axios';
 
 const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory }) => {
   const [allColumnNames, setAllColumnNames] = useState([]);
-  const [newColumn, setNewColumn] = useState({ insertAfter: '', newColumnName: '' });
   const [deleteColumn, setDeleteColumn] = useState('');
-  const [renameColumn, setRenameColumn] = useState({ oldName: '', newName: '' });
+
+  const [newAndRenameColumn, setNewAndRenameColumn] = useState({
+    insertAfter: '',
+    newColumnName: '',
+    oldName: '',
+    newName: ''
+  });
+
   // const [selectedSorting, setSelectedSorting] = useState([]);
   const [selectKeyFeature, setSelectKeyFeature] = useState([]);
   const [change_sort_by_names, setChange_sort_by_names] = useState({
@@ -28,10 +34,14 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
 
       // console.log(JSON.stringify(res.data.sorting, null, 2));
       setSelectKeyFeature(res.data.keyFeature);
-
-      setNewColumn({ insertAfter: '', newColumnName: '' });
+      setNewAndRenameColumn((prev) => ({
+        ...prev,
+        insertAfter: '',
+        newColumnName: '',
+        oldName: '',
+        newName: ''
+      }));
       setDeleteColumn('');
-      setRenameColumn({ oldName: '', newName: '' });
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +57,7 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
     try {
       await axios.post('http://localhost:7000/add/column', {
         table: selectedMainCategory,
-        ...newColumn
+        ...newAndRenameColumn
       });
       setSelectState(0);
       renderColumns(); // Refetch columns after adding
@@ -73,7 +83,7 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
     try {
       await axios.post('http://localhost:7000/rename/column', {
         table: selectedMainCategory,
-        ...renameColumn
+        ...newAndRenameColumn
       });
       setSelectState(0);
       renderColumns(); // Refetch columns after renaming
@@ -153,42 +163,26 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
   };
   const isCheckedKeyFeature = (column) => selectKeyFeature.includes(column);
 
-
-  const isValid = (e)=>{
+  const handleColumns = (e) => {
+    const key = e.nativeEvent.inputType;
+    if (key === 'deleteContentBackward') {
+      setNewAndRenameColumn((prev) => ({
+        ...prev,
+        [e.target.id]: prev[e.target.id].slice(0, -1)
+      }));
+      return;
+    }
     const trimmed_value = e.target.value.trim();
     const last_letter = trimmed_value.toLowerCase().charAt(trimmed_value.length - 1);
     const accepted_letters = 'abcdefghijklmnopqrstuvwxyz_';
-    return accepted_letters.includes(last_letter);
-
-  };
-
-  const handleNewColumnName = (e)=>{
-    const key = e.nativeEvent.inputType;
-    if (key === 'deleteContentBackward') {
-      setNewColumn((prev)=>({
-            ...prev,
-            newColumnName : prev.newColumnName.slice(0, -1)
-        }));
-        return;
-    }
-    if(isValid(e)){
-      setNewColumn({ ...newColumn, newColumnName: e.target.value.trim().toLowerCase() });
+    const isValid = accepted_letters.includes(last_letter);
+    if (isValid) {
+      setNewAndRenameColumn((prev) => ({
+        ...prev,
+        [e.target.id]: prev[e.target.id] + last_letter
+      }));
     }
   };
-  const handleRenameColumn = (e)=>{
-    const key = e.nativeEvent.inputType;
-    if (key === 'deleteContentBackward') {
-      setRenameColumn((prev)=>({
-            ...prev,
-            newName : prev.newName.slice(0, -1)
-        }));
-        return;
-    }
-    if(isValid(e)){
-      setRenameColumn({ ...renameColumn, newName: e.target.value.trim().toLowerCase() });
-    }
-  };
-  
 
   return (
     <section className={styles.manageColumnsSection}>
@@ -196,8 +190,8 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
         <div>
           <label>Insert After</label>
           <select
-            value={newColumn.insertAfter}
-            onChange={(e) => setNewColumn({ ...newColumn, insertAfter: e.target.value })}
+            value={newAndRenameColumn.insertAfter}
+            onChange={(e) => setNewAndRenameColumn({ ...newAndRenameColumn, insertAfter: e.target.value })}
           >
             <option value="">Select...</option>
             {allColumnNames.map((column, index) => (
@@ -209,8 +203,9 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
           <label>New Column Name</label>
           <input
             type="text"
-            value={newColumn.newColumnName}
-            onChange={(e) => handleNewColumnName(e)}
+            id='newColumnName'
+            value={newAndRenameColumn.newColumnName}
+            onChange={(e) => handleColumns(e)}
           />
           <button onClick={handleAddColumn}>Add Column</button>
         </div>
@@ -236,8 +231,8 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
         <div>
           <label>Rename Column Name</label>
           <select
-            value={renameColumn.oldName}
-            onChange={(e) => setRenameColumn({ ...renameColumn, oldName: e.target.value })}
+            value={newAndRenameColumn.oldName}
+            onChange={(e) => setNewAndRenameColumn({ ...newAndRenameColumn, oldName: e.target.value })}
           >
             <option value="">Select...</option>
             {allColumnNames.map((column, index) => (
@@ -249,8 +244,9 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
           <input
             type="text"
             placeholder="New Name"
-            value={renameColumn.newName}
-            onChange={(e) => handleRenameColumn(e)}
+            id='newName'
+            value={newAndRenameColumn.newName}
+            onChange={(e) => handleColumns(e)}
           />
           <button onClick={handleRename}>Rename</button>
         </div>
