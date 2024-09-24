@@ -36,7 +36,7 @@ const AddProducts = React.memo(({ setAddProductState }) => {
 
     });
 
-    const [errors, setErrors] = useState({}); // To store validation errors
+    const [errors, setErrors] = useState({});
 
     const handleCategoryChange = useCallback((e) => {
         const value = e.target.value;

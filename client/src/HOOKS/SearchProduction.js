@@ -12,8 +12,7 @@ export const SearchProduction = (searchValue, products, setProductsData) => {
                 if (key === 'type' || key === 'vendor') {
                     totalPoint += GetCategoryName(value).toLowerCase().includes(searchValue.toLowerCase()) ? 1 : 0;
                 }
-                
-                if (key === 'cut_price' || key === 'price' || key === 'id') {
+                if (key === 'id') {
                     totalPoint += String(value).includes(searchValue.trim()) ? 1 : 0;
                 }
             }
@@ -23,7 +22,6 @@ export const SearchProduction = (searchValue, products, setProductsData) => {
     });
 
     setProductsData((prev) => prev.sort((a, b) => b.point - a.point));
-    console.log(products);
 
     setProductsData((prev) => prev.filter(item =>
         String(item.name).toLowerCase().includes(searchValue.toLowerCase()) ||
