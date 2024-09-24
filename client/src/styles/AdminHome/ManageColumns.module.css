@@ -27,7 +27,7 @@
     font-size: 18px;
     font-weight: 600;
     font-family: 'Times New Roman', Times, serif;
-    color: #c5c5c5;
+    color: #797979;
 }
 
 .manageColumnsSection div select,
@@ -39,7 +39,10 @@
     border-radius: 5px;
     font-size: 18px;
     font-family: 'Times New Roman', Times, serif;
-    color: #c5c5c5;
+    color: #949494;
+}
+.manageColumnsSection div input{
+    text-align: center;
 }
 
 .manageColumnsSection div button {
@@ -67,6 +70,8 @@
     border: 2px solid rgb(242, 242, 242);
     border-radius: 5px;
     padding: 5px 10px;
+    width: 300px;
+    width: 50%;
 }
 #sortingCheckbox input {
     cursor: pointer;

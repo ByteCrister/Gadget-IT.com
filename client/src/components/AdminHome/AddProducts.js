@@ -38,7 +38,7 @@ const AddProducts = React.memo(({ setAddProductState }) => {
 
     const [errors, setErrors] = useState({}); // To store validation errors
 
-    const handleCategoryChange =useCallback( (e) => {
+    const handleCategoryChange = useCallback((e) => {
         const value = e.target.value;
         if (value) {
             const filteredSubCategories = dataState.subCategoryName.filter(
@@ -107,6 +107,7 @@ const AddProducts = React.memo(({ setAddProductState }) => {
             (columnName) =>
                 columnName !== 'product_id' &&
                 columnName !== 'main_category' &&
+                columnName !== 'sub_category' &&
                 columnName !== 'product_name' &&
                 columnName !== 'image' &&
                 columnName !== 'vendor_no' &&
@@ -172,7 +173,21 @@ const AddProducts = React.memo(({ setAddProductState }) => {
         setNewKeyValue((prevState) => {
             const updatedValues = [...prevState];
             if (type === 'key') {
-                updatedValues[index].key = value;
+                const key = e.nativeEvent.inputType;
+                if (key === 'deleteContentBackward') {
+                    updatedValues[index].key = value.slice(0, -1);
+                    return updatedValues;
+                }
+                const trimmed_value = e.target.value.trim();
+                if ((trimmed_value.length === 1 && trimmed_value.charAt(0) === '_') || (trimmed_value.charAt(trimmed_value.length - 1) === '_' && trimmed_value.charAt(trimmed_value.length - 2) === '_')) {
+                    return updatedValues;
+                }
+                const last_letter = trimmed_value.toLowerCase().charAt(trimmed_value.length - 1);
+                const accepted_letters = 'abcdefghijklmnopqrstuvwxyz_';
+                const isValid = accepted_letters.includes(last_letter);
+                if (isValid) {
+                    updatedValues[index].key = value;
+                }
             } else {
                 updatedValues[index].value = value;
             }
@@ -208,7 +223,7 @@ const AddProducts = React.memo(({ setAddProductState }) => {
             };
             reader.readAsDataURL(file);
         }
-    },[]);
+    }, []);
     const handleDeleteExtraImages = useCallback((index) => {
         setExtraImages((prev) =>
             prev.filter((_, i) => i !== index));
@@ -366,7 +381,7 @@ const AddProducts = React.memo(({ setAddProductState }) => {
                                 </div>
                             ))}
                         </div>
-                        
+
                         {/* ---------------------------------------------------------------------------------------------- */}
                         <div id={style.InitialValueSet} style={{ marginTop: '10px' }}>
                             {newKeyValue.map((value, index) => (
