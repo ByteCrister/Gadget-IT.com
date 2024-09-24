@@ -98,7 +98,7 @@ const PageTwo = React.memo(() => {
   const handleFilterState = () => {
     setFilterState((prev) => ({
       ...prev,
-      state: prev.state === 3 ? 0 : prev.state + 1
+      state: prev.state === 6 ? 0 : prev.state + 1
     }));
     sortProducts(filterState.state + 1);
   };
@@ -109,6 +109,12 @@ const PageTwo = React.memo(() => {
     } else if (state === 2) {
       sortedData.sort((a, b) => Number(a.id) - Number(b.id));
     } else if (state === 3) {
+      sortedData.sort((a, b) => Number(a.quantity) - Number(b.quantity));
+    } else if (state === 4) {
+      sortedData.sort((a, b) => Number(a.incoming) - Number(b.incoming));
+    } else if (state === 5) {
+      sortedData.sort((a, b) => Number(a.reserved) - Number(b.reserved));
+    } else if (state === 6) {
       sortedData.sort((a, b) => Number(a.price) - Number(b.price));
     } else {
       sortedData = dataState.Inventory_Page;
@@ -219,10 +225,10 @@ const PageTwo = React.memo(() => {
               <th style={filterState.state === 1 ? filterState.filterStyle : null}><div id={styles.firstColumn}><input type="checkbox" id={styles.ProductName} onClick={handleAllChecked}></input>Product Name</div></th>
               <th style={filterState.state === 2 ? filterState.filterStyle : null}>Product ID</th>
               <th>Category</th>
-              <th>Incoming</th>
-              <th>Reserved</th>
-              <th>Quantity</th>
-              <th style={filterState.state === 3 ? filterState.filterStyle : null}>Price</th>
+              <th style={filterState.state === 3 ? filterState.filterStyle : null}>Incoming</th>
+              <th style={filterState.state === 4 ? filterState.filterStyle : null}>Reserved</th>
+              <th style={filterState.state === 5 ? filterState.filterStyle : null}>Quantity</th>
+              <th style={filterState.state === 6 ? filterState.filterStyle : null}>Price</th>
               <th>Action</th>
             </tr>
           </thead>
