@@ -1,6 +1,6 @@
 # **GadgetIT.com - Full-Stack E-Commerce Platform**
 
-**GadgetIT.com** is a comprehensive full-stack e-commerce platform designed for managing gadgets and PC components. The platform includes a dynamic user interface and a powerful admin dashboard, built with React.js, Node.js, Express.js, and MySQL.
+**GadgetIT.com** is a comprehensive full-stack e-commerce platform designed for managing gadgets and PC components. The platform includes a dynamic user interface and a <b>powerful admin dashboard</b>, built with React.js, Node.js, Express.js, and MySQL.
 
 ## **Table of Contents**
 
