@@ -128,7 +128,8 @@ const SelectHomeProducts = () => {
     SearchSelectHomeProducts(
       search,
       dataState.Production_Page.TableRows,
-      setProductsData
+      setProductsData,
+      productsData
     );
   };
 

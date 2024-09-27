@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 import styles from '../styles/AdminHome/Pagination.module.css';
+
 
 const Pagination = ({ productsData, handleFilteredData }) => {
   const itemsPerPage = 7;
@@ -44,7 +46,7 @@ const Pagination = ({ productsData, handleFilteredData }) => {
 
   return (
     <div className={styles.pagination}>
-      <button className={styles.firstLast} disabled={currentPage === 0} onClick={handleFirstPage}>{'<'}</button>
+      <button className={styles.firstLast} disabled={currentPage === 0} onClick={handleFirstPage}><MdKeyboardDoubleArrowLeft /></button>
       <button className={styles.previous} disabled={currentPage === 0} onClick={() => handlePrevNext('prev')}>Previous</button>
       {Array.from({ length: endPage - startPage }, (_, index) => {
         const pageIndex = startPage + index;
@@ -59,7 +61,7 @@ const Pagination = ({ productsData, handleFilteredData }) => {
         );
       })}
       <button className={styles.next} disabled={currentPage === totalPages - 1} onClick={() => handlePrevNext('next')}>Next</button>
-      <button className={styles.firstLast} disabled={currentPage === totalPages - 1} onClick={handleLastPage}>{'>'}</button>
+      <button className={styles.firstLast} disabled={currentPage === totalPages - 1} onClick={handleLastPage}><MdKeyboardDoubleArrowRight /></button>
     </div>
   );
 };
