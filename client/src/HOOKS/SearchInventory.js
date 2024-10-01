@@ -36,27 +36,3 @@ export const SearchInventory = (searchedProduct, products, setProductsData) => {
         String(item.price).toLowerCase().includes(searchedProduct.toLowerCase())
     ));
 };
-
-
-
-// setProductsData((prev) =>
-//     prev.map((item_, index_) => {
-//         if (index_ === index) {
-//             let plusPoint = 0;
-//             if (typeof item_[key] === 'string' && key !== 'point' && key !== 'hide') {
-//                 if (key === 'category') {
-//                     plusPoint = GetCategoryName(item_[key]).toLowerCase().includes(searchedProduct.toLowerCase()) === true ? plusPoint + 1 : plusPoint;
-//                 }
-
-//                 if (key === 'incoming' || key === 'reserved' || key === 'quantity' || key === 'price' || key === 'id') {
-//                     plusPoint = String(item_[key]).includes(searchedProduct) === true ? plusPoint + 1 : plusPoint;
-//                 }
-//             }
-//             return {
-//                 ...item_,
-//                 point: plusPoint
-//             };
-//         }
-//         return item_;
-//     })
-// );

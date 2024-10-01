@@ -219,8 +219,8 @@ const PageTwo = React.memo(() => {
       </section>
 
       <section className={styles.section_3}>
-        <table className={styles.tableContainer}>
-          <thead className={styles.tableHeader}>
+        <table>
+          <thead>
             <tr>
               <th style={filterState.state === 1 ? filterState.filterStyle : null}><div id={styles.firstColumn}><input type="checkbox" id={styles.ProductName} onClick={handleAllChecked}></input>Product Name</div></th>
               <th style={filterState.state === 2 ? filterState.filterStyle : null}>Product ID</th>
@@ -232,7 +232,7 @@ const PageTwo = React.memo(() => {
               <th>Action</th>
             </tr>
           </thead>
-          <tbody className={styles.tableBody}>
+          <tbody>
             {filteredProducts.map((data, index) => (
               <tr key={index}>
 

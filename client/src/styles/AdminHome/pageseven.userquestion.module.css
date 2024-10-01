@@ -79,23 +79,26 @@ table {
     border-radius: 10px;
 }
 
-th, td {
+table thead {
+    background-color: #8d8d8d;
+    color: white;
+}
+
+th,
+td {
     border: 1px solid #ddd;
     padding: 8px;
     height: 50px;
     font-size: 15px;
 }
 
-th {
-    background-color: #c6c6c6;
-    color: #ffffff;
-}
-#buttonStyle{
+#buttonStyle {
     display: flex;
     align-items: center;
     gap: 5px;
 }
-tbody tr td button{
+
+tbody tr td button {
     padding: 2px 5px;
     border: none;
     outline: none;
@@ -105,9 +108,11 @@ tbody tr td button{
     cursor: pointer;
     transition: ease-in-out 0.2s;
 }
-tbody tr td button:hover{
+
+tbody tr td button:hover {
     background-color: #666666;
 }
+
 .answerBox {
     position: absolute;
     top: 50%;

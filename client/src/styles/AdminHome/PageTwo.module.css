@@ -1,4 +1,3 @@
-/* PageTwo.module.css */
 .mainPageTwoContainer {
     padding: 20px;
     position: relative;
@@ -16,9 +15,6 @@
     justify-content: space-evenly;
     gap: 10px;
     padding: 16px;
-    /* background-color: #f7f7f7; */
-    /* border-radius: 8px; */
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
 .searchContainer {
@@ -39,7 +35,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-.searchField:focus{
+
+.searchField:focus {
     outline: none;
 }
 
@@ -81,19 +78,22 @@
     flex-direction: column;
     gap: 10px;
 }
-.formControl label{
+
+.formControl label {
     color: #aaa;
     font-size: 18px;
 }
+
 .selectField {
     width: 100%;
     padding: 8px 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
     color: #727272;
-    
+
 }
-.selectField:focus{
+
+.selectField:focus {
     outline: none;
 }
 
@@ -107,9 +107,10 @@
     border-radius: 5px;
     cursor: pointer;
     transition: ease-in-out 0.5s;
-    
+
 }
-.AddInventoryButtonContainer button:hover{
+
+.AddInventoryButtonContainer button:hover {
     background-color: #6a6a6a;
 
 }
@@ -117,71 +118,65 @@
 /* ---------------------------------------------- */
 .section_3 {
     margin-top: 20px;
-    /* background-color: #ddd; */
     padding-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* height: 70vh; */
     border-radius: 10px;
 }
 
-.tableContainer {
+table {
     width: 100%;
     margin: 20px 0;
     border-collapse: collapse;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
-   
 }
 
-.tableHeader {
+table thead {
     background-color: #8d8d8d;
     color: white;
-   
 }
 
-.tableHeader th {
+thead tr th {
     padding: 12px 15px;
     text-align: left;
-   
-  }
-  
-  /* .tableBody tr:nth-child(even) {
-    background-color: #f8f8f8;
-  } */
+}
 
 
-  .tableBody td {
+tbody td {
     padding: 12px 15px;
     border-bottom: 1px solid #ddd;
     font-size: 18px;
     color: #5f5f5f;
     font-weight: 600;
-  }
-  
-  .actionButtons {
+}
+
+.actionButtons {
     display: flex;
     gap: 10px;
-  }
-  
-  .actionButton {
+}
+
+.actionButton {
     background: none;
     border: none;
     cursor: pointer;
     color: #c6c6c6;
     font-size: 18px;
-  }
-  
-  .actionButton:hover {
+}
+
+.actionButton:hover {
     color: #efefef;
     background-color: #c0c0c0;
-  }
-#TrashIcon:hover{
+}
+
+#TrashIcon:hover {
     color: red;
 }
-#EditIcon:hover{
+
+#EditIcon:hover {
     color: black;
 }
-  #firstColumn, .firstColumn{
+
+#firstColumn,
+.firstColumn {
     display: flex;
     gap: 10px;
     align-items: center;
-  }
+}
