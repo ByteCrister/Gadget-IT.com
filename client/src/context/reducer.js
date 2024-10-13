@@ -1,7 +1,38 @@
+const addRecent = (CurrProduct, RecentProducts) => {
+    try {
+        const isExist = RecentProducts.some((product) => product.id === CurrProduct.id);
+
+        if (isExist) {
+            const updatedRecentProducts = RecentProducts.filter(product => product.id !== CurrProduct.id);
+            updatedRecentProducts.unshift(CurrProduct);
+            window.localStorage.setItem('RecentProducts', JSON.stringify(updatedRecentProducts));
+            return updatedRecentProducts;
+        }
+
+        if (RecentProducts.length >= 10) {
+            RecentProducts.pop();
+        }
+
+        RecentProducts.unshift(CurrProduct);
+        window.localStorage.setItem('RecentProducts', JSON.stringify(RecentProducts));
+
+        return RecentProducts;
+    } catch (error) {
+        console.error("Error with localStorage:", error);
+        return RecentProducts;
+    }
+};
+
 
 const reducer = (state, action) => {
 
     switch (action.type) {
+        case 'set_recent_product':
+            return {
+                ...state,
+                RecentProducts: addRecent(action.payload, state.RecentProducts),
+            };
+
 
         case 'set_path_setting':
             return {

@@ -4,6 +4,8 @@ import Footer from '../layout/Footer';
 import NavBar from '../layout/NavBar';
 import TopNav from '../layout/TopNav';
 import LoadingPage from '../pages/LoadingPage';
+import RatingForm from '../components/UserHome/RatingForm';
+import QuestionForm from '../components/UserHome/QuestionForm';
 
 
 const UserHomePage = lazy(() => import('../pages/UserHome/UserHomePage'));
@@ -25,7 +27,7 @@ const UserHomeRoutes = () => {
         setUserEntryState(newEntryPageNo);
     }, []);
 
-   
+
     const renderUserEntryPage = () => {
         switch (userEntryPageState) {
             case 1:
@@ -52,8 +54,12 @@ const UserHomeRoutes = () => {
 
                     <Route path='/products/:main-category' element={<GroupProducts />} />
                     <Route path='/products/:category/:sub-category' element={<GroupProducts />} />
-                    
-                    <Route path='/view/:category/:product-id' element={<ViewProduct />} />
+
+                    <Route path='/view/:category/:product-id' element={<ViewProduct setUserEntryState={setUserEntryState} />} />
+
+                    <Route path='/user/rating/:product-name/:product-id' element={<RatingForm />} />
+                    <Route path='/user/question/:product-name/:product-id' element={<QuestionForm />} />
+
                     <Route path="*" element={<RandomErrorPage />} />
                 </Routes>
             </Suspense>

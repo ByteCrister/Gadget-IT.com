@@ -14,12 +14,16 @@ const tokenString = window.localStorage.getItem('token');
 const token = tokenString ? JSON.parse(tokenString) : false;
 const isValidToken = token && typeof token === 'string' && token.length > 0;
 
+const isThereRecentProduct = window.localStorage.getItem('RecentProducts');
+const RecentProducts = isThereRecentProduct ? JSON.parse(window.localStorage.getItem('RecentProducts')) : [];
+
 const initialValues = {
   menuItems: [],
   productStorage: null,
   UserHomeContents: [],
   categoryName: [],
   subCategoryName: [],
+  RecentProducts: RecentProducts,
   Inventory_Page: [],
   Production_Page: [],
   Setting_Page: [],
@@ -28,8 +32,8 @@ const initialValues = {
   isError: false,
   isServerIssue: false,
   token: token,
-  isAdmin: isValidToken && token === admin_token, 
-  isUserLoggedIn: isValidToken 
+  isAdmin: isValidToken && token === admin_token,
+  isUserLoggedIn: isValidToken
 };
 
 

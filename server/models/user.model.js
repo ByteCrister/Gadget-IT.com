@@ -38,5 +38,6 @@ module.exports = {
         console.log('from admin model ' + email + ' pass - ' + password);
         db.query('update admin set admin_email = ?, admin_password = ? where admin_no = 1', [email, password], callback);
         // db.query('INSERT INTO admin (admin_email, admin_password) VALUES (?, ?)', [email, password], callback);
-    }
+    },
+
 }

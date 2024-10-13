@@ -1,4 +1,5 @@
 const userControllers = require('../controllers/user.controllers');
+require('dotenv').config();
 
 const userRouter = require('express').Router();
 
@@ -14,6 +15,7 @@ userRouter.get('/user/new/pass/confirm', userControllers.UserNewPass);
 
 userRouter.post('/admin/email-password', userControllers.SetNewAdminPasswordEmailController);
 
+userRouter.get('/get/user-email', userControllers.getUserEmail);
 
 
 module.exports = userRouter;

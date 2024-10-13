@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import styles from '../../styles/HomePageStyles/SignIn.module.css';
@@ -33,6 +33,9 @@ const UserLogin = ({ handleUserEntryPage }) => {
       await LoginPost(setDataState, {...values, path}, dispatch, handleUserEntryPage);
     },
   });
+  useEffect(()=>{
+    dispatch({ type: 'toggle_isServerIssue', payload: false });
+  }, []);
 
   return (
     <div className={`${styles.blurForm}`}>
