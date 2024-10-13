@@ -9,7 +9,7 @@ const ServerIssuePage = () => {
                 <h1>Server Issue Detected</h1>
                 <p> It looks like something might have changed locally.</p>
                 <p>Please log in again to continue.</p>
-                <Link to={'/'} ><button className={styles["login-button"]} onClick={() => window.location.reload()}>Log In Again</button></Link>
+                <Link to={'/'} ><button className={styles["login-button"]} onClick={() => window.location.reload()}>Back to home.</button></Link>
             </div>
         </div>
     );

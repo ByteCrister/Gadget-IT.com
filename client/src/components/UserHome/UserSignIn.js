@@ -3,13 +3,11 @@ import { useFormik } from 'formik';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import styles from '../../styles/HomePageStyles/SignIn.module.css';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import validationSchema from '../../components/UserHome/SignInValidations';
 import { SignInPost } from '../../api/SignInPost';
 
 const UserSignIn = ({ handleUserEntryPage }) => {
-
-  const navigate = useNavigate();
   const location = useLocation();
   const currentRoute = location.pathname;
 

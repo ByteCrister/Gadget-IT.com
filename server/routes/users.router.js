@@ -1,4 +1,5 @@
 const userControllers = require('../controllers/user.controllers');
+const userCrudController = require('../controllers/user.crud.controller');
 require('dotenv').config();
 
 const userRouter = require('express').Router();
@@ -18,4 +19,7 @@ userRouter.post('/admin/email-password', userControllers.SetNewAdminPasswordEmai
 userRouter.get('/get/user-email', userControllers.getUserEmail);
 
 
+
+userRouter.post('/post-user-question', userCrudController.PostUserQuestion);
+userRouter.post('/post-user-rating', userCrudController.PostUserRating);
 module.exports = userRouter;

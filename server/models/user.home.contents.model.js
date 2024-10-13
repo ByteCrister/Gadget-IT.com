@@ -39,20 +39,52 @@ module.exports = {
     getProductFromTable: (table, callback) => {
         db.query(`select * from ${table} where hide != 1;`, callback);
     },
-    getProductExtraImages : (category, callback)=>{
+    getProductExtraImages: (category, callback) => {
         db.query(`select * from extra_images where category = ? ;`, [category], callback);
     },
 
-    getProductDescriptions: (category, callback)=>{
+    getProductDescriptions: (category, callback) => {
         db.query(`select * from description where product_main_category = ? ;`, [category], callback);
     },
-    getProductKeyFeature : (category, callback)=>{
+    getProductKeyFeature: (category, callback) => {
         db.query(`select * from key_feature where category = ? ;`, [category], callback);
     },
-    getProductSorting : (category, callback)=>{
+    getProductSorting: (category, callback) => {
         db.query(`select * from sorting where category = ? ;`, [category], callback);
     },
-    getProductPrices : (callback)=>{
+    getProductPrices: (callback) => {
         db.query(`select * from product_stock ;`, callback);
+    },
+    getProductQuestions: (callback) => {
+        db.query(`
+            select 
+            u.first_name fname,
+            u.last_name lname, 
+            q.product_id product_id, 
+            q.question question,
+            q.answer answer,
+            q.question_date question_date
+
+            from user u
+            join question q
+            on q.user_id = u.user_id
+            where
+            LENGTH(q.answer) != 0;
+            `, callback);
+    },
+    getProductRatings: (callback) => {
+        db.query(`
+            SELECT 
+            u.first_name fname,
+            u.last_name lname,
+            r.product_id product_id,
+            r.rating_stars rating,
+            r.review review,
+            r.rating_date rating_date
+
+            from user u
+            JOIN rating r
+            ON r.user_id = u.user_id;
+            `, callback);
     }
 } 

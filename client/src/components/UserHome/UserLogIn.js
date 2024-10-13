@@ -33,9 +33,6 @@ const UserLogin = ({ handleUserEntryPage }) => {
       await LoginPost(setDataState, {...values, path}, dispatch, handleUserEntryPage);
     },
   });
-  useEffect(()=>{
-    dispatch({ type: 'toggle_isServerIssue', payload: false });
-  }, []);
 
   return (
     <div className={`${styles.blurForm}`}>

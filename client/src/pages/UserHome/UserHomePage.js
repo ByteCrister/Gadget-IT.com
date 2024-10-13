@@ -16,8 +16,8 @@ const UserHomePage = () => {
   const location = useLocation();
 
   const handleLogout = useCallback(() => {
-    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, token : false } });
-    window.localStorage.clear(); 
+    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, token: false } });
+    window.localStorage.clear();
   }, [dispatch]);
 
   useEffect(() => {
@@ -25,6 +25,7 @@ const UserHomePage = () => {
       type: 'set_path_setting',
       payload: { prevPath: dataState.pathSettings.currPath, currPath: location.pathname },
     });
+    dispatch({ type: 'toggle_isServerIssue', payload: false });
   }, [dispatch, location.pathname]);
 
   return (

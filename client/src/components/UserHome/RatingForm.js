@@ -1,13 +1,14 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import ServerIssuePage from '../../pages/ServerIssuePage';
 import styles from '../../styles/HomePageStyles/Questions.module.css';
 import { useData } from '../../context/useData';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const RatingForm = () => {
   const { dataState, dispatch } = useContext(useData);
   const { 'product-id': product_id, 'product-name': product_name } = useParams();
+  const navigate = useNavigate();
   const [rating, setRating] = useState('5');
   const UserReview = useRef();
 
@@ -29,15 +30,41 @@ const RatingForm = () => {
     GetEmail();
   }, [dataState, dispatch]);
 
-  const handleRatingChange = (e)=>{
+  const handleRatingChange = (e) => {
     setRating(e.target.value);
   }
+
+  const handleRatingSubmit = useCallback((e) => {
+    e.preventDefault();
+
+    const RatingPayload = {
+      product_id: product_id,
+      rating: rating,
+      UserReview: UserReview.current.value.trim()
+    }
+    if (RatingPayload.UserReview.length !== 0) {
+      try {
+        axios.post('http://localhost:7000/post-user-rating', RatingPayload, {
+          headers: {
+            Authorization: dataState.token
+          }
+        });
+
+        navigate(dataState.pathSettings.currPath);
+      } catch (error) {
+        dispatch({ type: 'toggle_isServerIssue', payload: true });
+        window.localStorage.removeItem('token');
+        console.log(error);
+      }
+    }
+
+  }, [dispatch, product_id, rating]);
 
   return (
     dataState.isServerIssue === true
       ? <ServerIssuePage />
       : <section className={styles.MainQuestionForm} id='OuterForm'>
-        <form>
+        <form onSubmit={handleRatingSubmit}>
           <span className={styles.AskQuestionTest}>Write Review</span>
           <section>
             <div>
@@ -88,11 +115,11 @@ const RatingForm = () => {
             </div>
             <div>
               <span>Your Review<sup>*</sup></span>
-              <textarea name="description" rows="5" cols="50" placeholder="Your Review" ref={UserReview}></textarea>
+              <textarea name="description" rows="5" cols="50" placeholder="Your Review" ref={UserReview} required></textarea>
             </div>
           </section>
           <section className={styles.FormButtonSection}>
-            <button className={styles.SubmitBtn}>Submit</button>
+            <button type='submit' className={styles.SubmitBtn}>Submit</button>
             <Link to={dataState.pathSettings.currPath}><button className={styles.BackBtn}>Back</button></Link>
           </section>
         </form>

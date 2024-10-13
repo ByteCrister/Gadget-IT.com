@@ -141,6 +141,20 @@ module.exports = {
                     else resolve(data);
                 });
             });
+            const product_questions = await new Promise((resolve, reject) => {
+                userHomeContentsModel.getProductQuestions((err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+            const product_ratings = await new Promise((resolve, reject) => {
+                userHomeContentsModel.getProductRatings((err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+
+
 
     
             
@@ -149,7 +163,9 @@ module.exports = {
                 category: category,
                 subCategory: subCategory,
                 product_table: product_table,
-                product_prices :  product_prices
+                product_prices :  product_prices,
+                product_questions : product_questions,
+                product_ratings : product_ratings
             });
     
         } catch (error) {

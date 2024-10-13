@@ -5,6 +5,7 @@ import { ImStarFull } from "react-icons/im";
 import styles from '../../styles/HomePageStyles/Questions.module.css';
 import { useData } from '../../context/useData';
 import { Link } from 'react-router-dom';
+import { GetDate } from '../../HOOKS/GetDate';
 
 const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement }) => {
     const { dataState } = useContext(useData);
@@ -34,18 +35,20 @@ const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement }) =>
     }, []);
 
     const GetAvgRating = useCallback(() => {
-        let sum = Ratings.reduce((a, c) => a + c.rating, 0);
-        return Math.ceil(sum / Ratings.length);
-    }, [Ratings]);
+        if (ratings.length === 0) return 0;
+
+        let sum = ratings.reduce((a, c) => a + Number(c.rating), 0);
+        return Math.floor(sum / ratings.length);
+    }, [ratings]);
 
     return (
         <section className={styles.MainQuestion}>
             <div className={styles.Upper}>
                 <section>
                     <div>
-                        <span className={styles.Question}>Reviews {'('}{Ratings.length}{')'}</span>
+                        <span className={styles.Question}>Reviews {'('}{ratings.length}{')'}</span>
                         <span className={styles.QuestionText}>Get specific details about this product from customers who own it.</span>
-                        <span className={styles.AvgRating}>{RatingStars.map((stars, i) => i !== GetAvgRating() - 1 ? stars : null)}{GetAvgRating()} out of 5</span>
+                        <span className={styles.AvgRating}>{RatingStars.map((stars, i) => i < GetAvgRating() ? stars : null)}{GetAvgRating()} out of 5</span>
                     </div>
                     {
                         !dataState.isAdmin && !dataState.isUserLoggedIn
@@ -59,18 +62,18 @@ const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement }) =>
 
             <div className={styles.Lower}>
                 {
-                    Ratings && Ratings.length === 0 ? <div className={styles.LogoAndText}>
+                    ratings && ratings.length === 0 ? <div className={styles.LogoAndText}>
                         <span className={styles.Logo}><CgNotes className={styles.innerLogo} /></span>
                         <span className={styles.q_text}>This product has no reviews yet. Be the first one to write a review.</span>
                     </div>
                         : <div className={styles.AllMainQuestions}>
                             {
-                                Ratings.map((rating) => {
+                                ratings.map((rating) => {
                                     return <>
                                         <div className={styles.AllQuestions}>
-                                            <span className={styles.UserRating}>{RatingStars.map((stars, i) => i !== rating.rating - 1 ? stars : null)}</span>
+                                            <span className={styles.UserRating}>{RatingStars.map((stars, i) => i < rating.rating ? stars : null)}</span>
                                             <span className={styles.answerText}>{rating.review}</span>
-                                            <span className={styles.Date}>By <span className={styles.question_name}>{rating.name}</span> on {rating.date}</span>
+                                            <span className={styles.Date}>By <span className={styles.question_name}>{rating.fname} {rating.lname}</span> on {GetDate(rating.rating_date)}</span>
                                         </div>
                                         <hr className={styles.questions_hr}></hr>
                                     </>

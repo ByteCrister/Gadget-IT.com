@@ -32,11 +32,11 @@ const ViewProduct = ({ setUserEntryState }) => {
         images: [],
         productInformation: {},
         description: [],
-        ratings: [],
-        askedQuestion: [],
         keyFeature: [],
         product_prices: {},
         RecentProducts: [],
+        product_questions: [],
+        product_ratings: []
     });
 
     const [QuestionAndReviewElement, setQuestionAndReviewElement] = useState({ product_name: '', product_id: '' });
@@ -61,11 +61,11 @@ const ViewProduct = ({ setUserEntryState }) => {
         const productImages = productInformation?.image ? [productInformation.image] : [];
         const productKeyFeature = ProductTable.product_keyFeature?.filter(item => item.category === MainTable);
         const extraImages = ProductTable.product_extraImages?.filter(item => Number(item.product_id) === Number(product_id)).map(item => item.image);
-
         const relatedProducts = ProductTable.table_products?.filter(item => item.sub_category === productInformation.sub_category && item.main_category === category);
-
         const productPrices = dataState.productStorage.product_prices?.find(item => item.product_id === Number(product_id)) || {};
-        // console.log(productPrices);
+        const productQuestions = dataState.productStorage.product_questions.filter((question) => question.product_id === Number(product_id));
+        const productRatings = dataState.productStorage.product_ratings.filter((rating) => rating.product_id === Number(product_id));
+        // console.log(dataState.productStorage.product_ratings);
 
         setViewProduct((prev) => ({
             ...prev,
@@ -75,10 +75,12 @@ const ViewProduct = ({ setUserEntryState }) => {
             keyFeature: productKeyFeature || [],
             product_prices: productPrices,
             RecentProducts: dataState.RecentProducts,
+            product_questions: productQuestions,
+            product_ratings: productRatings
         }));
 
         setMainTableData(relatedProducts || []);
-    }, [category, dataState, product_id]);
+    }, [dataState.productStorage.product_ratings, product_id, category]);
 
     useEffect(() => {
         if (viewProduct.productInformation && viewProduct.productInformation.product_name && viewProduct.productInformation.product_id) {
@@ -88,7 +90,7 @@ const ViewProduct = ({ setUserEntryState }) => {
                 path: location.pathname
             });
         }
-    }, [viewProduct.productInformation]);
+    }, [viewProduct.productInformation, location.pathname]);
 
 
     useEffect(() => {
@@ -252,8 +254,8 @@ const ViewProduct = ({ setUserEntryState }) => {
 
             {/* ---------------------------------------- Question && Ratings -------------------------------------- */}
             <section className={styles.QuestionAndRating}>
-                <UserQuestions setUserEntryState={setUserEntryState} askedQuestion={viewProduct.askedQuestion} QuestionAndReviewElement={QuestionAndReviewElement} />
-                <UserRating setUserEntryState={setUserEntryState} ratings={viewProduct.ratings} QuestionAndReviewElement={QuestionAndReviewElement} />
+                <UserQuestions setUserEntryState={setUserEntryState} askedQuestion={viewProduct.product_questions} QuestionAndReviewElement={QuestionAndReviewElement} />
+                <UserRating setUserEntryState={setUserEntryState} ratings={viewProduct.product_ratings} QuestionAndReviewElement={QuestionAndReviewElement} />
             </section>
         </section>
     );
