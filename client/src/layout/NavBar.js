@@ -65,7 +65,7 @@ const NavBar = ({ handleUserEntryPage }) => {
           {
             dataState.isUserLoggedIn ?
 
-              <Link onClick={() => { handleUserEntryPage(3) }} className={style.navLink}>
+              <Link to={'/user/account'} className={style.navLink}>
                 <div className={style.registerBox}>
                   <VscAccount className={style.Icon} />
                   <div className={style.Head_and_Text}>

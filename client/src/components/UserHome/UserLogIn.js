@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import styles from '../../styles/HomePageStyles/SignIn.module.css';
 import { Link, useLocation } from 'react-router-dom';
+
+import styles from '../../styles/HomePageStyles/SignIn.module.css';
 import LoginValidations from '../../components/UserHome/LoginValidations';
 import { LoginPost } from '../../api/LoginPost';
 import { useData } from '../../context/useData';
@@ -36,7 +37,7 @@ const UserLogin = ({ handleUserEntryPage }) => {
 
   return (
     <div className={`${styles.blurForm}`}>
-      <form className={`${styles['form-wrapper']}`} onSubmit={formik.handleSubmit}>
+      <form className={`${styles['form-wrapper-log-in']}`} onSubmit={formik.handleSubmit}>
         <div className={styles.container}>
           <span className={styles.Header_name}>Log In</span>
           <p className={styles.para_head}><sup>*</sup>Please fill this form to log in to your account.</p>

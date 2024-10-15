@@ -22,4 +22,9 @@ userRouter.get('/get/user-email', userControllers.getUserEmail);
 
 userRouter.post('/post-user-question', userCrudController.PostUserQuestion);
 userRouter.post('/post-user-rating', userCrudController.PostUserRating);
+
+userRouter.get('/get-user-information', userCrudController.GetUserInfo);
+userRouter.post('/update-user-personal-information', userCrudController.UpdatePersonalInfo);
+userRouter.post('/update-user-address', userCrudController.UpdateAddress);
+userRouter.post('/update-user-password', userCrudController.UpdateUserPassword);
 module.exports = userRouter;

@@ -6,12 +6,12 @@ import TopNav from '../layout/TopNav';
 import LoadingPage from '../pages/LoadingPage';
 import RatingForm from '../components/UserHome/RatingForm';
 import QuestionForm from '../components/UserHome/QuestionForm';
+import Account from '../pages/UserHome/Account';
 
 
 const UserHomePage = lazy(() => import('../pages/UserHome/UserHomePage'));
 const UserSignIn = lazy(() => import('../components/UserHome/UserSignIn'));
 const UserLogIn = lazy(() => import('../components/UserHome/UserLogIn'));
-const UserProfile = lazy(() => import('../components/UserHome/UserProfile'));
 const ForgotPass = lazy(() => import('../components/UserHome/ForgotPass'));
 const GroupProducts = lazy(() => import('../pages/UserHome/GroupProducts'));
 const RandomErrorPage = lazy(() => import('../pages/RandomErrorPage'));
@@ -34,8 +34,6 @@ const UserHomeRoutes = () => {
                 return <UserSignIn handleUserEntryPage={handleUserEntryPage} />;
             case 2:
                 return <UserLogIn handleUserEntryPage={handleUserEntryPage} />;
-            case 3:
-                return <UserProfile handleUserEntryPage={handleUserEntryPage} />;
             case 4:
                 return <ForgotPass handleUserEntryPage={handleUserEntryPage} />;
             default:
@@ -59,6 +57,8 @@ const UserHomeRoutes = () => {
 
                     <Route path='/user/rating/:product-name/:product-id' element={<RatingForm />} />
                     <Route path='/user/question/:product-name/:product-id' element={<QuestionForm />} />
+
+                    <Route path='/user/account' element={<Account />} />
 
                     <Route path="*" element={<RandomErrorPage />} />
                 </Routes>

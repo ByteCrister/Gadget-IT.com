@@ -1,66 +1,113 @@
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const userCrudModel = require('../models/user.crud.model');
-const secretKey = process.env.JWT_SECRET_KEY;
+const bcrypt = require('bcrypt');
+
+const authenticateUser = (req, res, next, callback) => {
+    passport.authenticate('jwt', { session: false }, (err, user, info) => {
+        if (err) {
+            return res.status(500).json({ message: 'An error occurred during authentication' });
+        }
+        if (!user) {
+            if (info && info.name === 'TokenExpiredError') {
+                return res.status(401).json({ message: 'Token has expired. Please log in again.' });
+            } else if (info && info.name === 'JsonWebTokenError') {
+                return res.status(401).json({ message: 'Invalid token. Authentication failed.' });
+            } else {
+                return res.status(401).json({ message: 'Unauthorized. Token is missing or invalid.' });
+            }
+        }
+        callback(user);
+    })(req, res, next);
+};
+
+
+const performQuery = (queryFunction, ...params) => {
+    return new Promise((resolve, reject) => {
+        queryFunction(...params, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+};
 
 module.exports = {
     PostUserQuestion: async (req, res, next) => {
         const { product_id, question, email } = req.body;
-        try {
-            passport.authenticate('jwt', { session: false }, (err, user, info) => {
-                if (err) {
-                    return res.status(500).json({ message: 'An error occurred during authentication' });
-                }
 
-                if (!user) {
-                    if (info && info.name === 'TokenExpiredError') {
-                        return res.status(401).json({ message: 'Token has expired. Please log in again.' });
-                    } else if (info && info.name === 'JsonWebTokenError') {
-                        return res.status(401).json({ message: 'Invalid token. Authentication failed.' });
-                    } else {
-                        return res.status(401).json({ message: 'Unauthorized. Token is missing or invalid.' });
-                    }
-                }
-                new Promise((resolve, reject) => {
-                    userCrudModel.InsertUserQuestion(user.user_id, product_id, email, question, (err, data) => {
-                        if (err) reject(err)
-                        resolve(data)
-                    });
-                });
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                await performQuery(userCrudModel.InsertUserQuestion, user.user_id, product_id, email, question);
                 return res.status(200).json({ success: true });
-            })(req, res, next);
+            });
         } catch (error) {
-            res.status(500).json({ message: error });
+            res.status(500).json({ message: error.message });
         }
     },
+
     PostUserRating: async (req, res, next) => {
         const { product_id, rating, UserReview } = req.body;
-        try {
-            passport.authenticate('jwt', { session: false }, (err, user, info) => {
-                if (err) {
-                    return res.status(500).json({ message: 'An error occurred during authentication' });
-                }
 
-                if (!user) {
-                    if (info && info.name === 'TokenExpiredError') {
-                        return res.status(401).json({ message: 'Token has expired. Please log in again.' });
-                    } else if (info && info.name === 'JsonWebTokenError') {
-                        return res.status(401).json({ message: 'Invalid token. Authentication failed.' });
-                    } else {
-                        return res.status(401).json({ message: 'Unauthorized. Token is missing or invalid.' });
-                    }
-                }
-                new Promise((resolve, reject) => {
-                    userCrudModel.InsertUserRating(user.user_id, product_id, user.email, rating, UserReview, (err, data) => {
-                        if (err) reject(err)
-                        resolve(data)
-                    });
-                });
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                await performQuery(userCrudModel.InsertUserRating, user.user_id, product_id, user.email, rating, UserReview);
                 return res.status(200).json({ success: true });
-            })(req, res, next);
+            });
         } catch (error) {
-            res.status(500).json({ message: error });
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    GetUserInfo: async (req, res, next) => {
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                const address = await performQuery(userCrudModel.getUserAddress, user.user_id);
+                return res.status(200).json({ user, address: address[0] });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    UpdatePersonalInfo: async (req, res, next) => {
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                await performQuery(userCrudModel.UpdateUserInfo, req.body, user.user_id);
+                return res.status(200).json({ success: true });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    UpdateAddress: async (req, res, next) => {
+
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                const Address = await performQuery(userCrudModel.getUserAddress, user.user_id);
+                await performQuery(Address && Address.length !== 0 ? userCrudModel.updateAddress : userCrudModel.insertAddress, req.body, user.user_id);
+                return res.status(200).json({ success: true });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    UpdateUserPassword: async (req, res, next) => {
+
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                const isPasswordMatch = bcrypt.compareSync(req.body.old_password.value, user.password);
+                if (isPasswordMatch) {
+                    await performQuery(userCrudModel.UpdatePassword, await bcrypt.hash(req.body.confirm_new_password.value, 10), user.user_id);
+                    return res.status(200).json({ success: true });
+                }
+                return res.status(404).json({ success: false });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
         }
     }
-}
+};
