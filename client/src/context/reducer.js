@@ -24,9 +24,57 @@ const addRecent = (CurrProduct, RecentProducts) => {
 };
 
 
+const addProductToCart = (ProductStorage, product_id) => {
+    // console.log(ProductStorage);
+    const initialProducts = window.localStorage.getItem('CartStorage') ? JSON.parse(window.localStorage.getItem('CartStorage')) : [];
+    const productExists = initialProducts.some(product => product.product_id === product_id);
+
+    if (productExists) return [...initialProducts];
+
+    for (let i = 0; i < ProductStorage.product_table.length; i++) {
+        ProductStorage.product_table[i].table_products.forEach((product) => {
+            if (product.product_id === product_id) {
+                initialProducts.push({ ...product, quantity: 1 });
+                window.localStorage.setItem('CartStorage', JSON.stringify(initialProducts));
+                return [...initialProducts];
+            }
+        });
+    }
+    return [...initialProducts];
+};
+
+const removeProductFromCart = (product_id) => {
+    const initialProducts = window.localStorage.getItem('CartStorage') ? JSON.parse(window.localStorage.getItem('CartStorage')) : [];
+    if (initialProducts && initialProducts.length !== 0) {
+        window.localStorage.setItem('CartStorage', JSON.stringify([...initialProducts.filter((product) => product.product_id !== product_id)]));
+        return [...initialProducts.filter((product) => product.product_id !== product_id)];
+    }
+
+};
+
+
 const reducer = (state, action) => {
 
     switch (action.type) {
+
+        case 'update_product_from_cart':
+            return {
+                ...state,
+                CartStorage: action.payload
+            }
+
+        case 'remove_product_from_cart':
+            return {
+                ...state,
+                CartStorage: removeProductFromCart(action.payload)
+            }
+
+        case 'add_product_to_cart':
+            return {
+                ...state,
+                CartStorage: addProductToCart(state.productStorage, action.payload)
+            }
+
         case 'set_recent_product':
             return {
                 ...state,

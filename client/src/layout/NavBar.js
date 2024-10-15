@@ -33,12 +33,12 @@ const NavBar = ({ handleUserEntryPage }) => {
             </div>
           </Link>
 
-          <Link to="#cart" className={style.navLink}>
+          <Link to={'/user/cart'} className={style.navLink}>
             <div className={style.cartBox}>
               <IoCartOutline className={style.Icon} />
               <div className={style.Head_and_Text}>
                 <span className={style.Head}>
-                  Carts(0)
+                  Carts({dataState.CartStorage.length})
                 </span>
                 <span className={style.Text}>
                   Add Items

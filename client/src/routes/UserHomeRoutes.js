@@ -1,12 +1,9 @@
 import React, { useState, useCallback, lazy, Suspense } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Router, Routes, useLocation } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import NavBar from '../layout/NavBar';
 import TopNav from '../layout/TopNav';
 import LoadingPage from '../pages/LoadingPage';
-import RatingForm from '../components/UserHome/RatingForm';
-import QuestionForm from '../components/UserHome/QuestionForm';
-import Account from '../pages/UserHome/Account';
 
 
 const UserHomePage = lazy(() => import('../pages/UserHome/UserHomePage'));
@@ -16,6 +13,10 @@ const ForgotPass = lazy(() => import('../components/UserHome/ForgotPass'));
 const GroupProducts = lazy(() => import('../pages/UserHome/GroupProducts'));
 const RandomErrorPage = lazy(() => import('../pages/RandomErrorPage'));
 const ViewProduct = lazy(() => import('../pages/UserHome/ViewProduct'));
+const RatingForm = lazy(() => import('../components/UserHome/RatingForm'));
+const QuestionForm = lazy(() => import('../components/UserHome/QuestionForm'));
+const Account = lazy(() => import('../pages/UserHome/Account'));
+const Carts = lazy(() => import('../pages/UserHome/Carts'));
 
 const UserHomeRoutes = () => {
     const location = useLocation();
@@ -59,6 +60,7 @@ const UserHomeRoutes = () => {
                     <Route path='/user/question/:product-name/:product-id' element={<QuestionForm />} />
 
                     <Route path='/user/account' element={<Account />} />
+                    <Route path='/user/cart' element={<Carts />} />
 
                     <Route path="*" element={<RandomErrorPage />} />
                 </Routes>

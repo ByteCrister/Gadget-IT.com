@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styles from '../../styles/HomePageStyles/UserHomePage.module.css';
 import { useData } from '../../context/useData';
 import SwiperMainAdd from '../../components/UserHome/SwiperMainAdd';
@@ -14,11 +14,6 @@ import { useLocation } from 'react-router-dom';
 const UserHomePage = () => {
   const { dataState, dispatch } = useContext(useData);
   const location = useLocation();
-
-  const handleLogout = useCallback(() => {
-    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, token: false } });
-    window.localStorage.clear();
-  }, [dispatch]);
 
   useEffect(() => {
     dispatch({
@@ -53,12 +48,6 @@ const UserHomePage = () => {
 
       {/* Section Eight: Home Descriptions */}
       <UserHomeDescription />
-
-      {dataState.isUserLoggedIn ? (
-        <button onClick={handleLogout}>Log Out</button>
-      ) : (
-        null
-      )}
     </section>
   );
 };

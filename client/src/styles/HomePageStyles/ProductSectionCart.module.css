@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+.MainOuterCartSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.EmptyCartSection {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.CartIcon {
+    color: #f17e23;
+    font-size: 150px;
+}
+
+.p_1 {
+    font-family: "Open Sans", sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.p_1 span {
+    color: #f17e23;
+}
+
+.p_2 {
+    font-family: "Open Sans", sans-serif;
+    font-size: 18px;
+}
+
+.EmptyCartSection button, .CartLastBtn a button {
+    border: none;
+    outline: none;
+    background-color: #f17e23;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+
+
+.MainInnerCartSection {
+    margin-top: 50px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    min-width: 300px;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    gap: 15px;
+}
+
+.Upper {
+    width: 100%;
+    padding: 10px;
+}
+
+.CartHead {
+    font-family: "Open Sans", sans-serif;
+    font-size: 18px;
+    color: #535353;
+    font-weight: 600;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.product-table th,
+.product-table td {
+    padding: 10px;
+    border: none;
+}
+
+.product-table th {
+    padding-bottom: 5px;
+}
+
+.product-table th div {
+    background-color: #f1f1f1;
+    padding: 10px 5px;
+    border-radius: 3px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 15px;
+    color: #535353;
+    font-weight: 500;
+
+}
+
+.product-table tbody tr {
+    border-bottom: none;
+}
+
+.product-table tbody tr+tr {
+    padding-top: 10px;
+}
+
+.product-table tbody hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+}
+
+.ImgCartDiv {
+    width: 50px;
+}
+
+.ImgCartDiv img {
+    width: 100%;
+}
+
+.ProductNameCart,
+.ProductModelCart,
+.CartDeleteDiv span {
+    font-family: "Open Sans", sans-serif;
+    font-size: 17px;
+    color: #535353;
+    font-weight: 500;
+}
+
+.ProductModelCart span {
+    color: #f17e23;
+}
+
+.IncDecBtn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    width: 90px
+}
+
+.IncDecBtn button {
+    padding: 2px 10px;
+    border: none;
+    background-color: #f6f6f6;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.IncDecBtn span,
+.IncDecBtn button {
+    font-family: "Open Sans", sans-serif;
+    font-size: 17px;
+    color: #535353;
+    font-weight: 500;
+}
+
+.IncDecBtn span {
+    background-color: #c3c3c3;
+    padding: 5px 10px;
+}
+
+.CartDeleteDiv {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.CartDeleteIcon {
+    font-size: 20px;
+    color: #535353;
+    cursor: pointer;
+}
+
+.TotalText{
+    width: 100%;
+    margin-right: 20px;
+}
+.TotalText p{
+    text-align: right;
+    font-family: "Open Sans", sans-serif;
+    font-size: 18px;
+    color: #282828;
+    font-weight: 600;
+}
+.TotalText p span{
+    color: #F17E23;
+
+}
+
+.CartLastBtn{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+}
+@media (max-width: 768px) {
+    .CartIcon{
+        font-size: 100px;
+    }
+    .EmptyCartSection button, .CartLastBtn a button{
+        font-size: 10px;
+    }
+    .MainInnerCartSection, .MainInnerCartSection {
+        width: 100%;
+        padding : 0px
+    }
+
+    .hide-on-mobile {
+        display: none;
+    }
+}

@@ -17,6 +17,8 @@ const isValidToken = token && typeof token === 'string' && token.length > 0;
 const isThereRecentProduct = window.localStorage.getItem('RecentProducts');
 const RecentProducts = isThereRecentProduct ? JSON.parse(window.localStorage.getItem('RecentProducts')) : [];
 
+const CartStorage = window.localStorage.getItem('CartStorage') ? JSON.parse(window.localStorage.getItem('CartStorage')) : [];
+
 const initialValues = {
   menuItems: [],
   productStorage: null,
@@ -24,6 +26,7 @@ const initialValues = {
   categoryName: [],
   subCategoryName: [],
   RecentProducts: RecentProducts,
+  CartStorage: CartStorage,
   Inventory_Page: [],
   Production_Page: [],
   Setting_Page: [],
