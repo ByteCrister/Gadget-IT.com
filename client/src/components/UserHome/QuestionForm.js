@@ -30,6 +30,7 @@ const QuestionForm = () => {
     }
 
     GetEmail();
+    window.scrollTo(0, 0);
   }, [dataState, dispatch]);
 
   const QuestionSubmitHandler = useCallback((e) => {

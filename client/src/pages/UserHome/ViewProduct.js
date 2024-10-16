@@ -80,6 +80,7 @@ const ViewProduct = ({ setUserEntryState }) => {
         }));
 
         setMainTableData(relatedProducts || []);
+        window.scrollTo(0, 0);
     }, [dataState.productStorage.product_ratings, product_id, category]);
 
     useEffect(() => {

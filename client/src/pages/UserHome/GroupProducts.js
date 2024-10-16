@@ -29,6 +29,7 @@ const GroupProducts = () => {
             if (subCategory !== subCategoryFromURL) setSubCategory(subCategoryFromURL);
             if (mainTable !== mainTableFromData) setMainTable(mainTableFromData);
         }
+        window.scrollTo(0, 0);
     }, [segments, dataState.productStorage, category, subCategory, mainTable]);
 
     useEffect(() => {

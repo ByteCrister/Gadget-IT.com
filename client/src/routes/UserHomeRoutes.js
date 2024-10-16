@@ -1,5 +1,5 @@
-import React, { useState, useCallback, lazy, Suspense } from 'react';
-import { Route, Router, Routes, useLocation } from 'react-router-dom';
+import React, { useState, useCallback, lazy, Suspense, useEffect } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import NavBar from '../layout/NavBar';
 import TopNav from '../layout/TopNav';
@@ -17,6 +17,7 @@ const RatingForm = lazy(() => import('../components/UserHome/RatingForm'));
 const QuestionForm = lazy(() => import('../components/UserHome/QuestionForm'));
 const Account = lazy(() => import('../pages/UserHome/Account'));
 const Carts = lazy(() => import('../pages/UserHome/Carts'));
+const PreOrder = lazy(() => import('../pages/UserHome/PreOrder'));
 
 const UserHomeRoutes = () => {
     const location = useLocation();
@@ -27,6 +28,8 @@ const UserHomeRoutes = () => {
     const handleUserEntryPage = useCallback((newEntryPageNo) => {
         setUserEntryState(newEntryPageNo);
     }, []);
+
+  
 
 
     const renderUserEntryPage = () => {
@@ -61,6 +64,7 @@ const UserHomeRoutes = () => {
 
                     <Route path='/user/account' element={<Account />} />
                     <Route path='/user/cart' element={<Carts />} />
+                    <Route path='/pre-order' element={<PreOrder setUserEntryState={setUserEntryState} />} />
 
                     <Route path="*" element={<RandomErrorPage />} />
                 </Routes>

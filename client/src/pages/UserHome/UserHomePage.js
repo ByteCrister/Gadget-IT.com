@@ -21,6 +21,7 @@ const UserHomePage = () => {
       payload: { prevPath: dataState.pathSettings.currPath, currPath: location.pathname },
     });
     dispatch({ type: 'toggle_isServerIssue', payload: false });
+    window.scrollTo(0, 0);
   }, [dispatch, location.pathname]);
 
   return (

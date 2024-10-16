@@ -37,7 +37,7 @@ const UserLogin = ({ handleUserEntryPage }) => {
 
   return (
     <div className={`${styles.blurForm}`}>
-      <form className={`${styles['form-wrapper-log-in']}`} onSubmit={formik.handleSubmit}>
+      <form className={`${styles['form-wrapper']}`} onSubmit={formik.handleSubmit}>
         <div className={styles.container}>
           <span className={styles.Header_name}>Log In</span>
           <p className={styles.para_head}><sup>*</sup>Please fill this form to log in to your account.</p>

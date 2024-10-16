@@ -13,8 +13,13 @@
   justify-content: center;
 }
 
+.form-wrapper{
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
 
-.form-wrapper {
+}
+/* .form-wrapper {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
@@ -22,7 +27,7 @@
   max-width: 90%;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   height: 100%;
-}
+} */
 
 .container {
   display: flex;
@@ -69,18 +74,16 @@
   outline: none;
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 5px 15px;
-  /* font-family: "Roboto", sans-serif; */
+  padding: 10px 15px;
   color: #333;
 }
 
 .showPassword {
   display: flex;
   align-items: center;
-  gap: 10px; /* Adds space between the checkbox and the label */
-  margin-top: 10px; /* Optional, adds space from the input field above */
+  gap: 10px;
+  margin-top: 10px; 
   justify-content: flex-start; 
-  /* background-color: #333; */
   max-width: 100px;
   margin-left: -70%;
 }
@@ -94,7 +97,7 @@
 }
 
 .showPassword input[type="checkbox"] {
-  margin-right: 5px; /* Adjusts space between checkbox and text */
+  margin-right: 5px; 
 }
 
 
@@ -120,6 +123,7 @@
 .clearfix {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
   width: 100%;
 }
 

@@ -47,7 +47,7 @@ const NavBar = ({ handleUserEntryPage }) => {
             </div>
           </Link>
 
-          <Link to="#preorder" className={style.navLink}>
+          <Link to="/pre-order" className={style.navLink}>
             <div className={style.offerBox}>
               <RiShoppingBag4Fill className={style.Icon} />
               <div className={style.Head_and_Text}>

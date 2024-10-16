@@ -29,7 +29,7 @@ const ForgotPass = ({ handleUserEntryPage }) => {
 
     return (
         <div className={`${styles.blurForm}`}>
-            <form className={`${styles['form-wrapper-forgot-pass']}`} onSubmit={formik.handleSubmit}>
+            <form className={`${styles['form-wrapper']}`} onSubmit={formik.handleSubmit}>
                 <div className={styles.container}>
                     <span className={styles.Header_name}>Forgot Password</span>
                     <hr />

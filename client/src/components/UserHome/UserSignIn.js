@@ -52,7 +52,7 @@ const UserSignIn = ({ handleUserEntryPage }) => {
 
   return (
     <div className={`${styles.blurForm}`}>
-      <form className={`${styles['form-wrapper-sign-in']}`} onSubmit={formik.handleSubmit}>
+      <form className={`${styles['form-wrapper']}`} onSubmit={formik.handleSubmit}>
         <div className={styles.container}>
           <span className={styles.Header_name}>Sign Up</span>
           <p className={styles.para_head}><sup>*</sup>Please fill this form to create an account.</p>

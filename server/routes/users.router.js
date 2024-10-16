@@ -27,4 +27,5 @@ userRouter.get('/get-user-information', userCrudController.GetUserInfo);
 userRouter.post('/update-user-personal-information', userCrudController.UpdatePersonalInfo);
 userRouter.post('/update-user-address', userCrudController.UpdateAddress);
 userRouter.post('/update-user-password', userCrudController.UpdateUserPassword);
+userRouter.post('/pre-order', userCrudController.PostPreOrder);
 module.exports = userRouter;

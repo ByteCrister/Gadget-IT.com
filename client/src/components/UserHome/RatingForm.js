@@ -28,6 +28,7 @@ const RatingForm = () => {
     }
 
     GetEmail();
+    window.scrollTo(0, 0);
   }, [dataState, dispatch]);
 
   const handleRatingChange = (e) => {

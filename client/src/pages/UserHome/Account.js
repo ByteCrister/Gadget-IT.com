@@ -37,6 +37,7 @@ const Account = () => {
         };
 
         GetUserInfo();
+        window.scrollTo(0, 0);
     }, [dataState.token, navigate]);
 
     const RenderPages = useCallback(() => {

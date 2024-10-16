@@ -109,5 +109,17 @@ module.exports = {
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
+    },
+
+    PostPreOrder: async (req, res, next) => {
+        const  PreOrderState  = req.body;
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                await performQuery(userCrudModel.InsertPreOrder, { ...PreOrderState, user_id: user.user_id });
+                return res.status(200).json({ success: true });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
-};
+}
