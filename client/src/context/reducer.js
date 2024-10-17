@@ -24,30 +24,56 @@ const addRecent = (CurrProduct, RecentProducts) => {
 };
 
 
-const addProductToCart = (ProductStorage, product_id) => {
-    // console.log(ProductStorage);
+const initializeCart = (productStorage, payload, CartStorage) => {
+    let initialCartProduct = [...CartStorage];
+    let allProducts = [];
+    productStorage.product_table.forEach((table) => {
+        table.table_products.forEach((product) => {
+            allProducts.push(product);
+        });
+    });
+
+    payload.forEach((cart) => {
+        const product = allProducts.find((product_) => Number(product_.product_id) === Number(cart.product_id));
+        if (Number(cart.product_id) === Number(product.product_id)) {
+            const productPrice = productStorage.product_prices.find((product_) => Number(product_.product_id) === Number(cart.product_id))?.price;
+            initialCartProduct.push({ ...cart, image: product.image, product_name: product.product_name, brand: product.brand, price: productPrice });
+        }
+    });
+    return [...initialCartProduct];
+};
+
+const addProductToCart = (ProductStorage, product_id, CartStorage) => {
+    console.log(`Product ID : ${product_id} added to cart.`);
+    let allProducts = [];
     const initialProducts = window.localStorage.getItem('CartStorage') ? JSON.parse(window.localStorage.getItem('CartStorage')) : [];
     const productExists = initialProducts.some(product => product.product_id === product_id);
 
-    if (productExists) return [...initialProducts];
+    if (productExists) return [...CartStorage];
 
-    for (let i = 0; i < ProductStorage.product_table.length; i++) {
-        ProductStorage.product_table[i].table_products.forEach((product) => {
-            if (product.product_id === product_id) {
-                initialProducts.push({ ...product, quantity: 1 });
-                window.localStorage.setItem('CartStorage', JSON.stringify(initialProducts));
-                return [...initialProducts];
-            }
+    ProductStorage.product_table.forEach((table) => {
+        table.table_products.forEach((product) => {
+            allProducts.push(product);
         });
-    }
-    return [...initialProducts];
+    });
+
+    allProducts.forEach((product) => {
+        if (Number(product.product_id) === Number(product_id)) {
+            const productPrice = ProductStorage.product_prices.find((product_) => product_.product_id === product.product_id)?.price;
+            initialProducts.unshift({ product_id: product_id, quantity: 1 });
+            window.localStorage.setItem('CartStorage', JSON.stringify(initialProducts));
+            CartStorage.unshift({ product_id: product_id, quantity: 1, image: product.image, product_name: product.product_name, brand: product.brand, price: productPrice });
+            return [...CartStorage];
+        }
+    });
+    return [...CartStorage];
 };
 
-const removeProductFromCart = (product_id) => {
+const removeProductFromCart = (product_id, CartStorage) => {
     const initialProducts = window.localStorage.getItem('CartStorage') ? JSON.parse(window.localStorage.getItem('CartStorage')) : [];
     if (initialProducts && initialProducts.length !== 0) {
         window.localStorage.setItem('CartStorage', JSON.stringify([...initialProducts.filter((product) => product.product_id !== product_id)]));
-        return [...initialProducts.filter((product) => product.product_id !== product_id)];
+        return [...CartStorage.filter((product) => product.product_id !== product_id)];
     }
 
 };
@@ -63,16 +89,22 @@ const reducer = (state, action) => {
                 CartStorage: action.payload
             }
 
-        case 'remove_product_from_cart':
+        case 'initialize_cart':
             return {
                 ...state,
-                CartStorage: removeProductFromCart(action.payload)
+                CartStorage: initializeCart(state.productStorage, action.payload, state.CartStorage)
             }
 
         case 'add_product_to_cart':
             return {
                 ...state,
-                CartStorage: addProductToCart(state.productStorage, action.payload)
+                CartStorage: addProductToCart(state.productStorage, action.payload, state.CartStorage)
+            }
+
+        case 'remove_product_from_cart':
+            return {
+                ...state,
+                CartStorage: removeProductFromCart(action.payload, state.CartStorage)
             }
 
         case 'set_recent_product':

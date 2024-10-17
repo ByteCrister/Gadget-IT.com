@@ -219,14 +219,11 @@
     transition: ease-in-out 0.3s;
 }
 
+
 .add_to_cart {
-    text-decoration: none;
-    background-color: #ffffff;
-    transition: ease-in-out 0.3s;
-
-}
-
-.add_to_cart button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-family: "Roboto", sans-serif;
     font-size: 18px;
     border: none;
@@ -234,6 +231,7 @@
     color: #f27f20;
     font-weight: 600;
     cursor: pointer;
+    border: 1px solid #f7630c;
     transition: ease-in-out 0.3s;
 }
 

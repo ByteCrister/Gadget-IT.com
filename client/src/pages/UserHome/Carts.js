@@ -9,26 +9,16 @@ import { Link, useNavigate } from 'react-router-dom';
 const Carts = () => {
   const { dataState, dispatch } = useContext(useData);
   const navigate = useNavigate();
-  const [PriceState, setPriceState] = useState({});
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
     if (dataState?.CartStorage?.length > 0 && dataState?.productStorage?.product_prices) {
-      const prices = {};
-      dataState.CartStorage.forEach((product) => {
-        const productPrice = dataState.productStorage.product_prices.find((product_) => product_.product_id === product.product_id)?.price;
-        if (productPrice) {
-          prices['_' + product.product_id] = productPrice;
-        }
-      });
-      setPriceState(prices);
 
-      const totalPrice = dataState.CartStorage.reduce((acc, product) => {
-        return acc + (product.quantity * prices['_' + product.product_id] || 0);
-      }, 0);
+      const totalPrice = dataState.CartStorage.reduce((acc, product) => acc + Number(Number(product.quantity) * Number(product.price)), 0);
       setTotal(totalPrice);
+      window.scrollTo(0, 0);
     }
-  }, [dataState.CartStorage, dataState.productStorage]);
+  }, [dataState, dataState.CartStorage, dataState.productStorage]);
 
   const handleQuantity = (productID, Quantity, state) => {
     if (dataState?.CartStorage) {
@@ -89,8 +79,8 @@ const Carts = () => {
                       <span>{product.quantity}</span>
                       <button onClick={() => handleQuantity(product.product_id, product.quantity, '+')}>+</button>
                     </div></td>
-                    <td className={styles['hide-on-mobile']}><span className={styles.ProductNameCart}>{PriceState['_' + product.product_id]}৳</span></td>
-                    <td><div className={styles.CartDeleteDiv}><span>{Number(product.quantity) * Number(PriceState['_' + product.product_id])}৳</span><RiDeleteBinLine className={styles.CartDeleteIcon} onClick={() => removeCart(product.product_id)} /></div></td>
+                    <td className={styles['hide-on-mobile']}><span className={styles.ProductNameCart}>{product.price}৳</span></td>
+                    <td><div className={styles.CartDeleteDiv}><span>{Number(product.quantity) * Number(product.price)}৳</span><RiDeleteBinLine className={styles.CartDeleteIcon} onClick={() => removeCart(product.product_id)} /></div></td>
                   </tr>
                   <tr>
                     <td colSpan="6"><hr /></td>

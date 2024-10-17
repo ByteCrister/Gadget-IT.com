@@ -26,7 +26,7 @@ const initialValues = {
   categoryName: [],
   subCategoryName: [],
   RecentProducts: RecentProducts,
-  CartStorage: CartStorage,
+  CartStorage: [],
   Inventory_Page: [],
   Production_Page: [],
   Setting_Page: [],
@@ -58,6 +58,7 @@ const UseProvider = ({ children }) => {
         await GetMenuItems(dispatch);
         await User_Home(dispatch);
         await User_Products(dispatch);
+        dispatch({ type: 'initialize_cart', payload: CartStorage });
       }
 
       dispatch({ type: 'toggle_loading', payload: false });

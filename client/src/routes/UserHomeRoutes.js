@@ -29,7 +29,7 @@ const UserHomeRoutes = () => {
         setUserEntryState(newEntryPageNo);
     }, []);
 
-  
+
 
 
     const renderUserEntryPage = () => {
@@ -46,11 +46,15 @@ const UserHomeRoutes = () => {
     };
 
     return (
-        <div style={{ position: 'relative' }}>
-            <NavBar handleUserEntryPage={handleUserEntryPage} />
-            <TopNav />
-
-            <Suspense fallback={<LoadingPage />}>
+        <div style={{ position: 'relative', width: '100%' }}>
+            <section style={{width : '100%'}}>
+                <div style={{ position: 'fixed', width: '100%', zIndex: 999}}>
+                    <NavBar handleUserEntryPage={handleUserEntryPage} />
+                    <TopNav />
+                </div>
+            </section>
+         <div style={{paddingTop : '120px'}}>
+         <Suspense fallback={<LoadingPage />}>
                 <Routes>
                     <Route path='/' element={<UserHomePage />} />
 
@@ -69,6 +73,7 @@ const UserHomeRoutes = () => {
                     <Route path="*" element={<RandomErrorPage />} />
                 </Routes>
             </Suspense>
+         </div>
 
             <Footer />
 

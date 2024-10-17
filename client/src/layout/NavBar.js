@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import style from '../styles/HomePageStyles/uppernav.module.css'
 import { BsBoxSeamFill } from "react-icons/bs";
 import { IoCartOutline } from "react-icons/io5";
@@ -10,6 +10,12 @@ import { useData } from '../context/useData';
 
 const NavBar = ({ handleUserEntryPage }) => {
   const { dataState } = useContext(useData);
+  const [totalCart, setTotalCart] = useState(0);
+  useEffect(() => {
+    if (dataState?.CartStorage) {
+      setTotalCart(dataState.CartStorage.length);
+    }
+  }, [dataState.CartStorage]);
 
   return (
     <>
@@ -38,7 +44,7 @@ const NavBar = ({ handleUserEntryPage }) => {
               <IoCartOutline className={style.Icon} />
               <div className={style.Head_and_Text}>
                 <span className={style.Head}>
-                  Carts({dataState.CartStorage.length})
+                  Carts({totalCart})
                 </span>
                 <span className={style.Text}>
                   Add Items
