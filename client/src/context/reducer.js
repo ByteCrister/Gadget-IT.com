@@ -132,6 +132,29 @@ const reducer = (state, action) => {
                 UserHomeContents: action.payload
             }
 
+        case  'delete_answer':
+            return{
+                ...state,
+                Support_Page : {
+                    ...state.Support_Page,
+                    questions: state.Support_Page.questions.filter((question)=> question.question_no !== action.payload)
+                }
+            }
+
+        case 'set_new_answer':
+            return {
+                ...state,
+                Support_Page: {
+                    ...state.Support_Page,
+                    questions: state.Support_Page.questions.map((question) => question.question_no === action.payload.questionNo ? {...question, answer: action.payload.answer} : question)
+                }
+            }
+
+        case 'set_support_page':
+            return {
+                ...state,
+                Support_Page: action.payload
+            }
         case 'set_setting_page':
             return {
                 ...state,

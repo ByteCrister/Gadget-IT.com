@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
-import style from '../styles/HomePageStyles/uppernav.module.css'
+import { Link } from 'react-router-dom';
 import { BsBoxSeamFill } from "react-icons/bs";
 import { IoCartOutline } from "react-icons/io5";
 import { RiShoppingBag4Fill } from "react-icons/ri";
 import { VscAccount } from "react-icons/vsc";
 
-import { Link } from 'react-router-dom';
+import style from '../styles/HomePageStyles/uppernav.module.css'
 import { useData } from '../context/useData';
 
 const NavBar = ({ handleUserEntryPage }) => {

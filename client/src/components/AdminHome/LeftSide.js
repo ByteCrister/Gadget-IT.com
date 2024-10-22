@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from '../../styles/AdminHome/admin.home.module.css';
 import { LuCable } from "react-icons/lu";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -11,6 +10,7 @@ import { FaUsers } from "react-icons/fa6";
 import { AiFillWarning } from "react-icons/ai";
 import { IoSettingsSharp } from "react-icons/io5";
 
+import styles from '../../styles/AdminHome/admin.home.module.css';
 
 const LeftSide = ({ page, handlePage }) => {
     return (

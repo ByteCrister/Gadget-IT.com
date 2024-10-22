@@ -1,16 +1,17 @@
 import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
-import styles from '../../styles/AdminHome/PageTwo.module.css';
+import axios from 'axios';
 import { FaEyeSlash } from "react-icons/fa6";
 import { FaSearch } from 'react-icons/fa';
 import { RiFilter3Line } from "react-icons/ri";
 import { LuUpload } from "react-icons/lu";
 import { FaEye, FaTrash } from 'react-icons/fa';
+
+import styles from '../../styles/AdminHome/PageTwo.module.css';
 import AddProducts from '../../components/AdminHome/AddProducts';
 import Pagination from '../../HOOKS/Pagination';
 import { useData } from '../../context/useData';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import { SearchInventory } from '../../HOOKS/SearchInventory';
-import axios from 'axios';
 import { Api_Inventory } from '../../api/Api_Inventory';
 
 const PageTwo = React.memo(() => {
