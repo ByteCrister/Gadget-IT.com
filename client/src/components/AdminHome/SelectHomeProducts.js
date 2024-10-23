@@ -429,10 +429,7 @@ const SelectHomeProducts = () => {
           </tbody>
         </table>
       </section>
-      <Pagination
-        productsData={productsData}
-        handleFilteredData={handleFilteredData}
-      />
+      <Pagination productsData={productsData} handleFilteredData={handleFilteredData} />
     </div>
   );
 };

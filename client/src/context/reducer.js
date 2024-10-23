@@ -132,12 +132,12 @@ const reducer = (state, action) => {
                 UserHomeContents: action.payload
             }
 
-        case  'delete_answer':
-            return{
+        case 'delete_answer':
+            return {
                 ...state,
-                Support_Page : {
+                Support_Page: {
                     ...state.Support_Page,
-                    questions: state.Support_Page.questions.filter((question)=> question.question_no !== action.payload)
+                    questions: state.Support_Page.questions.filter((question) => question.question_no !== action.payload)
                 }
             }
 
@@ -146,7 +146,7 @@ const reducer = (state, action) => {
                 ...state,
                 Support_Page: {
                     ...state.Support_Page,
-                    questions: state.Support_Page.questions.map((question) => question.question_no === action.payload.questionNo ? {...question, answer: action.payload.answer} : question)
+                    questions: state.Support_Page.questions.map((question) => question.question_no === action.payload.questionNo ? { ...question, answer: action.payload.answer } : question)
                 }
             }
 
@@ -154,6 +154,15 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 Support_Page: action.payload
+            }
+
+        case 'set_new_offer_carts':
+            return {
+                ...state,
+                Setting_Page: {
+                    ...state.Setting_Page,
+                    offer_carts: action.payload
+                }
             }
         case 'set_setting_page':
             return {

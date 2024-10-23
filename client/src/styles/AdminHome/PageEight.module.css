@@ -8,8 +8,10 @@
 
 .settingStates{
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: center;
+    gap: 10px;
 }
 .setting_button{
     color: #5f5f5f;

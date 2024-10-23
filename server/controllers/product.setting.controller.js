@@ -33,12 +33,26 @@ module.exports = {
                     }
                 );
             });
+            const offer_carts = await new Promise((resolve, reject) => {
+                productSettingModel.productSettingModel_OfferCarts((err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+            const offer_carts_products = await new Promise((resolve, reject) => {
+                productSettingModel.productSettingModel_OfferCartsProducts((err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
 
             res.json({
                 advertisement_img: advertisement_img,
                 featured_category_icon: featured_category_icon,
                 home_product_select: home_product_select,
                 home_description: home_description,
+                offer_carts: offer_carts,
+                offer_carts_products: offer_carts_products
             });
         } catch (error) {
             console.log("Error in getProductSetting: ", error);
@@ -226,6 +240,75 @@ module.exports = {
 
         } catch (error) {
             console.log("Error in CrudHomeDescription: ", error);
+            res.status(500).send("Server Error");
+        }
+    },
+
+    postNewOffer: async (req, res) => {
+        try {
+            await new Promise((resolve, reject) => {
+                productSettingModel.postNewOfferModel(req.body.formFillUp, (err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+
+            const offers = await new Promise((resolve, reject) => {
+                productSettingModel.productSettingModel_OfferCarts((err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+
+            res.send(offers);
+        } catch (error) {
+            console.log("Error in post new offer: ", error);
+            res.status(500).send("Server Error");
+        }
+    },
+
+    updateOffer: async (req, res) => {
+        try {
+            await new Promise((resolve, reject) => {
+                productSettingModel.updateOffer(req.body.formUpdateFillUp, (err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+
+            const offers = await new Promise((resolve, reject) => {
+                productSettingModel.productSettingModel_OfferCarts((err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+
+            res.send(offers);
+        } catch (error) {
+            console.log("Error in update offer: ", error);
+            res.status(500).send("Server Error");
+        }
+    },
+
+    deleteOfferCart: async (req, res) => {
+        try {
+            await new Promise((resolve, reject) => {
+                productSettingModel.deleteOffer(req.params.cart_no, (err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+
+            const offers = await new Promise((resolve, reject) => {
+                productSettingModel.productSettingModel_OfferCarts((err, data) => {
+                    if (err) reject(err);
+                    else resolve(data);
+                });
+            });
+
+            res.send(offers);
+        } catch (error) {
+            console.log("Error in update offer: ", error);
             res.status(500).send("Server Error");
         }
     }
