@@ -156,6 +156,15 @@ const reducer = (state, action) => {
                 Support_Page: action.payload
             }
 
+        case 'set_select_offer_products':
+            return {
+                ...state,
+                Setting_Page: {
+                    ...state.Setting_Page,
+                    offer_carts_products: action.payload
+                }
+            }
+
         case 'set_new_offer_carts':
             return {
                 ...state,

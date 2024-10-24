@@ -1,5 +1,14 @@
 const productSettingModel = require("../models/product.setting.model");
 
+const performQuery = async (queryFunction, ...params) => {
+    return await new Promise((resolve, reject) => {
+        queryFunction(...params, (err, data) => {
+            if (err) reject(err);
+            else resolve(data);
+        });
+    });
+};
+
 module.exports = {
     getProductSetting: async (req, res) => {
         try {
@@ -246,20 +255,8 @@ module.exports = {
 
     postNewOffer: async (req, res) => {
         try {
-            await new Promise((resolve, reject) => {
-                productSettingModel.postNewOfferModel(req.body.formFillUp, (err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-
-            const offers = await new Promise((resolve, reject) => {
-                productSettingModel.productSettingModel_OfferCarts((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-
+            await performQuery(productSettingModel.postNewOfferModel, req.body.formFillUp);
+            const offers =  await performQuery(productSettingModel.productSettingModel_OfferCarts, req.body.formFillUp);
             res.send(offers);
         } catch (error) {
             console.log("Error in post new offer: ", error);
@@ -269,20 +266,8 @@ module.exports = {
 
     updateOffer: async (req, res) => {
         try {
-            await new Promise((resolve, reject) => {
-                productSettingModel.updateOffer(req.body.formUpdateFillUp, (err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-
-            const offers = await new Promise((resolve, reject) => {
-                productSettingModel.productSettingModel_OfferCarts((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-
+            await performQuery(productSettingModel.updateOffer, req.body.formUpdateFillUp);
+            const offers = await performQuery(productSettingModel.productSettingModel_OfferCarts);
             res.send(offers);
         } catch (error) {
             console.log("Error in update offer: ", error);
@@ -292,26 +277,61 @@ module.exports = {
 
     deleteOfferCart: async (req, res) => {
         try {
-            await new Promise((resolve, reject) => {
-                productSettingModel.deleteOffer(req.params.cart_no, (err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-
-            const offers = await new Promise((resolve, reject) => {
-                productSettingModel.productSettingModel_OfferCarts((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-
+            await performQuery(productSettingModel.deleteOffer, req.params.cart_no);
+            await performQuery(productSettingModel.deleteOfferProductByCartNo, req.params.cart_no);
+            const offers = await performQuery(productSettingModel.productSettingModel_OfferCarts);
             res.send(offers);
         } catch (error) {
             console.log("Error in update offer: ", error);
             res.status(500).send("Server Error");
         }
-    }
+    },
+    CrudOfferProducts: async (req, res) => {
+        const { UpdatedProducts, OfferShouldDelete } = req.body;
+        try {
+            const UpdatedProducts_ = UpdatedProducts.filter((offer) => offer.offer !== 0);
+            const CurrOfferCarts = await performQuery(productSettingModel.productSettingModel_OfferCartsProducts);
+
+            let OfferShouldDelete_withZero = UpdatedProducts_.filter((offer) => {
+                return CurrOfferCarts.length !== 0 && offer.serial_no === 0 && CurrOfferCarts.some((offer_) => offer_.product_id === offer.product_id);
+            });
+            let OffersShouldUpdate = UpdatedProducts_.filter((offer) => {
+                return CurrOfferCarts.length !== 0 && CurrOfferCarts.some((offer_) => offer_.product_id === offer.product_id) && offer.serial_no !== 0;
+            });
+            let OfferShouldInsert = UpdatedProducts_.filter((offer) => {
+                return CurrOfferCarts.length === 0 || CurrOfferCarts.some((offer_) => offer_.product_id !== offer.product_id)
+                    && OffersShouldUpdate.length === 0 || OffersShouldUpdate.some((offer_) => offer_.product_id !== offer.product_id);
+            });
+
+            if (OfferShouldDelete && OfferShouldDelete.length > 0) {
+                OfferShouldDelete.map(async (product_id) => {
+                    await performQuery(productSettingModel.deleteOfferProduct, product_id);
+                });
+            }
+            if (OfferShouldDelete_withZero && OfferShouldDelete_withZero.length > 0) {
+                OfferShouldDelete_withZero.map(async (Product) => {
+                    await performQuery(productSettingModel.deleteOfferProduct, Product.product_id);
+                });
+            }
+            if (OffersShouldUpdate && OffersShouldUpdate.length > 0) {
+                OffersShouldUpdate.map(async (Product) => {
+                    await performQuery(productSettingModel.UpdateOfferProducts, Product);
+                });
+            }
+            if (OfferShouldInsert && OfferShouldInsert.length > 0) {
+                OfferShouldInsert.map(async (Product) => {
+                    await performQuery(productSettingModel.insertOfferProducts, Product);
+                });
+            }
+
+            const Offers = await performQuery(productSettingModel.productSettingModel_OfferCartsProducts);
+            res.send(Offers);
+
+        } catch (error) {
+            console.log("Error in Crud Offer Products: ", error);
+            res.status(500).send("Server Error");
+        }
+    },
 
 };
 

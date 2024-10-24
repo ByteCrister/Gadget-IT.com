@@ -105,7 +105,29 @@ module.exports = {
             [formData.cart_title, formData.cart_description, formData.cart_image, toBangladeshTime(formData.offer_start), toBangladeshTime(formData.offer_end), formData.cart_no],
             callback);
     },
-    deleteOffer: (cart_no, callback)=>{
+    deleteOffer: (cart_no, callback) => {
         db.query('delete from offer_carts where cart_no = ? ;', [cart_no], callback);
+    },
+    deleteOfferProductByCartNo: (cart_no, callback) => {
+        db.query('delete from offer_carts_products where offer_cart_no = ? ;', [cart_no], callback);
+    },
+    deleteOfferProduct: (product_id, callback) => {
+        if (typeof product_id === 'number') {
+            db.query('delete from offer_carts_products where product_id = ? ;', [product_id], callback);
+        }
+    },
+    UpdateOfferProducts: (product, callback) => {
+        if (typeof product === 'object') {
+            db.query(`update offer_carts_products set offer_cart_no = ?, serial_no = ? where product_id = ? ;`, [product.offer, product.serial_no, product.product_id], callback);
+        }
+    },
+    insertOfferProducts: (product, callback) => {
+        if (typeof product === 'object') {
+            db.query(
+                `insert into offer_carts_products (product_id, offer_cart_no, serial_no)
+                values (?, ?, ?) ;`,
+                [product.product_id, product.offer, product.serial_no],
+                callback);
+        }
     }
 }

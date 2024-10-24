@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import { FaSearch } from 'react-icons/fa';
 
-import styles from '../../styles/AdminHome/Pageseven.Userquestion.module.css';
+import styles from '../../styles/AdminHome/pageseven.userquestion.module.css';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import Pagination from '../../HOOKS/Pagination';
 import { useData } from '../../context/useData';
 import { SearchQuestions } from '../../HOOKS/SearchQuestions';
-import axios from 'axios';
 
 const UserQuestions = () => {
     const { dataState, dispatch } = useContext(useData);

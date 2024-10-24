@@ -21,6 +21,14 @@ const Pagination = ({ productsData, handleFilteredData }) => {
     handleFilteredData(paginateData());
   }, [currentPage, productsData]);
 
+  useEffect(() => {
+    setTotalPages(Math.ceil(productsData.length / itemsPerPage));
+    if (currentPage >= Math.ceil(productsData.length / itemsPerPage)) {
+      setCurrentPage(0);
+    }
+  }, [productsData, currentPage]);
+  
+
   const handleCurrentPage = (index) => {
     setCurrentPage(index);
   };

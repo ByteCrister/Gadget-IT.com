@@ -11,4 +11,5 @@ productSetting.post('/home-view-description/crud', productSettingController.Crud
 productSetting.post('/post-new-offer', productSettingController.postNewOffer);
 productSetting.put('/update-offer-cart', productSettingController.updateOffer);
 productSetting.delete('/delete-offer-cart/:cart_no', productSettingController.deleteOfferCart);
+productSetting.post('/offer-product-select/Crud', productSettingController.CrudOfferProducts);
 module.exports = productSetting;
