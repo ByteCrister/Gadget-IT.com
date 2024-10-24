@@ -5,6 +5,8 @@
     display: flex;
     padding: 10px 20px;
     gap: 100px;
+    width: 100%;
+    min-height: 100vh;
 }
 
 

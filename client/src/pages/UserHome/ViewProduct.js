@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import { IoHomeSharp } from 'react-icons/io5';
+
 import { useData } from '../../context/useData';
 import styles from '../../styles/HomePageStyles/ViewProduct.module.css';
 import { GetMainTable } from '../../HOOKS/GetMainTable';
 import UpperImage from '../../components/UserHome/UpperImage';
 import UpperFeature from '../../components/UserHome/UpperFeature';
-import { IoHomeSharp } from 'react-icons/io5';
 import { MakeDefendants } from '../../HOOKS/MakeDefendants';
-
-
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import RandomErrorPage from '../RandomErrorPage';
 import ViewProductSwiper from '../../components/UserHome/ViewProductSwiper';

@@ -4,7 +4,7 @@ import Footer from '../layout/Footer';
 import NavBar from '../layout/NavBar';
 import TopNav from '../layout/TopNav';
 import LoadingPage from '../pages/LoadingPage';
-
+import styles from '../styles/HomePageStyles/UserHomeRoutePage.module.css';
 
 const UserHomePage = lazy(() => import('../pages/UserHome/UserHomePage'));
 const UserSignIn = lazy(() => import('../components/UserHome/UserSignIn'));
@@ -47,33 +47,33 @@ const UserHomeRoutes = () => {
 
     return (
         <div style={{ position: 'relative', width: '100%' }}>
-            <section style={{width : '100%'}}>
-                <div style={{ position: 'fixed', width: '100%', zIndex: 999}}>
+            <section style={{ width: '100%' }}>
+                <div style={{ position: 'fixed', width: '100%', zIndex: 999 }}>
                     <NavBar handleUserEntryPage={handleUserEntryPage} />
                     <TopNav />
                 </div>
             </section>
-         <div style={{paddingTop : '120px'}}>
-         <Suspense fallback={<LoadingPage />}>
-                <Routes>
-                    <Route path='/' element={<UserHomePage />} />
+            <div className={styles.AllRouteDiv}>
+                <Suspense fallback={<LoadingPage />}>
+                    <Routes>
+                        <Route path='/' element={<UserHomePage />} />
 
-                    <Route path='/products/:main-category' element={<GroupProducts />} />
-                    <Route path='/products/:category/:sub-category' element={<GroupProducts />} />
+                        <Route path='/products/:main-category' element={<GroupProducts />} />
+                        <Route path='/products/:category/:sub-category' element={<GroupProducts />} />
 
-                    <Route path='/view/:category/:product-id' element={<ViewProduct setUserEntryState={setUserEntryState} />} />
+                        <Route path='/view/:category/:product-id' element={<ViewProduct setUserEntryState={setUserEntryState} />} />
 
-                    <Route path='/user/rating/:product-name/:product-id' element={<RatingForm />} />
-                    <Route path='/user/question/:product-name/:product-id' element={<QuestionForm />} />
+                        <Route path='/user/rating/:product-name/:product-id' element={<RatingForm />} />
+                        <Route path='/user/question/:product-name/:product-id' element={<QuestionForm />} />
 
-                    <Route path='/user/account' element={<Account />} />
-                    <Route path='/user/cart' element={<Carts />} />
-                    <Route path='/pre-order' element={<PreOrder setUserEntryState={setUserEntryState} />} />
+                        <Route path='/user/account' element={<Account />} />
+                        <Route path='/user/cart' element={<Carts />} />
+                        <Route path='/pre-order' element={<PreOrder setUserEntryState={setUserEntryState} />} />
 
-                    <Route path="*" element={<RandomErrorPage />} />
-                </Routes>
-            </Suspense>
-         </div>
+                        <Route path="*" element={<RandomErrorPage />} />
+                    </Routes>
+                </Suspense>
+            </div>
 
             <Footer />
 

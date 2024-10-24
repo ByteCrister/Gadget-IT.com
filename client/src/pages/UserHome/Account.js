@@ -57,4 +57,4 @@ const Account = () => {
     )
 }
 
-export default Account
+export default React.memo(Account);

@@ -1,4 +1,6 @@
 import React, { useContext, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import styles from '../../styles/HomePageStyles/UserHomePage.module.css';
 import { useData } from '../../context/useData';
 import SwiperMainAdd from '../../components/UserHome/SwiperMainAdd';
@@ -9,7 +11,6 @@ import ReadyForOrder from '../../components/UserHome/ReadyForOrder';
 import FeaturedProducts from '../../components/UserHome/FeaturedProducts';
 import NewArrival from '../../components/UserHome/NewArrival';
 import ExtraSubAdd from '../../components/UserHome/ExtraSubAdd';
-import { useLocation } from 'react-router-dom';
 
 const UserHomePage = () => {
   const { dataState, dispatch } = useContext(useData);
