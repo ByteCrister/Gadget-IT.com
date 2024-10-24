@@ -83,7 +83,7 @@ const MainProductCarts = React.memo(({ MainTable, SubCategory, category }) => {
         setProducts((prev) => ({
             ...prev,
             MainProducts: start && end ? prev.MainProducts.filter((item) => {
-                const price = getPrices(item.product_id);
+                const price = Number(getPrices(item.product_id));
                 return price >= start && price <= end;
             }) : staticMain
         }));

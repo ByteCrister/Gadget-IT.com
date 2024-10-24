@@ -1,0 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap");
+
+.MainOuterAddress {
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 1px rgb(218, 218, 218);
+}
+
+.MainOuterAddress,
+.Bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.Bottom {
+    padding: 15px;
+}
+
+.Upper {
+    width: 100%;
+    background-color: #f9f9f9;
+    padding: 10px 20px;
+}
+
+.Upper span {
+    font-family: "Afacad Flux", sans-serif;
+    font-size: 25px;
+    font-weight: 500;
+    color: #444444;
+}
+
+.Bottom section {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Bottom section div,
+.Bottom div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.Bottom section div {
+    width: 45%;
+}
+
+.Bottom div {
+    width: 100%;
+}
+
+.Bottom section div label,
+.Bottom div label,
+.Bottom section div input,
+.Bottom div input {
+    font-family: "Afacad Flux", sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: #7e7e7e;
+}
+
+.Bottom section div input,
+.Bottom div input {
+    outline: none;
+    border: 1px solid #e8e8e8;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.Button {
+    padding: 10px;
+}
+
+.Button button {
+    border: none;
+    padding: 10px 15px;
+    background-color: #f6994c;
+    border-radius: 5px;
+    font-family: "Afacad Flux", sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: #ffffff;
+    transition: ease-in-out 0.2s;
+    cursor: pointer;
+}
+
+.Button button:hover {
+    background-color: #ff8521;
+}
+
+@media (max-width: 650px) {
+    .Bottom section {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .Bottom section div {
+        width: 100%;
+    }
+}

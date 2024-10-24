@@ -304,6 +304,27 @@ module.exports = {
         } catch (error) {
             res.status(500).json({ success: false, message: 'error on setting admin new email and password. -> ' + error })
         }
+    },
+    getUserEmail: (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            if (err) {
+                return res.status(500).json({ message: 'An error occurred during authentication' });
+            }
+
+            if (!user) {
+                if (info && info.name === 'TokenExpiredError') {
+                    return res.status(401).json({ message: 'Token has expired. Please log in again.' });
+                } else if (info && info.name === 'JsonWebTokenError') {
+                    return res.status(401).json({ message: 'Invalid token. Authentication failed.' });
+                } else {
+                    return res.status(401).json({ message: 'Unauthorized. Token is missing or invalid.' });
+                }
+            }
+            return res.status(200).json({
+                success: true,
+                email: user.email
+            });
+        })(req, res, next);
     }
 
 };

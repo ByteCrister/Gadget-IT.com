@@ -1,15 +1,21 @@
-import React, { useContext } from 'react'
-import style from '../styles/HomePageStyles/uppernav.module.css'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import { BsBoxSeamFill } from "react-icons/bs";
 import { IoCartOutline } from "react-icons/io5";
 import { RiShoppingBag4Fill } from "react-icons/ri";
 import { VscAccount } from "react-icons/vsc";
 
-import { Link } from 'react-router-dom';
+import style from '../styles/HomePageStyles/uppernav.module.css'
 import { useData } from '../context/useData';
 
 const NavBar = ({ handleUserEntryPage }) => {
   const { dataState } = useContext(useData);
+  const [totalCart, setTotalCart] = useState(0);
+  useEffect(() => {
+    if (dataState?.CartStorage) {
+      setTotalCart(dataState.CartStorage.length);
+    }
+  }, [dataState.CartStorage]);
 
   return (
     <>
@@ -33,12 +39,12 @@ const NavBar = ({ handleUserEntryPage }) => {
             </div>
           </Link>
 
-          <Link to="#cart" className={style.navLink}>
+          <Link to={'/user/cart'} className={style.navLink}>
             <div className={style.cartBox}>
               <IoCartOutline className={style.Icon} />
               <div className={style.Head_and_Text}>
                 <span className={style.Head}>
-                  Carts(0)
+                  Carts({totalCart})
                 </span>
                 <span className={style.Text}>
                   Add Items
@@ -47,7 +53,7 @@ const NavBar = ({ handleUserEntryPage }) => {
             </div>
           </Link>
 
-          <Link to="#preorder" className={style.navLink}>
+          <Link to="/pre-order" className={style.navLink}>
             <div className={style.offerBox}>
               <RiShoppingBag4Fill className={style.Icon} />
               <div className={style.Head_and_Text}>
@@ -65,7 +71,7 @@ const NavBar = ({ handleUserEntryPage }) => {
           {
             dataState.isUserLoggedIn ?
 
-              <Link onClick={() => { handleUserEntryPage(3) }} className={style.navLink}>
+              <Link to={'/user/account'} className={style.navLink}>
                 <div className={style.registerBox}>
                   <VscAccount className={style.Icon} />
                   <div className={style.Head_and_Text}>

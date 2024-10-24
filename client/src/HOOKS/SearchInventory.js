@@ -8,12 +8,14 @@ export const SearchInventory = (searchedProduct, products, setProductsData) => {
         let totalPoint = 0;
         Object.entries(item).forEach(([key, value]) => {
             if (key !== 'point' && key !== 'hide') {
-                if (key === 'category') {
+                if (key === 'category' || key === 'p_name') {
                     totalPoint += GetCategoryName(value).toLowerCase().includes(searchedProduct.toLowerCase()) ? 1 : 0;
+                    totalPoint += GetCategoryName(value).toLowerCase() === searchedProduct.toLowerCase() ? 10 : 0;
                 }
 
                 if (key === 'incoming' || key === 'reserved' || key === 'quantity' || key === 'price' || key === 'id') {
                     totalPoint += String(value).includes(searchedProduct) ? 1 : 0;
+                    totalPoint += String(value) === searchedProduct.trim() ? 10 : 0;
                 }
             }
         });
@@ -34,27 +36,3 @@ export const SearchInventory = (searchedProduct, products, setProductsData) => {
         String(item.price).toLowerCase().includes(searchedProduct.toLowerCase())
     ));
 };
-
-
-
-// setProductsData((prev) =>
-//     prev.map((item_, index_) => {
-//         if (index_ === index) {
-//             let plusPoint = 0;
-//             if (typeof item_[key] === 'string' && key !== 'point' && key !== 'hide') {
-//                 if (key === 'category') {
-//                     plusPoint = GetCategoryName(item_[key]).toLowerCase().includes(searchedProduct.toLowerCase()) === true ? plusPoint + 1 : plusPoint;
-//                 }
-
-//                 if (key === 'incoming' || key === 'reserved' || key === 'quantity' || key === 'price' || key === 'id') {
-//                     plusPoint = String(item_[key]).includes(searchedProduct) === true ? plusPoint + 1 : plusPoint;
-//                 }
-//             }
-//             return {
-//                 ...item_,
-//                 point: plusPoint
-//             };
-//         }
-//         return item_;
-//     })
-// );

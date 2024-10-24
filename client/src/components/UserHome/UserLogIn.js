@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import styles from '../../styles/HomePageStyles/SignIn.module.css';
 import { Link, useLocation } from 'react-router-dom';
+
+import styles from '../../styles/HomePageStyles/SignIn.module.css';
 import LoginValidations from '../../components/UserHome/LoginValidations';
 import { LoginPost } from '../../api/LoginPost';
 import { useData } from '../../context/useData';

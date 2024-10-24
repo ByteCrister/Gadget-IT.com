@@ -5,43 +5,53 @@
     width: 100%;
     padding: 10px;
 }
+
 #text{
     font-size: 30px;
     color: #808080;
     font-weight: 600;
+
 }
 #ButtonSections{
     width: 100%;
     display: flex;
     justify-content:space-evenly;
     padding: 10px;
+}
 
-}
-#ButtonSections button{
-    border: none;
-    outline: none;
-    border-radius: 10px;
+#ButtonSections button {
     display: flex;
-    align-items: center;
+    justify-content: space-evenly;
     gap: 5px;
-    padding: 10px 20px;
-    background-color: white;
-    box-shadow: 1px 0px 5px rgb(212, 212, 212);
-    cursor: pointer;
-    transition: ease-in-out 0.2s;
 }
-#ButtonSections button span{
-    font-size: 20px;
-    color: #cdcdcd;
-    font-weight: 600;
-}
-#ButtonSections button:hover{
-    background-color: rgb(239, 239, 239);
-    /* box-shadow: 1px 0px 5px rgb(162, 162, 162); */
-}
-#ButtonSections button:hover span{
-    color: #ffffff;
-}
+
 #PageSevenTables{
     width: 100%;
+}
+
+.supportButton, .activeSupportButton{
+    font-family: 'Times New Roman', Times, serif;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 18px;
+    transition: ease-in-out 0.2s;
+}
+
+.supportButton{
+    color: #888585;
+    border: 2px solid #e2e2e2;
+}
+
+.supportButton:hover{
+    color: white;
+    border-color: white;
+    background-color: rgb(230, 230, 230);
+}
+
+.activeSupportButton{
+    color: #ecf0f0;
+    border: 2px solid #ffffff;
+    background-color: #b4b4b4;
 }

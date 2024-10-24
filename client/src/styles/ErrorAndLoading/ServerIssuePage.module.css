@@ -11,12 +11,12 @@
     background-color: #ffffff;
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 10px 1px rgba(207, 207, 207, 0.1);
   }
   
   h1 {
     font-size: 2rem;
-    color: #d9534f;
+    color: #f27f20;
     margin-bottom: 1rem;
   }
   
@@ -27,7 +27,7 @@
   }
   
   .login-button {
-    background-color: #007bff;
+    background-color: #f27f20;
     color: #ffffff;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -38,6 +38,6 @@
   }
   
   .login-button:hover {
-    background-color: #0056b3;
+    background-color: #f08f40;
   }
   

@@ -1,11 +1,12 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense, useContext } from 'react';
 import styles from '../../styles/AdminHome/admin.home.module.css';
 
 import UpperSide from '../../components/AdminHome/UpperSide';
 import LeftSide from '../../components/AdminHome/LeftSide';
 import LoadingPage from '../LoadingPage';
+import { useData } from '../../context/useData';
 
-// Lazy load components
+
 const PageOne = lazy(() => import('../ADMIN/PageOne'));
 const PageTwo = lazy(() => import('../ADMIN/PageTwo'));
 const PageThree = lazy(() => import('../ADMIN/PageThree'));
@@ -20,10 +21,12 @@ const ShowNotifications = lazy(() => import('../../components/AdminHome/ShowNoti
 const ShowAdmin = lazy(() => import('../../components/AdminHome/ShowAdmin'));
 
 const AdminHomePage = () => {
-    const [currentPageNo, setCurrentPage] = useState(1);
+    const {dataState} = useContext(useData);
+
+    const [currentPageNo, setCurrentPage] = useState(dataState.AdminDashboardButtonState);
     const [upperContentNo, setUpperContent] = useState(0);
 
-    const handlePage = (newPage) => setCurrentPage(newPage);
+    const handlePage = (newPage) =>{ setCurrentPage(newPage); window.localStorage.setItem('AdminDashboardButtonState', newPage); };
     const handleUpper = (newUpper) => setUpperContent(newUpper);
 
     const pages = {

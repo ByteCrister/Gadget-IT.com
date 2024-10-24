@@ -1,4 +1,6 @@
 const userControllers = require('../controllers/user.controllers');
+const userCrudController = require('../controllers/user.crud.controller');
+require('dotenv').config();
 
 const userRouter = require('express').Router();
 
@@ -14,6 +16,16 @@ userRouter.get('/user/new/pass/confirm', userControllers.UserNewPass);
 
 userRouter.post('/admin/email-password', userControllers.SetNewAdminPasswordEmailController);
 
+userRouter.get('/get/user-email', userControllers.getUserEmail);
 
 
+
+userRouter.post('/post-user-question', userCrudController.PostUserQuestion);
+userRouter.post('/post-user-rating', userCrudController.PostUserRating);
+
+userRouter.get('/get-user-information', userCrudController.GetUserInfo);
+userRouter.post('/update-user-personal-information', userCrudController.UpdatePersonalInfo);
+userRouter.post('/update-user-address', userCrudController.UpdateAddress);
+userRouter.post('/update-user-password', userCrudController.UpdateUserPassword);
+userRouter.post('/pre-order', userCrudController.PostPreOrder);
 module.exports = userRouter;

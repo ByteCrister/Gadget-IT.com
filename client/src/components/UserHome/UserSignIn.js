@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-
-import styles from '../../styles/HomePageStyles/SignIn.module.css';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import validationSchema from '../../components/UserHome/SignInValidations';
+
 import { SignInPost } from '../../api/SignInPost';
+import styles from '../../styles/HomePageStyles/SignIn.module.css';
 
 const UserSignIn = ({ handleUserEntryPage }) => {
-
-  const navigate = useNavigate();
   const location = useLocation();
   const currentRoute = location.pathname;
 
@@ -42,7 +40,7 @@ const UserSignIn = ({ handleUserEntryPage }) => {
       const timer = setTimeout(() => {
         // Open a new tab
         window.open('/', '_blank');
-        
+
         // Attempt to close the current tab
         // Note: This might not work in all cases due to browser restrictions
         window.close();
@@ -61,9 +59,8 @@ const UserSignIn = ({ handleUserEntryPage }) => {
           <hr />
 
           <div>
-            {formik.touched.firstName && formik.errors.firstName && <span><sup>*</sup>{formik.errors.firstName}</span>}<br />
-            <label htmlFor="firstName"><b><sup>*</sup>First Name</b></label><br />
-            <input
+            {formik.touched.firstName && formik.errors.firstName ? <span><sup>*</sup>{formik.errors.firstName}</span> : <label htmlFor="firstName"><b><sup>*</sup>First Name</b></label>}
+            <br /><input
               type="text"
               placeholder="first name"
               name="firstName"
@@ -75,8 +72,8 @@ const UserSignIn = ({ handleUserEntryPage }) => {
           </div>
 
           <div>
-            {formik.touched.lastName && formik.errors.lastName && <span><sup>*</sup>{formik.errors.lastName}</span>}<br />
-            <label htmlFor="lastName"><b><sup>*</sup>Last Name</b></label><br />
+            {formik.touched.lastName && formik.errors.lastName ? <span><sup>*</sup>{formik.errors.lastName}</span> : <label htmlFor="lastName"><b><sup>*</sup>Last Name</b></label>}
+            <br />
             <input
               type="text"
               placeholder="last name"
@@ -89,10 +86,11 @@ const UserSignIn = ({ handleUserEntryPage }) => {
           </div>
 
           <div>
-            {formik.touched.email && formik.errors.email && <span><sup>*</sup>{formik.errors.email}</span>}<br />
-            {dataState.isEmailExist && <span><sup>*</sup>Email already exists. Please try with another one.</span>}
-            {dataState.emailNotFound && <span><sup>*</sup>Email Not Found. Please try with another email.</span>}
-            <label htmlFor="email"><b><sup>*</sup>Email</b></label><br />
+            {formik.touched.email && formik.errors.email ? <span><sup>*</sup>{formik.errors.email}</span>
+              : dataState.isEmailExist ? <span><sup>*</sup>Email already exists. Please try with another one.</span>
+                : dataState.emailNotFound ? <span><sup>*</sup>Email Not Found. Please try with another email.</span>
+                  : <label htmlFor="email"><b><sup>*</sup>Email</b></label>}
+            <br />
             <input
               type="email"
               placeholder="email"
@@ -105,8 +103,8 @@ const UserSignIn = ({ handleUserEntryPage }) => {
           </div>
 
           <div>
-            {formik.touched.password && formik.errors.password && <span><sup>*</sup>{formik.errors.password}</span>}<br />
-            <label htmlFor="password"><b><sup>*</sup>Password</b></label><br />
+            {formik.touched.password && formik.errors.password ? <span><sup>*</sup>{formik.errors.password}</span> : <label htmlFor="password"><b><sup>*</sup>Password</b></label>}
+            <br />
             <input
               type={passwordVisible ? "text" : "password"}
               placeholder="password"
@@ -129,12 +127,11 @@ const UserSignIn = ({ handleUserEntryPage }) => {
             </label>
           </div>
 
-          <br />
-          {dataState.isEmailSend && <span className={styles.returnMessage}><sup>*</sup>Email Confirmation sent. Please confirm it.</span>}
-          {dataState.error && <span className={styles.returnMessage}><sup>*</sup>There is something wrong!</span>}
-          <br />
 
-          <p>I already have an account <Link onClick={() => handleUserEntryPage(2)}>Log In</Link>.</p>
+          <br />
+          {dataState.isEmailSend ? <span className={styles.returnMessage}><sup>*</sup>Email Confirmation sent. Please confirm it.</span>
+            : dataState.error ? <span className={styles.returnMessage}><sup>*</sup>There is something wrong!</span>
+              : <p>I already have an account <Link onClick={() => handleUserEntryPage(2)}>Log In</Link>.</p>}
 
           <section className={styles.clearfix}>
             <button
@@ -146,7 +143,7 @@ const UserSignIn = ({ handleUserEntryPage }) => {
               type="submit"
               className={styles.signupbtn}
             >{
-                dataState.isButtonLoading ? <AiOutlineLoading3Quarters className={styles.loading_icon}/> : 'Sign In'
+                dataState.isButtonLoading ? <AiOutlineLoading3Quarters className={styles.loading_icon} /> : 'Sign In'
               }</button>
           </section>
         </div>

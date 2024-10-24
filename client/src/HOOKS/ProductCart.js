@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useData } from '../context/useData';
 
 const ProductCart = ({ product }) => {
-    const { dataState } = useContext(useData);
+    const { dataState, dispatch } = useContext(useData);
 
     const getPrices = (product_id, keyState) => {
         const productPrice = dataState.productStorage.product_prices.find((item) => item.product_id === product_id);
@@ -33,7 +33,7 @@ const ProductCart = ({ product }) => {
             </Link>
             <div className={styles['buttons']}>
                 <Link to={`/easy-checkout`}><button className={styles['buy-now']}>Buy Now</button></Link>
-                <button className={styles['add-to-cart']}>Add to Cart</button>
+                <button onClick={() => dispatch({ type: 'add_product_to_cart', payload: product.product_id })} className={styles['add-to-cart']}>Add to Cart</button>
             </div>
         </div>
     );

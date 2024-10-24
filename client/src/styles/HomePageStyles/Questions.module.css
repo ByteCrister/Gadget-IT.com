@@ -1,0 +1,314 @@
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap');
+
+.MainQuestion {
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    box-shadow: 0px 0px 3px rgb(187, 187, 187);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.Upper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.Upper section {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+}
+
+.Upper section div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.Question {
+    font-size: 25px;
+    font-weight: 500;
+    font-family: "Afacad Flux", sans-serif;
+}
+
+.QuestionText {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: "Afacad Flux", sans-serif;
+    color: rgb(114, 114, 114);
+}
+
+.Upper hr {
+    width: 100%;
+}
+
+.AskButton {
+    border: none;
+    padding: 10px 15px;
+    background-color: rgb(255, 255, 255);
+    font-weight: 600;
+    font-size: 14px;
+    font-family: "Afacad Flux", sans-serif;
+    color: #ff8624;
+    border: 2px solid #f27f20;
+    border-radius: 5px;
+    transition: ease-in-out 0.3s;
+    cursor: pointer;
+}
+
+.AskButton:hover {
+    color: aliceblue;
+    background-color: #f27f20;
+}
+
+.Lower {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    /* justify-content: center;
+    align-items: center; */
+    /* background-color: #222222; */
+}
+
+.LogoAndText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.Logo {
+    background-color: #f2fffd;
+    border-radius: 45%;
+    padding: 10px;
+}
+
+.innerLogo {
+    font-size: 40px;
+    color: #f27f20;
+}
+
+.q_text,
+.Date {
+    font-size: 15px;
+    font-family: "Afacad Flux", sans-serif;
+    color: #979797;
+}
+
+.Date {
+    font-weight: 600;
+    font-family: "Afacad Flux", sans-serif;
+    color: #707070;
+}
+
+.question_name {
+    color: #f27f20;
+}
+
+.AllMainQuestions {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    width: 100%;
+}
+
+.AllQuestions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 5px;
+  
+}
+
+.questionText {
+    font-family: "Afacad Flux", sans-serif;
+    font-weight: 500;
+}
+
+.answerText {
+    font-family: "Afacad Flux", sans-serif;
+    color: #4d4d4d;
+    font-size: 16px;
+}
+
+.questions_hr {
+    border-color: #fbfbfb;
+    opacity: 0.5;
+    width: 100%;
+}
+
+.AvgRating {
+    display: flex;
+    align-items: center;
+    font-family: "Roboto", sans-serif;
+    color: #222222;
+    font-size: 20px;
+    font-weight: 600;
+
+}
+
+.Stars {
+    color: #f27f20;
+}
+
+
+/* ----------------------------- Question Form Section ------------------------------- */
+.MainQuestionForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    width: 100%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form span {
+    font-size: 1.5em;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+form section {
+    margin-bottom: 20px;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+form div span {
+    font-size: 1em;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    text-align: left;
+    font-family: "Afacad Flux", sans-serif;
+}
+
+form input,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #4d4d4d;
+    font-family: "Afacad Flux", sans-serif;
+    font-weight: 600;
+    transition: border-color 0.3s ease;
+}
+
+form input:focus,
+form textarea:focus {
+    border-color: #ff7300;
+    outline: none;
+}
+
+form textarea {
+    resize: vertical;
+}
+
+form sup {
+    color: red;
+}
+
+.FormButtonSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+}
+
+.FormButtonSection a {
+    text-decoration: none;
+    width: 100%;
+}
+.AskQuestionTest{
+    font-family: "Afacad Flux", sans-serif;
+    color: #ff7300;
+    font-weight: 600;
+    text-align: left;
+    
+}
+.SubmitBtn,
+.BackBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 100%;
+    padding: 20px;
+    font-family: "Afacad Flux", sans-serif;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+
+}
+
+.SubmitBtn {
+    background-color: #ff9946;
+    color: white;
+}
+.SubmitBtn:hover{
+    background-color: #ff7300;
+}
+
+.BackBtn {
+    border: 2px solid #ff8624;
+    color: #ff8624;
+}
+.BackBtn:hover{
+    background-color: #f27f20;
+    color: white;
+}
+
+/* ------------------------------- Rating -------------------------------- */
+.RatingSection{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-around;
+    max-width: 100px;
+}
+.RatingSection input:hover{
+cursor: pointer;
+}
+@media (max-width : 650px) {
+    .MainQuestion {
+        width: 100%;
+    }
+
+    .Upper section {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}

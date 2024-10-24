@@ -88,17 +88,17 @@ const CreateNewCategory = React.memo(() => {
             }));
             return;
         }
-        const trimmed_value = e.target.value.trim();
-        if ((trimmed_value.length === 1 && trimmed_value.charAt(0) === '_') || (trimmed_value.charAt(trimmed_value.length - 1) === '_' && trimmed_value.charAt(trimmed_value.length - 2) === '_')) {
+        const trimmedText = e.target.value.trim();
+        if ((trimmedText.length === 1 && trimmedText.charAt(0) === '_') || (trimmedText.charAt(trimmedText.length - 1) === '_' && trimmedText.charAt(trimmedText.length - 2) === '_')) {
             return;
         }
-        const last_letter = trimmed_value.toLowerCase().charAt(trimmed_value.length - 1);
-        const accepted_letters = 'abcdefghijklmnopqrstuvwxyz_';
-        const isValid = accepted_letters.includes(last_letter);
+        const lastLetter = trimmedText.toLowerCase().charAt(trimmedText.length - 1);
+        const acceptedLetters = 'abcdefghijklmnopqrstuvwxyz_';
+        const isValid = acceptedLetters.includes(lastLetter);
         if (isValid) {
             setAllCategoryRef((prev) => ({
                 ...prev,
-                [e.target.id]: prev[e.target.id] + last_letter
+                [e.target.id]: prev[e.target.id] + lastLetter
             }));
         }
 

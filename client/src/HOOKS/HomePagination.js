@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 import styles from '../styles/HomePageStyles/HomePagination.module.css';
 
 const HomePagination = ({ productsData, handleFilteredData }) => {

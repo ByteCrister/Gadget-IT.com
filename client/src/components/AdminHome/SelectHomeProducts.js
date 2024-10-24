@@ -128,7 +128,8 @@ const SelectHomeProducts = () => {
     SearchSelectHomeProducts(
       search,
       dataState.Production_Page.TableRows,
-      setProductsData
+      setProductsData,
+      productsData
     );
   };
 
@@ -428,10 +429,7 @@ const SelectHomeProducts = () => {
           </tbody>
         </table>
       </section>
-      <Pagination
-        productsData={productsData}
-        handleFilteredData={handleFilteredData}
-      />
+      <Pagination productsData={productsData} handleFilteredData={handleFilteredData} />
     </div>
   );
 };

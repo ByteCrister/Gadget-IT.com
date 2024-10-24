@@ -1,5 +1,10 @@
 const db = require('../config/DB');
 
+const toBangladeshTime = (date) => {
+    return new Date(new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Dhaka' })));
+};
+
+
 module.exports = {
     productSettingModel_advertisement: (callback) => {
         db.query('select * from advertisement_img ;', callback);
@@ -12,6 +17,12 @@ module.exports = {
     },
     productSettingModel_home_description: (callback) => {
         db.query('select * from home_description ;', callback);
+    },
+    productSettingModel_OfferCarts: (callback) => {
+        db.query('select * from offer_carts ;', callback);
+    },
+    productSettingModel_OfferCartsProducts: (callback) => {
+        db.query('select * from offer_carts_products ;', callback);
     },
     updateAdvertiseImages: (item, callback) => {
         db.query(`update advertisement_img set img = ?, position = ? where img_no = ? `,
@@ -79,5 +90,44 @@ module.exports = {
             where des_no = ? ;`,
             [item.des_head, item.des_value, item.serial_no, item.des_no],
             callback);
+    },
+
+    postNewOfferModel: (formData, callback) => {
+        db.query(
+            `insert into offer_carts (cart_title, cart_description, cart_image, offer_start, offer_end) 
+            values (?, ?, ?, ?, ?) ;`,
+            [formData.cart_title, formData.cart_description, formData.cart_image, toBangladeshTime(formData.offer_start), toBangladeshTime(formData.offer_end)],
+            callback);
+    },
+
+    updateOffer: (formData, callback) => {
+        db.query(`update offer_carts set cart_title = ?, cart_description = ?, cart_image = ?, offer_start = ?, offer_end = ? where cart_no = ?;`,
+            [formData.cart_title, formData.cart_description, formData.cart_image, toBangladeshTime(formData.offer_start), toBangladeshTime(formData.offer_end), formData.cart_no],
+            callback);
+    },
+    deleteOffer: (cart_no, callback) => {
+        db.query('delete from offer_carts where cart_no = ? ;', [cart_no], callback);
+    },
+    deleteOfferProductByCartNo: (cart_no, callback) => {
+        db.query('delete from offer_carts_products where offer_cart_no = ? ;', [cart_no], callback);
+    },
+    deleteOfferProduct: (product_id, callback) => {
+        if (typeof product_id === 'number') {
+            db.query('delete from offer_carts_products where product_id = ? ;', [product_id], callback);
+        }
+    },
+    UpdateOfferProducts: (product, callback) => {
+        if (typeof product === 'object') {
+            db.query(`update offer_carts_products set offer_cart_no = ?, serial_no = ? where product_id = ? ;`, [product.offer, product.serial_no, product.product_id], callback);
+        }
+    },
+    insertOfferProducts: (product, callback) => {
+        if (typeof product === 'object') {
+            db.query(
+                `insert into offer_carts_products (product_id, offer_cart_no, serial_no)
+                values (?, ?, ?) ;`,
+                [product.product_id, product.offer, product.serial_no],
+                callback);
+        }
     }
 }

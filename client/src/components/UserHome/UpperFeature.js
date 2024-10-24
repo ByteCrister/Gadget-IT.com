@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
-import styles from '../../styles/HomePageStyles/ViewProduct.module.css';
-import { GetCategoryName } from '../../HOOKS/GetCategoryName';
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom';
 
+import styles from '../../styles/HomePageStyles/ViewProduct.module.css';
+import { GetCategoryName } from '../../HOOKS/GetCategoryName';
+import { useData } from '../../context/useData';
+
 const UpperFeature = ({ viewProduct, product_id }) => {
+
+    const { dispatch } = useContext(useData);
     const [stateNumber, setStateNumber] = useState(1);
+
 
     const getStatus = () => {
         const reserved = viewProduct.product_prices.reserved;
@@ -14,7 +19,7 @@ const UpperFeature = ({ viewProduct, product_id }) => {
     }
 
     const handleNewState = (state) => {
-        state === 'increment' ? setStateNumber((prev) => prev + 1) : stateNumber !== 1 && setStateNumber((prev) => prev - 1);
+        state === '+' ? setStateNumber((prev) => prev + 1) : stateNumber !== 1 && setStateNumber((prev) => prev - 1);
     }
 
     return (
@@ -44,18 +49,16 @@ const UpperFeature = ({ viewProduct, product_id }) => {
 
             <section className={styles.purchase_buttons}>
                 <div className={styles.decrease_increase}>
-                    <button onClick={() => handleNewState('decrement')}>-</button>
+                    <button onClick={() => handleNewState('-')}>-</button>
                     <span>{stateNumber}</span>
-                    <button onClick={() => handleNewState('increment')}>+</button>
+                    <button onClick={() => handleNewState('+')}>+</button>
                 </div>
 
                 <Link className={styles.buy_now}>
                     <button>Buy Now</button>
                 </Link>
 
-                <Link className={styles.add_to_cart}>
-                    <button>Add to Cart</button>
-                </Link>
+                <button className={styles.add_to_cart} onClick={() => dispatch({ type: 'add_product_to_cart', payload: Number(product_id) })}>Add to Cart</button>
             </section>
         </div>
     )

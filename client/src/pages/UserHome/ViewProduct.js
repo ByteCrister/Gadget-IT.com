@@ -12,8 +12,12 @@ import { MakeDefendants } from '../../HOOKS/MakeDefendants';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import RandomErrorPage from '../RandomErrorPage';
 import ViewProductSwiper from '../../components/UserHome/ViewProductSwiper';
+import RecentProducts from '../../components/UserHome/RecentProducts';
+import ProductDescription from '../../components/UserHome/ProductDescription';
+import UserQuestions from '../../components/UserHome/UserQuestions';
+import UserRating from '../../components/UserHome/UserRating';
 
-const ViewProduct = () => {
+const ViewProduct = ({ setUserEntryState }) => {
     const { dataState, dispatch } = useContext(useData);
     const [MainTableData, setMainTableData] = useState([]);
     const [currSectionState, setCurrSectionState] = useState(1);
@@ -28,11 +32,14 @@ const ViewProduct = () => {
         images: [],
         productInformation: {},
         description: [],
-        ratings: [],
-        askedQuestion: [],
         keyFeature: [],
-        product_prices: {}
+        product_prices: {},
+        RecentProducts: [],
+        product_questions: [],
+        product_ratings: []
     });
+
+    const [QuestionAndReviewElement, setQuestionAndReviewElement] = useState({ product_name: '', product_id: '' });
 
     useEffect(() => {
         if (!category) {
@@ -50,14 +57,15 @@ const ViewProduct = () => {
 
         const productInformation = ProductTable.table_products?.find(item => Number(item.product_id) === Number(product_id));
         const productDescription = ProductTable.product_descriptions?.filter(item => Number(item.product_id) === Number(product_id));
+        // console.log(productInformation);
         const productImages = productInformation?.image ? [productInformation.image] : [];
         const productKeyFeature = ProductTable.product_keyFeature?.filter(item => item.category === MainTable);
         const extraImages = ProductTable.product_extraImages?.filter(item => Number(item.product_id) === Number(product_id)).map(item => item.image);
-
         const relatedProducts = ProductTable.table_products?.filter(item => item.sub_category === productInformation.sub_category && item.main_category === category);
-
         const productPrices = dataState.productStorage.product_prices?.find(item => item.product_id === Number(product_id)) || {};
-        console.log(productPrices);
+        const productQuestions = dataState.productStorage.product_questions.filter((question) => question.product_id === Number(product_id));
+        const productRatings = dataState.productStorage.product_ratings.filter((rating) => rating.product_id === Number(product_id));
+        // console.log(dataState.productStorage.product_ratings);
 
         setViewProduct((prev) => ({
             ...prev,
@@ -65,11 +73,26 @@ const ViewProduct = () => {
             description: productDescription || [],
             images: [...productImages, ...extraImages],
             keyFeature: productKeyFeature || [],
-            product_prices: productPrices
+            product_prices: productPrices,
+            RecentProducts: dataState.RecentProducts,
+            product_questions: productQuestions,
+            product_ratings: productRatings
         }));
 
         setMainTableData(relatedProducts || []);
-    }, [category, product_id, dataState]);
+        window.scrollTo(0, 0);
+    }, [dataState.productStorage.product_ratings, product_id, category]);
+
+    useEffect(() => {
+        if (viewProduct.productInformation && viewProduct.productInformation.product_name && viewProduct.productInformation.product_id) {
+            setQuestionAndReviewElement({
+                product_name: viewProduct.productInformation.product_name,
+                product_id: viewProduct.productInformation.product_id,
+                path: location.pathname
+            });
+        }
+    }, [viewProduct.productInformation, location.pathname]);
+
 
     useEffect(() => {
         dispatch({
@@ -77,6 +100,25 @@ const ViewProduct = () => {
             payload: { prevPath: dataState.pathSettings.currPath, currPath: location.pathname }
         });
     }, [dispatch, location.pathname, dataState.pathSettings.currPath]);
+
+    useEffect(() => {
+        if (viewProduct && viewProduct.productInformation && viewProduct.images[0]) {
+            const CurrProduct = {
+                id: product_id,
+                name: viewProduct.productInformation.product_name,
+                price: viewProduct.product_prices.price,
+                image: viewProduct.images[0],
+                path: location.pathname
+            };
+
+            dispatch({
+                type: 'set_recent_product',
+                payload: CurrProduct
+            });
+        }
+    }, [viewProduct, product_id, location.pathname, dispatch]);
+
+
 
 
     const getPrices = useCallback((product_id) => {
@@ -94,11 +136,6 @@ const ViewProduct = () => {
             getPrices(item.product_id) >= lowerBound &&
             getPrices(item.product_id) <= upperBound);
     }, [MainTableData, getPrices, viewProduct.productInformation.product_id, viewProduct.product_prices.price]);
-
-    useEffect(() => {
-        console.log("MainTableData:", MainTableData);
-        console.log("viewProduct.productInformation.price:", viewProduct.productInformation.price);
-    }, [MainTableData, viewProduct.productInformation.price]);
 
 
 
@@ -132,8 +169,9 @@ const ViewProduct = () => {
                 </section>
             )}
 
-            {/* --------------------------------------- sections_and_recent_views ---------------------------------------- */}
+            {/* --------------------------------------- Section Buttons, Product Details and Recent product starts ---------------------------------------- */}
             <section className={styles.sections_and_recent_views} id='sections_and_recent_views'>
+                {/* --------------------------------------- Buttons and details start ------------------------------------------- */}
                 <section className={styles.main_sections}>
                     <div className={styles.section_buttons}>
                         <div className={styles.section_buttons_names}>
@@ -171,7 +209,7 @@ const ViewProduct = () => {
                             <div className={styles.section_hr}></div>
                         </div>
 
-                        {/*-------------- product main information ---------------  */}
+                        {/*-------------- table start :  product main information ---------------  */}
                         <table>
                             <tbody>
                                 {Object.entries(viewProduct.productInformation).map(([key, value]) => (
@@ -190,13 +228,35 @@ const ViewProduct = () => {
                                 ))}
                             </tbody>
                         </table>
-                        {/* ------------------------------------------------- */}
+                        {/* ----------------------- table end -------------------------- */}
                     </div>
                 </section>
+                {/* -------------------------------------------- Button and Detail ends ------------------------------------------ */}
 
+                {/* ---------------------- Recent Product starts-------------------- */}
                 <section className={styles.recent_views}>
-                    Recent View product's Container
+                    <RecentProducts Products={viewProduct.RecentProducts} />
                 </section>
+                {/* ---------------------- Recent Product ends -------------------- */}
+            </section>
+            {/* ----------------------------------------------- Section Buttons, Product Details and Recent product Ends ---------------------------------------------- */}
+
+
+            {/* ---------------------------------------- Product Description Starts -------------------------------------------- */}
+            {
+                viewProduct.description && viewProduct.description.length !== 0 && (
+                    <section className={styles.ProductMainDescription}>
+                        <ProductDescription Descriptions={viewProduct.description} />
+                    </section>
+                )
+            }
+            {/* ---------------------------------------- Product Description Ends -------------------------------------------- */}
+
+
+            {/* ---------------------------------------- Question && Ratings -------------------------------------- */}
+            <section className={styles.QuestionAndRating}>
+                <UserQuestions setUserEntryState={setUserEntryState} askedQuestion={viewProduct.product_questions} QuestionAndReviewElement={QuestionAndReviewElement} />
+                <UserRating setUserEntryState={setUserEntryState} ratings={viewProduct.product_ratings} QuestionAndReviewElement={QuestionAndReviewElement} />
             </section>
         </section>
     );

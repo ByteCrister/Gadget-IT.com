@@ -1,37 +1,32 @@
 import React, { useState } from 'react'
-import styles from '../../styles/AdminHome/PageSeven.module.css';
 import { BsFillQuestionSquareFill } from "react-icons/bs";
 import { GiVibratingShield } from "react-icons/gi";
 import UserQuestions from '../../components/AdminHome/UserQuestions';
+import styles from '../../styles/AdminHome/PageSeven.module.css';
+import UserRating from '../../components/AdminHome/UserRating';
 
 
 
 const PageSeven = () => {
-  const [buttonActive, setButtonActive] = useState(1);
+  const [activeButton, setButtonActive] = useState(1);
 
   return (
     <section id={styles.mainSection}>
       <span id={styles.text}>
-        Support
+        {activeButton === 1 ? 'Support' : 'Rating'}
       </span>
 
       <section id={styles.ButtonSections}>
-        <button style={buttonActive === 1 ? { border: '5px solid #c6c6c6' } : null} onClick={() => { setButtonActive(1) }}> <span><BsFillQuestionSquareFill /></span><span>User Question's</span></button>
-        <button style={buttonActive === 2 ? { border: '5px solid #c6c6c6' } : null} onClick={() => { setButtonActive(2) }}> <span><GiVibratingShield /></span><span>User Rating's</span></button>
+        <button className={activeButton === 1 ? styles.activeSupportButton : styles.supportButton} onClick={() => { setButtonActive(1) }}> <span><BsFillQuestionSquareFill /></span><span>User Question's</span></button>
+        <button className={activeButton === 2 ? styles.activeSupportButton : styles.supportButton} onClick={() => { setButtonActive(2) }}> <span><GiVibratingShield /></span><span>User Rating's</span></button>
       </section>
 
       <section id={styles.PageSevenTables}>
-        {
-          buttonActive === 1 ?
-            <UserQuestions />
-            :
-            ''
-        }
-
+        {activeButton === 1 ? <UserQuestions /> : <UserRating />}
       </section>
 
     </section>
   )
 }
 
-export default PageSeven
+export default React.memo(PageSeven);

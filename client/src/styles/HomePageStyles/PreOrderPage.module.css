@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.main-pre-order-outer-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.pre-order-form,
+.pre-order-form div,
+.pre-order-form section div {
+    flex-direction: column;
+    display: flex;
+    gap: 5px;
+}
+
+.pre-order-form {
+    width: 50%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.pre-order-form div,
+.pre-order-form section,
+.pre-order-form section div {
+    width: 100%;
+}
+
+.pre-order-form section {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.pre-order-heading-1,
+.pre-order-heading-2 {
+    font-family: "Afacad Flux", sans-serif;
+    text-align: center;
+}
+
+.pre-order-heading-1 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #f27f20;
+}
+
+.pre-order-heading-2 {
+    font-size: 25px;
+    font-weight: 500;
+    color: #262626;
+
+}
+
+.pre-order-form label {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    color: #262626;
+}
+
+.pre-order-form div input,
+.pre-order-form section div input,
+.pre-order-form div textarea {
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    color: #707070;
+    background-color: #f6f6f6;
+}
+
+.pre-order-form div input,
+.pre-order-form section div input {
+    padding: 10px 20px;
+}
+
+.pre-order-form div textarea {
+    max-width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    resize: horizontal;
+}
+
+.pre-order-form div input::placeholder,
+.pre-order-form section div input::placeholder {
+    color: #c3c3c3;
+}
+
+.pre-order-form div button{
+    padding: 10px 15px;
+    font-size: 18px;
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    width: 100px;
+    cursor: pointer;
+    background-color: #f27f20;
+    transition: ease-in-out 0.2s;
+}
+
+.pre-order-form div button:hover{
+    background-color: #f29040;
+
+}
+.LoadingBtnIcon{
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+@media (max-width : 880px){
+    .pre-order-form{
+        width: 100%;
+    }
+    .pre-order-form section{
+        flex-direction: column;
+    }
+}

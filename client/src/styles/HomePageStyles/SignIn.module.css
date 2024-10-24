@@ -8,94 +8,126 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
-  transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.container{
+.form-wrapper{
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+
+}
+/* .form-wrapper {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  height: 100%;
+} */
+
+.container {
   display: flex;
   flex-direction: column;
-  width: 30%;
-  min-width: 350px;
-  justify-content: center;
   align-items: center;
-  gap: 5px;
-  padding: 10px;
-  background-color: rgb(255, 255, 255);
-  font-family: "Roboto", sans-serif;
-  border-radius: 5px;
+  width: 100%;
 }
-
-.Header_name{
-  font-size: 25px;
-  font-family: "Roboto", sans-serif;
-  color: #f27f20;
-  font-weight: 600;
-}
-.para_head sup, .container div span ,.container div span sup, .container div label b sup{
-  color: red;
-  font-weight: 500;
-  font-size: 13px;
-}
-.para_head{
-  font-family: "Roboto", sans-serif;
-}
-
 .container div{
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 100%;
-}
-.container div label{
-  color: rgb(71, 71, 71);
-  font-size: 14px;
-}
-.container div input{
-  outline: none;
-  border: none;
-  background-color: aliceblue;
-  border-radius: 5px;
-  padding: 10px;
-  font-family: "Roboto", sans-serif;
-  color: rgb(71, 71, 71);
   
 }
 
-.showPassword label{
+.Header_name {
+  font-family: "Roboto", sans-serif;
+  color: #f27f20;
+  font-weight: 600;
+  font-size: 30px;
+}
+
+.para_head {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  color: #555;
+}
+
+.para_head sup, .container div span ,.container div span sup, .container div label b sup {
+  color: red;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.container div {
+  width: 100%;
+}
+
+.container div label {
+  color: #333;
+  font-size: 14px;
+}
+
+.container div input {
+  width: 100%;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px 15px;
+  color: #333;
+}
+
+.showPassword {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: "Roboto", sans-serif;
-  color: rgb(71, 71, 71);
-  font-weight: 600;
+  margin-top: 10px; 
+  justify-content: flex-start; 
+  max-width: 100px;
+  margin-left: -70%;
 }
-.showPassword label input{
+
+.showPassword label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.showPassword input[type="checkbox"] {
+  margin-right: 5px; 
+}
+
+
+.showPassword label input {
   cursor: pointer;
 }
 
-.container p{
-  color: rgb(71, 71, 71);
-  font-weight: 500;
-  font-family: "Roboto", sans-serif;
+.container p {
+  color: #333;
+  font-size: 18px;
+  text-align: center;
 }
-.container p a{
-  text-decoration: none;
+
+.container p a {
   color: #f27f20;
+  text-decoration: none;
 }
-.container p a:hover{
+
+.container p a:hover {
   text-decoration: underline;
 }
-.clearfix{
-  display: flex;
-  justify-content: space-evenly;
-  width: 100%;
 
+.clearfix {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
 }
 
-.cancelbtn, .signupbtn{
+.cancelbtn, .signupbtn {
   padding: 5px 10px;
   outline: none;
   border: none;
@@ -103,28 +135,27 @@
   color: white;
   cursor: pointer;
   border-radius: 5px;
-  transition: ease-in-out 0.2s;
   font-family: "Roboto", sans-serif;
   font-weight: 600;
+  transition: background-color 0.2s ease-in-out;
 }
 
-.cancelbtn:hover{
-  background-color: rgb(223, 223, 223);
-  color: grey;
-}
-
-.signupbtn:hover{
-  background-color: rgb(225, 225, 225);
+.cancelbtn:hover, .signupbtn:hover {
+  background-color: #e6e6e6;
   color: #f27f20;
 }
-.returnMessage{
+
+.returnMessage {
   font-family: "Roboto", sans-serif;
   font-weight: 600;
-  color: rgb(245, 92, 92);
+  color: #f55c5c;
+  text-align: center;
 }
-.loading_icon{
-  animation: spin 1s linear infinite; 
+
+.loading_icon {
+  animation: spin 1s linear infinite;
 }
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
