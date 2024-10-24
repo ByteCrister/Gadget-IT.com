@@ -256,7 +256,7 @@ module.exports = {
     postNewOffer: async (req, res) => {
         try {
             await performQuery(productSettingModel.postNewOfferModel, req.body.formFillUp);
-            const offers =  await performQuery(productSettingModel.productSettingModel_OfferCarts, req.body.formFillUp);
+            const offers = await performQuery(productSettingModel.productSettingModel_OfferCarts, req.body.formFillUp);
             res.send(offers);
         } catch (error) {
             console.log("Error in post new offer: ", error);
@@ -299,8 +299,8 @@ module.exports = {
                 return CurrOfferCarts.length !== 0 && CurrOfferCarts.some((offer_) => offer_.product_id === offer.product_id) && offer.serial_no !== 0;
             });
             let OfferShouldInsert = UpdatedProducts_.filter((offer) => {
-                return CurrOfferCarts.length === 0 || CurrOfferCarts.some((offer_) => offer_.product_id !== offer.product_id)
-                    && OffersShouldUpdate.length === 0 || OffersShouldUpdate.some((offer_) => offer_.product_id !== offer.product_id);
+                return (CurrOfferCarts.length === 0 || !CurrOfferCarts.some((offer_) => offer_.product_id === offer.product_id))
+                    && (OffersShouldUpdate.length === 0 || !OffersShouldUpdate.some((offer_) => offer_.product_id === offer.product_id));
             });
 
             if (OfferShouldDelete && OfferShouldDelete.length > 0) {
