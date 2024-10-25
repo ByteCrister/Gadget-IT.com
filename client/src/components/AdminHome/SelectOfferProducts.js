@@ -1,11 +1,13 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { FaSearch } from 'react-icons/fa';
+import { TbCloudUpload } from "react-icons/tb";
+import axios from 'axios';
+
 
 import styles from '../../styles/AdminHome/ManageOffers.module.css';
 import Pagination from '../../HOOKS/Pagination';
 import { useData } from '../../context/useData';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
-import axios from 'axios';
 import { SearchOfferProducts } from '../../HOOKS/SearchOfferProducts';
 
 const SelectOfferProducts = () => {
@@ -37,7 +39,7 @@ const SelectOfferProducts = () => {
             });
             dataState?.Setting_Page?.offer_carts.forEach((offer) => {
                 const AllOfferProducts = dataState.Setting_Page.offer_carts_products.filter((offer_) => offer_.offer_cart_no === offer.cart_no).map((offer_) => offer_.serial_no);
-                setMaxSerialNo((prev) => ({ ...prev, ['_' + offer.cart_no]: AllOfferProducts.length > 0 ? Math.max(...AllOfferProducts) : 0 }));
+                setMaxSerialNo((prev) => ({ ...prev, [offer.cart_no]: AllOfferProducts.length > 0 ? Math.max(...AllOfferProducts) : 0 }));
             });
         }
     }, [dataState.Setting_Page])
@@ -81,29 +83,30 @@ const SelectOfferProducts = () => {
         return offerProducts.ProductStorage.some((product) => product.product_id === product_id && product.offer !== 0 && product.serial_no !== 0);
     }, [offerProducts.ProductStorage]);
     // 8
-    const handleCheckChange = (e, product_id) => {
+    const handleCheckChange = useCallback((e, product_id) => {
         const isChecked = e.target.checked;
         let Updated = [...offerProducts.ProductStorage];
         if (isChecked) {
             if (findOffer(product_id) !== 0) {
-                Updated = offerProducts.ProductStorage.map((offer) => {
-                    return offer.product_id === product_id ? { ...offer, serial_no: maxSerialNo['_' + offer.offer] + 1 } : offer
+                Updated = Updated.map((offer) => {
+                    return offer.product_id === product_id ? { ...offer, serial_no: maxSerialNo[offer.offer] + 1 } : offer
                 });
                 setMaxSerialNo((prev) => ({
                     ...prev,
-                    ['_' + findOffer(product_id)]: prev['_' + findOffer(product_id)] + 1
+                    [findOffer(product_id)]: prev[findOffer(product_id)] + 1
                 }));
+                const updatedDeleteOffer = OfferShouldDelete.some((id) => id === product_id) ? [...OfferShouldDelete.filter((id) => id !== product_id)] : [...OfferShouldDelete];
+                setOfferShouldDelete([...updatedDeleteOffer]);
             }
-            setOfferShouldDelete((prev) => [prev.find((id) => id === product_id) ? [...prev.filter((id) => id !== product_id)] : [...prev]]);
         } else {
             let currSerial = findSerial(product_id);
             let currOffer = findOffer(product_id);
-            Updated = offerProducts.ProductStorage.map((offer) => {
-                return offer.product_id === product_id ? { ...offer, serial_no: 0 } : { ...offer, serial_no: offer.offer === currOffer ? (currSerial < offer.serial_no) ? offer.serial_no - 1 : offer.serial_no : offer.serial_no }
+            Updated = Updated.map((offer) => {
+                return offer.product_id === product_id ? { ...offer, serial_no: 0 } : currOffer === offer.offer ? { ...offer, serial_no: currSerial < offer.serial_no ? offer.serial_no - 1 : offer.serial_no } : offer
             });
             setMaxSerialNo((prev) => ({
                 ...prev,
-                ['_' + findOffer(product_id)]: prev['_' + findOffer(product_id)] > 0 ? prev['_' + findOffer(product_id)] - 1 : prev['_' + findOffer(product_id)]
+                [findOffer(product_id)]: prev[findOffer(product_id)] > 0 ? prev[findOffer(product_id)] - 1 : prev[findOffer(product_id)]
             }));
         }
 
@@ -112,38 +115,36 @@ const SelectOfferProducts = () => {
             ProductStorage: Updated,
             offerProductsMain: Updated,
         }));
-    };
+    }, [OfferShouldDelete, findOffer, findSerial, maxSerialNo, offerProducts.ProductStorage]);
     // 9
-    const handleSelectChange = (e, product_id) => {
+    const handleSelectChange = useCallback((e, product_id) => {
         const selectedOffer = parseInt(e.target.value);
+        const currOffer = findOffer(product_id);
+        const currSerial = findSerial(product_id);
 
-        let Updated;
-        if (selectedOffer !== 0) {
-            Updated = offerProducts.ProductStorage.map((offer_) => {
-                return offer_.product_id === product_id ? { ...offer_, offer: selectedOffer, serial_no: maxSerialNo['_' + selectedOffer] + 1 } : offer_
-            });
-            setMaxSerialNo((prev) => ({
-                ...prev,
-                ['_' + selectedOffer]: prev['_' + selectedOffer] + 1
-            }));
-        } else {
-            const currOffer = findOffer(product_id);
-            Updated = offerProducts.ProductStorage.map((offer_) => {
-                return offer_.product_id === product_id ? { ...offer_, offer: 0, serial_no: 0 } : { ...offer_, serial_no: offer_.offer === currOffer ? (findSerial(product_id) < offer_.serial_no) ? offer_.serial_no - 1 : offer_.serial_no : offer_.serial_no }
-            });
-            setMaxSerialNo((prev) => ({
-                ...prev,
-                ['_' + currOffer]: prev['_' + currOffer] > 0 ? prev['_' + currOffer] - 1 : prev['_' + currOffer]
-            }));
-            setOfferShouldDelete((prev) => [...prev, product_id]);
+        let Updated = [...offerProducts.ProductStorage];
+        Updated = Updated.map((offer) => {
+            return offer.product_id === product_id ?
+                { ...offer, offer: selectedOffer, serial_no: 0 }
+                : currOffer === offer.offer && currSerial !== 0 ?
+                    { ...offer, serial_no: currSerial < offer.serial_no ? offer.serial_no - 1 : offer.serial_no }
+                    : offer
+        });
+        if (selectedOffer === 0) {
+            const updatedDeleteOffer = OfferShouldDelete.some((id) => id === product_id) ? [...OfferShouldDelete] : [...OfferShouldDelete, product_id];
+            setOfferShouldDelete([...updatedDeleteOffer]);
         }
+        setMaxSerialNo((prev) => ({
+            ...prev,
+            [currOffer]: currSerial !== 0 ? prev[currOffer] - 1 : prev[currOffer]
+        }));
         setOfferProducts((prev) => ({
             ...prev,
             ProductStorage: Updated,
             offerProductsMain: Updated
         }));
 
-    };
+    }, [OfferShouldDelete, findOffer, findSerial, offerProducts.ProductStorage]);
     // 10
     const handleFilteredData = (data) => {
         setOfferProducts((prev) => ({
@@ -165,7 +166,7 @@ const SelectOfferProducts = () => {
                     />
                     <FaSearch className={styles.searchIcon} />
                 </div>
-                <button onClick={handleUpdateChanges}>Update New Changes</button>
+                <button onClick={handleUpdateChanges}><TbCloudUpload /></button>
             </section>
 
             <section className={styles.CreateOfferTableSection}>
