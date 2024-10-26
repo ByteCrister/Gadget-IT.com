@@ -1,4 +1,4 @@
-import React, { useState, useCallback, lazy, Suspense, useEffect } from 'react';
+import React, { useState, useCallback, lazy, Suspense } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import NavBar from '../layout/NavBar';
@@ -18,6 +18,8 @@ const QuestionForm = lazy(() => import('../components/UserHome/QuestionForm'));
 const Account = lazy(() => import('../pages/UserHome/Account'));
 const Carts = lazy(() => import('../pages/UserHome/Carts'));
 const PreOrder = lazy(() => import('../pages/UserHome/PreOrder'));
+const Offers = lazy(() => import('../pages/UserHome/Offers'));
+const OfferCartProducts = lazy(()=> import('../pages/UserHome/OfferCartProducts'));
 
 const UserHomeRoutes = () => {
     const location = useLocation();
@@ -69,6 +71,8 @@ const UserHomeRoutes = () => {
                         <Route path='/user/account' element={<Account />} />
                         <Route path='/user/cart' element={<Carts />} />
                         <Route path='/pre-order' element={<PreOrder setUserEntryState={setUserEntryState} />} />
+                        <Route path='/offers' element={<Offers />} />
+                        <Route path='/offers/:title' element={<OfferCartProducts />} />
 
                         <Route path="*" element={<RandomErrorPage />} />
                     </Routes>

@@ -1,3 +1,4 @@
+const productSettingModel = require("../models/product.setting.model");
 const productsModels = require("../models/products.models");
 const userHomeContentsModel = require("../models/user.home.contents.model");
 
@@ -76,14 +77,14 @@ module.exports = {
                     else resolve(data);
                 });
             });
-    
+
             const subCategory = await new Promise((resolve, reject) => {
                 productsModels.getProductsSubCategoryNamesModel((err, data) => {
                     if (err) reject(err);
                     else resolve(data);
                 });
             });
-    
+
             // Use Promise.all to wait for all promises to resolve
             const product_table = await Promise.all(
                 category.map(async (item) => {
@@ -93,28 +94,28 @@ module.exports = {
                             else resolve(data);
                         });
                     });
-    
+
                     const product_extraImages = await new Promise((resolve, reject) => {
                         userHomeContentsModel.getProductExtraImages(item.category_name, (err, data) => {
                             if (err) reject(err);
                             else resolve(data);
                         });
                     });
-    
+
                     const product_descriptions = await new Promise((resolve, reject) => {
                         userHomeContentsModel.getProductDescriptions(item.category_name, (err, data) => {
                             if (err) reject(err);
                             else resolve(data);
                         });
                     });
-    
+
                     const product_keyFeature = await new Promise((resolve, reject) => {
                         userHomeContentsModel.getProductKeyFeature(item.category_name, (err, data) => {
                             if (err) reject(err);
                             else resolve(data);
                         });
                     });
-    
+
                     const product_sorting = await new Promise((resolve, reject) => {
                         userHomeContentsModel.getProductSorting(item.category_name, (err, data) => {
                             if (err) reject(err);
@@ -122,7 +123,7 @@ module.exports = {
                         });
                     });
 
-    
+
                     // Return the structured product data
                     return {
                         table: item.category_name,
@@ -154,24 +155,38 @@ module.exports = {
                 });
             });
 
+            const OfferStorage = {
+                OfferCarts: await new Promise((resolve, reject) => {
+                    productSettingModel.productSettingModel_OfferCarts((err, data) => {
+                        if (err) reject(err);
+                        else resolve(data);
+                    });
+                }),
+                OfferCartProducts: await new Promise((resolve, reject) => {
+                    productSettingModel.productSettingModel_OfferCartsProducts((err, data) => {
+                        if (err) reject(err);
+                        else resolve(data);
+                    });
+                })
+            };
 
 
-    
-            
+
             // console.log(product_table);
             res.json({
                 category: category,
                 subCategory: subCategory,
                 product_table: product_table,
-                product_prices :  product_prices,
-                product_questions : product_questions,
-                product_ratings : product_ratings
+                product_prices: product_prices,
+                product_questions: product_questions,
+                product_ratings: product_ratings,
+                OfferStorage: OfferStorage
             });
-    
+
         } catch (error) {
             console.log("Failed getUserProducts:", error);
             res.status(500).json({ error });
         }
     }
-    
+
 };

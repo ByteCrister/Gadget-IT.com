@@ -25,7 +25,7 @@ const NavBar = ({ handleUserEntryPage }) => {
 
         <div className={style.upperContents}>
 
-          <Link to="#offers" className={style.navLink}>
+          <Link to={'offers'} className={style.navLink}>
             <div className={style.offerBox}>
               <BsBoxSeamFill className={style.Icon} />
               <div className={style.Head_and_Text}>

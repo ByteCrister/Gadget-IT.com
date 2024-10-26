@@ -324,8 +324,8 @@ module.exports = {
                 });
             }
 
-            const Offers = await performQuery(productSettingModel.productSettingModel_OfferCartsProducts);
-            res.send(Offers);
+            const OffersProducts = await performQuery(productSettingModel.productSettingModel_OfferCartsProducts);
+            res.send(OffersProducts);
 
         } catch (error) {
             console.log("Error in Crud Offer Products: ", error);
