@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useContext, useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { IoHomeSharp } from 'react-icons/io5';
 
@@ -35,7 +35,8 @@ const ViewProduct = ({ setUserEntryState }) => {
         product_prices: {},
         RecentProducts: [],
         product_questions: [],
-        product_ratings: []
+        product_ratings: [],
+        prices: []
     });
 
     const [QuestionAndReviewElement, setQuestionAndReviewElement] = useState({ product_name: '', product_id: '' });
@@ -58,12 +59,12 @@ const ViewProduct = ({ setUserEntryState }) => {
         const productDescription = ProductTable.product_descriptions?.filter(item => Number(item.product_id) === Number(product_id));
         // console.log(productInformation);
         const productImages = productInformation?.image ? [productInformation.image] : [];
-        const productKeyFeature = ProductTable.product_keyFeature?.filter(item => item.category === MainTable);
-        const extraImages = ProductTable.product_extraImages?.filter(item => Number(item.product_id) === Number(product_id)).map(item => item.image);
-        const relatedProducts = ProductTable.table_products?.filter(item => item.sub_category === productInformation.sub_category && item.main_category === category);
-        const productPrices = dataState.productStorage.product_prices?.find(item => item.product_id === Number(product_id)) || {};
-        const productQuestions = dataState.productStorage.product_questions.filter((question) => question.product_id === Number(product_id));
-        const productRatings = dataState.productStorage.product_ratings.filter((rating) => rating.product_id === Number(product_id));
+        const productKeyFeature = ProductTable?.product_keyFeature?.filter(item => item.category === MainTable);
+        const extraImages = ProductTable?.product_extraImages?.filter(item => Number(item.product_id) === Number(product_id)).map(item => item.image);
+        const relatedProducts = ProductTable?.table_products?.filter(item => item.sub_category === productInformation.sub_category && item.main_category === category);
+        const productPrices = dataState?.productStorage?.product_prices?.find(item => item.product_id === Number(product_id)) || {};
+        const productQuestions = dataState?.productStorage?.product_questions.filter((question) => question.product_id === Number(product_id));
+        const productRatings = dataState?.productStorage?.product_ratings.filter((rating) => rating.product_id === Number(product_id));
         // console.log(dataState.productStorage.product_ratings);
 
         setViewProduct((prev) => ({
@@ -75,12 +76,13 @@ const ViewProduct = ({ setUserEntryState }) => {
             product_prices: productPrices,
             RecentProducts: dataState.RecentProducts,
             product_questions: productQuestions,
-            product_ratings: productRatings
+            product_ratings: productRatings,
+            prices: [...dataState.productStorage.product_prices]
         }));
 
         setMainTableData(relatedProducts || []);
         window.scrollTo(0, 0);
-    }, [dataState.productStorage.product_ratings, product_id, category]);
+    }, [dataState?.productStorage?.product_ratings, product_id, category]);
 
     useEffect(() => {
         if (viewProduct.productInformation && viewProduct.productInformation.product_name && viewProduct.productInformation.product_id) {
@@ -118,12 +120,20 @@ const ViewProduct = ({ setUserEntryState }) => {
     }, [viewProduct, product_id, location.pathname, dispatch]);
 
 
+    const specificationRef = useRef(null);
+    const descriptionRef = useRef(null);
+    const questionRef = useRef(null);
+    const ratingRef = useRef(null);
 
+    const handleScrollToDescription = (state, selectedRef) => {
+        setCurrSectionState(state);
+        selectedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
 
     const getPrices = useCallback((product_id) => {
-        const productPrice = dataState.productStorage.product_prices.find((item) => item.product_id === product_id);
+        const productPrice = viewProduct.prices.find((item) => item.product_id === product_id);
         return productPrice ? productPrice.price : null;
-    }, [dataState.productStorage.product_prices]);
+    }, [viewProduct.prices]);
 
     const relatedProductsMemo = useMemo(() => {
         const viewProductPrice = Number(viewProduct.product_prices?.price || 0);
@@ -176,25 +186,25 @@ const ViewProduct = ({ setUserEntryState }) => {
                         <div className={styles.section_buttons_names}>
                             <span
                                 className={currSectionState === 1 ? styles.section_buttons_names_active : styles.section_buttons_names_span}
-                                onClick={() => setCurrSectionState(1)}
+                                onClick={() => handleScrollToDescription(1, specificationRef)}
                             >
                                 Specification
                             </span>
                             <span
                                 className={currSectionState === 2 ? styles.section_buttons_names_active : styles.section_buttons_names_span}
-                                onClick={() => setCurrSectionState(2)}
+                                onClick={() => handleScrollToDescription(2, descriptionRef)}
                             >
                                 Description
                             </span>
                             <span
                                 className={currSectionState === 3 ? styles.section_buttons_names_active : styles.section_buttons_names_span}
-                                onClick={() => setCurrSectionState(3)}
+                                onClick={() => handleScrollToDescription(3, questionRef)}
                             >
                                 Questions
                             </span>
                             <span
                                 className={currSectionState === 4 ? styles.section_buttons_names_active : styles.section_buttons_names_span}
-                                onClick={() => setCurrSectionState(4)}
+                                onClick={() => handleScrollToDescription(4, ratingRef)}
                             >
                                 Ratings
                             </span>
@@ -202,7 +212,7 @@ const ViewProduct = ({ setUserEntryState }) => {
                         <div className={styles.hr}></div>
                     </div>
 
-                    <div className={styles.main_section_contents}>
+                    <div className={styles.main_section_contents} ref={specificationRef}>
                         <div className={styles.section_name}>
                             <span>Specification</span>
                             <div className={styles.section_hr}></div>
@@ -244,7 +254,7 @@ const ViewProduct = ({ setUserEntryState }) => {
             {/* ---------------------------------------- Product Description Starts -------------------------------------------- */}
             {
                 viewProduct.description && viewProduct.description.length !== 0 && (
-                    <section className={styles.ProductMainDescription}>
+                    <section className={styles.ProductMainDescription} ref={descriptionRef}>
                         <ProductDescription Descriptions={viewProduct.description} />
                     </section>
                 )
@@ -254,8 +264,8 @@ const ViewProduct = ({ setUserEntryState }) => {
 
             {/* ---------------------------------------- Question && Ratings -------------------------------------- */}
             <section className={styles.QuestionAndRating}>
-                <UserQuestions setUserEntryState={setUserEntryState} askedQuestion={viewProduct.product_questions} QuestionAndReviewElement={QuestionAndReviewElement} />
-                <UserRating setUserEntryState={setUserEntryState} ratings={viewProduct.product_ratings} QuestionAndReviewElement={QuestionAndReviewElement} />
+                <UserQuestions setUserEntryState={setUserEntryState} askedQuestion={viewProduct.product_questions} QuestionAndReviewElement={QuestionAndReviewElement} questionRef={questionRef} />
+                <UserRating setUserEntryState={setUserEntryState} ratings={viewProduct.product_ratings} QuestionAndReviewElement={QuestionAndReviewElement} ratingRef={ratingRef} />
             </section>
         </section>
     );

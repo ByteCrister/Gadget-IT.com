@@ -6,10 +6,10 @@ import styles from '../../styles/HomePageStyles/Questions.module.css';
 import { useData } from '../../context/useData';
 import { GetDate } from '../../HOOKS/GetDate';
 
-const UserQuestions = ({ setUserEntryState, askedQuestion, QuestionAndReviewElement }) => {
+const UserQuestions = ({ setUserEntryState, askedQuestion, QuestionAndReviewElement, questionRef }) => {
     const { dataState } = useContext(useData);
     return (
-        <section className={styles.MainQuestion}>
+        <section className={styles.MainQuestion} ref={questionRef}>
             <div className={styles.Upper}>
                 <section>
                     <div>

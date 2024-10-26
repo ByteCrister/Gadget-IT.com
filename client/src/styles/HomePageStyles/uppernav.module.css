@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 .upperNav {
   display: flex;
   justify-content: space-between;
@@ -15,10 +16,27 @@
   color: rgb(255, 222, 116);
   text-decoration: none;
 }
-
-.searchBar {
+.InputSection{
+  /* background-color: #ff8623; */
+  width: 50%;
+  position: relative;
+  display: flex;
+}
+.InputSearchAnsHide{
+  display: none;
+}
+.InputSearchAns{
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  background-color: white;
+  top: 90%;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.InputSection input{
+  width: 100%;
   flex: 1;
-  margin: 0 20px;
   padding: 10px;
   font-size: 16px;
   border-radius: 4px;
@@ -28,6 +46,134 @@
   outline: none;
 }
 
+.InputSearchAnsBtn{
+  padding: 10px;
+  background-color: #f5f6fc;
+  display: flex;
+  gap: 10px;
+}
+
+.DefaultBtn, .ActiveBtn{
+  font-size: 15px;
+  border: none;
+  outline: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-family: "Roboto", serif;
+  background-color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+.DefaultBtn{
+  background-color: white;
+  color: black;
+}
+.ActiveBtn{
+  background-color: #ff8623;
+  color: white;
+
+}
+.InputDefaultAllAnswers{
+  padding: 10px;
+  min-height: 300px;
+  text-align: center;
+  color: #acacac;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.InputAllAnswers{
+
+}
+.SearchedSelectedProductSection{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* padding: 30px; */
+  overflow-y: scroll;
+  max-height: 50vh;
+}
+
+.SearchedProductLink{
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-top: 10px;
+  transition: ease-in-out 0.2s;
+}
+
+.SearchedProductLink:hover{
+  background-color: #f5f6fc;
+}
+.SearchedProductLink:hover .Name{
+  text-decoration: underline;
+}
+
+.SearchedProductImgDiv{
+  width: 60px;
+  margin-left: 30px;
+}
+
+.SearchedProductImgDiv img{
+  width: 100%;
+}
+
+.SearchedProductNamePrices{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 5px;
+}
+
+.SearchedProductNamePrices div{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.Name, .Price, .CutPrice{
+  font-family: "Roboto", serif;
+  font-weight: 500;
+  font-size: 13px;
+  color: #1b1a1a;
+}
+
+.Price, .CutPrice{
+  color: #ff8623;
+  font-size: 15px;
+}
+.Price{
+  text-decoration: underline;
+}
+
+.CutPrice{
+  text-decoration: line-through;
+}
+
+.SearchSelectedCategory{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 15px;
+}
+
+.CategoryLink{
+  text-decoration: none;
+  font-family: "Roboto", serif;
+  color: #2f2f2f;
+  font-weight: 500;
+  width: 100%;
+  padding: 30px 20px;
+  transition: ease-in-out 0.2s;
+}
+.CategoryLink:hover{
+  background-color: #f5f6fc;
+  color: #ff8623;
+  text-decoration: underline;
+}
+/* ----------------------------------- */
 .navLink {
   color: white;
   text-decoration: none;
@@ -85,8 +231,12 @@
     align-items: flex-start;
   }
 
-  .searchBar {
-    margin: 10px 0;
+  .InputSection{
+    width: 100%;
+  }
+
+  .InputSection input{
+    /* margin: 10px 0; */
     width: 100%;
   }
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 
 import styles from '../../styles/HomePageStyles/OfferCartProducts.module.css';
@@ -8,18 +8,19 @@ import ProductCart from '../../HOOKS/ProductCart';
 
 const OfferCartProducts = () => {
     const { dataState } = useContext(useData);
-    const { 'title': title } = useParams();
+    const { title } = useParams();
     const [OfferCartProductsStore, setOfferCartProductsStore] = useState({
         title: '',
         start: null,
         end: null,
         carts: [],
-        store: []
+        store: [],
+        prices: []
     });
     useEffect(() => {
-        if (dataState?.productStorage?.OfferStorage?.OfferCarts && dataState?.productStorage?.OfferStorage?.OfferCartProducts) {
+        if (dataState?.productStorage?.OfferStorage?.OfferCarts && dataState?.productStorage?.OfferStorage?.OfferCartProducts && dataState?.productStorage?.product_prices) {
             const SelectedCart = dataState.productStorage.OfferStorage.OfferCarts.find((cart) => cart.cart_title === title) || dataState.productStorage.OfferStorage.OfferCarts[0];
-            const selectedProductCarts = dataState.productStorage.OfferStorage.OfferCartProducts.filter((cart) => cart.offer_cart_no === SelectedCart.cart_no).sort((a, b)=> a.serial_no - b.serial_no);
+            const selectedProductCarts = dataState.productStorage.OfferStorage.OfferCartProducts.filter((cart) => cart.offer_cart_no === SelectedCart.cart_no).sort((a, b) => a.serial_no - b.serial_no);
             let carts = [];
             selectedProductCarts.forEach((cart) => {
                 dataState.productStorage.product_table.forEach((table) => {
@@ -32,7 +33,8 @@ const OfferCartProducts = () => {
                 start: SelectedCart.offer_start,
                 end: SelectedCart.offer_end,
                 carts: [...carts],
-                store: [...carts]
+                store: [...carts],
+                prices: [...dataState.productStorage.product_prices]
             });
             window.scrollTo(0, 0);
         }
@@ -40,8 +42,8 @@ const OfferCartProducts = () => {
     }, [dataState.productStorage, title]);
 
     const getPrice = useCallback((product_id) => {
-        return dataState.productStorage.product_prices.find((product) => product.product_id === product_id)?.price || 0;
-    }, [dataState.productStorage.product_prices]);
+        return OfferCartProductsStore.prices.find((product) => product.product_id === product_id)?.price || 0;
+    }, [OfferCartProductsStore.prices]);
 
     const handleSort = useCallback((e) => {
         let carts = [...OfferCartProductsStore.store];
