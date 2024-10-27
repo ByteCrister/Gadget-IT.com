@@ -9,6 +9,7 @@ import { Api_Setting } from "../api/Api_Setting";
 import { User_Home } from "../api/User_Home";
 import { User_Products } from "../api/User_Products";
 import { Api_Support } from "../api/Api_Support";
+import { Api_Report } from "../api/Api_Report";
 
 const admin_token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`;
 const tokenString = window.localStorage.getItem("token");
@@ -34,6 +35,7 @@ const initialValues = {
   CartStorage: [],
   Inventory_Page: [],
   Production_Page: [],
+  Report_Page: [],
   Support_Page: [],
   Setting_Page: [],
   pathSettings: { prevPath: "/", currPath: "/" },
@@ -58,6 +60,7 @@ const UseProvider = ({ children }) => {
       if (dataState.isAdmin) {
         await Api_Inventory(dispatch);
         await Api_Production(dispatch);
+        await Api_Report(dispatch);
         await Api_Support(dispatch);
         await Api_Setting(dispatch);
       } else {

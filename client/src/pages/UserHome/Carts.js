@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { TiShoppingCart } from "react-icons/ti";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useData } from '../../context/useData';
 import styles from '../../styles/HomePageStyles/ProductSectionCart.module.css';
-import { Link, useNavigate } from 'react-router-dom';
 
 const Carts = () => {
   const { dataState, dispatch } = useContext(useData);
@@ -83,7 +83,7 @@ const Carts = () => {
                     <td><div className={styles.CartDeleteDiv}><span>{Number(product.quantity) * Number(product.price)}৳</span><RiDeleteBinLine className={styles.CartDeleteIcon} onClick={() => removeCart(product.product_id)} /></div></td>
                   </tr>
                   <tr>
-                    <td colSpan="6"><hr /></td>
+                    <td colSpan="6"><hr className={styles['hr-style']}/></td>
                   </tr>
                 </React.Fragment>
               ))}

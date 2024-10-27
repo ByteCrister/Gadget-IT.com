@@ -150,6 +150,11 @@ const reducer = (state, action) => {
                 }
             }
 
+        case 'set_report_page':
+            return {
+                ...state,
+                Report_Page: action.payload
+            }
         case 'set_support_page':
             return {
                 ...state,

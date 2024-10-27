@@ -64,6 +64,7 @@
     background-color: #f7f7f7;
     border-radius: 5px;
     gap: 15px;
+    /* box-shadow: 0px 0px 10px 1px rgb(244, 244, 244); */
 }
 
 .Upper {
@@ -113,9 +114,8 @@
     padding-top: 10px;
 }
 
-.product-table tbody hr {
-    border: 0;
-    border-top: 1px solid #ccc;
+.hr-style{
+    border: 0.2px solid #efefef;
 }
 
 .ImgCartDiv {

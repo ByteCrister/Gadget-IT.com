@@ -114,6 +114,7 @@
 
 .SearchedProductImgDiv{
   width: 60px;
+  min-width: 60px;
   margin-left: 30px;
 }
 

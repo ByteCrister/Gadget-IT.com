@@ -95,16 +95,19 @@ const NavBar = ({ handleUserEntryPage }) => {
         console.log(table.table_products);
         table.table_products.forEach((product) => {
           let point = 0;
+          let appendedStr = '';
           Object.entries(product).forEach(([key, value]) => {
             if (key !== 'product_id' && key !== 'hide' && key !== 'vendor_no' && key !== 'image') {
-              point += String(value).toLowerCase().includes(String(searchState).toLowerCase()) ? 1 : 0;
+              const isInclude = String(value).toLowerCase().includes(String(searchState).toLowerCase());
+              point += isInclude ? 1 : 0;
+              appendedStr += key !== 'product_name' && isInclude ? ` |${value}|` : '';
               point += String(value).toLowerCase() === String(searchState).toLowerCase() ? 10 : 0;
             }
           });
           if (point !== 0) {
             productStore.push({
               product_id: product.product_id,
-              name: product.product_name,
+              name: product.product_name + appendedStr,
               brand: product.brand,
               image: product.image,
               price: findPrice(product.product_id, 'price'),
