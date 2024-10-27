@@ -100,8 +100,12 @@ const NavBar = ({ handleUserEntryPage }) => {
             if (key !== 'product_id' && key !== 'hide' && key !== 'vendor_no' && key !== 'image') {
               const isInclude = String(value).toLowerCase().includes(String(searchState).toLowerCase());
               point += isInclude ? 1 : 0;
-              appendedStr += key !== 'product_name' && isInclude ? ` |${value}|` : '';
               point += String(value).toLowerCase() === String(searchState).toLowerCase() ? 10 : 0;
+              String(searchState).split(' ').forEach((text) => {
+                const isSubInclude = String(value).toLowerCase().includes(String(text).toLowerCase());
+                point += isSubInclude ? 5 : 0;
+              });
+              appendedStr += key !== 'product_name' && key !== 'main_category' && key !== 'sub_category' && isInclude && value && String(value).length !== 0 ? ` |${GetCategoryName(String(value))}|` : '';
             }
           });
           if (point !== 0) {
