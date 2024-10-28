@@ -1,10 +1,10 @@
 const db = require("../config/DB");
 
 module.exports = {
-    getMainCategory : (callback)=>{
+    getMainCategory: (callback) => {
         db.query('select category_name from category ;', callback);
     },
-    getSubCategory : (callback)=>{
+    getSubCategory: (callback) => {
         db.query('select sub_category_name from sub_category ;', callback);
     },
     CreateNewCategoryModel: (categoryName, callback) => {
@@ -47,6 +47,26 @@ module.exports = {
             callback
         );
     },
+    deleteProductStockQuery: (product_id, callback) => {
+        if (typeof product_id === 'number') {
+            db.query('delete from product_stock where product_id = ? ;', [product_id], callback);
+        }
+    },
+    deleteProductQuestionQuery: (product_id, callback) => {
+        if (typeof product_id === 'number') {
+            db.query('delete from question where product_id = ? ;', [product_id], callback);
+        }
+    },
+    deleteProductRatingQuery: (product_id, callback) => {
+        if (typeof product_id === 'number') {
+            db.query('delete from rating where product_id = ? ;', [product_id], callback);
+        }
+    },
+    deleteProductOfferCartQuery: (product_id, callback) => {
+        if (typeof product_id === 'number') {
+            db.query('delete from offer_carts_products where product_id = ? ;', [product_id], callback);
+        }
+    },
     deleteProductsWithSubNames: (SubCategory, MainCategory, callback) => {
         db.query(`delete from ${MainCategory} where sub_category = ? ;`, [SubCategory], callback);
     },
@@ -78,6 +98,10 @@ module.exports = {
             [mainCategory],
             callback
         );
+    },
+
+    getDeletedIdQuery: (table, callback) => {
+        db.query(`select product_id from ${table} ;`, callback)
     },
 
     deleteSubCategory: (category, callback) => {
