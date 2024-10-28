@@ -103,7 +103,7 @@ const NavBar = ({ handleUserEntryPage }) => {
               point += String(value).toLowerCase() === String(searchState).toLowerCase() ? 10 : 0;
               String(searchState).split(' ').forEach((text) => {
                 const isSubInclude = String(value).toLowerCase().includes(String(text).toLowerCase());
-                point += isSubInclude ? 5 : 0;
+                point += isSubInclude && key === 'product_name' ? 5 : isSubInclude ? 2 : 0;
               });
               appendedStr += key !== 'product_name' && key !== 'main_category' && key !== 'sub_category' && isInclude && value && String(value).length !== 0 ? ` |${GetCategoryName(String(value))}|` : '';
             }
