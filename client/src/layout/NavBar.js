@@ -95,15 +95,28 @@ const NavBar = ({ handleUserEntryPage }) => {
         console.log(table.table_products);
         table.table_products.forEach((product) => {
           let point = 0;
+          // let pointHistory = [];
           let appendedStr = '';
           Object.entries(product).forEach(([key, value]) => {
             if (key !== 'product_id' && key !== 'hide' && key !== 'vendor_no' && key !== 'image') {
-              const isInclude = String(value).toLowerCase().includes(String(searchState).toLowerCase());
+              const isInclude = value && String(value).toLowerCase().includes(String(searchState).toLowerCase());
+
               point += isInclude ? 1 : 0;
-              point += String(value).toLowerCase() === String(searchState).toLowerCase() ? 10 : 0;
+              // pointHistory = isInclude ? [...pointHistory, 1] : [...pointHistory];
+
+              point += key === 'product_name' && isInclude ? 2 : 0;
+              // pointHistory = key === 'product_name' && isInclude ? [...pointHistory, 2] : [...pointHistory];
+
+              point += key === 'brand' && isInclude ? 3 : 0;
+              // pointHistory = key === 'brand' && isInclude ? [...pointHistory, 3] : [...pointHistory];
+
               String(searchState).split(' ').forEach((text) => {
-                const isSubInclude = String(value).toLowerCase().includes(String(text).toLowerCase());
-                point += isSubInclude && key === 'product_name' ? 5 : isSubInclude ? 2 : 0;
+                const isSubInclude = value && String(value).toLowerCase().includes(String(text.trim()).toLowerCase());
+                point += isSubInclude ? 5 : 0;
+                // pointHistory = isSubInclude ? [...pointHistory, 5] : [...pointHistory];
+
+                point += key === 'product_name' && isSubInclude ? 10 : 0;
+                // pointHistory = key === 'product_name' && isSubInclude ? [...pointHistory, 10] : [...pointHistory];
               });
               appendedStr += key !== 'product_name' && key !== 'main_category' && key !== 'sub_category' && isInclude && value && String(value).length !== 0 ? ` |${GetCategoryName(String(value))}|` : '';
             }
@@ -118,7 +131,8 @@ const NavBar = ({ handleUserEntryPage }) => {
               cut_price: findPrice(product.product_id, 'cut_price'),
               main_category: product.main_category,
               sub_category: product.sub_category,
-              point: point
+              point: point,
+              // pointHistory: pointHistory
             });
           }
         });
@@ -126,7 +140,7 @@ const NavBar = ({ handleUserEntryPage }) => {
 
       productStore.sort((a, b) => b.point - a.point);
 
-      productStore.forEach((product) => {
+      productStore.slice(0, 10).forEach((product) => {
         const MainCategory = GetMainTable(product.main_category, dataState.productStorage.category, dataState.productStorage.subCategory);
         const isMainStored = categoryStore.some((product_) => product_.main.toLowerCase() === product.main_category.toLowerCase());
         const isSubStored = categoryStore.some((product_) => product_.sub.toLowerCase() === product.sub_category.toLowerCase());
@@ -146,10 +160,10 @@ const NavBar = ({ handleUserEntryPage }) => {
         }
       });
       console.log(productStore);
-      console.log(categoryStore);
+      // console.log(categoryStore);
       setSearchedProductStore((prev) => ({
         ...prev,
-        product: [...productStore],
+        product: [...productStore.slice(0, 10)],
         category: [...categoryStore]
       }));
     }

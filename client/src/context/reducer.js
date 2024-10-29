@@ -9,7 +9,7 @@ const addRecent = (CurrProduct, RecentProducts) => {
             return updatedRecentProducts;
         }
 
-        if (RecentProducts.length >= 10) {
+        if (RecentProducts.length >= 5) {
             RecentProducts.pop();
         }
 

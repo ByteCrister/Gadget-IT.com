@@ -21,18 +21,22 @@ const ShowNotifications = lazy(() => import('../../components/AdminHome/ShowNoti
 const ShowAdmin = lazy(() => import('../../components/AdminHome/ShowAdmin'));
 
 const AdminHomePage = () => {
-    const {dataState} = useContext(useData);
+    const { dataState } = useContext(useData);
 
     const [currentPageNo, setCurrentPage] = useState(dataState.AdminDashboardButtonState);
     const [upperContentNo, setUpperContent] = useState(0);
-
-    const handlePage = (newPage) =>{ setCurrentPage(newPage); window.localStorage.setItem('AdminDashboardButtonState', newPage); };
+    const [errorCategory, setErrorCategory] = useState({
+        message: '',
+        isError: false
+    });
+    
+    const handlePage = (newPage) => { setCurrentPage(newPage); window.localStorage.setItem('AdminDashboardButtonState', newPage); };
     const handleUpper = (newUpper) => setUpperContent(newUpper);
 
     const pages = {
         1: <PageOne />,
         2: <PageTwo />,
-        3: <PageThree />,
+        3: <PageThree setErrorCategory={setErrorCategory}/>,
         4: <PageFour />,
         5: <PageFive />,
         6: <PageSix />,
@@ -45,6 +49,7 @@ const AdminHomePage = () => {
         2: <ShowNotifications handlePage={handlePage} content={upperContentNo} handleUpper={handleUpper} />,
         3: <ShowAdmin content={upperContentNo} handleUpper={handleUpper} />
     };
+
 
     return (
         <div className={styles.adminMainContainer}>
@@ -65,6 +70,13 @@ const AdminHomePage = () => {
                     </Suspense>
                 </div>
             </div>
+            {errorCategory.isError &&
+                <section className={errorCategory.isError ? styles['category-error-section-active'] : styles['category-error-section-default']}>
+                    <div>
+                        <span>{errorCategory.message}</span>
+                        <button onClick={() => setErrorCategory({ message: '', isError: false })}>Close</button>
+                    </div>
+                </section>}
         </div>
     );
 };

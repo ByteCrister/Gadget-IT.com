@@ -21,6 +21,8 @@ postProductRouter.post('/rename/column', productionManagementController.renameCo
 postProductRouter.post('/insert/new-sort/crud', productionManagementController.insertNewSortingOption);
 postProductRouter.post('/insert/new-keyFeature', productionManagementController.insertNewKeyFeature);
 postProductRouter.post('/remove/keyFeature', productionManagementController.deleteKeyFeature);
+
+postProductRouter.get('/is-category-empty/:category', productionManagementController.getIsCategoryEmpty);
 /* ***************************************************************************************************** */
 
 module.exports = postProductRouter;

@@ -3,14 +3,17 @@ import styles from '../../styles/AdminHome/CreateNewTable.module.css';
 import axios from 'axios';
 import CategoryRadioGroup from '../../HOOKS/CategoryRadioGroup';
 
-const CreateNewCategory = React.memo(() => {
+const CreateNewCategory = React.memo(({ setErrorCategory }) => {
     const [currentOption, setCurrentOption] = useState(0);
     const [category, setCategory] = useState([]);
     const [AllMainCategory, setAllMainCategory] = useState([]);
     const [selectedMainCategory, setSelectedMainCategory] = useState('');
     const [renameCategory, setRenameCategory] = useState({ main: '', sub: '' });
     const [selectedDeleteCategory, setSelectedDeleteCategory] = useState({ main: '', sub: '' });
-
+    const [CategoryStates, setCategoryState] = useState({
+        main: [],
+        sub: []
+    });
     const [AllCategoryRef, setAllCategoryRef] = useState({
         newCategoryRef: '',
         newSubRef: '',
@@ -22,7 +25,7 @@ const CreateNewCategory = React.memo(() => {
             try {
                 const res = await axios.get('http://localhost:7000/get/category_and_sub_category');
                 setCategory(res.data.category);
-
+                setCategoryState({ main: res.data.mainCategory, sub: res.data.subCategory });
                 let AllMain = [];
                 res.data.mainCategory.forEach(items => AllMain.push(items.category_name));
                 res.data.subCategory.forEach(items => AllMain.push(items.main_category_name));
@@ -37,8 +40,14 @@ const CreateNewCategory = React.memo(() => {
 
     const handleCreateNewCategory = async () => {
         try {
-            await axios.post('http://localhost:7000/create/new/category', { newCategoryName: AllCategoryRef.newCategoryRef });
-            setCurrentOption(0);
+            const isInMainIncludes = CategoryStates.main.some(category => category.category_name === AllCategoryRef.newCategoryRef);
+            const isInSubIncludes = CategoryStates.sub.some(category => category.sub_category_name === AllCategoryRef.newCategoryRef);
+            if (!(isInMainIncludes || isInSubIncludes)) {
+                await axios.post('http://localhost:7000/create/new/category', { newCategoryName: AllCategoryRef.newCategoryRef });
+                setCurrentOption(0);
+            } else {
+                setErrorCategory({ message: 'This category is already exist! Please give any different name.', isError: true })
+            }
         } catch (err) {
             console.log(err);
         }
@@ -46,8 +55,14 @@ const CreateNewCategory = React.memo(() => {
 
     const handleNewSubCategory = async () => {
         try {
-            await axios.post('http://localhost:7000/new/sub_category', { main: selectedMainCategory.trim(), newSub: AllCategoryRef.newSubRef });
-            setCurrentOption(0);
+            const isInMainIncludes = CategoryStates.main.some(category => category.category_name === AllCategoryRef.newSubRef);
+            const isInSubIncludes = CategoryStates.sub.some(category => category.sub_category_name === AllCategoryRef.newSubRef);
+            if (!(isInMainIncludes || isInSubIncludes)) {
+                await axios.post('http://localhost:7000/new/sub_category', { main: selectedMainCategory.trim(), newSub: AllCategoryRef.newSubRef });
+                setCurrentOption(0);
+            } else {
+                setErrorCategory({ message: 'This category is already exist! Please give any different name.', isError: true })
+            }
 
         } catch (err) {
             console.log(err);
@@ -56,8 +71,15 @@ const CreateNewCategory = React.memo(() => {
 
     const handleDeleteCategory = async () => {
         try {
-            await axios.post('http://localhost:7000/delete/category', selectedDeleteCategory);
-            setCurrentOption(0);
+            const res = await axios.get(`http://localhost:7000/is-category-empty/${selectedDeleteCategory.sub}`);
+            if (window.confirm('Do you want to delete this category? There could be gone many Information!!')) {
+                if (!res.data) {
+                    await axios.post('http://localhost:7000/delete/category', selectedDeleteCategory);
+                    setCurrentOption(0);
+                } else {
+                    setErrorCategory({ message: `There are product's in this category. Delete the product first!`, isError: true });
+                }
+            }
         } catch (err) {
             console.log(err);
         }
