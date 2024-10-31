@@ -35,6 +35,48 @@ const NavBar = ({ handleUserEntryPage }) => {
     return searchedProductStore.prices.find(product => product.product_id === product_id)[keyState];
   };
 
+  const getProductPoint = (product_name, searchedStr) => {
+    let point = 0;
+    product_name = product_name.split(' ').map((item) => item.toLowerCase());
+    searchedStr.split(' ').forEach((_) => {
+      searchedStr = searchedStr.replace(' ', '');
+    });
+    // console.log(product_name);
+    // console.log(searchedStr_);
+    // console.log(searchedStr);
+
+    product_name.forEach((product_name_sub) => {
+      let product_name_sub_dummy = product_name_sub;
+      // console.log('product_name_sub_dummy: '+product_name_sub_dummy)
+      if (searchedStr.includes(product_name_sub_dummy)) {
+        point += 10;
+      } else {
+        let cutIteration = 1;
+        while (cutIteration <= 2) {
+          product_name_sub_dummy = cutIteration === 1 ? product_name_sub.substring(1) : product_name_sub.slice(0, -1);
+          // console.log('product_name_sub_dummy: - '+product_name_sub_dummy)
+          while (product_name_sub_dummy.length >= 2) {
+            if (searchedStr.toLowerCase().includes(product_name_sub_dummy.toLowerCase())) {
+              for (let i = 0; i < product_name_sub_dummy.length; i++) {
+                for (let j = 0; j < searchedStr.length; j++) {
+                  if (product_name_sub_dummy.charAt(i).toLowerCase() === searchedStr.charAt(j).toLowerCase()) {
+                    point++;
+                    // console.log(product_name_sub_dummy)
+                    break;
+                  }
+                }
+              }
+            }
+            product_name_sub_dummy = cutIteration === 1 ? product_name_sub_dummy.substring(1) : product_name_sub_dummy.slice(0, -1);
+            // console.log('product_name_sub_dummy: - '+product_name_sub_dummy)
+          }
+          cutIteration++;
+        }
+      }
+    });
+    return point;
+  };
+
   const renderSearchedProducts = () => {
     if (searchedProductStore.product.length === 0) {
       return (
@@ -90,34 +132,22 @@ const NavBar = ({ handleUserEntryPage }) => {
     // console.log(dataState.productStorage.product_table[0].table_products);
     let productStore = [];
     let categoryStore = [];
+    let namePoint = 0;
     if (dataState?.productStorage?.product_table) {
       dataState.productStorage.product_table.forEach((table) => {
         console.log(table.table_products);
         table.table_products.forEach((product) => {
           let point = 0;
-          // let pointHistory = [];
           let appendedStr = '';
           Object.entries(product).forEach(([key, value]) => {
             if (key !== 'product_id' && key !== 'hide' && key !== 'vendor_no' && key !== 'image') {
               const isInclude = value && String(value).toLowerCase().includes(String(searchState).toLowerCase());
-
               point += isInclude ? 1 : 0;
-              // pointHistory = isInclude ? [...pointHistory, 1] : [...pointHistory];
-
-              point += key === 'product_name' && isInclude ? 2 : 0;
-              // pointHistory = key === 'product_name' && isInclude ? [...pointHistory, 2] : [...pointHistory];
-
-              point += key === 'brand' && isInclude ? 3 : 0;
-              // pointHistory = key === 'brand' && isInclude ? [...pointHistory, 3] : [...pointHistory];
-
-              String(searchState).split(' ').forEach((text) => {
-                const isSubInclude = value && String(value).toLowerCase().includes(String(text.trim()).toLowerCase());
-                point += isSubInclude ? 5 : 0;
-                // pointHistory = isSubInclude ? [...pointHistory, 5] : [...pointHistory];
-
-                point += key === 'product_name' && isSubInclude ? 10 : 0;
-                // pointHistory = key === 'product_name' && isSubInclude ? [...pointHistory, 10] : [...pointHistory];
-              });
+              point += key === 'brand' && isInclude ? 2 : 0;
+              if (key === 'product_name') {
+                namePoint = getProductPoint(value, searchState)
+                point += namePoint;
+              }
               appendedStr += key !== 'product_name' && key !== 'main_category' && key !== 'sub_category' && isInclude && value && String(value).length !== 0 ? ` |${GetCategoryName(String(value))}|` : '';
             }
           });
@@ -132,14 +162,13 @@ const NavBar = ({ handleUserEntryPage }) => {
               main_category: product.main_category,
               sub_category: product.sub_category,
               point: point,
-              // pointHistory: pointHistory
+              namePoint: namePoint
             });
           }
         });
       });
 
       productStore.sort((a, b) => b.point - a.point);
-
       productStore.slice(0, 10).forEach((product) => {
         const MainCategory = GetMainTable(product.main_category, dataState.productStorage.category, dataState.productStorage.subCategory);
         const isMainStored = categoryStore.some((product_) => product_.main.toLowerCase() === product.main_category.toLowerCase());

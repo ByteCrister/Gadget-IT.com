@@ -58,7 +58,7 @@ const UpperFeature = ({ viewProduct, product_id }) => {
                     <button>Buy Now</button>
                 </Link>
 
-                <button className={styles.add_to_cart} onClick={() => dispatch({ type: 'add_product_to_cart', payload: Number(product_id) })}>Add to Cart</button>
+                <button className={styles.add_to_cart} onClick={() => dispatch({ type: 'add_product_to_cart', payload: {product_id: Number(product_id), quantity: stateNumber} })}>Add to Cart</button>
             </section>
         </div>
     )

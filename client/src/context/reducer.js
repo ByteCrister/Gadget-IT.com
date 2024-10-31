@@ -43,7 +43,9 @@ const initializeCart = (productStorage, payload, CartStorage) => {
     return [...initialCartProduct];
 };
 
-const addProductToCart = (ProductStorage, product_id, CartStorage) => {
+const addProductToCart = (ProductStorage, payload, CartStorage) => {
+    const product_id = payload.product_id;
+    const quantity = payload.quantity;
     console.log(`Product ID : ${product_id} added to cart.`);
     let allProducts = [];
     const initialProducts = window.localStorage.getItem('CartStorage') ? JSON.parse(window.localStorage.getItem('CartStorage')) : [];
@@ -60,9 +62,9 @@ const addProductToCart = (ProductStorage, product_id, CartStorage) => {
     allProducts.forEach((product) => {
         if (Number(product.product_id) === Number(product_id)) {
             const productPrice = ProductStorage.product_prices.find((product_) => product_.product_id === product.product_id)?.price;
-            initialProducts.unshift({ product_id: product_id, quantity: 1 });
+            initialProducts.unshift({ product_id: product_id, quantity: quantity });
             window.localStorage.setItem('CartStorage', JSON.stringify(initialProducts));
-            CartStorage.unshift({ product_id: product_id, quantity: 1, image: product.image, product_name: product.product_name, brand: product.brand, price: productPrice });
+            CartStorage.unshift({ product_id: product_id, quantity: quantity, image: product.image, product_name: product.product_name, brand: product.brand, price: productPrice });
             return [...CartStorage];
         }
     });

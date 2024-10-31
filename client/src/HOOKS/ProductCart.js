@@ -33,7 +33,7 @@ const ProductCart = ({ product }) => {
             </Link>
             <div className={styles['buttons']}>
                 <Link to={`/easy-checkout`}><button className={styles['buy-now']}>Buy Now</button></Link>
-                <button onClick={() => dispatch({ type: 'add_product_to_cart', payload: product.product_id })} className={styles['add-to-cart']}>Add to Cart</button>
+                <button onClick={() => dispatch({ type: 'add_product_to_cart', payload: { product_id: Number(product.product_id), quantity: 1 } })} className={styles['add-to-cart']}>Add to Cart</button>
             </div>
         </div>
     );

@@ -142,42 +142,7 @@ module.exports = {
         console.log('Main : ' + req.body.main + '  Sub : ' + req.body.sub);
         try {
             if (req.body.main === req.body.sub) {
-                const deletedProductId = await new Promise((resolve, reject) => {
-                    productionManageModel.getDeletedIdQuery(req.body.main, (err, data) => {
-                        if (err) reject(err)
-                        else resolve(data)
-                    })
-                });
-                // **Deleting products from the offer carts, rating, question & product stock**
-                deletedProductId.forEach(async (product) => {
-                    await Promise.all([
-                        new Promise((resolve, reject) => {
-                            productionManageModel.deleteProductOfferCartQuery(product.product_id, (err, data) => {
-                                if (err) reject(err);
-                                else resolve(data);
-                            });
-                        }),
-                        new Promise((resolve, reject) => {
-                            productionManageModel.deleteProductRatingQuery(product.product_id, (err, data) => {
-                                if (err) reject(err);
-                                else resolve(data);
-                            });
-                        }),
-                        new Promise((resolve, reject) => {
-                            productionManageModel.deleteProductQuestionQuery(product.product_id, (err, data) => {
-                                if (err) reject(err);
-                                else resolve(data);
-                            });
-                        }),
-                        new Promise((resolve, reject) => {
-                            productionManageModel.deleteProductStockQuery(product.product_id, (err, data) => {
-                                if (err) reject(err);
-                                else resolve(data);
-                            });
-                        })
-                    ]);
-                });
-                // **************   ****************
+           
                 //Delete the main category table
                 await new Promise((resolve, reject) => {
                     productionManageModel.deleteMainCategoryTable(req.body.main, (err, data) => {

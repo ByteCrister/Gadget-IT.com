@@ -104,7 +104,9 @@
   padding: 10px;
   width: 90%;
   color: grey;
-  font-family: 'Times New Roman', Times, serif;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
 }
 
 #search:focus {

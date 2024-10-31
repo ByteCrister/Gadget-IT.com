@@ -40,5 +40,8 @@ module.exports = {
     },
     deleteProductsStockFromTable : (id, callback)=>{
         db.query(`delete from product_stock where product_id = ?;`, [id], callback);
+    },
+    deleteHomeProductQuery: (id, callback)=>{
+        db.query('delete from home_product_select where product_id = ? ;', [id], callback);
     }
 }
