@@ -1,22 +1,15 @@
 import { GetCategoryName } from "./GetCategoryName";
 
 export const SearchInventory = (searchedProduct, products, setProductsData) => {
-
+    searchedProduct = isNaN(searchedProduct) ? String(GetCategoryName(searchedProduct)).toLowerCase() : String(searchedProduct);
 
     setProductsData(products.map((item) => ({ ...item, point: 0 })));
     products.forEach((item, index) => {
         let totalPoint = 0;
         Object.entries(item).forEach(([key, value]) => {
             if (key !== 'point' && key !== 'hide') {
-                if (key === 'category' || key === 'p_name') {
-                    totalPoint += GetCategoryName(value).toLowerCase().includes(searchedProduct.toLowerCase()) ? 1 : 0;
-                    totalPoint += GetCategoryName(value).toLowerCase() === searchedProduct.toLowerCase() ? 10 : 0;
-                }
-
-                if (key === 'incoming' || key === 'reserved' || key === 'quantity' || key === 'price' || key === 'id') {
-                    totalPoint += String(value).includes(searchedProduct) ? 1 : 0;
-                    totalPoint += String(value) === searchedProduct.trim() ? 10 : 0;
-                }
+                totalPoint += String(value).includes(searchedProduct) ? 1 : 0;
+                totalPoint += String(value) === searchedProduct ? 10 : 0;
             }
         });
 

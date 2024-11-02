@@ -2,6 +2,8 @@ import React from 'react'
 import { RiAccountCircleLine } from "react-icons/ri";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { FaMapLocationDot } from "react-icons/fa6";
+import { MdOutlineReport } from "react-icons/md";
+
 import { BsKey } from "react-icons/bs";
 import { SlLogout } from "react-icons/sl";
 
@@ -38,11 +40,15 @@ const AccountButtonStates = ({ setButtonState, UserInformation }) => {
                 </div>
 
                 <div onClick={() => setButtonState(2)}>
+                    <MdOutlineReport className={styles.BtnIcon} />
+                    <span>Report</span>
+                </div>
+                <div onClick={() => setButtonState(3)}>
                     <FaMapLocationDot className={styles.BtnIcon} />
                     <span>Address</span>
                 </div>
 
-                <div onClick={() => setButtonState(3)}>
+                <div onClick={() => setButtonState(4)}>
                     <BsKey className={styles.BtnIcon} />
                     <span>Change Password</span>
                 </div>

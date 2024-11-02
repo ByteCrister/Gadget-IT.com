@@ -3,8 +3,6 @@ import { GetCategoryName } from "./GetCategoryName";
 
 export const SearchQuestions = (searchValue, SearchQuestion, setQuestions) => {
     setQuestions(SearchQuestion.map((item) => ({ ...item, point: 0 })));
-    console.log(SearchQuestion);
-
     SearchQuestion.forEach((item, index) => {
         let totalPoint = 0;
         Object.entries(item).forEach(([key, value]) => {

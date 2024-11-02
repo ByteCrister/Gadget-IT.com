@@ -45,12 +45,26 @@ module.exports = {
         db.query('update user set password = ? where user_id = ? ;', [newPassword, user_id], callback);
     },
 
-    InsertPreOrder : (preOrderState, callback)=>{
+    InsertPreOrder: (preOrderState, callback) => {
         db.query(
             'insert into preorder (user_id, product_name, image, name, phone_no, email, address) values (?, ?, ?, ?, ?, ?, ?) ;',
             [preOrderState.user_id, preOrderState.product_name, preOrderState.product_image, preOrderState.user_name, preOrderState.phone_number, preOrderState.email, preOrderState.address],
             callback
         );
+    },
+
+    getMainReportQuery: (callback) => {
+        db.query('select * from report_main ;', callback);
+    },
+
+    getSubReportQuery: (callback) => {
+        db.query('select * from report_sub ;', callback);
+    },
+
+    postNewUserReportQuery: (user_id, reportStr, report_description, callback) => {
+        db.query('insert into user_report (user_id, report_string, report_description) values ( ?, ?, ? ) ;',
+            [user_id, reportStr, report_description],
+            callback);
     }
 
 }

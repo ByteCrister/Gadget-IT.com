@@ -10,11 +10,12 @@ import { useData } from '../../context/useData';
 import MyOrders from '../../components/UserHome/Account/MyOrders';
 import Address from '../../components/UserHome/Account/Address';
 import ChangePassword from '../../components/UserHome/Account/ChangePassword';
+import Report from '../../components/UserHome/Account/Report';
 
 const Account = () => {
     const { dataState } = useContext(useData);
     const navigate = useNavigate();
-    const [ButtonState, setButtonState] = useState(0);
+    const [ButtonState, setButtonState] = useState(2);
     const [UserInformation, setUserInformation] = useState({});
     const [UserAddress, setUserAddress] = useState({});
 
@@ -43,8 +44,9 @@ const Account = () => {
     const RenderPages = useCallback(() => {
         switch (ButtonState) {
             case 1: return <MyOrders />
-            case 2: return <Address AddressInfo={UserAddress} setUserAddress={setUserAddress} />
-            case 3: return <ChangePassword />
+            case 2: return <Report />
+            case 3: return <Address AddressInfo={UserAddress} setUserAddress={setUserAddress} />
+            case 4: return <ChangePassword />
             default: return <PersonalInformation UserInformation={UserInformation} />
         }
     }, [ButtonState, UserAddress, UserInformation]);

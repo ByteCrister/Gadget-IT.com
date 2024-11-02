@@ -5,7 +5,7 @@ import styles from '../styles/ErrorAndLoading/ServerIssuePage.module.css';
 import { useData } from '../context/useData';
 
 const ServerIssuePage = () => {
-    const { dataState, dispatch } = useContext(useData);
+    const { dispatch } = useContext(useData);
 
     const handleClick = () => {
         window.localStorage.removeItem('token');

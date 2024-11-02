@@ -166,7 +166,7 @@ const ViewProduct = ({ setUserEntryState }) => {
             {/* ----------------------------------- upper_image_and_feature ------------------------------ */}
             <section className={styles.upper_image_and_feature}>
                 <UpperImage viewProduct={viewProduct} product_id={product_id} />
-                <UpperFeature viewProduct={viewProduct} product_id={product_id} />
+                <UpperFeature viewProduct={viewProduct} product_id={product_id} price={viewProduct.product_prices.price} image={viewProduct.images[0]} category={category} product_name={viewProduct.productInformation.product_name}/>
             </section>
 
 

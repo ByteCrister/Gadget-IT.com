@@ -19,7 +19,8 @@ const Account = lazy(() => import('../pages/UserHome/Account'));
 const Carts = lazy(() => import('../pages/UserHome/Carts'));
 const PreOrder = lazy(() => import('../pages/UserHome/PreOrder'));
 const Offers = lazy(() => import('../pages/UserHome/Offers'));
-const OfferCartProducts = lazy(()=> import('../pages/UserHome/OfferCartProducts'));
+const OfferCartProducts = lazy(() => import('../pages/UserHome/OfferCartProducts'));
+const EasyCheckout = lazy(() => import('../pages/UserHome/EasyCheckout'));
 
 const UserHomeRoutes = () => {
     const location = useLocation();
@@ -73,6 +74,7 @@ const UserHomeRoutes = () => {
                         <Route path='/pre-order' element={<PreOrder setUserEntryState={setUserEntryState} />} />
                         <Route path='/offers' element={<Offers />} />
                         <Route path='/offers/:title' element={<OfferCartProducts />} />
+                        <Route path='/easy-checkout' element={<EasyCheckout />} />
 
                         <Route path="*" element={<RandomErrorPage />} />
                     </Routes>

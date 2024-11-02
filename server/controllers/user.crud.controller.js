@@ -22,8 +22,8 @@ const authenticateUser = (req, res, next, callback) => {
 };
 
 
-const performQuery = (queryFunction, ...params) => {
-    return new Promise((resolve, reject) => {
+const performQuery = async (queryFunction, ...params) => {
+    return await new Promise((resolve, reject) => {
         queryFunction(...params, (err, data) => {
             if (err) {
                 reject(err);
@@ -112,7 +112,7 @@ module.exports = {
     },
 
     PostPreOrder: async (req, res, next) => {
-        const  PreOrderState  = req.body;
+        const PreOrderState = req.body;
         try {
             authenticateUser(req, res, next, async (user) => {
                 await performQuery(userCrudModel.InsertPreOrder, { ...PreOrderState, user_id: user.user_id });
@@ -121,5 +121,31 @@ module.exports = {
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
-    }
+    },
+    getUserInterfaceReport: async (req, res, next) => {
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                return res.status(200).json({
+                    main_report: await performQuery(userCrudModel.getMainReportQuery),
+                    sub_report: await performQuery(userCrudModel.getSubReportQuery)
+                });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    postNewUserReport: async (req, res, next) => {
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                const reportsStr = req.body.reports.map(report => report.report_name).join(', ');
+                await performQuery(userCrudModel.postNewUserReportQuery, user.user_id, reportsStr, req.body.report_description);
+                return res.status(200).json({
+                    success: true
+                });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
 }

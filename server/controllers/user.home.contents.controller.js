@@ -2,18 +2,22 @@ const productSettingModel = require("../models/product.setting.model");
 const productsModels = require("../models/products.models");
 const userHomeContentsModel = require("../models/user.home.contents.model");
 
+const performQuery = async (queryFunction, ...params) => {
+    return await new Promise((resolve, reject) => {
+        queryFunction(...params, (err, data) => {
+            if (err) reject(err);
+            else resolve(data);
+        });
+    });
+}
+
 module.exports = {
     getUserHomeContents: async (req, res) => {
         try {
             let user_home_products = [];
 
             // Fetch category names
-            const category = await new Promise((resolve, reject) => {
-                productsModels.getProductsCategoryNamesModel((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
+            const category = await performQuery(productsModels.getProductsCategoryNamesModel);
 
             for (const item of category) {
                 const product = await new Promise((resolve, reject) => {
@@ -31,30 +35,13 @@ module.exports = {
             }
 
             // Fetch advertisements
-            const advertisements = await new Promise((resolve, reject) => {
-                userHomeContentsModel.getAdvertisement((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
+            const advertisements = await performQuery(userHomeContentsModel.getAdvertisement);
 
             // Fetch home descriptions
-            const home_descriptions = await new Promise((resolve, reject) => {
-                userHomeContentsModel.getHomeDescription((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
+            const home_descriptions = await performQuery(userHomeContentsModel.getHomeDescription);
 
             // Fetch home featured icons
-            const featured_icon = await new Promise((resolve, reject) => {
-                userHomeContentsModel.getFeaturedIcon((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-
-            // console.log(JSON.stringify(home_descriptions, null, 2));
+            const featured_icon = await performQuery(userHomeContentsModel.getFeaturedIcon);
 
             res.json({
                 user_home_products: user_home_products,
@@ -71,58 +58,18 @@ module.exports = {
 
     getUserProducts: async (req, res) => {
         try {
-            const category = await new Promise((resolve, reject) => {
-                productsModels.getProductsCategoryNamesModel((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-
-            const subCategory = await new Promise((resolve, reject) => {
-                productsModels.getProductsSubCategoryNamesModel((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
+            const category = await performQuery(productsModels.getProductsCategoryNamesModel);
+            const subCategory = await performQuery(productsModels.getProductsSubCategoryNamesModel);
 
             // Use Promise.all to wait for all promises to resolve
             const product_table = await Promise.all(
                 category.map(async (item) => {
-                    const table_products = await new Promise((resolve, reject) => {
-                        userHomeContentsModel.getProductFromTable(item.category_name, (err, data) => {
-                            if (err) reject(err);
-                            else resolve(data);
-                        });
-                    });
 
-                    const product_extraImages = await new Promise((resolve, reject) => {
-                        userHomeContentsModel.getProductExtraImages(item.category_name, (err, data) => {
-                            if (err) reject(err);
-                            else resolve(data);
-                        });
-                    });
-
-                    const product_descriptions = await new Promise((resolve, reject) => {
-                        userHomeContentsModel.getProductDescriptions(item.category_name, (err, data) => {
-                            if (err) reject(err);
-                            else resolve(data);
-                        });
-                    });
-
-                    const product_keyFeature = await new Promise((resolve, reject) => {
-                        userHomeContentsModel.getProductKeyFeature(item.category_name, (err, data) => {
-                            if (err) reject(err);
-                            else resolve(data);
-                        });
-                    });
-
-                    const product_sorting = await new Promise((resolve, reject) => {
-                        userHomeContentsModel.getProductSorting(item.category_name, (err, data) => {
-                            if (err) reject(err);
-                            else resolve(data);
-                        });
-                    });
-
+                    const table_products = await performQuery(userHomeContentsModel.getProductFromTable, item.category_name);
+                    const product_extraImages = await performQuery(userHomeContentsModel.getProductExtraImages, item.category_name);
+                    const product_descriptions = await performQuery(userHomeContentsModel.getProductDescriptions, item.category_name);
+                    const product_keyFeature = await performQuery(userHomeContentsModel.getProductKeyFeature, item.category_name);
+                    const product_sorting = await performQuery(userHomeContentsModel.getProductSorting, item.category_name);
 
                     // Return the structured product data
                     return {
@@ -136,43 +83,15 @@ module.exports = {
                 })
             );
 
-            const product_prices = await new Promise((resolve, reject) => {
-                userHomeContentsModel.getProductPrices((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-            const product_questions = await new Promise((resolve, reject) => {
-                userHomeContentsModel.getProductQuestions((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-            const product_ratings = await new Promise((resolve, reject) => {
-                userHomeContentsModel.getProductRatings((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
+            const product_prices = await performQuery(userHomeContentsModel.getProductPrices);
+            const product_questions = await performQuery(userHomeContentsModel.getProductQuestions);
+            const product_ratings = await performQuery(userHomeContentsModel.getProductRatings);
 
             const OfferStorage = {
-                OfferCarts: await new Promise((resolve, reject) => {
-                    productSettingModel.productSettingModel_OfferCarts((err, data) => {
-                        if (err) reject(err);
-                        else resolve(data);
-                    });
-                }),
-                OfferCartProducts: await new Promise((resolve, reject) => {
-                    productSettingModel.productSettingModel_OfferCartsProducts((err, data) => {
-                        if (err) reject(err);
-                        else resolve(data);
-                    });
-                })
+                OfferCarts: await performQuery(productSettingModel.productSettingModel_OfferCarts),
+                OfferCartProducts: await performQuery(productSettingModel.productSettingModel_OfferCartsProducts)
             };
 
-
-
-            // console.log(product_table);
             res.json({
                 category: category,
                 subCategory: subCategory,

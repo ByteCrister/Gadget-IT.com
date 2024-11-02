@@ -5,7 +5,7 @@ import styles from '../../styles/HomePageStyles/ViewProduct.module.css';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import { useData } from '../../context/useData';
 
-const UpperFeature = ({ viewProduct, product_id }) => {
+const UpperFeature = ({ viewProduct, product_id, price, image, category, product_name }) => {
 
     const { dispatch } = useContext(useData);
     const [stateNumber, setStateNumber] = useState(1);
@@ -54,11 +54,11 @@ const UpperFeature = ({ viewProduct, product_id }) => {
                     <button onClick={() => handleNewState('+')}>+</button>
                 </div>
 
-                <Link className={styles.buy_now}>
+                <Link className={styles.buy_now} to={{ pathname: '/easy-checkout' }} state={{ source: 'product', product_id: Number(product_id), price: price, quantity: stateNumber, image: image, main_category: category, product_name: product_name }}>
                     <button>Buy Now</button>
                 </Link>
 
-                <button className={styles.add_to_cart} onClick={() => dispatch({ type: 'add_product_to_cart', payload: {product_id: Number(product_id), quantity: stateNumber} })}>Add to Cart</button>
+                <button className={styles.add_to_cart} onClick={() => dispatch({ type: 'add_product_to_cart', payload: { product_id: Number(product_id), quantity: stateNumber } })}>Add to Cart</button>
             </section>
         </div>
     )

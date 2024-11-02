@@ -9,6 +9,15 @@ const secretKey = process.env.JWT_SECRET_KEY;
 const { SendUserMail } = require('../config/send.mail.controller.js');
 const saltRounds = 10;
 
+const performQuery = async (queryFunction, ...params) => {
+    return await new Promise((resolve, reject) => {
+        queryFunction(...params, (err, data) => {
+            if (err) reject(err);
+            else resolve(data);
+        });
+    });
+};
+
 module.exports = {
 
     UserHomeViewController: (req, res) => {
@@ -326,5 +335,4 @@ module.exports = {
             });
         })(req, res, next);
     }
-
 };

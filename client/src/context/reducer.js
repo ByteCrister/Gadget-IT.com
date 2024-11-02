@@ -62,9 +62,9 @@ const addProductToCart = (ProductStorage, payload, CartStorage) => {
     allProducts.forEach((product) => {
         if (Number(product.product_id) === Number(product_id)) {
             const productPrice = ProductStorage.product_prices.find((product_) => product_.product_id === product.product_id)?.price;
-            initialProducts.unshift({ product_id: product_id, quantity: quantity });
+            initialProducts.unshift({ product_id: product_id, quantity: quantity,  main_category: product.main_category });
             window.localStorage.setItem('CartStorage', JSON.stringify(initialProducts));
-            CartStorage.unshift({ product_id: product_id, quantity: quantity, image: product.image, product_name: product.product_name, brand: product.brand, price: productPrice });
+            CartStorage.unshift({ product_id: product_id, quantity: quantity, image: product.image, product_name: product.product_name, brand: product.brand, price: productPrice, main_category: product.main_category });
             return [...CartStorage];
         }
     });
