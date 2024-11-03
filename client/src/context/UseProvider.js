@@ -35,7 +35,7 @@ const initialValues = {
   CartStorage: [],
   Inventory_Page: [],
   Production_Page: [],
-  Report_Page: [],
+  Report_Page: null,
   Support_Page: [],
   Setting_Page: [],
   pathSettings: { prevPath: "/", currPath: "/" },

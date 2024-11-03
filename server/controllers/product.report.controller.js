@@ -14,7 +14,8 @@ module.exports = {
         try {
             res.send({
                 report_main: await performQuery(productReportModel.getMainReportQuery),
-                report_sub: await performQuery(productReportModel.getSubReportQuery)
+                report_sub: await performQuery(productReportModel.getSubReportQuery),
+                report_data: await performQuery(productReportModel.getUserReportQuery)
             });
         } catch (error) {
             res.status(501).json({ message: error });
@@ -55,7 +56,18 @@ module.exports = {
                 report_sub: await performQuery(productReportModel.getSubReportQuery)
             });
         } catch (error) {
-            console.error("Error in createReport function:", error);
+            console.error("Error in deleteReport function:", error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    deleteUserReport: async (req, res) => {
+        const { user_report_no } = req.params;
+        try {
+            await performQuery(productReportModel.deleteUserReportQuery, user_report_no);
+            res.send(await performQuery(productReportModel.getUserReportQuery));
+        } catch (error) {
+            console.error("Error in deleteUserReport function:", error);
             res.status(500).json({ message: error.message });
         }
     }

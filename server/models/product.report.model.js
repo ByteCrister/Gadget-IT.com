@@ -22,5 +22,26 @@ module.exports = {
             [body.report_no],
             callback
         );
+    },
+    getUserReportQuery: (callback) => {
+        db.query(`
+            SELECT 
+            u_r.user_report_no AS user_report_no,
+            u_r.user_id AS user_id,
+            u_r.report_string AS report_string,
+            u_r.report_description AS report_description,
+            u_r.report_date AS report_date,
+            CONCAT(u.first_name, ' ', u.last_name) AS user_name,
+            u.email AS email
+            FROM 
+            user u
+            JOIN 
+            user_report u_r
+            ON 
+            u_r.user_id = u.user_id;
+            `, callback);
+    },
+    deleteUserReportQuery: (user_report_no, callback)=>{
+        db.query('delete from user_report where user_report_no = ? ; ', [user_report_no], callback);
     }
 };

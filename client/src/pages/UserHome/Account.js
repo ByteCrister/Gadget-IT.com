@@ -15,7 +15,7 @@ import Report from '../../components/UserHome/Account/Report';
 const Account = () => {
     const { dataState } = useContext(useData);
     const navigate = useNavigate();
-    const [ButtonState, setButtonState] = useState(2);
+    const [ButtonState, setButtonState] = useState(0);
     const [UserInformation, setUserInformation] = useState({});
     const [UserAddress, setUserAddress] = useState({});
 

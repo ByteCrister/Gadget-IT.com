@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import styles from '../../styles/AdminHome/PageFive.module.css';
 import { useData } from '../../context/useData';
 import axios from 'axios';
+import UserReportPage from '../../components/AdminHome/UserReportPage';
 
 const PageFive = () => {
   const { dataState, dispatch } = useContext(useData);
@@ -21,7 +22,7 @@ const PageFive = () => {
   });
 
   useEffect(() => {
-    if (dataState?.Report_Page?.report_main && dataState?.Report_Page?.report_sub) return ;
+    if (dataState?.Report_Page?.report_main && dataState?.Report_Page?.report_sub) return;
   }, [dataState.Report_Page]);
 
 
@@ -193,7 +194,7 @@ const PageFive = () => {
           Report Management
         </div>
       </section>
-      {supportBtnState === 1 ? null : renderReportManagement()}
+      {supportBtnState === 1 ? <UserReportPage /> : renderReportManagement()}
     </section>
   )
 }
