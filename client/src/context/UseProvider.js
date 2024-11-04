@@ -33,6 +33,7 @@ const initialValues = {
   subCategoryName: [],
   RecentProducts: RecentProducts,
   CartStorage: [],
+  OderItems: [],
   Inventory_Page: [],
   Production_Page: [],
   Report_Page: null,

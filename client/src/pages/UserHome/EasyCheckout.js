@@ -1,10 +1,15 @@
-import { Link, useLocation } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from '../../styles/HomePageStyles/EasyCheckout.module.css';
 import { FaCheck } from 'react-icons/fa';
+import { useData } from '../../context/useData';
+import axios from 'axios';
+import OrdersPage from '../../components/UserHome/Account/OrdersPage';
 
 const EasyCheckout = () => {
+    const { dataState, dispatch } = useContext(useData);
     const location = useLocation();
+    const navigate = useNavigate();
     const [store, setStore] = useState([]);
     const [payMethodState, setPayMethodState] = useState(1);
     const [FormInfo, setFormInfo] = useState({
@@ -92,12 +97,32 @@ const EasyCheckout = () => {
     };
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
             console.log("Form is valid. Proceeding to payment or order confirmation.");
+            dispatch({
+                type: 'set_order_items', payload: {
+                 
+                }
+            });
+            if (payMethodState === 1) {
+                const res = await axios.post('http://localhost:7000/insert-new-order', {
+                    store: store,
+                    FormInfo: FormInfo,
+                    payMethodState: payMethodState === 1 ? 'Cash on Delivery' : 'Online Payment'
+                }, {
+                    headers: {
+                        Authorization: dataState.token
+                    }
+                });
+                navigate('/user-orders-page', {
+                    state: { OrderInfo: res.data.OrderInfo[0], OrderProducts: res.data.OrderProducts }
+                });
+            }
         } else {
             console.log("Form has errors. Fix errors before submitting.");
+            dispatch({ type: 'toggle_isServerIssue', payload: true });
             console.log(JSON.stringify(errors, null, 2));
         }
     };
@@ -131,7 +156,7 @@ const EasyCheckout = () => {
                         </div>
                         <div className={styles['form-div-container']}>
                             <label htmlFor='Full Address'>{errors.address ? errors.address : 'Full Address'}<sup> *</sup></label>
-                            <textarea id='address' onChange={handleForm} required placeholder='Address'></textarea>
+                            <textarea id='address' onChange={handleForm} required placeholder='Address... floor no., flat no., street, road, area name, district, division'></textarea>
                         </div>
                         <button type='submit' className={styles['checkout-btn']} >{payMethodState === 1 ? 'Confirm Order' : 'Process To Payment'}</button>
                     </form>

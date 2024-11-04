@@ -29,5 +29,7 @@ userRouter.post('/update-user-address', userCrudController.UpdateAddress);
 userRouter.post('/update-user-password', userCrudController.UpdateUserPassword);
 userRouter.post('/pre-order', userCrudController.PostPreOrder);
 userRouter.get('/get/user-interface-report', userCrudController.getUserInterfaceReport);
-userRouter.post('/post-new-user-report', userCrudController.postNewUserReport)
+userRouter.post('/post-new-user-report', userCrudController.postNewUserReport);
+
+userRouter.post('/insert-new-order', userCrudController.insertNewOrder);
 module.exports = userRouter;

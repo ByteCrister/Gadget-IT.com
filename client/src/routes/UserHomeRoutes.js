@@ -5,6 +5,7 @@ import NavBar from '../layout/NavBar';
 import TopNav from '../layout/TopNav';
 import LoadingPage from '../pages/LoadingPage';
 import styles from '../styles/HomePageStyles/UserHomeRoutePage.module.css';
+import OrdersPage from '../components/UserHome/Account/OrdersPage';
 
 const UserHomePage = lazy(() => import('../pages/UserHome/UserHomePage'));
 const UserSignIn = lazy(() => import('../components/UserHome/UserSignIn'));
@@ -75,6 +76,7 @@ const UserHomeRoutes = () => {
                         <Route path='/offers' element={<Offers />} />
                         <Route path='/offers/:title' element={<OfferCartProducts />} />
                         <Route path='/easy-checkout' element={<EasyCheckout />} />
+                        <Route path='/user-orders-page' element={<OrdersPage />}/>
 
                         <Route path="*" element={<RandomErrorPage />} />
                     </Routes>

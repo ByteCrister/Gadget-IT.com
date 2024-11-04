@@ -2,6 +2,7 @@ require('dotenv').config();
 const passport = require('passport');
 const userCrudModel = require('../models/user.crud.model');
 const bcrypt = require('bcrypt');
+const productOrderModel = require('../models/product.order.model');
 
 const authenticateUser = (req, res, next, callback) => {
     passport.authenticate('jwt', { session: false }, (err, user, info) => {
@@ -147,5 +148,25 @@ module.exports = {
             res.status(500).json({ message: error.message });
         }
     },
+
+    insertNewOrder: async (req, res, next) => {
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                const resData = await performQuery(productOrderModel.insertNewOrderProductQuery, { ...req.body.FormInfo, user_id: user.user_id, payMethodState: req.body.payMethodState });
+                console.log('New Order arrived: ' + resData.insertId);
+                req.body.store.forEach(async (product) => {
+                    await performQuery(productOrderModel.insertNewOrderQuery, product, resData.insertId);
+                });
+
+                res.send({
+                    OrderInfo: await performQuery(productOrderModel.getOrderInfoByIdQuery, resData.insertId),
+                    OrderProducts: await performQuery(productOrderModel.getOrderProductByIdQuery, resData.insertId),
+                });
+
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 
 }
