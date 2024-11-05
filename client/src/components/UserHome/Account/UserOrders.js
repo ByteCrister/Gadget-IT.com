@@ -7,7 +7,7 @@ import { GiCheckMark } from "react-icons/gi";
 import styles from '../../../styles/HomePageStyles/UserOrder.module.css';
 
 const UserOrders = ({ Orders }) => {
-    const { dataState, dispatch } = useContext(useData);
+    const { dataState } = useContext(useData);
     const [MainOrder, setMainOrder] = useState([]);
     const [OrderDetail, setOrderDetail] = useState({
         isOrderDetailOn: false,
@@ -45,9 +45,13 @@ const UserOrders = ({ Orders }) => {
                     }))
                 }))
             );
-            console.log(MainOrder);
+            window.scrollTo(0, 0);
         }
     }, [Orders]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [OrderDetail.isOrderDetailOn]);
 
     const renderOrderProducts = (OrderProducts) => {
         return <div className={styles['single-order-product-main-div']}>
@@ -137,6 +141,13 @@ const UserOrders = ({ Orders }) => {
                             </div>
                         </div>
                         {renderOrderProducts(OrderDetail.OrderProducts)}
+
+                        <div className={styles['order-detail-total-div']}>
+                            <div>
+                                <span>Subtotal  BDT{OrderDetail.OrderProducts.reduce((s, c) => s + c.price, 0)}</span>
+                                <span>Total  BDT{OrderDetail.OrderProducts.reduce((s, c) => s + c.price * c.quantity, 0)}</span>
+                            </div>
+                        </div>
 
                         <div className={styles['order-detail-lower-main-div']}>
                             <div className={styles['single-order-upper-div']}>

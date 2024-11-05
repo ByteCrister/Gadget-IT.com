@@ -32,4 +32,6 @@ userRouter.get('/get/user-interface-report', userCrudController.getUserInterface
 userRouter.post('/post-new-user-report', userCrudController.postNewUserReport);
 
 userRouter.post('/insert-new-order', userCrudController.insertNewOrder);
+userRouter.post('/perform-payment', userCrudController.performPayment);
+userRouter.post('/check-transfer-payment', userCrudController.checkTransferPayment);
 module.exports = userRouter;

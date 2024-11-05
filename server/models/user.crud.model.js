@@ -65,6 +65,14 @@ module.exports = {
         db.query('insert into user_report (user_id, report_string, report_description) values ( ?, ?, ? ) ;',
             [user_id, reportStr, report_description],
             callback);
+    },
+
+    getUserOrderInfoQuery: (user_id, callback) => {
+        db.query('select * from user_order where user_id = ? ; ', [user_id], callback);
+    },
+
+    getUserOrderProduct: (order_id, callback) => {
+        db.query('select * from user_order_products where order_id = ? ; ', [order_id], callback);
     }
 
 }

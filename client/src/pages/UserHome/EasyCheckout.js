@@ -4,7 +4,6 @@ import styles from '../../styles/HomePageStyles/EasyCheckout.module.css';
 import { FaCheck } from 'react-icons/fa';
 import { useData } from '../../context/useData';
 import axios from 'axios';
-import OrdersPage from '../../components/UserHome/Account/OrdersPage';
 
 const EasyCheckout = () => {
     const { dataState, dispatch } = useContext(useData);
@@ -101,11 +100,6 @@ const EasyCheckout = () => {
         e.preventDefault();
         if (validateForm()) {
             console.log("Form is valid. Proceeding to payment or order confirmation.");
-            dispatch({
-                type: 'set_order_items', payload: {
-                 
-                }
-            });
             if (payMethodState === 1) {
                 const res = await axios.post('http://localhost:7000/insert-new-order', {
                     store: store,
@@ -118,6 +112,14 @@ const EasyCheckout = () => {
                 });
                 navigate('/user-orders-page', {
                     state: { OrderInfo: res.data.OrderInfo[0], OrderProducts: res.data.OrderProducts }
+                });
+            } else {
+                navigate('/user-orders-payment-page', {
+                    state: {
+                        store: store,
+                        FormInfo: FormInfo,
+                        payMethodState: payMethodState === 1 ? 'Cash on Delivery' : 'Online Payment'
+                    }
                 });
             }
         } else {

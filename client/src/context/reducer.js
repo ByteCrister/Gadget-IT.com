@@ -85,10 +85,10 @@ const reducer = (state, action) => {
 
     switch (action.type) {
 
-        case 'set_order_items': 
+        case 'set_order_page': 
         return {
             ...state,
-            OrderItems: action.payload
+            Order_Page: action.payload
         }
 
         case 'update_product_from_cart':

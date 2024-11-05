@@ -10,6 +10,7 @@ import { User_Home } from "../api/User_Home";
 import { User_Products } from "../api/User_Products";
 import { Api_Support } from "../api/Api_Support";
 import { Api_Report } from "../api/Api_Report";
+import { Api_Order } from "../api/Api_Order";
 
 const admin_token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`;
 const tokenString = window.localStorage.getItem("token");
@@ -33,7 +34,7 @@ const initialValues = {
   subCategoryName: [],
   RecentProducts: RecentProducts,
   CartStorage: [],
-  OderItems: [],
+  Order_Page: [],
   Inventory_Page: [],
   Production_Page: [],
   Report_Page: null,
@@ -61,6 +62,7 @@ const UseProvider = ({ children }) => {
       if (dataState.isAdmin) {
         await Api_Inventory(dispatch);
         await Api_Production(dispatch);
+        await Api_Order(dispatch);
         await Api_Report(dispatch);
         await Api_Support(dispatch);
         await Api_Setting(dispatch);

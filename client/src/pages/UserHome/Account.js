@@ -18,6 +18,7 @@ const Account = () => {
     const [ButtonState, setButtonState] = useState(0);
     const [UserInformation, setUserInformation] = useState({});
     const [UserAddress, setUserAddress] = useState({});
+    const [Orders, setOrders] = useState([]);
 
     useEffect(() => {
         const GetUserInfo = async () => {
@@ -27,6 +28,8 @@ const Account = () => {
                         Authorization: dataState.token
                     }
                 });
+                console.log(res.data);
+                setOrders(await res.data.Orders);
                 setUserInformation((prev) => ({ ...prev, f_name: res.data.user.first_name, l_name: res.data.user.last_name, email: res.data.user.email }));
                 setUserAddress((prev) => ({ ...prev, ...res.data.address }));
             } catch (error) {
@@ -43,7 +46,7 @@ const Account = () => {
 
     const RenderPages = useCallback(() => {
         switch (ButtonState) {
-            case 1: return <MyOrders />
+            case 1: return <MyOrders Orders={Orders}/>
             case 2: return <Report />
             case 3: return <Address AddressInfo={UserAddress} setUserAddress={setUserAddress} />
             case 4: return <ChangePassword />

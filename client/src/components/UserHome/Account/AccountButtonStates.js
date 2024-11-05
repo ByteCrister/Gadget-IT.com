@@ -23,7 +23,7 @@ const AccountButtonStates = ({ setButtonState, UserInformation }) => {
     }
 
     return (
-        <div>
+        <div className={styles.OuterMainMyOrder}>
             <div className={styles.MainOuterStates}>
 
                 <section>

@@ -2,6 +2,7 @@
 .footerContainer {
     display: flex;
     flex-wrap: wrap;
+    z-index: 20;
 }
 
 .footerContainer {

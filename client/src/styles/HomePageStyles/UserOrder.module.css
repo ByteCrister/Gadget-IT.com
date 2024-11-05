@@ -173,6 +173,24 @@
     padding: 10px;
 }
 
+.order-detail-total-div{
+    padding: 20px;
+}
+
+.order-detail-total-div > div{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: end;
+    background-color:#f4f4f4;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-family: "Roboto", serif;
+    font-size: 15px;
+    color: #2b2b2b;
+    font-weight: 500;
+}
+
 .order-detail-lower-div{
     display: flex;
     justify-content: space-between;
@@ -185,13 +203,7 @@
     padding: 10px 20px;
 }
 
-.order-detail-lower-div > div span{
-    font-family: "Roboto", serif;
-    font-size: 15px;
-    color: #4f4f4f;
-    font-weight: 500;
-}
-.order-detail-lower-div > span{
+.order-detail-lower-div > div span, .order-detail-lower-div > span{
     font-family: "Roboto", serif;
     font-size: 15px;
     color: #4f4f4f;

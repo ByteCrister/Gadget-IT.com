@@ -9,19 +9,23 @@
     min-height: 100vh;
 }
 
+.OuterMainMyOrder{
+    /* width: 100%; */
+    min-width: 250px;
+}
 
 .MainOuterStates {
-
+    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 35px;
     padding: 20px;
-    width: 100%;
+    /* width: 100%; */
     min-width: 250px;
     background-color: #f9f9f9;
     border-radius: 10px;
- 
+    z-index: 5;
 
 }
 
