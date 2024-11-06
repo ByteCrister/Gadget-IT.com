@@ -28,6 +28,20 @@ const UserReportPage = () => {
         }
     }, [dataState.Report_Page]);
 
+    useEffect(() => {
+        dispatch({
+          type: 'set_search_function',
+          payload: {
+            function: SearchUserReport,
+            params: {
+              p_1: ReportData.Store,
+              p_2: setReportData
+            }
+          }
+        })
+      }, [ReportData.Store]);
+    
+
     const [sortButtonState, setSortButtonState] = useState({
         accedingState: 0,
         descendingState: 0

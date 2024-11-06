@@ -27,11 +27,26 @@ const PageTwo = React.memo(() => {
 
   useEffect(() => {
     console.log('page two renders');
-    setProductsData(dataState.Inventory_Page);
-    initializeCheck();
-    sortProducts(filterState.state);
+    if (dataState?.Inventory_Page) {
+      setProductsData(dataState.Inventory_Page);
+      initializeCheck();
+      sortProducts(filterState.state);
+    }
 
   }, [dataState, dispatch]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'set_search_function',
+      payload: {
+        function: SearchInventory,
+        params: {
+          p_1: dataState.Inventory_Page,
+          p_2: setProductsData
+        }
+      }
+    })
+  }, []);
 
 
   //* ------------------------------ product checked ------------------------
@@ -275,4 +290,4 @@ const PageTwo = React.memo(() => {
 }
 )
 
-export default PageTwo;
+export default React.memo(PageTwo);

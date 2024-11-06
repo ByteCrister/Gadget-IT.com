@@ -223,7 +223,11 @@ module.exports = {
     insertNewOrder: async (req, res, next) => {
         try {
             authenticateUser(req, res, next, async (user) => {
-                const resData = await performQuery(productOrderModel.insertNewOrderProductQuery, { ...req.body.FormInfo, user_id: user.user_id, payMethodState: req.body.payMethodState, bank_transfer_id: req.body.bank_transfer_id || '' });
+                const resData = await performQuery(productOrderModel.insertNewOrderProductQuery, {
+                    ...req.body.FormInfo,
+                    user_id: user.user_id,
+                    payMethodState: req.body.payMethodState
+                });
                 console.log('New Order arrived: ' + resData.insertId);
                 req.body.store.forEach(async (product) => {
                     await performQuery(productOrderModel.insertNewOrderQuery, product, resData.insertId);
@@ -282,29 +286,29 @@ module.exports = {
             }
         }
     },
-    checkTransferPayment: async (req, res) => {
-        const { TransferId, accessToken } = req.body;
-        console.log('TransferId: '+TransferId);
-        console.log('accessToken: '+accessToken);
-        try {
-            const transferStatus = await checkTransferStatus(accessToken, TransferId);
-            console.log('Transfer Status: ' + transferStatus);
-            res.json({ status: transferStatus });
-        } catch (error) {
-            console.error('Error:', error);
-            if (error.response && error.response.data) {
-                console.error('Dwolla Error:', error.response.data);
-       
-                return res.status(error.response.status).json({
-                    message: error.response.data.message || 'An error occurred',
-                });
-            }
-    
-            return res.status(500).json({
-                message: 'Unexpected error. ' + error.message
-            });
-            
-        }
-    }
+    // checkTransferPayment: async (req, res) => {
+    //     const { TransferId, accessToken } = req.body;
+    //     console.log('TransferId: ' + TransferId);
+    //     console.log('accessToken: ' + accessToken);
+    //     try {
+    //         const transferStatus = await checkTransferStatus(accessToken, TransferId);
+    //         console.log('Transfer Status: ' + transferStatus);
+    //         res.json({ transferStatus: transferStatus });
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //         if (error.response && error.response.data) {
+    //             console.error('Dwolla Error:', error.response.data);
+
+    //             return res.status(error.response.status).json({
+    //                 message: error.response.data.message || 'An error occurred',
+    //             });
+    //         }
+
+    //         return res.status(500).json({
+    //             message: 'Unexpected error. ' + error.message
+    //         });
+
+    //     }
+    // }
 
 };

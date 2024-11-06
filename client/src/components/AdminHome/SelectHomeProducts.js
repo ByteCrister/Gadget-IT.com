@@ -84,6 +84,17 @@ const SelectHomeProducts = () => {
       setProductPosition(initialProductPosition);
       setSerial_no_State(maxSerialNumbers);
       setProductsData(dataState.Production_Page.TableRows);
+      dispatch({
+        type: 'set_search_function',
+        payload: {
+          function: SearchSelectHomeProducts,
+          params: {
+            p_1: dataState.Production_Page.TableRows,
+            p_2: setProductsData,
+            p_3: productsData
+          }
+        }
+      })
 
       // console.log(initialProductPosition);
       // console.log(maxSerialNumbers);
@@ -91,7 +102,7 @@ const SelectHomeProducts = () => {
     };
 
     initializeData();
-  }, [dataState]);
+  }, [dataState.Production_Page.TableRows]);
 
   // *------------------ Refresh Button ---------------------
   const handleRefresh = async () => {
@@ -134,8 +145,7 @@ const SelectHomeProducts = () => {
     SearchSelectHomeProducts(
       search,
       dataState.Production_Page.TableRows,
-      setProductsData,
-      productsData
+      setProductsData
     );
   };
 
@@ -203,7 +213,7 @@ const SelectHomeProducts = () => {
     const prevPosition = GetPositionName(productId);
     const currPosition = e.target.value;
     const currSerial = GetSerialNo(productId);
-    console.log('curr: ' + currPosition + ' - prev: ' + prevPosition+' - currSerial: '+currSerial);
+    console.log('curr: ' + currPosition + ' - prev: ' + prevPosition + ' - currSerial: ' + currSerial);
     if (!prevPosition || prevPosition.length === 0) {
       // for first select
       setProductPosition((prev) => ({

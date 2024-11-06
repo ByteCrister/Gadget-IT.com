@@ -33,9 +33,20 @@ const UserQuestions = () => {
             setSearchQuestion(updatedQuestions);
             setQuestions(updatedQuestions);
             setFilteredProducts(updatedQuestions);
+            dispatch({
+                type: 'set_search_function',
+                payload: {
+                  function: SearchQuestions,
+                  params: {
+                    p_1: SearchQuestion,
+                    p_2: setQuestions
+                  }
+                }
+              })
         }
         // console.log(dataState.Production_Page.TableFullRows);
     }, [dataState.Support_Page.questions, dataState.Production_Page]);
+
 
 
     const handleSearch = (e) => {

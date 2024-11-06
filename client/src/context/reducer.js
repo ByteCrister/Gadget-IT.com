@@ -85,11 +85,11 @@ const reducer = (state, action) => {
 
     switch (action.type) {
 
-        case 'set_order_page': 
-        return {
-            ...state,
-            Order_Page: action.payload
-        }
+        case 'set_order_page':
+            return {
+                ...state,
+                Order_Page: action.payload
+            }
 
         case 'update_product_from_cart':
             return {
@@ -229,6 +229,16 @@ const reducer = (state, action) => {
                 isAdmin: action.payload.isAdmin,
                 isUserLoggedIn: action.payload.isUserLoggedIn,
                 token: action.payload.token
+            }
+
+        case 'set_search_function':
+            // console.log( action.payload.params);
+            return {
+                ...state,
+                Search_Function: {
+                    function: action.payload.function,
+                    params: action.payload.params
+                }
             }
 
         case 'toggle_loading':

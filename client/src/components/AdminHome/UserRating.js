@@ -39,10 +39,19 @@ const UserRating = () => {
                 RatingProductsMain: updateRatings,
                 filteredRatingProducts: updateRatings,
             });
+            dispatch({
+                type: 'set_search_function',
+                payload: {
+                    function: SearchRatings,
+                    params: {
+                        p_1: RatingProducts,
+                        p_2: setRatingProducts
+                    }
+                }
+            })
         }
         // console.log(dataState.Production_Page.TableFullRows);
     }, [dataState.Support_Page.rating, dataState.Production_Page]);
-
     const findCategory = (productId) => {
         return dataState.Production_Page.TableFullRows.find(
             (product) => product.product_id === productId

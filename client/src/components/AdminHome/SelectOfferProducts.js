@@ -41,8 +41,18 @@ const SelectOfferProducts = () => {
                 const AllOfferProducts = dataState.Setting_Page.offer_carts_products.filter((offer_) => offer_.offer_cart_no === offer.cart_no).map((offer_) => offer_.serial_no);
                 setMaxSerialNo((prev) => ({ ...prev, [offer.cart_no]: AllOfferProducts.length > 0 ? Math.max(...AllOfferProducts) : 0 }));
             });
+            dispatch({
+                type: 'set_search_function',
+                payload: {
+                    function: SearchOfferProducts,
+                    params: {
+                        p_1: offerProducts,
+                        p_2: setOfferProducts
+                    }
+                }
+            })
         }
-    }, [dataState.Setting_Page])
+    }, [dataState.Setting_Page, dataState.Production_Page.TableRows])
 
     // 1
     const findInitialSerial = useCallback((product_id) => {

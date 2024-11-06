@@ -10,7 +10,7 @@ export const SearchSelectHomeProducts = (searchValue, products, setProductsData)
                     totalPoint += String(GetCategoryName(value).toLowerCase()).includes(searchValue.toLowerCase()) ? 1 : 0;
                     totalPoint += String(GetCategoryName(value).toLowerCase()) === searchValue.toLowerCase() ? 10 : 0;
                 }
-                if (key === 'id') {
+                if (key === 'id' || key === 'serial_no') {
                     totalPoint += String(value).includes(searchValue.trim()) ? 1 : 0;
                     totalPoint += String(value) === searchValue.trim().toLowerCase() ? 10 : 0;
                 }

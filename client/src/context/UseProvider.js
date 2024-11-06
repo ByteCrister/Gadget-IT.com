@@ -40,6 +40,7 @@ const initialValues = {
   Report_Page: null,
   Support_Page: [],
   Setting_Page: [],
+  Search_Function: null,
   pathSettings: { prevPath: "/", currPath: "/" },
   isLoading: false,
   isError: false,

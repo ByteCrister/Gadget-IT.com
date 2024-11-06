@@ -42,10 +42,24 @@ const ProductionTable = React.memo(() => {
       console.log('page three renders');
       setProductsData(dataState.Production_Page.TableRows);
       setHasInitialized(true);
+
     }
     if (!hasInitialized) {
       initializeData();
     }
+  }, []);
+
+  useEffect(() => {
+    dispatch({
+      type: 'set_search_function',
+      payload: {
+        function: SearchProduction,
+        params: {
+          p_1: dataState.Production_Page.TableRows,
+          p_2: setProductsData
+        }
+      }
+    })
   }, []);
 
   // *------------------ Parent Function of Pagination ----------------------------

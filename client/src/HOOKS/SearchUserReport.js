@@ -8,8 +8,13 @@ export const SearchUserReport = (searchedItem, Store, setReportData) => {
         let totalPoint = 0;
         Object.entries(item).forEach(([key, value]) => {
             if (key !== 'point' && key !== 'user_report_no') {
-                totalPoint += String(value).toLowerCase().includes(searchedItem) ? 1 : 0;
-                totalPoint += String(value).toLowerCase() === searchedItem ? 10 : 0;
+                if (key === 'report_date') {
+                    totalPoint += new Date(value).toLocaleString().includes(searchedItem.toLowerCase()) ? 1 : 0;
+                    totalPoint += new Date(value).toLocaleString() === String(searchedItem.toLowerCase()) ? 10 : 0;
+                } else {
+                    totalPoint += String(value).toLowerCase().includes(searchedItem) ? 1 : 0;
+                    totalPoint += String(value).toLowerCase() === searchedItem ? 10 : 0;
+                }
             }
         });
         setReportData(prev => ({

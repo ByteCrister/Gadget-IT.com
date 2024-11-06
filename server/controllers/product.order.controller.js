@@ -38,24 +38,20 @@ const checkTransferStatus = async (accessToken, transferId) => {
 module.exports = {
     getOrdersPage: async (req, res) => {
         try {
-            const clientId = process.env.DWOLLA_API_KEY;
-            const clientSecret = process.env.DWOLLA_API_SECRET_KEY;
-            const accessToken = await getAccessToken(clientId, clientSecret);
             const orders = await performQuery(productOrderModel.getOrdersQuery);
             const Orders = await Promise.all(
                 orders.map(async (order) => {
                     try {
-                        const [transferStatus, OrderProducts] = await Promise.all([
-                            checkTransferStatus(accessToken, order.bank_transfer_id),
+                        const [OrderProducts] = await Promise.all([
                             performQuery(productOrderModel.getOrderProductByIdQuery, order.order_id)
                         ]);
                         return {
-                            OrderInfo: { ...order, selected: false, payment_status: transferStatus },
+                            OrderInfo: { ...order, selected: false },
                             OrderProducts
                         };
                     } catch (productError) {
                         return {
-                            OrderInfo: { ...order, selected: false, payment_status: 'Pending' },
+                            OrderInfo: { ...order, selected: false },
                             OrderProducts: await performQuery(productOrderModel.getOrderProductByIdQuery, order.order_id)
                         };
                     }
@@ -77,6 +73,36 @@ module.exports = {
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: 'error on updateOrderStatus - ', error: error });
+        }
+    },
+    getPaymentStatus: async (req, res) => {
+        const { bank_transfer_id } = req.params;
+        try {
+            const accessToken = await getAccessToken(process.env.DWOLLA_API_KEY, process.env.DWOLLA_API_SECRET_KEY);
+            const status = await checkTransferStatus(accessToken, bank_transfer_id);
+            res.status(200).send(status);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'error on getPaymentStatus - ', error: error });
+        }
+    },
+    updatePaymentStatus: async (req, res) => {
+        try {
+            await performQuery(productOrderModel.updatePaymentStatusQuery, req.body);
+            res.status(200).send(true);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'error on updatePaymentStatus - ', error: error });
+        }
+    },
+    deleteOrder: async (req, res) => {
+        try {
+            await performQuery(productOrderModel.deleteOrderQuery, req.params.order_id);
+            await performQuery(productOrderModel.deleteOrderProductQuery, req.params.order_id);
+            res.status(200).send(true);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'error on deleteOrder - ', error: error });
         }
     }
 };
