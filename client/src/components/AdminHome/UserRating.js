@@ -48,7 +48,7 @@ const UserRating = () => {
                         p_2: setRatingProducts
                     }
                 }
-            })
+            });
         }
         // console.log(dataState.Production_Page.TableFullRows);
     }, [dataState.Support_Page.rating, dataState.Production_Page]);
