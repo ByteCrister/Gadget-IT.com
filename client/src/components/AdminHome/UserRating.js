@@ -223,4 +223,4 @@ const UserRating = () => {
     );
 };
 
-export default UserRating;
+export default React.memo(UserRating);

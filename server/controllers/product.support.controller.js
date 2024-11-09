@@ -23,6 +23,7 @@ module.exports = {
     putAnswer: async (req, res) => {
         try {
             await performQuery(productSupportModel.putAnswerModel, req.body);
+            await performQuery(productSupportModel.postUserNewQuestionNotificationQuery, req.body);
         } catch (error) {
             res.status(500).send(error);
         }

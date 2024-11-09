@@ -58,4 +58,4 @@ const PageEight = React.memo(() => {
 }
 )
 
-export default PageEight
+export default React.memo(PageEight);

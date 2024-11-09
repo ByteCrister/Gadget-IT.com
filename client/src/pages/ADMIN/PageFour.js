@@ -69,7 +69,7 @@ const PageFour = () => {
     } else if (state >= 5 && state <= 6) {
       Updated = Updated.sort((a, b) => state === 5 ? a.OrderInfo.phone_number.localeCompare(b.OrderInfo.phone_number) : b.OrderInfo.phone_number.localeCompare(a.OrderInfo.phone_number));
     } else if (state >= 7 && state <= 8) {
-      Updated = Updated.sort((a, b) => state === 7 ? new Date(a.OrderInfo.order_date) - new Date(b.OrderInfo.order_date) : new Date(b.OrderInfo.order_date) - new Date(a.OrderInfo.order_date) );
+      Updated = Updated.sort((a, b) => state === 7 ? new Date(a.OrderInfo.order_date) - new Date(b.OrderInfo.order_date) : new Date(b.OrderInfo.order_date) - new Date(a.OrderInfo.order_date));
     } else if (state >= 9 && state <= 10) {
       Updated = Updated.sort((a, b) => state === 9 ? a.OrderInfo.order_status.localeCompare(b.OrderInfo.order_status) : b.OrderInfo.order_status.localeCompare(a.OrderInfo.order_status));
     }
@@ -191,6 +191,18 @@ const PageFour = () => {
     return currStatus;
   };
 
+  const handleNewUserOrderNotification = async (user_id, order_id, status) => {
+    try {
+      await axios.post('http://localhost:7000/new-order-user-notification', {
+        user_id: user_id,
+        order_id: order_id,
+        status: status
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleUpdateOrderStatus = async (newStatus, order_id) => {
     try {
       await axios.patch(`http://localhost:7000/update/order-status`, {
@@ -203,14 +215,11 @@ const PageFour = () => {
   };
 
   const handleActionChange = async (e) => {
-    let Updated = [...OrderStore.MainProducts];
-    Updated = Updated.map((item) => {
-      const newStatus = getNewOrderStatus(
-        item.OrderInfo.order_status,
-        e.target.value
-      );
+    let Updated = await Promise.all(OrderStore.MainProducts.map(async (item) => {
+      const newStatus = getNewOrderStatus(item.OrderInfo.order_status, e.target.value);
       if (item.OrderInfo.selected && newStatus === e.target.value) {
-        handleUpdateOrderStatus(newStatus, item.OrderInfo.order_id);
+        await handleUpdateOrderStatus(newStatus, item.OrderInfo.order_id);
+        await handleNewUserOrderNotification(item.OrderInfo.user_id, item.OrderInfo.order_id, newStatus);
         return {
           ...item,
           OrderInfo: {
@@ -220,9 +229,10 @@ const PageFour = () => {
         };
       }
       return item;
-    });
+    }));
     dispatch({ type: "set_order_page", payload: Updated });
   };
+  
 
   const handleSelectCheckbox = (e, state, order_id) => {
     const isChecked = e.target.checked;

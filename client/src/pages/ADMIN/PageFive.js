@@ -199,4 +199,4 @@ const PageFive = () => {
   )
 }
 
-export default PageFive
+export default React.memo(PageFive);

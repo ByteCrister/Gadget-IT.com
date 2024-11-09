@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 import styles from '../../styles/HomePageStyles/ViewProduct.module.css';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
@@ -42,7 +43,7 @@ const UpperFeature = ({ viewProduct, product_id, price, image, category, product
                 {
                     viewProduct.keyFeature.map((item) => {
                         return viewProduct.productInformation[item.key_feature_column] &&
-                            <span>{GetCategoryName(item.key_feature_column)}:  {viewProduct.productInformation[item.key_feature_column]}</span>
+                            <span key={uuidv4()}>{GetCategoryName(item.key_feature_column)}:  {viewProduct.productInformation[item.key_feature_column]}</span>
                     })
                 }
             </section>

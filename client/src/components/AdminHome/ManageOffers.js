@@ -25,4 +25,4 @@ const ManageOffers = () => {
   )
 }
 
-export default ManageOffers;
+export default React.memo(ManageOffers);

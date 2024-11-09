@@ -156,4 +156,4 @@ const PageSix = () => {
   );
 };
 
-export default PageSix;
+export default React.memo(PageSix);

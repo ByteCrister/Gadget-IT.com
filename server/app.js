@@ -24,6 +24,7 @@ app.use(require('./routes/users.home.contents'));
 app.use(require('./routes/products.router'));
 app.use(require('./routes/product.post.router'));
 
+app.use(require('./routes/product.outer.router'));
 app.use(require('./routes/product.inventory.router'));
 app.use(require('./routes/product.production.router'));
 app.use(require('./routes/product.order.router'));

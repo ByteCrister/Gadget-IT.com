@@ -40,5 +40,12 @@ module.exports = {
 
     getAllRatings: (callback) => {
         db.query('select * from rating ;', callback);
+    },
+
+    postUserNewQuestionNotificationQuery: (body, callback) => {
+        db.query('insert into notification_user (user_id, message_token, type, viewed) values (?, ?, ?, ?) ;',
+            [body.user_id, `product_id: ${body.product_id}, category: '${body.category}'`, 'support-question', 0],
+            callback
+        );
     }
 }

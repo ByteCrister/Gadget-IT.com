@@ -4,6 +4,7 @@ const passport = require('passport');
 const userCrudModel = require('../models/user.crud.model');
 const bcrypt = require('bcrypt');
 const productOrderModel = require('../models/product.order.model');
+const userModel = require('../models/user.model');
 
 const authenticateUser = (req, res, next, callback) => {
     passport.authenticate('jwt', { session: false }, (err, user, info) => {
@@ -100,6 +101,12 @@ module.exports = {
 
         try {
             authenticateUser(req, res, next, async (user) => {
+                const payload = {
+                    type: 'User Question',
+                    sender_type: 'Question',
+                    page: 7
+                };
+                await performQuery(userModel.setNewAdminNotification, payload);
                 await performQuery(userCrudModel.InsertUserQuestion, user.user_id, product_id, email, question);
                 return res.status(200).json({ success: true });
             });
@@ -114,6 +121,12 @@ module.exports = {
         try {
             authenticateUser(req, res, next, async (user) => {
                 await performQuery(userCrudModel.InsertUserRating, user.user_id, product_id, user.email, rating, UserReview);
+                const payload = {
+                    type: 'User Rating',
+                    sender_type: 'Rating',
+                    page: 7
+                };
+                await performQuery(userModel.setNewAdminNotification, payload);
                 return res.status(200).json({ success: true });
             });
         } catch (error) {
@@ -133,10 +146,16 @@ module.exports = {
                         OrderProducts: await performQuery(userCrudModel.getUserOrderProduct, Order.order_id)
                     };
                 }));
+                const user_notification_count = await performQuery(userCrudModel.getUserNotificationCountQuery, user.user_id);
+                const User_Notifications = {
+                    user_notification_count: user_notification_count[0].notification_count,
+                    notifications: await performQuery(userCrudModel.getUserNotifications, user.user_id)
+                }
                 return res.status(200).json({
                     user,
                     address: address[0],
-                    Orders: Orders
+                    Orders: Orders,
+                    User_Notifications: User_Notifications
                 });
             });
         } catch (error) {
@@ -211,6 +230,12 @@ module.exports = {
             authenticateUser(req, res, next, async (user) => {
                 const reportsStr = req.body.reports.map(report => report.report_name).join(', ');
                 await performQuery(userCrudModel.postNewUserReportQuery, user.user_id, reportsStr, req.body.report_description);
+                const payload = {
+                    type: 'New Report',
+                    sender_type: 'Report',
+                    page: 5
+                };
+                await performQuery(userModel.setNewAdminNotification, payload);
                 return res.status(200).json({
                     success: true
                 });
@@ -232,6 +257,13 @@ module.exports = {
                 req.body.store.forEach(async (product) => {
                     await performQuery(productOrderModel.insertNewOrderQuery, product, resData.insertId);
                 });
+
+                const payload = {
+                    type: 'Order Arrived',
+                    sender_type: 'Order',
+                    page: 4
+                };
+                await performQuery(userModel.setNewAdminNotification, payload);
 
                 res.send({
                     OrderInfo: await performQuery(productOrderModel.getOrderInfoByIdQuery, resData.insertId),
@@ -309,6 +341,29 @@ module.exports = {
     //         });
 
     //     }
-    // }
+    // },
+    updateUserNotificationView: async (req, res, next) => {
+        const { notification_user_no } = req.params;
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                await performQuery(userCrudModel.updateUserNotificationViewQuery, notification_user_no);
+                res.status(201).send(true);
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    updateUserNotificationCount: async (req, res, next) => {
+        const { count } = req.params;
+        try {
+            authenticateUser(req, res, next, async (user) => {
+                await performQuery(userCrudModel.updateUserNotificationCountQuery, count, user.user_id);
+                res.status(201).send({ success: true });
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
 
 };

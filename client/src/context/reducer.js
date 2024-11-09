@@ -210,6 +210,30 @@ const reducer = (state, action) => {
                 Production_Page: action.payload
             }
 
+        case 'set_new_notification_admin':
+            return {
+                ...state,
+                Outer_Page: {
+                    ...state.Outer_Page,
+                    notification_admin: action.payload
+                }
+            }
+
+        case 'set_new_admin_count':
+            return {
+                ...state,
+                Outer_Page: {
+                    ...state.Outer_Page,
+                    admin_count: action.payload
+                }
+            }
+
+        case 'set_outer_page':
+            return {
+                ...state,
+                Outer_Page: action.payload
+            }
+
         case 'set_categories':
             return {
                 ...state,
@@ -231,14 +255,40 @@ const reducer = (state, action) => {
                 token: action.payload.token
             }
 
+        case 'set_user_new_notification_count':
+            return {
+                ...state,
+                User_Notifications: {
+                    ...state.User_Notifications,
+                    user_notification_count: action.payload
+                }
+            }
+
+        case 'set_user_notifications':
+            return {
+                ...state,
+                User_Notifications: action.payload
+            }
+
         case 'set_search_function':
-            // console.log( action.payload.params);
             return {
                 ...state,
                 Search_Function: {
                     function: action.payload.function,
                     params: action.payload.params
                 }
+            }
+
+        case 'set_view_product_scroll_ref':
+            return {
+                ...state,
+                ViewProductScrollRef: action.payload
+            }
+
+        case 'set_scroll_ref':
+            return {
+                ...state,
+                ScrollRef: action.payload
             }
 
         case 'toggle_loading':

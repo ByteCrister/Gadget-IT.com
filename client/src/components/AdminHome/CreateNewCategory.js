@@ -210,4 +210,4 @@ const CreateNewCategory = React.memo(({ setErrorCategory }) => {
 }
 )
 
-export default CreateNewCategory;
+export default React.memo(CreateNewCategory);

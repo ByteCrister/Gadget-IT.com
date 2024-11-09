@@ -75,6 +75,15 @@ module.exports = {
             res.status(500).json({ message: 'error on updateOrderStatus - ', error: error });
         }
     },
+    postOrderUserNotification: async (req, res) => {
+        try {
+            await performQuery(productOrderModel.postUserOrderNotification, req.body);
+            res.status(200).send({ success: true });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'error on postOrderUserNotification - ', error: error });
+        }
+    },
     getPaymentStatus: async (req, res) => {
         const { bank_transfer_id } = req.params;
         try {

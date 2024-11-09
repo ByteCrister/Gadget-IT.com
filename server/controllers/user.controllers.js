@@ -7,6 +7,7 @@ const passport = require('passport');
 
 const secretKey = process.env.JWT_SECRET_KEY;
 const { SendUserMail } = require('../config/send.mail.controller.js');
+const productOuterModel = require('../models/product.outer.model.js');
 const saltRounds = 10;
 
 const performQuery = async (queryFunction, ...params) => {
@@ -122,19 +123,15 @@ module.exports = {
                 });
             });
 
-            console.log('User saved:', results);
-
-            await new Promise((resolve, reject) => {
-                req.session.save((err) => {
-                    if (err) {
-                        console.error('Error saving session:', err);
-                        return reject(err);
-                    }
-                    resolve();
-                });
-            });
-
-            console.log('New user registered with id:', req.session.userId);
+            //* Insert new admin notification
+            const payload = {
+                type: 'New User Signed in',
+                sender_type: 'User',
+                page: 6
+            };
+            await performQuery(userModel.setNewAdminNotification, payload);
+            await performQuery(productOuterModel.insertNewUserCountQuery, results.insertId);
+            console.log('New user registered with id:', results.insertId);
 
             //* Redirect the user to the home route
             return res.redirect('http://localhost:3000');

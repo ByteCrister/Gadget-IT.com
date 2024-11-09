@@ -24,6 +24,8 @@ userRouter.post('/post-user-question', userCrudController.PostUserQuestion);
 userRouter.post('/post-user-rating', userCrudController.PostUserRating);
 
 userRouter.get('/get-user-information', userCrudController.GetUserInfo);
+userRouter.get('/update-user-notification-view/:notification_user_no', userCrudController.updateUserNotificationView);
+userRouter.get('/update-user-notification-count/:count', userCrudController.updateUserNotificationCount);
 userRouter.post('/update-user-personal-information', userCrudController.UpdatePersonalInfo);
 userRouter.post('/update-user-address', userCrudController.UpdateAddress);
 userRouter.post('/update-user-password', userCrudController.UpdateUserPassword);
@@ -34,4 +36,5 @@ userRouter.post('/post-new-user-report', userCrudController.postNewUserReport);
 userRouter.post('/insert-new-order', userCrudController.insertNewOrder);
 userRouter.post('/perform-payment', userCrudController.performPayment);
 // userRouter.post('/check-transfer-payment', userCrudController.checkTransferPayment);
+
 module.exports = userRouter;

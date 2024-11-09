@@ -1,75 +1,109 @@
 .notificationContainer {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgb(240, 251, 255);
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 65%;
-    min-width: 600px;
-    max-height: 70vh; 
-    overflow-y: auto;
-  }
-  
-  .closeButton {
-    position: absolute;
-    top: 40px;
-    right: 200px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  
-  .notificationBox {
-    border: none;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    background: #dbfff9;
-    cursor: pointer;
-}
-.notificationBox:hover{
-    transition: ease-in-out 0.3s;
-    background: #b9fdff;
-  }
-  
-  
-  .notificationHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
+  position: absolute;
+  top: 250px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 1px rgba(137, 137, 137, 0.1);
+  width: 65%;
+  min-width: 600px;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
-.notificationTime, .senderName {
-    margin-right: 10px;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: 500;
-    color: #bdbdbd;
+.closeButton {
+  position: absolute;
+  top: 5px;
+  right: 180px;
+  z-index: 100;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.notificationBox {
+  position: relative;
+  border: none;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  background: #f0f8ff;
+  cursor: pointer;
+  transition: ease-in-out 0.3s;
+}
+
+.notificationBox:hover {
+  background: #dff0ff;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(0.5);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+}
+
+.message-new-active {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #7ab17a;
+  border-radius: 50%;
+  top: 0px;
+  right: 99%;
+  z-index: 100;
+  transition: ease-in-out 0.1s;
+  animation: pulse 2s linear infinite;
+}
+
+.message-new-inactive {
+  display: none;
+}
+
+.notificationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
 }
-  
-  .deleteButton {
-    background: none;
-    border: none;
-    color: red;
-    cursor: pointer;
-  }
-  
-  .notificationContent {
-    margin-top: 10px;
-    font-family: 'Times New Roman', Times, serif;
-    color: #b7c3e7;
+
+.notificationTime,
+.senderName {
+  margin-right: 10px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 500;
+  color: #bdbdbd;
+
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+}
+
+.notificationContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-family: 'Times New Roman', Times, serif;
+  color: #b7c3e7;
 }
 
 .notificationType {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-    font-family: 'Times New Roman', Times, serif;
-    color: #7ab17a;
-  }
-  
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  font-family: 'Times New Roman', Times, serif;
+  color: #7ab17a;
+}

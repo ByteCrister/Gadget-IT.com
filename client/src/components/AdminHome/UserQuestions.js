@@ -36,13 +36,13 @@ const UserQuestions = () => {
             dispatch({
                 type: 'set_search_function',
                 payload: {
-                  function: SearchQuestions,
-                  params: {
-                    p_1: SearchQuestion,
-                    p_2: setQuestions
-                  }
+                    function: SearchQuestions,
+                    params: {
+                        p_1: SearchQuestion,
+                        p_2: setQuestions
+                    }
                 }
-              })
+            })
         }
         // console.log(dataState.Production_Page.TableFullRows);
     }, [dataState.Support_Page.questions, dataState.Production_Page]);
@@ -76,7 +76,13 @@ const UserQuestions = () => {
         setAnswer('');
 
         try {
-            await axios.put('http://localhost:7000/update/answer', { answer: answer, question_no: questionNo });
+            await axios.put('http://localhost:7000/update/answer', {
+                answer: answer,
+                question_no: questionNo,
+                user_id: currentQuestion.user_id,
+                category: currentQuestion.main_category,
+                product_id: currentQuestion.product_id
+            });
 
         } catch (error) {
             console.log(error);
@@ -185,4 +191,4 @@ const UserQuestions = () => {
     )
 }
 
-export default UserQuestions;
+export default React.memo(UserQuestions);

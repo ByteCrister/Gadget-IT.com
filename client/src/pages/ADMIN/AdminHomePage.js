@@ -16,7 +16,6 @@ const PageSix = lazy(() => import('../ADMIN/PageSix'));
 const PageSeven = lazy(() => import('../ADMIN/PageSeven'));
 const PageEight = lazy(() => import('../ADMIN/PageEight'));
 
-const ShowMessages = lazy(() => import('../../components/AdminHome/ShowMessages'));
 const ShowNotifications = lazy(() => import('../../components/AdminHome/ShowNotifications'));
 const ShowAdmin = lazy(() => import('../../components/AdminHome/ShowAdmin'));
 
@@ -45,9 +44,8 @@ const AdminHomePage = () => {
     };
 
     const upperContent = {
-        1: <ShowMessages content={upperContentNo} handleUpper={handleUpper} />,
-        2: <ShowNotifications handlePage={handlePage} content={upperContentNo} handleUpper={handleUpper} />,
-        3: <ShowAdmin content={upperContentNo} handleUpper={handleUpper} />
+        1: <ShowNotifications handlePage={handlePage} content={upperContentNo} handleUpper={handleUpper} />,
+        2: <ShowAdmin content={upperContentNo} handleUpper={handleUpper} />
     };
 
 

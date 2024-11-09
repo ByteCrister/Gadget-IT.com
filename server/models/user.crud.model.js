@@ -68,11 +68,27 @@ module.exports = {
     },
 
     getUserOrderInfoQuery: (user_id, callback) => {
-        db.query('select * from user_order where user_id = ? ; ', [user_id], callback);
+        db.query('select * from user_order where user_id = ?  order by order_id desc ; ', [user_id], callback);
     },
 
     getUserOrderProduct: (order_id, callback) => {
         db.query('select * from user_order_products where order_id = ? ; ', [order_id], callback);
+    },
+
+    getUserNotificationCountQuery: (user_id, callback) => {
+        db.query('select notification_count from notification_user_count where user_id = ? ; ', [user_id], callback);
+    },
+
+    getUserNotifications: (user_id, callback) => {
+        db.query('select * from notification_user where user_id = ? order by notification_user_no desc; ', [user_id], callback);
+    },
+
+    updateUserNotificationViewQuery: (notification_user_no, callback) => {
+        db.query('update notification_user set viewed  = ? where notification_user_no = ? ;', [1, notification_user_no], callback);
+    },
+
+    updateUserNotificationCountQuery: (count, user_id, callback) => {
+        db.query('update notification_user_count set notification_count = ? where user_id = ? ; ', [count, user_id], callback);
     }
 
 }

@@ -170,4 +170,4 @@ const ProductionTable = React.memo(() => {
 }
 )
 
-export default ProductionTable
+export default React.memo(ProductionTable);

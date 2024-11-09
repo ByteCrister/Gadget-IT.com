@@ -48,4 +48,4 @@ const PageThree = React.memo(({setErrorCategory}) => {
   )
 }
 )
-export default PageThree;
+export default React.memo(PageThree);

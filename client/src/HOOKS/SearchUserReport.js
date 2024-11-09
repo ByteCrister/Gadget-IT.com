@@ -28,7 +28,7 @@ export const SearchUserReport = (searchedItem, Store, setReportData) => {
             return String(item.user_id).includes(String(searchedItem)) ||
                 String(item.report_string).toLowerCase().includes(String(searchedItem).toLowerCase()) ||
                 String(item.report_description).toLowerCase().includes(String(searchedItem).toLowerCase()) ||
-                String(new Date(item.report_description).toLocaleString()).includes(searchedItem)
+                String(new Date(item.report_date).toLocaleString()).includes(searchedItem)
         })
     }));
 };

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, lazy, Suspense } from 'react';
+import React, { useState, useCallback, lazy, Suspense, useEffect, useRef, useContext } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Footer from '../layout/Footer';
 import NavBar from '../layout/NavBar';
@@ -7,6 +7,7 @@ import LoadingPage from '../pages/LoadingPage';
 import styles from '../styles/HomePageStyles/UserHomeRoutePage.module.css';
 import OrdersPage from '../components/UserHome/Account/OrdersPage';
 import UserOrderPaymentPage from '../components/UserHome/Account/UserOrderPaymentPage';
+import { useData } from '../context/useData';
 
 const UserHomePage = lazy(() => import('../pages/UserHome/UserHomePage'));
 const UserSignIn = lazy(() => import('../components/UserHome/UserSignIn'));
@@ -25,16 +26,29 @@ const OfferCartProducts = lazy(() => import('../pages/UserHome/OfferCartProducts
 const EasyCheckout = lazy(() => import('../pages/UserHome/EasyCheckout'));
 
 const UserHomeRoutes = () => {
+    const { dispatch } = useContext(useData);
     const location = useLocation();
-    console.log('Current path ' + location.pathname);
-
+    const payload = {
+        specificationRef: useRef(null),
+        descriptionRef: useRef(null),
+        questionRef: useRef(null),
+        ratingRef: useRef(null)
+    };
     const [userEntryPageState, setUserEntryState] = useState(0);
 
     const handleUserEntryPage = useCallback((newEntryPageNo) => {
-        setUserEntryState(newEntryPageNo);
+        setUserEntryState(prevState => {
+            if (prevState !== newEntryPageNo) {
+                return newEntryPageNo;
+            }
+            return prevState;
+        });
     }, []);
 
-
+    useEffect(() => {
+        console.log('Current path ' + location.pathname);
+        dispatch({ type: "set_view_product_scroll_ref", payload: payload });
+    }, []);
 
 
     const renderUserEntryPage = () => {
@@ -77,8 +91,8 @@ const UserHomeRoutes = () => {
                         <Route path='/offers' element={<Offers />} />
                         <Route path='/offers/:title' element={<OfferCartProducts />} />
                         <Route path='/easy-checkout' element={<EasyCheckout />} />
-                        <Route path='/user-orders-page' element={<OrdersPage />}/>
-                        <Route path='/user-orders-payment-page' element={<UserOrderPaymentPage />}/>
+                        <Route path='/user-orders-page' element={<OrdersPage />} />
+                        <Route path='/user-orders-payment-page' element={<UserOrderPaymentPage />} />
 
                         <Route path="*" element={<RandomErrorPage />} />
                     </Routes>

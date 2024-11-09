@@ -26,7 +26,6 @@ const ViewProduct = ({ setUserEntryState }) => {
     const location = useLocation();
     const { category, 'product-id': product_id } = useParams();
 
-
     const [viewProduct, setViewProduct] = useState({
         images: [],
         productInformation: {},
@@ -119,15 +118,26 @@ const ViewProduct = ({ setUserEntryState }) => {
         }
     }, [viewProduct, product_id, location.pathname, dispatch]);
 
+    useEffect(() => {
+        if (dataState?.ScrollRef && dataState.ScrollRef.current) {
+            // console.log('ScrollRef is valid, attempting to scroll.');
+            setTimeout(() => {
+                dataState.ScrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 1);
+            dispatch({ type: 'set_scroll_ref', payload: null });
+        }
+    }, [dataState.ScrollRef]);
 
-    const specificationRef = useRef(null);
-    const descriptionRef = useRef(null);
-    const questionRef = useRef(null);
-    const ratingRef = useRef(null);
+
 
     const handleScrollToDescription = (state, selectedRef) => {
         setCurrSectionState(state);
-        selectedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        dispatch({
+            type: 'set_view_product_scroll_ref', payload: {
+                ...dataState.ViewProductScrollRef,
+                selectedRef: selectedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+        });
     };
 
     const getPrices = useCallback((product_id) => {
@@ -166,7 +176,7 @@ const ViewProduct = ({ setUserEntryState }) => {
             {/* ----------------------------------- upper_image_and_feature ------------------------------ */}
             <section className={styles.upper_image_and_feature}>
                 <UpperImage viewProduct={viewProduct} product_id={product_id} />
-                <UpperFeature viewProduct={viewProduct} product_id={product_id} price={viewProduct.product_prices.price} image={viewProduct.images[0]} category={category} product_name={viewProduct.productInformation.product_name}/>
+                <UpperFeature viewProduct={viewProduct} product_id={product_id} price={viewProduct.product_prices.price} image={viewProduct.images[0]} category={category} product_name={viewProduct.productInformation.product_name} />
             </section>
 
 
@@ -186,25 +196,25 @@ const ViewProduct = ({ setUserEntryState }) => {
                         <div className={styles.section_buttons_names}>
                             <span
                                 className={currSectionState === 1 ? styles.section_buttons_names_active : styles.section_buttons_names_span}
-                                onClick={() => handleScrollToDescription(1, specificationRef)}
+                                onClick={() => handleScrollToDescription(1, dataState.ViewProductScrollRef.specificationRef)}
                             >
                                 Specification
                             </span>
                             <span
                                 className={currSectionState === 2 ? styles.section_buttons_names_active : styles.section_buttons_names_span}
-                                onClick={() => handleScrollToDescription(2, descriptionRef)}
+                                onClick={() => handleScrollToDescription(2, dataState.ViewProductScrollRef.descriptionRef)}
                             >
                                 Description
                             </span>
                             <span
                                 className={currSectionState === 3 ? styles.section_buttons_names_active : styles.section_buttons_names_span}
-                                onClick={() => handleScrollToDescription(3, questionRef)}
+                                onClick={() => handleScrollToDescription(3, dataState.ViewProductScrollRef.questionRef)}
                             >
                                 Questions
                             </span>
                             <span
                                 className={currSectionState === 4 ? styles.section_buttons_names_active : styles.section_buttons_names_span}
-                                onClick={() => handleScrollToDescription(4, ratingRef)}
+                                onClick={() => handleScrollToDescription(4, dataState.ViewProductScrollRef.ratingRef)}
                             >
                                 Ratings
                             </span>
@@ -212,7 +222,7 @@ const ViewProduct = ({ setUserEntryState }) => {
                         <div className={styles.hr}></div>
                     </div>
 
-                    <div className={styles.main_section_contents} ref={specificationRef}>
+                    <div className={styles.main_section_contents} ref={dataState.ViewProductScrollRef.specificationRef}>
                         <div className={styles.section_name}>
                             <span>Specification</span>
                             <div className={styles.section_hr}></div>
@@ -254,7 +264,7 @@ const ViewProduct = ({ setUserEntryState }) => {
             {/* ---------------------------------------- Product Description Starts -------------------------------------------- */}
             {
                 viewProduct.description && viewProduct.description.length !== 0 && (
-                    <section className={styles.ProductMainDescription} ref={descriptionRef}>
+                    <section className={styles.ProductMainDescription} ref={dataState.ViewProductScrollRef.descriptionRef}>
                         <ProductDescription Descriptions={viewProduct.description} />
                     </section>
                 )
@@ -264,8 +274,8 @@ const ViewProduct = ({ setUserEntryState }) => {
 
             {/* ---------------------------------------- Question && Ratings -------------------------------------- */}
             <section className={styles.QuestionAndRating}>
-                <UserQuestions setUserEntryState={setUserEntryState} askedQuestion={viewProduct.product_questions} QuestionAndReviewElement={QuestionAndReviewElement} questionRef={questionRef} />
-                <UserRating setUserEntryState={setUserEntryState} ratings={viewProduct.product_ratings} QuestionAndReviewElement={QuestionAndReviewElement} ratingRef={ratingRef} />
+                <UserQuestions setUserEntryState={setUserEntryState} askedQuestion={viewProduct.product_questions} QuestionAndReviewElement={QuestionAndReviewElement} questionRef={dataState.ViewProductScrollRef.questionRef} />
+                <UserRating setUserEntryState={setUserEntryState} ratings={viewProduct.product_ratings} QuestionAndReviewElement={QuestionAndReviewElement} ratingRef={dataState.ViewProductScrollRef.ratingRef} />
             </section>
         </section>
     );

@@ -84,17 +84,6 @@ const SelectHomeProducts = () => {
       setProductPosition(initialProductPosition);
       setSerial_no_State(maxSerialNumbers);
       setProductsData(dataState.Production_Page.TableRows);
-      dispatch({
-        type: 'set_search_function',
-        payload: {
-          function: SearchSelectHomeProducts,
-          params: {
-            p_1: dataState.Production_Page.TableRows,
-            p_2: setProductsData,
-            p_3: productsData
-          }
-        }
-      })
 
       // console.log(initialProductPosition);
       // console.log(maxSerialNumbers);
@@ -145,7 +134,8 @@ const SelectHomeProducts = () => {
     SearchSelectHomeProducts(
       search,
       dataState.Production_Page.TableRows,
-      setProductsData
+      setProductsData,
+      GetSerialNo
     );
   };
 
@@ -199,13 +189,13 @@ const SelectHomeProducts = () => {
     return product ? product.serial_no : 0;
   };
 
-  const optionSelected = (productId, position) => {
-    return productPosition[position].filter(
-      (item) => productId === item.product_id && item.position === position
-    ).length > 0
-      ? true
-      : false;
-  };
+  // const optionSelected = (productId, position) => {
+  //   return productPosition[position].filter(
+  //     (item) => productId === item.product_id && item.position === position
+  //   ).length > 0
+  //     ? true
+  //     : false;
+  // };
 
 
   // ****************** handlePositionChange ********************
@@ -261,6 +251,20 @@ const SelectHomeProducts = () => {
     }
 
   };
+
+  useEffect(() => {
+    dispatch({
+      type: 'set_search_function',
+      payload: {
+        function: SearchSelectHomeProducts,
+        params: {
+          1: dataState.Production_Page.TableRows,
+          2: setProductsData,
+          3: GetSerialNo
+        }
+      }
+    })
+  }, [dataState.Production_Page.TableRows, GetSerialNo]);
 
   return (
     <div>

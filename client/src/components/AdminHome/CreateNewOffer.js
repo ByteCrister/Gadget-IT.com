@@ -331,4 +331,4 @@ const CreateNewOffer = () => {
     )
 }
 
-export default CreateNewOffer
+export default React.memo(CreateNewOffer);

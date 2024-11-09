@@ -8,8 +8,6 @@ module.exports = {
 
     newUserEntryModel: (body, callback) => {
         const { first_name, last_name, email, password } = body;
-        console.log('from newUserEntryModel - ' + body);
-
         const insertUserQuery = 'INSERT INTO user (first_name, last_name, email, password) VALUES (?, ?, ?, ?)';
         db.query(insertUserQuery, [first_name, last_name, email, password], callback)
     },
@@ -39,5 +37,11 @@ module.exports = {
         db.query('update admin set admin_email = ?, admin_password = ? where admin_no = 1', [email, password], callback);
         // db.query('INSERT INTO admin (admin_email, admin_password) VALUES (?, ?)', [email, password], callback);
     },
+
+    setNewAdminNotification: (payload, callback) => {
+        db.query('insert into notification_admin (type, sender_type, page, viewed) values (?, ?, ?, ?) ;',
+            [payload.type, payload.sender_type, payload.page, 0],
+            callback);
+    }
 
 }

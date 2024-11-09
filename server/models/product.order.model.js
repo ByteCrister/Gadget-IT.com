@@ -43,5 +43,11 @@ module.exports = {
     },
     deleteOrderProductQuery: (order_id, callback) => {
         db.query('delete from user_order_products where order_id = ? ;', [order_id], callback);
+    },
+    postUserOrderNotification: (body, callback) => {
+        db.query('insert into notification_user (user_id, message_token, type) values (?, ?, ?) ;',
+            [body.user_id, body.order_id, body.status === 'Canceled' ? 'order-canceled' : 'order', 0],
+            callback
+        );
     }
 }

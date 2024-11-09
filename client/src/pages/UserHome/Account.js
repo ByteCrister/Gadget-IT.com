@@ -11,9 +11,10 @@ import MyOrders from '../../components/UserHome/Account/MyOrders';
 import Address from '../../components/UserHome/Account/Address';
 import ChangePassword from '../../components/UserHome/Account/ChangePassword';
 import Report from '../../components/UserHome/Account/Report';
+import UserMessages from '../../components/UserHome/Account/UserMessages';
 
 const Account = () => {
-    const { dataState } = useContext(useData);
+    const { dataState, dispatch } = useContext(useData);
     const navigate = useNavigate();
     const [ButtonState, setButtonState] = useState(0);
     const [UserInformation, setUserInformation] = useState({});
@@ -28,10 +29,11 @@ const Account = () => {
                         Authorization: dataState.token
                     }
                 });
-                console.log(res.data);
+                // console.log(res.data.User_Notifications);
                 setOrders(await res.data.Orders);
                 setUserInformation((prev) => ({ ...prev, f_name: res.data.user.first_name, l_name: res.data.user.last_name, email: res.data.user.email }));
                 setUserAddress((prev) => ({ ...prev, ...res.data.address }));
+                dispatch({ type: 'set_user_notifications', payload: res.data.User_Notifications });
             } catch (error) {
                 window.localStorage.removeItem('token');
                 navigate('/');
@@ -46,10 +48,11 @@ const Account = () => {
 
     const RenderPages = useCallback(() => {
         switch (ButtonState) {
-            case 1: return <MyOrders Orders={Orders}/>
-            case 2: return <Report />
-            case 3: return <Address AddressInfo={UserAddress} setUserAddress={setUserAddress} />
-            case 4: return <ChangePassword />
+            case 1: return <UserMessages Orders={Orders} />
+            case 2: return <MyOrders Orders={Orders} />
+            case 3: return <Report />
+            case 4: return <Address AddressInfo={UserAddress} setUserAddress={setUserAddress} />
+            case 5: return <ChangePassword />
             default: return <PersonalInformation UserInformation={UserInformation} />
         }
     }, [ButtonState, UserAddress, UserInformation]);

@@ -1,6 +1,26 @@
+require('dotenv').config();
 const productSettingModel = require("../models/product.setting.model");
 const productsModels = require("../models/products.models");
 const userHomeContentsModel = require("../models/user.home.contents.model");
+
+const passport = require('passport');
+const authenticateUser = (req, res, next, callback) => {
+    passport.authenticate('jwt', { session: false }, (err, user, info) => {
+        if (err) {
+            return res.status(500).json({ message: 'An error occurred during authentication' });
+        }
+        if (!user) {
+            if (info && info.name === 'TokenExpiredError') {
+                return res.status(401).json({ message: 'Token has expired. Please log in again.' });
+            } else if (info && info.name === 'JsonWebTokenError') {
+                return res.status(401).json({ message: 'Invalid token. Authentication failed.' });
+            } else {
+                return res.status(401).json({ message: 'Unauthorized. Token is missing or invalid.' });
+            }
+        }
+        callback(user);
+    })(req, res, next);
+};
 
 const performQuery = async (queryFunction, ...params) => {
     return await new Promise((resolve, reject) => {
