@@ -33,9 +33,20 @@ const UserQuestions = () => {
             setSearchQuestion(updatedQuestions);
             setQuestions(updatedQuestions);
             setFilteredProducts(updatedQuestions);
+            dispatch({
+                type: 'set_search_function',
+                payload: {
+                    function: SearchQuestions,
+                    params: {
+                        p_1: SearchQuestion,
+                        p_2: setQuestions
+                    }
+                }
+            });
         }
         // console.log(dataState.Production_Page.TableFullRows);
     }, [dataState.Support_Page.questions, dataState.Production_Page]);
+
 
 
     const handleSearch = (e) => {
@@ -65,7 +76,13 @@ const UserQuestions = () => {
         setAnswer('');
 
         try {
-            await axios.put('http://localhost:7000/update/answer', { answer: answer, question_no: questionNo });
+            await axios.put('http://localhost:7000/update/answer', {
+                answer: answer,
+                question_no: questionNo,
+                user_id: currentQuestion.user_id,
+                category: currentQuestion.main_category,
+                product_id: currentQuestion.product_id
+            });
 
         } catch (error) {
             console.log(error);
@@ -77,18 +94,17 @@ const UserQuestions = () => {
     }
 
     const handleOption = (e) => {
+        let Updated = [...SearchQuestion];
         if (e.target.value === 'user_name') {
-            setSearchQuestion((prev) => prev.sort((a, b) => String(a.first_name + a.last_name).toLowerCase().localeCompare(String(b.first_name) + String(b.last_name).toLowerCase())));
+            Updated = Updated.sort((a, b) => String(a.first_name + a.last_name).toLowerCase().localeCompare(String(b.first_name) + String(b.last_name).toLowerCase()));
         } else if (e.target.value === 'question_date') {
-            setSearchQuestion((prev) => prev.sort((a, b) => new Date(a.question_date) - new Date(b.question_date)));
-        } else if (e.target.value.length !== 0) {
-            setSearchQuestion((prev) => prev.sort((a, b) => a[e.target.value] - b[e.target.value]));
-        } else {
-            const updatedQuestions = dataState.Support_Page.questions.map((question) => {
-                return { ...question, main_category: findCategory(question.product_id) };
-            });
-            setSearchQuestion(updatedQuestions);
+            Updated = Updated.sort((a, b) => new Date(a.question_date) - new Date(b.question_date));
+        } else if (e.target.value === 'product_id') {
+            Updated = Updated.sort((a, b) => Number(a.product_id) - Number(b.product_id));
+        } else if (e.target.value === 'user_id') {
+            Updated = Updated.sort((a, b) => Number(a.user_id) - Number(b.user_id));
         }
+        setQuestions(Updated);
     };
 
     return (
@@ -174,4 +190,4 @@ const UserQuestions = () => {
     )
 }
 
-export default UserQuestions;
+export default React.memo(UserQuestions);

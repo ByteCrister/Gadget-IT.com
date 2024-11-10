@@ -1,3 +1,4 @@
+const { type } = require('os');
 const db = require('../config/DB');
 
 const toBangladeshTime = (date) => {
@@ -14,6 +15,21 @@ module.exports = {
     },
     productSettingModel_home_product_select: (callback) => {
         db.query('select * from home_product_select ;', callback);
+    },
+    deletePositionQuery: (product_id, callback) => {
+        if (typeof product_id === 'number') {
+            db.query('delete from home_product_select where product_id = ? ;', [product_id], callback);
+        }
+    },
+    insertPositionQuery: (product, callback) => {
+        if (typeof product === 'object') {
+            db.query('insert into home_product_select (product_id, main_category, position, serial_no) values (?, ?, ?, ?) ;', [product.product_id, product.main_category, product.position, product.serial_no], callback);
+        }
+    },
+    updatePositionQuery: (product, callback) => {
+        if (typeof product === 'object') {
+            db.query('update home_product_select set position = ?, serial_no = ? where product_id = ? ;', [product.position, product.serial_no, product.product_id], callback);
+        }
     },
     productSettingModel_home_description: (callback) => {
         db.query('select * from home_description ;', callback);
@@ -40,24 +56,27 @@ module.exports = {
         db.query(`delete from advertisement_img where img_no = ?;`, [img_no], callback);
     },
     deleteFeaturedImages: (icon_no, callback) => {
-        db.query(`delete from featured_category_icon where icon_no = ?;`, [icon_no], callback);
+        if (typeof icon_no === 'number') {
+            db.query(`delete from featured_category_icon where icon_no = ?;`, [icon_no], callback);
+        }
     },
     updateFeaturedImages: (item, callback) => {
-        db.query('update featured_category_icon set icon = ?, serial_no = ?, main_category = ? where icon_no = ? ;',
-            [item.icon, item.serial_no, item.main_category, item.icon_no],
-            callback
-        );
+        if (typeof item === 'object') {
+            db.query('update featured_category_icon set icon = ?, serial_no = ?, main_category = ? where icon_no = ? ;',
+                [item.icon, item.serial_no, item.main_category, item.icon_no],
+                callback
+            );
+        }
     },
     addNewFeaturedImages: (item, callback) => {
-        db.query(`
+        if (typeof item === 'object') {
+            db.query(`
             insert into featured_category_icon (icon, serial_no, main_category)
             values (?, ?, ?) ;`,
-            [item.icon, item.serial_no, item.main_category],
-            callback
-        );
-    },
-    truncateTable: (callback) => {
-        db.query('truncate table home_product_select', callback);
+                [item.icon, item.serial_no, item.main_category],
+                callback
+            );
+        }
     },
     AddUpdatedSelection: (item, callback) => {
         db.query(`

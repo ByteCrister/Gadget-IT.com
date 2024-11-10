@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { LuCable } from "react-icons/lu";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -11,8 +11,18 @@ import { AiFillWarning } from "react-icons/ai";
 import { IoSettingsSharp } from "react-icons/io5";
 
 import styles from '../../styles/AdminHome/admin.home.module.css';
+import { useData } from '../../context/useData';
 
 const LeftSide = ({ page, handlePage }) => {
+    const { dataState } = useContext(useData);
+    const handleSearch = (e) => {
+        if (dataState?.Search_Function) {
+            dataState.Search_Function.function(e.target.value,
+                ...Object.values(dataState.Search_Function.params)
+            );
+        }
+    };
+
     return (
         <>
             <div className={styles.log_name}>
@@ -22,7 +32,7 @@ const LeftSide = ({ page, handlePage }) => {
 
             <div className={styles.search_bar}>
                 <span className={styles.search_logo}><BiSearchAlt2 /></span>
-                <input type='text' name='search' id={styles.search} placeholder='Search...'></input>
+                <input type='text' onChange={handleSearch} name='search' id={styles.search} placeholder='Search...'></input>
             </div>
 
             <div className={styles.button}>

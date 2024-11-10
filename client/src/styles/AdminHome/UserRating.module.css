@@ -158,3 +158,43 @@ tbody td {
 .RatingInfo button:hover{
     background-color: #6e6e6e;
 }
+
+/* --------------- pre order --------------- */
+.pre-order-page-div{
+    width: 80px;
+}
+
+.pre-order-page-div img{
+    width: 100%;
+}
+
+.send-pre-order-form{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.send-pre-order-form input{
+    border: 1px solid gray;
+    outline: none;
+    border-radius: 5px;
+    padding: 2px 4px;
+}
+
+.send-pre-order-form button{
+    border: none;
+    background-color: #5f5f5f;
+    color: white;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+
+.Pre-order-page-span-head{
+    font-family: "Roboto", sans-serif;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 500;
+    color: #ff6363;
+}

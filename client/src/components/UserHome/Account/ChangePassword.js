@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { MdRemoveRedEye } from "react-icons/md";
 import { IoEyeOffSharp } from "react-icons/io5";
-import styles from '../../../styles/HomePageStyles/ChangePassword.module.css';
 import axios from 'axios';
+
+import styles from '../../../styles/HomePageStyles/ChangePassword.module.css';
 import { useData } from '../../../context/useData';
 
 const ChangePassword = () => {

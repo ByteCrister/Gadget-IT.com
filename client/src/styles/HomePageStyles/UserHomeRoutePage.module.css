@@ -1,0 +1,10 @@
+.AllRouteDiv{
+    padding-top: 150px;
+}
+
+
+@media (max-width: 850px) {
+    .AllRouteDiv{
+        padding-top: 200px;
+    }
+}

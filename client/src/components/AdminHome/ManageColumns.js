@@ -54,4 +54,4 @@ const ManageColumns = React.memo(() => {
 }
 )
 
-export default ManageColumns;
+export default React.memo(ManageColumns);

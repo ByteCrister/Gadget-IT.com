@@ -1,0 +1,261 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.main-checkout-container {
+    width: 100%;
+    padding: 0px 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* section 1 */
+.checkout-left-container{
+    width: 50%;
+    padding-left: 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pay-button-section{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pay-button-section > span{
+    font-family: "Roboto", serif;
+    font-size: 20px;
+}
+
+.pay-buttons{
+    display: flex;
+    width: 100%;
+    max-width: 350px;
+    justify-content: space-between;
+    padding: 5px;
+    border-radius: 5px;
+    gap: 15px;
+    align-items: center;
+    border: 1px solid #e1e1e1;
+    background-color: #f9f9f9;
+}
+
+.active-payBtn, .default-payBtn{
+    border: none;
+    outline: none;
+    font-family: "Roboto", serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(46, 44, 44);
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.default-payBtn{
+    background-color: #f9f9f9;
+}
+
+.active-payBtn{
+    background-color: #ffffff;
+}
+
+.payBtn-icon{
+    color: #51dc85;
+}
+
+.checkout-main-form-container{
+    padding: 20px 0px;
+}
+
+.checkout-form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items:flex-start;
+}
+
+.form-span{
+    font-family: "Roboto", serif;
+    font-size: 20px;
+}
+
+.form-div-container{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.form-div-container label{
+    font-family: "Roboto", serif;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.form-div-container label sup{
+    color: red;
+}
+
+.form-div-container input, .form-div-container textarea{
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-family: "Roboto", serif;
+    font-size: 15px;
+    border: 1px solid #ddd8ea;
+    outline: none;
+    font-weight: 400;
+}
+
+.form-div-container textarea{
+    resize: none;
+}
+
+.checkout-btn {
+    font-family: "Roboto", serif;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #f27f20;
+    border: none;
+    outline: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* section 2 */
+.checkout-right-container {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    gap: 5px;
+    padding: 10px;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.checkout-right-inner-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.checkout-right-inner-span {
+    font-family: "Roboto", serif;
+    font-size: 20px;
+
+}
+
+.checkout-product-orders{
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-checkout-image-name-link{
+    text-decoration: none;
+}
+
+.order-checkout-image-name-link:hover .order-checkout-image-name > span{
+        text-decoration: underline;
+}
+
+.order-checkout-image-name{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.order-checkout-image-name > div{
+    width: 50px;
+}
+
+.order-checkout-image-name > div > img{
+    width: 100%;
+}
+
+.order-checkout-image-name > span{
+    font-family: "Roboto", serif;
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: 500;
+    color: #f27f20;
+}
+
+.checkout-inc-dec-div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+}
+
+.checkout-inc-dec{
+    display: flex;
+    border: 1px solid #cccccc;
+    align-items: center;
+    border-radius: 5px;
+    font-family: "Roboto", serif;
+    font-size: 16px;
+    color: #2b2b2b;
+}
+
+.checkout-inc-dec > button{
+    padding: 5px 10px;
+    background-color: #f6f6f6;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.checkout-inc-dec > span{
+    background-color: #ffffff;
+    padding: 5px 10px;
+}
+
+.checkout-span-price{
+    font-family: "Roboto", serif;
+    font-size: 15px;
+    color: #f27f20;
+}
+
+.checkout-price-main-section{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.checkout-hr-div{
+    height: 1px;
+    width: 100%;
+    background-color: #cccccc;
+}
+
+.checkout-sub-total, .checkout-total{
+    display: flex;
+    justify-content: space-between;
+    font-family: "Roboto", serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #302e2e;
+}
+
+@media (max-width: 650px){
+    .main-checkout-container{
+        padding-top: 80px;
+        flex-direction: column;
+    }
+
+    .checkout-left-container, .checkout-right-container{
+        width: 100%;
+        padding: 0px;
+    }
+
+    .checkout-right-container{
+        margin-bottom: 10px;
+        background-color: white;
+    }
+}

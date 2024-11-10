@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.notification-main-outer-container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 5px;
+    padding-top: 20px;
+    width: 100%;
+}
+
+.notification-main-head{
+    font-family: "Roboto", serif;
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.notification-full-main-section{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+    width: 100%;
+}
+
+.user-message-main-section{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 10px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 10px 1px rgb(232, 232, 232);
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: ease-in-out 0.2s;
+}
+
+.user-message-main-section:hover{
+    box-shadow: 0px 0px 10px 2px rgb(205, 205, 205);
+
+}
+
+.main-message-span{
+    font-family: "Roboto", serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #ff9327;
+}
+
+.time-ago-span{
+    font-family: "Roboto", serif;
+    font-size: 13px;
+    color: rgb(69, 69, 69);
+}
+
+.message-icon-active {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #ff9327;
+    border-radius: 50%;
+    top: 0px;
+    right: 99%;
+    z-index: 100;
+    transition: ease-in-out 0.2s;
+    animation: pulse 2s linear infinite;
+}
+
+.message-icon-inactive {
+    display: none;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(0.5);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+}
+
+.no-message-div{
+    height: 50vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Roboto", serif;
+    font-size: 25px;
+    font-weight: 400;
+}
+
+@media (max-width: 650px){
+    .notification-main-outer-container{
+        padding-top: 150px;
+    }
+}

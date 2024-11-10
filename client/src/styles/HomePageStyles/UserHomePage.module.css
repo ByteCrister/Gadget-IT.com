@@ -5,3 +5,9 @@
     width: 100%;
     gap: 5px;
 }
+
+/* @media (max-width: 850px){
+    .userHomeContainer{
+        top: 100px;
+    }
+} */

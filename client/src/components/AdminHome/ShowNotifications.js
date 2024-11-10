@@ -1,25 +1,54 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from '../../styles/AdminHome/show.notification.module.css';
 import { AiOutlineClose } from 'react-icons/ai';
+import { useData } from '../../context/useData';
+import axios from 'axios';
 
 const ShowNotifications = ({ handleUpper, handlePage }) => {
-  const initialNotifications = [
-    { id: 5, time: '2024-07-10T10:00:00Z', sender: 'Reports', content: 'New report available', type: 'report' },
-    { id: 4, time: '2024-07-10T11:00:00Z', sender: 'Sales', content: 'New order received', type: 'order' },
-    { id: 7, time: '2024-07-10T12:00:00Z', sender: 'Support', content: 'New support message', type: 'support' },
-    { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
-    { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
-    { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
-    { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
-    { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
-    { id: 6, time: '2024-07-10T13:00:00Z', sender: 'User', content: 'New user registered', type: 'user' },
-  ];
+  const { dataState, dispatch } = useContext(useData);
+  const [AdminNotifications, setAdminNotifications] = useState([]);
+  useEffect(() => {
+    console.log('Messages render...');
+    if (dataState?.Outer_Page?.notification_admin) {
+      setAdminNotifications(dataState.Outer_Page.notification_admin);
+    }
+  }, [dataState?.Outer_Page?.notification_admin]);
 
-  const [notifications, setNotifications] = useState(initialNotifications);
+  const UpdateViewApi = async (notification_no) => {
+    try {
+      await axios.patch(`http://localhost:7000/toggle-admin-view/${notification_no}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const handleDelete = (id) => {
-    const updatedNotifications = notifications.filter(notification => notification.id !== id);
-    setNotifications(updatedNotifications);
+  const handleMessageDivClick = async (notification_no) => {
+    const Updated = dataState?.Outer_Page?.notification_admin?.map((item) => {
+      return item.notification_no === notification_no ? { ...item, viewed: 1 }
+        : item;
+    });
+    dispatch({ type: 'set_new_notification_admin', payload: await Updated });
+    await UpdateViewApi(notification_no);
+  };
+
+
+  const handleDeleteApi = async (notification_no) => {
+    try {
+      await axios.delete(`http://localhost:7000/delete-admin-view/${notification_no}`);
+      await axios.patch(`http://localhost:7000/update-admin-count/${AdminNotifications.length - 1}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async (notification_no) => {
+    console.log('Delete notification : ' + notification_no);
+    const Updated = AdminNotifications.filter((item) => {
+      return item.notification_no !== notification_no;
+    });
+    await handleDeleteApi(notification_no);
+    dispatch({ type: 'set_new_notification_admin', payload: Updated });
+    dispatch({ type: 'set_new_admin_count', payload: AdminNotifications.length - 1 });
   };
 
   const timeAgo = (time) => {
@@ -41,15 +70,7 @@ const ShowNotifications = ({ handleUpper, handlePage }) => {
     }
   };
 
-  const getTypeLabel = (type) => {
-    switch (type) {
-      case 'report': return 'New Report';
-      case 'order': return 'New Order';
-      case 'support': return 'Support Message';
-      case 'user': return 'New User';
-      default: return 'Notification';
-    }
-  };
+
 
   return (
     <div className={styles.mainOuter}>
@@ -57,24 +78,27 @@ const ShowNotifications = ({ handleUpper, handlePage }) => {
         <AiOutlineClose style={{ fontSize: '24px', color: 'red' }} />
       </button>
       <div className={styles.notificationContainer}>
-      {notifications.map((notification) => (
-        <div key={notification.id} className={`${styles.notificationBox} ${styles.fadeIn}`} onClick={()=>{ handlePage(notification.id) }}>
-          <div className={styles.notificationHeader}>
-            <span className={styles.notificationTime}>{timeAgo(notification.time)}</span>
-            <span className={styles.senderName}>{notification.sender}</span>
-            <button className={styles.deleteButton} onClick={() => handleDelete(notification.id)}>
-              <AiOutlineClose />
-            </button>
-          </div>
-          <div className={styles.notificationContent}>
-            <span className={styles.notificationType}>{getTypeLabel(notification.type)}</span>
-            <p>{notification.content}</p>
-          </div>
-        </div>
-      ))}
-    </div>
+        {AdminNotifications &&
+          AdminNotifications.length > 0 &&
+          AdminNotifications.map((notification) => (
+            <div key={notification.notification_no} className={`${styles.notificationBox} ${styles.fadeIn}`} onClick={() => { handlePage(notification.page); handleMessageDivClick(notification.notification_no) }}>
+              <div className={notification.viewed === 0 ? styles['message-new-active'] : styles['message-new-inactive']}></div>
+              <div className={styles.notificationHeader}>
+                <span className={styles.notificationTime}>{timeAgo(notification.notification_date)}</span>
+                <span className={styles.notificationType}>{notification.type}</span>
+                <button className={styles.deleteButton} onClick={() => handleDelete(notification.notification_no)}>
+                  <AiOutlineClose />
+                </button>
+              </div>
+              <div className={styles.notificationContent}>
+                <span className={styles.senderName}>{notification.sender_type}</span>
+                <span>{new Date(notification.notification_date).toLocaleString()}</span>
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }
 
-export default ShowNotifications;
+export default React.memo(ShowNotifications);

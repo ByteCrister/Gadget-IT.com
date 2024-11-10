@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.user-report-main-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.user-report-head-span {
+    font-family: "Roboto", serif;
+    font-size: 25px;
+    font-weight: 500;
+    color: rgb(52, 49, 49);
+}
+
+.user-report-inner-container {
+    border-radius: 5px;
+    padding: 10px 15px;
+    box-shadow: 0px 0px 15px 1px rgb(245, 245, 245);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.user-report-inner-main-select {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.user-report-inner-main-select>div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: "Roboto", serif;
+    font-size: 15px;
+}
+
+.user-report-inner-main-select>div span {
+    font-family: "Roboto", serif;
+    font-size: 20px;
+    color: rgb(68, 64, 64);
+    font-weight: 500;
+}
+
+.user-report-inner-main-select>div select {
+    font-family: "Roboto", serif;
+    font-size: 15px;
+    color: rgb(68, 64, 64);
+    font-weight: 500;
+    padding: 10px 15px;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+.user-report-inner-selected-reports{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.user-report-inner-selected-reports > div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-radius: 10px;
+    background-color: rgb(224, 228, 233);
+    padding: 10px 15px;
+}
+
+.user-report-inner-selected-reports > div span{
+    font-family: "Roboto", serif;
+    font-weight: 500;
+}
+.user-report-cross{
+    color: rgb(237, 120, 120);
+    font-weight: 500;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.user-report-inner-textArea textarea{
+    font-family: "Roboto", serif;
+    resize: none;
+    width: 100%;
+    border: 1px solid rgb(221, 221, 221);
+    outline: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: rgb(33, 31, 31);
+    font-weight: 500;
+}
+
+.user-report-submit-btn{
+    font-family: "Roboto", serif;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: #f27f20;
+    color: #ffffff;
+    cursor: pointer;
+    width: 200px;
+}
+
+.report-thanks{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+.report-thanks span{
+    font-family: "Roboto", serif;
+    font-size: 20px;
+    color: #f27f20;
+    font-weight: 500;
+}
+
+@media (max-width: 650px){
+    .user-report-main-container{
+        padding-top: 170px;
+    }
+}

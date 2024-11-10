@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.user-orders-main-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+
+}
+
+.single-order-section{
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 0px 10px 1px rgb(245, 243, 243);
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.single-order-upper-div{
+    display: flex;
+    justify-content: space-between;
+    background-color: #f4f5f7;
+    border-bottom: 1px solid #d3d3d3;
+    padding: 20px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.order-upper-left-div{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.order-id-span{
+    font-family: "Roboto", serif;
+    color: #f27f20;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.order-place-date-span{
+    font-family: "Roboto", serif;
+    font-size: 14px;
+    color: #575757;
+}
+
+.order-price-span{
+    font-family: "Roboto", serif;
+    font-size: 18px;
+    color: #313131;
+    font-weight: 500;
+}
+
+.order-status-span{
+    background-color: #e8e8e8;
+    color: #313131;
+    font-family: "Roboto", serif;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.order-upper-right-div button{
+    border: 1px solid #606060;
+    border-radius: 50%;
+    outline: none;
+    display: flex;
+    font-size: 25px;
+    align-items: center;
+    padding: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #606060;
+}
+
+.order-upper-right-div{
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+}
+
+.single-order-product-main-div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.single-order-product-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    box-shadow: 0px 0px 5px 1px rgb(242, 242, 242);
+}
+
+.single-order-product-section-img-main-div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+}
+
+.single-order-product-section-img-div{
+    width: 80px;
+}
+
+.single-order-product-section-img-div img{
+    width: 100%;
+}
+
+.single-order-product-section-name-span{
+    font-family: "Roboto", serif;
+    font-size: 16px;
+    color: #313131;
+    font-weight: 500;
+}
+
+.single-order-product-total-price{
+    font-family: "Roboto", serif;
+    font-size: 16px;
+    color: #313131;
+    font-weight: 500;
+}
+
+.order-status-main-container{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.order-status-pool-default, .order-status-pool-active{
+    position: relative;
+}
+
+.order-status-pool-default{
+    opacity: 0.3;
+}
+
+.order-status-pool-text{
+    font-family: "Roboto", serif;
+    font-size: 18px;
+    color: #f27f20;
+    font-weight: 500;
+}
+
+.order-status-pool-check-mark{
+    position: absolute;
+    /* right: 5px; */
+    /* top: 5px; */
+    font-size: 30px;
+    color: #606060;
+}
+
+.order-detail-lower-main-div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 15px;
+}
+
+.order-address-div-span{
+    font-family: "Roboto", serif;
+    font-size: 18px;
+    color: #303030;
+    font-weight: 500;
+    padding: 10px;
+}
+
+.order-detail-total-div{
+    padding: 20px;
+}
+
+.order-detail-total-div > div{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: end;
+    background-color:#f4f4f4;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-family: "Roboto", serif;
+    font-size: 15px;
+    color: #2b2b2b;
+    font-weight: 500;
+}
+
+.order-detail-lower-div{
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-detail-lower-div > div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
+}
+
+.order-detail-lower-div > div span, .order-detail-lower-div > span{
+    font-family: "Roboto", serif;
+    font-size: 15px;
+    color: #4f4f4f;
+    font-weight: 500;
+}

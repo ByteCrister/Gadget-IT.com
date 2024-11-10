@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from '../styles/HomePageStyles/Footer.module.css';
+import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok, FaLinkedinIn } from 'react-icons/fa';
 import { FaPhoneAlt } from "react-icons/fa";
 import { HiLocationMarker } from "react-icons/hi";
-import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok, FaLinkedinIn } from 'react-icons/fa';
+import styles from '../styles/HomePageStyles/Footer.module.css';
 
 
 const Footer = () => {

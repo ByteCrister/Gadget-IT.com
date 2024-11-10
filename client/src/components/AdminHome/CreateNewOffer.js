@@ -50,6 +50,17 @@ const CreateNewOffer = () => {
                 MainOfferCarts: [...dataState.Setting_Page.offer_carts],
                 filteredOfferCarts: [...dataState.Setting_Page.offer_carts]
             });
+            dispatch({
+                type: 'set_search_function',
+                payload: {
+                    function: SearchOffers,
+                    params: {
+                        p_1: offerCarts,
+                        p_2: dataState.Setting_Page.offer_carts,
+                        p_3: setOfferCarts
+                    }
+                }
+            })
         }
 
     }, [dataState.Setting_Page]);
@@ -320,4 +331,4 @@ const CreateNewOffer = () => {
     )
 }
 
-export default CreateNewOffer
+export default React.memo(CreateNewOffer);

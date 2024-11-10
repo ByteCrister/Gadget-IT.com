@@ -32,8 +32,8 @@ const ProductCart = ({ product }) => {
                 </div>
             </Link>
             <div className={styles['buttons']}>
-                <Link to={`/easy-checkout`}><button className={styles['buy-now']}>Buy Now</button></Link>
-                <button onClick={() => dispatch({ type: 'add_product_to_cart', payload: product.product_id })} className={styles['add-to-cart']}>Add to Cart</button>
+                <Link to={{ pathname: '/easy-checkout' }} state={{ source: 'product', product_id: Number(product.product_id), price: price, quantity: 1, image: product.image, main_category: product.main_category, product_name: product.product_name }} ><button className={styles['buy-now']}>Buy Now</button></Link>
+                <button onClick={() => dispatch({ type: 'add_product_to_cart', payload: { product_id: Number(product.product_id), quantity: 1 } })} className={styles['add-to-cart']}>Add to Cart</button>
             </div>
         </div>
     );

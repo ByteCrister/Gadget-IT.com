@@ -96,7 +96,8 @@ const MainProductCarts = React.memo(({ MainTable, SubCategory, category }) => {
             currentSorts.slice(1).forEach((sortItem) => {
                 const arr = staticMain.filter((item) => {
                     const valueToCheck = String(item[sortItem.column] || '').toLowerCase();
-                    return valueToCheck.includes(sortItem.value.toLowerCase());
+                    // return valueToCheck.includes(sortItem.value.toLowerCase());
+                    return valueToCheck.split(' ').some((item)=> item === sortItem.value.toLowerCase());
                 });
                 arr.forEach((item) => filteredProducts.push(item));
             });

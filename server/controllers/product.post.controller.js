@@ -60,8 +60,8 @@ module.exports = {
                 });
             });
 
+            // Creating new columns
             if (newKeyValue.length > 0) {
-                // Creating new columns
                 await new Promise((resolve, reject) => {
                     productPostModels.createNewColumn(Table, newKeyValue, (err, result) => {
                         if (err) reject(err);
@@ -88,7 +88,7 @@ module.exports = {
             });
 
 
-            //inserting new extraImages
+            // inserting new extraImages
             if (extraImages.length > 0) {
                 await new Promise((resolve, reject) => {
                     productPostModels.insertExtraImages(Table, productId, extraImages, (err, data) => {

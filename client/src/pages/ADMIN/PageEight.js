@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 
 import styles from '../../styles/AdminHome/PageEight.module.css';
 
-import { useData } from '../../context/useData'
 import AdvertisementImages from '../../components/AdminHome/AdvertisementImages';
 import FeaturedCategoryICON from '../../components/AdminHome/FeaturedCategoryICON';
 import SelectHomeProducts from '../../components/AdminHome/SelectHomeProducts';
@@ -10,16 +9,9 @@ import HomeViewDescriptions from '../../components/AdminHome/HomeViewDescription
 import ManageOffers from '../../components/AdminHome/ManageOffers';
 
 const PageEight = React.memo(() => {
-  const { dispatch } = useContext(useData);
 
   const [currentSetting, setCurrentSetting] = useState(1);
 
-
-  // *---------------- Admin LogOut ------------------------
-  const handleLogout = () => {
-    dispatch({ type: 'set_home_view', payload: { isAdmin: false, isUserLoggedIn: false, token: false } })
-    window.localStorage.clear();
-  }
 
   return (
     <div>
@@ -52,10 +44,9 @@ const PageEight = React.memo(() => {
         }
 
       </section>
-      <button onClick={handleLogout}>Log Out</button>
     </div>
   )
 }
 )
 
-export default PageEight
+export default React.memo(PageEight);

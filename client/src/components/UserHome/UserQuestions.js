@@ -1,15 +1,16 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom';
 import { RiMessage2Line } from "react-icons/ri";
+import { v4 as uuidv4 } from 'uuid';
 
 import styles from '../../styles/HomePageStyles/Questions.module.css';
 import { useData } from '../../context/useData';
 import { GetDate } from '../../HOOKS/GetDate';
 
-const UserQuestions = ({ setUserEntryState, askedQuestion, QuestionAndReviewElement }) => {
+const UserQuestions = ({ setUserEntryState, askedQuestion, QuestionAndReviewElement, questionRef }) => {
     const { dataState } = useContext(useData);
     return (
-        <section className={styles.MainQuestion}>
+        <section className={styles.MainQuestion} ref={questionRef}>
             <div className={styles.Upper}>
                 <section>
                     <div>
@@ -36,7 +37,7 @@ const UserQuestions = ({ setUserEntryState, askedQuestion, QuestionAndReviewElem
                             {
                                 askedQuestion.map((question) => {
                                     return <>
-                                        <div className={styles.AllQuestions}>
+                                        <div key={uuidv4()} className={styles.AllQuestions}>
                                             <span className={styles.Date}><span className={styles.question_name}>{question.fname} {question.lname}</span> on {GetDate(question.question_date)}</span>
                                             <span className={styles.questionText}>Q: {question.question}</span>
                                             <span className={styles.answerText}>A: {question.answer}</span>

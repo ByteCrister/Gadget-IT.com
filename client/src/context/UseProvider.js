@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import reducer from "./reducer";
 import { useData } from "./useData";
 import { GetMenuItems } from "../api/GetMenuItems";
@@ -9,6 +9,10 @@ import { Api_Setting } from "../api/Api_Setting";
 import { User_Home } from "../api/User_Home";
 import { User_Products } from "../api/User_Products";
 import { Api_Support } from "../api/Api_Support";
+import { Api_Report } from "../api/Api_Report";
+import { Api_Order } from "../api/Api_Order";
+import { Api_Outer_Page } from "../api/Api_Outer_Page";
+import { Api_Users } from "../api/Api_Users";
 
 const admin_token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`;
 const tokenString = window.localStorage.getItem("token");
@@ -25,6 +29,7 @@ const CartStorage = window.localStorage.getItem("CartStorage")
   : [];
 
 const initialValues = {
+  // * User interface states
   menuItems: [],
   productStorage: null,
   UserHomeContents: [],
@@ -32,11 +37,23 @@ const initialValues = {
   subCategoryName: [],
   RecentProducts: RecentProducts,
   CartStorage: [],
+  ViewProductScrollRef: null,
+  ScrollRef: null,
+  User_Notifications: null,
+  pathSettings: { prevPath: "/", currPath: "/" },
+
+  //* Admin interface states
+  Outer_Page: null,// * - Admin dashboard notifications management
+  Order_Page: [],
   Inventory_Page: [],
   Production_Page: [],
+  Report_Page: null,
+  Users_Page: [],
   Support_Page: [],
   Setting_Page: [],
-  pathSettings: { prevPath: "/", currPath: "/" },
+  Search_Function: null,
+
+  // * states for both interface
   isLoading: false,
   isError: false,
   isServerIssue: false,
@@ -56,8 +73,12 @@ const UseProvider = ({ children }) => {
 
       await AdminRenderApi(dispatch);
       if (dataState.isAdmin) {
+        await Api_Outer_Page(dispatch);
         await Api_Inventory(dispatch);
         await Api_Production(dispatch);
+        await Api_Order(dispatch);
+        await Api_Report(dispatch);
+        await Api_Users(dispatch);
         await Api_Support(dispatch);
         await Api_Setting(dispatch);
       } else {
@@ -66,7 +87,6 @@ const UseProvider = ({ children }) => {
         await User_Products(dispatch);
         dispatch({ type: "initialize_cart", payload: CartStorage });
       }
-
       dispatch({ type: "toggle_loading", payload: false });
     };
 
