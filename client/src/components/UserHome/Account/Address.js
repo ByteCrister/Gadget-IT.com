@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react';
-import styles from '../../../styles/HomePageStyles/Address.module.css';
 import axios from 'axios';
+
+import styles from '../../../styles/HomePageStyles/Address.module.css';
 import { useData } from '../../../context/useData';
 
 const Address = ({ AddressInfo, setUserAddress }) => {

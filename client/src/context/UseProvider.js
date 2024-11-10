@@ -12,6 +12,7 @@ import { Api_Support } from "../api/Api_Support";
 import { Api_Report } from "../api/Api_Report";
 import { Api_Order } from "../api/Api_Order";
 import { Api_Outer_Page } from "../api/Api_Outer_Page";
+import { Api_Users } from "../api/Api_Users";
 
 const admin_token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`;
 const tokenString = window.localStorage.getItem("token");
@@ -47,6 +48,7 @@ const initialValues = {
   Inventory_Page: [],
   Production_Page: [],
   Report_Page: null,
+  Users_Page: [],
   Support_Page: [],
   Setting_Page: [],
   Search_Function: null,
@@ -76,6 +78,7 @@ const UseProvider = ({ children }) => {
         await Api_Production(dispatch);
         await Api_Order(dispatch);
         await Api_Report(dispatch);
+        await Api_Users(dispatch);
         await Api_Support(dispatch);
         await Api_Setting(dispatch);
       } else {

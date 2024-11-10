@@ -27,75 +27,60 @@
 }
 
 /* --------------------------------------- */
-
-#section_2 {
+#section_2{
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    gap: 10px;
+    justify-content: space-evenly;
 }
-
-#Search_bar {
+.searchContainer {
     display: flex;
     align-items: center;
     gap: 10px;
-    border-radius: 10px;
-    background-color: rgb(255, 255, 255);
-    border: 1px solid rgb(230, 230, 230);
-    height: 50px;
 }
 
-#Search_bar span {
-    color: rgb(177, 177, 177);
-    font-size: 20px;
-    margin-left: 5px;
+.searchFieldWrapper {
+    position: relative;
+    width: 100%;
 }
 
-#search {
-    border: none;
-    background-color: none;
-    padding: 10px 20px;
-    font-size: 15px;
-    font-weight: 600;
-    color: rgb(185, 185, 185);
+.searchField {
+    width: 100%;
+    max-width: 400px;
+    height: 40px;
+    padding: 0 40px 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.searchField:focus {
     outline: none;
-    border-radius: 10px;
 }
 
-#Sort_button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    border: 1px solid rgb(236, 236, 236);
-    border-radius: 10px;
-    padding: 5px;
+.searchIcon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    color: #aaa;
+    pointer-events: none;
 }
 
-#Sort_button div {
+.filterButton {
+    margin-left: 16px;
+    padding: 8px 16px;
+    background-color: #b1b1b1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 5px;
+    transition: ease-in-out 0.5s;
 }
 
-#Sort_button div span {
-    color: rgb(172, 172, 172);
-    font-weight: 600;
-    font-size: 20px;
-}
-
-#Sort_button select {
-    padding: 10px 20px;
-    color: rgb(172, 172, 172);
-    font-family: "Times New Roman", Times, serif;
-    font-weight: 600;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-}
-
-#Sort_button select option {
-    border: 1px solid black;
+.filterButton:hover {
+    background-color: #6a6a6a;
 }
 
 /* --------------------------------------- */
@@ -115,7 +100,13 @@ table {
     border-radius: 10px;
     border-collapse: collapse;
 }
-table thead {
+
+.active-user-table-head{
+    background-color: #4a4a4a;
+    color: white;
+}
+
+.default-user-table-head{
     background-color: #8d8d8d;
     color: white;
 }
@@ -245,11 +236,11 @@ tr:nth-child(even) {
     margin-top: 10px;
     border: none;
     outline: none;
-    background-color: #c8c8c8;
-    transition: ease-in-out 0.2s;
+    background-color: #7b7b7b;
     color: #d8d8d8;
     cursor: pointer;
-    border-radius: 10px;
+    border-radius: 5px;
+    transition: ease-in-out 0.2s;
 }
 
 #Action_Functions button:hover {

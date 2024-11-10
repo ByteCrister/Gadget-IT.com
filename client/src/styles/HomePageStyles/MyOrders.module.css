@@ -35,3 +35,9 @@
     font-weight: 600;
     opacity: 0.3;
 }
+
+@media (max-width: 650px){
+    .OuterMainOrderHistory{
+        padding-top: 150px;
+    }
+}

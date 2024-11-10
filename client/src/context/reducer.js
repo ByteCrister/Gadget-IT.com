@@ -164,6 +164,12 @@ const reducer = (state, action) => {
                 Report_Page: { ...state.Report_Page, report_data: action.payload }
             }
 
+            case 'set_users_page':
+                return {
+                    ...state,
+                    Users_Page: action.payload,
+                }
+
         case 'set_report_page':
             return {
                 ...state,

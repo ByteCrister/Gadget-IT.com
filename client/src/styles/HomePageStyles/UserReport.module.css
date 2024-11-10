@@ -123,3 +123,9 @@
     color: #f27f20;
     font-weight: 500;
 }
+
+@media (max-width: 650px){
+    .user-report-main-container{
+        padding-top: 170px;
+    }
+}

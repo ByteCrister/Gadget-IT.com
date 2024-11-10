@@ -94,3 +94,9 @@
     font-size: 25px;
     font-weight: 400;
 }
+
+@media (max-width: 650px){
+    .notification-main-outer-container{
+        padding-top: 150px;
+    }
+}

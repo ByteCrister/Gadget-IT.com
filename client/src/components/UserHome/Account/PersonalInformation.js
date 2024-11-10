@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
-import styles from '../../../styles/HomePageStyles/PersonalInformation.module.css';
 import axios from 'axios';
+
+import styles from '../../../styles/HomePageStyles/PersonalInformation.module.css';
 import { useData } from '../../../context/useData';
 
 const PersonalInformation = ({ UserInformation }) => {

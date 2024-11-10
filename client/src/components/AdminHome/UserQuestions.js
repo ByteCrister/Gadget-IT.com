@@ -42,7 +42,7 @@ const UserQuestions = () => {
                         p_2: setQuestions
                     }
                 }
-            })
+            });
         }
         // console.log(dataState.Production_Page.TableFullRows);
     }, [dataState.Support_Page.questions, dataState.Production_Page]);
