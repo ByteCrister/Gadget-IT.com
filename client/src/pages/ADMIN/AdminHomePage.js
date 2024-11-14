@@ -34,7 +34,7 @@ const AdminHomePage = () => {
 
     const pages = {
         1: <PageOne />,
-        2: <PageTwo />,
+        2: <PageTwo setErrorCategory={setErrorCategory}/>,
         3: <PageThree setErrorCategory={setErrorCategory}/>,
         4: <PageFour />,
         5: <PageFive />,

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Api_Inventory } from '../../api/Api_Inventory';
 import { Api_Production } from '../../api/Api_Production';
 
-const AddProducts = React.memo(({ setAddProductState }) => {
+const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
     const { dataState, dispatch } = useContext(useData);
 
     const [isCategorySelected, setIsCategorySelected] = useState(false);
@@ -78,21 +78,60 @@ const AddProducts = React.memo(({ setAddProductState }) => {
 
     const handleChange = useCallback((e) => {
         const { id, value, type, files } = e.target;
+
         if (type === 'file') {
             const file = files[0];
+
+            // Check if the file is an image
+            if (!file || !file.type.startsWith('image/')) {
+                setErrorCategory({
+                    message: 'The file is not an Image! Please give a valid image file.',
+                    isError: true
+                });
+                return;
+            }
+
             const reader = new FileReader();
             reader.onloadend = () => {
-                const base64String = reader.result.replace(/^data:.+\/(.+);base64,/, '');
-                const mimeType = file.type;
+                const base64String = reader.result;
+                const img = new Image();
 
-                setMandatoryValues((prevState) => ({
-                    ...prevState,
-                    image: {
-                        base64: base64String,
-                        mimeType: mimeType
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_SIZE_KB = 50; // Maximum size in KB
+                    const MAX_SIZE_BYTES = MAX_SIZE_KB * 1024;
+
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+
+                    const ctx = canvas.getContext('2d');
+                    let quality = 0.9; //90%
+
+                    let compressedDataURL = canvas.toDataURL(file.type, quality);
+                    let compressedDataSize = (compressedDataURL.length * 3) / 4; // Approximate base64 size in bytes
+
+                    // Reduce image quality until size is less than 50KB or quality limit is reached
+                    while (compressedDataSize > MAX_SIZE_BYTES && quality > 0) {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        compressedDataURL = canvas.toDataURL(file.type, quality);
+                        compressedDataSize = (compressedDataURL.length * 3) / 4;
+                        quality -= 0.05;
                     }
-                }));
+
+                    // Set the compressed image in state
+                    setMandatoryValues((prevState) => ({
+                        ...prevState,
+                        image: {
+                            base64: compressedDataURL.replace(/^data:.+\/(.+);base64,/, ''),
+                            mimeType: file.type
+                        }
+                    }));
+                };
+
+                img.src = base64String;
             };
+
             reader.readAsDataURL(file);
         } else {
             setMandatoryValues((prevState) => ({
@@ -100,7 +139,8 @@ const AddProducts = React.memo(({ setAddProductState }) => {
                 [id]: value
             }));
         }
-    }, []);
+    }, [setErrorCategory, setMandatoryValues]);
+
 
     const setKeyAndValue = useCallback((columns) => {
         const filteredColumns = columns.filter(

@@ -14,7 +14,7 @@ import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import { SearchInventory } from '../../HOOKS/SearchInventory';
 import { Api_Inventory } from '../../api/Api_Inventory';
 
-const PageTwo = React.memo(() => {
+const PageTwo = React.memo(({setErrorCategory}) => {
   const { dataState, dispatch } = useContext(useData);
 
   const [productsData, setProductsData] = useState(dataState.Inventory_Page);
@@ -283,7 +283,7 @@ const PageTwo = React.memo(() => {
       </section>
 
       {
-        addProductState && <AddProducts setAddProductState={setAddProductState} />
+        addProductState && <AddProducts setAddProductState={setAddProductState} setErrorCategory={setErrorCategory}/>
       }
     </div>
   );

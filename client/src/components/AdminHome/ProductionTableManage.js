@@ -4,7 +4,7 @@ import { useData } from '../../context/useData';
 import axios from 'axios';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 
-const ProductionTableManage = React.memo(({ id, category, setIsProductionManagement }) => {
+const ProductionTableManage = React.memo(({ id, category, setIsProductionManagement, setErrorCategory }) => {
   const { dataState } = useContext(useData);
 
   const [mainTable, setMainTable] = useState(dataState.Production_Page.TableFullRows || []);
@@ -105,31 +105,66 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
   // * Handler to convert file to base64 and include MIME type
   const handleImageFileChange = (e, index, state) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        const mimeType = file.type;
-        const base64WithMimeType = `data:${mimeType};base64,${base64String.split(',')[1]}`;
 
+    if (!file) return; // Handle case where no file is selected
+
+    // Check if the file is an image
+    if (!file.type.startsWith('image/')) {
+      setErrorCategory({ isError: true, message: 'The file is not an Image! Please enter a valid Image file.' });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result;
+      const img = new Image();
+      img.onload = () => {
+        const MAX_SIZE_KB = 50;
+        const MAX_SIZE_BYTES = MAX_SIZE_KB * 1024;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        let quality = 0.9; // Start with high quality
+        let compressedDataURL = canvas.toDataURL(file.type, quality);
+        let compressedDataSize = (compressedDataURL.length * 3) / 4; // Base64 size approximation
+
+        // Compress image until it's below the size limit
+        while (compressedDataSize > MAX_SIZE_BYTES && quality > 0) {
+          quality -= 0.05;
+          compressedDataURL = canvas.toDataURL(file.type, quality);
+          compressedDataSize = (compressedDataURL.length * 3) / 4;
+        }
+
+        // Final base64 string with MIME type
+        const base64WithMimeType = `data:${file.type};base64,${compressedDataURL.split(',')[1]}`;
+
+        // Update the appropriate state
         if (state === 'main') {
           setMainTableEndIndex(prevState =>
             prevState.map((item, i) => i === index ? { ...item, value: base64WithMimeType } : item)
           );
         } else if (state === 'extra') {
-          setExtraImgEndIndex((prevState) =>
+          setExtraImgEndIndex(prevState =>
             prevState.map((item, i) => i === index ? { ...item, value: base64WithMimeType } : item)
           );
         } else {
-          setNewChanges((prev) => ({
+          setNewChanges(prev => ({
             ...prev,
             newAddedImg: prev.newAddedImg.map((item, i) => i === index ? { ...item, value: base64WithMimeType } : item)
-          }))
+          }));
         }
       };
-      reader.readAsDataURL(file);
-    }
+
+      img.src = base64String;
+    };
+
+    reader.readAsDataURL(file);
   };
+
   //-----------------------------------------------------------------------------------------------
 
 
