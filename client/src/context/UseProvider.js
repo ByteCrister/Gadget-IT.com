@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useEffect, useReducer } from "react";
 import reducer from "./reducer";
 import { useData } from "./useData";
 import { GetMenuItems } from "../api/GetMenuItems";
@@ -40,6 +40,7 @@ const initialValues = {
   ViewProductScrollRef: null,
   ScrollRef: null,
   User_Notifications: null,
+  ProfileButtonState: 0,
   pathSettings: { prevPath: "/", currPath: "/" },
 
   //* Admin interface states

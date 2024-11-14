@@ -80,9 +80,9 @@ module.exports = {
         }
     },
     // ::terminated::
-    // deleteProductsWithSubNames: (SubCategory, MainCategory, callback) => {
-    //     db.query(`delete from ${MainCategory} where sub_category = ? ;`, [SubCategory], callback);
-    // },
+    deleteProductsWithSubNames: (SubCategory, MainCategory, callback) => {
+        db.query(`delete from ${MainCategory} where sub_category = ? ;`, [SubCategory], callback);
+    },
 
     deleteMainCategoryTable: (table, callback) => {
         console.log("Delete table called....");

@@ -8,6 +8,7 @@ const passport = require('passport');
 const secretKey = process.env.JWT_SECRET_KEY;
 const { SendUserMail } = require('../config/send.mail.controller.js');
 const productOuterModel = require('../models/product.outer.model.js');
+const { SendOrderConfirmationMail } = require('../config/send.order.confirmation.email.js');
 const saltRounds = 10;
 
 const performQuery = async (queryFunction, ...params) => {
@@ -331,5 +332,39 @@ module.exports = {
                 email: user.email
             });
         })(req, res, next);
+    },
+
+    orderEmailConfirmation: async (req, res, next) => {
+        const { email, digits } = req.body;
+        try {
+            passport.authenticate('jwt', { session: false }, async (err, user, info) => {
+                if (err) {
+                    return res.status(500).json({ message: 'An error occurred during authentication' });
+                }
+
+                if (!user) {
+                    if (info && info.name === 'JsonWebTokenError') {
+                        return res.status(401).json({ success: false, message: 'Invalid token. Authentication failed.' });
+                    } else {
+                        return res.status(401).json({ success: false, message: 'Unauthorized. Token is missing or invalid.' });
+                    }
+                }
+
+                //* Send confirmation email
+                const emailSent = await SendOrderConfirmationMail(email, 'Email Confirmation', digits);
+                console.log('Email send ? ' + emailSent);
+                if (emailSent) {
+                    //* Email sent successfully
+                    return res.status(200).json({ success: true, message: 'Email Confirmation Sent' });
+                } else {
+                    //* Failed to send email
+                    return res.status(200).json({ success: false, message: 'Failed to send email confirmation' });
+                }
+
+            })(req, res, next);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send(error.message);
+        }
     }
 };

@@ -1,4 +1,6 @@
+const sendInvoice = require("../config/invoice.send");
 const productOrderModel = require("../models/product.order.model");
+const productsModels = require("../models/products.models")
 const axios = require('axios');
 require('dotenv').config();
 
@@ -46,12 +48,12 @@ module.exports = {
                             performQuery(productOrderModel.getOrderProductByIdQuery, order.order_id)
                         ]);
                         return {
-                            OrderInfo: { ...order, selected: false },
+                            OrderInfo: { ...order, selected: false, invoiceLoading: false },
                             OrderProducts
                         };
                     } catch (productError) {
                         return {
-                            OrderInfo: { ...order, selected: false },
+                            OrderInfo: { ...order, selected: false, invoiceLoading: false },
                             OrderProducts: await performQuery(productOrderModel.getOrderProductByIdQuery, order.order_id)
                         };
                     }
@@ -112,6 +114,39 @@ module.exports = {
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: 'error on deleteOrder - ', error: error });
+        }
+    },
+    postNewInvoice: async (req, res) => {
+        const { Order } = req.body;
+        try {
+            let category_names = await performQuery(productsModels.getProductsCategoryModel);
+            category_names = category_names.map((item) => item.category_name);
+            // console.log(Order);
+
+            const ProductInfo = await Promise.all(Order.OrderProducts.map(async (item) => {
+                let name = '';
+                for (let i = 0; i < category_names.length; i++) {
+                    const name_ = await performQuery(productOrderModel.getProductName, category_names[i], item.product_id);
+                    if (name_.length !== 0) {
+                        name = name_[0].product_name;
+                        break;
+                    }
+                }
+                let price = await performQuery(productOrderModel.getProductPrice, item.product_id);
+                return {
+                    name,
+                    price: price[0].price
+                };
+
+            }));
+            // console.log(ProductInfo);
+            await sendInvoice(Order, ProductInfo);
+            await performQuery(productOrderModel.updateInvoice, Order.OrderInfo.order_id);
+
+            res.status(201).send({ success: true });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'error on postNewInvoice - ', error: error });
         }
     }
 };
