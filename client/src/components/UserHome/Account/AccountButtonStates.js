@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useData } from '../../../context/useData';
 import axios from 'axios';
 
-const AccountButtonStates = ({ setButtonState, UserInformation }) => {
+const AccountButtonStates = ({ UserInformation }) => {
     const { dataState, dispatch } = useContext(useData);
     const navigate = useNavigate();
     const [CountOfNotifications, setCountOfNotifications] = useState(0);
@@ -55,33 +55,33 @@ const AccountButtonStates = ({ setButtonState, UserInformation }) => {
             <div className={styles.MainOuterStates}>
 
                 <section>
-                    <button onClick={() => setButtonState(0)}>
+                    <button onClick={() => dispatch({ type: 'set_profile_button_state', payload: 0 }) }>
                         <RiAccountCircleLine className={styles.BtnIcon} />
                         <span>{UserInformation.f_name} {UserInformation.l_name}</span>
                     </button>
                     <hr></hr>
                 </section>
 
-                <button className={styles['count-of-message-main-div']} onClick={() => { setButtonState(1); handleUpdateCount(); }}>
+                <button className={styles['count-of-message-main-div']} onClick={() => { dispatch({ type: 'set_profile_button_state', payload: 1 }); handleUpdateCount(); }}>
                     <span className={styles['count-of-message-span']}>{`( ${CountOfNotifications} )`}</span>
                     <HiOutlineShoppingCart className={styles.BtnIcon} />
                     <span>Messages</span>
                 </button>
-                <button onClick={() => setButtonState(2)}>
+                <button onClick={() => dispatch({ type: 'set_profile_button_state', payload: 2 }) }>
                     <HiOutlineShoppingCart className={styles.BtnIcon} />
                     <span>My Orders</span>
                 </button>
 
-                <button onClick={() => setButtonState(3)}>
+                <button onClick={() => dispatch({ type: 'set_profile_button_state', payload: 3 }) }>
                     <MdOutlineReport className={styles.BtnIcon} />
                     <span>Report</span>
                 </button>
-                <button onClick={() => setButtonState(4)}>
+                <button onClick={() => dispatch({ type: 'set_profile_button_state', payload: 4 })}>
                     <FaMapLocationDot className={styles.BtnIcon} />
                     <span>Address</span>
                 </button>
 
-                <button onClick={() => setButtonState(5)}>
+                <button onClick={() =>dispatch({ type: 'set_profile_button_state', payload: 5 })}>
                     <BsKey className={styles.BtnIcon} />
                     <span>Change Password</span>
                 </button>

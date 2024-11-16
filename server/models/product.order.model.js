@@ -49,5 +49,14 @@ module.exports = {
             [body.user_id, body.order_id, body.status === 'Canceled' ? 'order-canceled' : 'order', 0],
             callback
         );
+    },
+    getProductName: (table, product_id, callback) => {
+        db.query(`select product_name from ${table} where product_id = ?;`, [product_id], callback);
+    },
+    getProductPrice: (product_id, callback) => {
+        db.query('select price from product_stock where product_id = ?; ', [product_id], callback);
+    },
+    updateInvoice: (order_id, callback) => {
+        db.query('update user_order set invoice_status = ? where order_id = ?;', [1, order_id], callback);
     }
 }

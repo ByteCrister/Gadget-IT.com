@@ -8,6 +8,7 @@ import styles from '../styles/HomePageStyles/UserHomeRoutePage.module.css';
 import OrdersPage from '../components/UserHome/Account/OrdersPage';
 import UserOrderPaymentPage from '../components/UserHome/Account/UserOrderPaymentPage';
 import { useData } from '../context/useData';
+import VerifyOrderEmail from '../pages/UserHome/VerifyOrderEmail';
 
 const UserHomePage = lazy(() => import('../pages/UserHome/UserHomePage'));
 const UserSignIn = lazy(() => import('../components/UserHome/UserSignIn'));
@@ -93,6 +94,7 @@ const UserHomeRoutes = () => {
                         <Route path='/easy-checkout' element={<EasyCheckout />} />
                         <Route path='/user-orders-page' element={<OrdersPage />} />
                         <Route path='/user-orders-payment-page' element={<UserOrderPaymentPage />} />
+                        <Route path='/verify-order-email' element={<VerifyOrderEmail />} />
 
                         <Route path="*" element={<RandomErrorPage />} />
                     </Routes>

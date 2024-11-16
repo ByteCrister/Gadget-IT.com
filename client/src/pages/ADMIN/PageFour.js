@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { IoFilter } from "react-icons/io5";
 import { TbTrashOff } from "react-icons/tb";
+import { IoShieldCheckmark, IoShieldCheckmarkOutline } from "react-icons/io5";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 
 import styles from "../../styles/AdminHome/PageFour.module.css";
@@ -16,7 +18,7 @@ const PageFour = () => {
   });
   const [filterState, setFilterState] = useState(0);
   const [currentOrderPage, setCurrentOrderPage] = useState(1);
-  const [newOrderPage, setNewOrderPage] = useState(false);
+  // const [newOrderPage, setNewOrderPage] = useState(false);
   const [OrderCount, setOrderCount] = useState({});
 
   const [OrderDetail, setOrderDetail] = useState({
@@ -232,7 +234,7 @@ const PageFour = () => {
     }));
     dispatch({ type: "set_order_page", payload: Updated });
   };
-  
+
 
   const handleSelectCheckbox = (e, state, order_id) => {
     const isChecked = e.target.checked;
@@ -262,6 +264,41 @@ const PageFour = () => {
       ...prev,
       MainProducts: Updated,
     }));
+  };
+
+  const renderInvoiceChange_Api = async (Order) => {
+    try {
+      await axios.post('http://localhost:7000/post-new-order-invoice', {
+        Order
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  const handleInvoiceChange = async (order_id) => {
+    const isSelected = OrderStore.MainProducts.find((Order) => Order.OrderInfo.order_id === order_id)?.OrderInfo?.selected || false;
+    if (isSelected) {
+      setOrderStore((prev) => ({
+        MainProducts: prev.MainProducts.map((order) => order.OrderInfo.order_id === order_id ? { ...order, OrderInfo: { ...order.OrderInfo, invoiceLoading: true } } : order)
+      }));
+
+      let Updated = OrderStore.MainProducts.map((Order) => {
+        return Order.OrderInfo.order_id === order_id
+          ? { ...Order, OrderInfo: { ...Order.OrderInfo, invoice_status: 1 } }
+          : Order
+      });
+
+      const Order = OrderStore.MainProducts.find((Order) => Order.OrderInfo.order_id === order_id);
+      await renderInvoiceChange_Api(Order);
+
+      setOrderStore((prev) => ({
+        MainProducts: prev.MainProducts.map((order) => order.OrderInfo.order_id === order_id ? { ...order, OrderInfo: { ...order.OrderInfo, invoiceLoading: false, selected: false } } : order)
+      }));
+      dispatch({ type: "set_order_page", payload: Updated });
+    }
   };
 
   // ----------------------------------------------------------------------------------------------
@@ -348,6 +385,7 @@ const PageFour = () => {
                 <th className={filterState >= 7 && filterState <= 8 ?
                   styles['pageFour-order-page-filter-style'] : styles['default-th']}>Date</th>
                 <th className={styles['default-th']}>Order Type</th>
+                <th className={styles['default-th']}>Invoice Status</th>
                 <th className={filterState >= 9 && filterState <= 10 ?
                   styles['pageFour-order-page-filter-style'] : styles['default-th']}>Order Status</th>
               </tr>
@@ -359,7 +397,7 @@ const PageFour = () => {
                   <tr key={index}>
                     <td>
                       <div id={styles.HeadCheckBox}>
-                        <input type="checkbox" checked={order.OrderInfo.selected} onClick={(e) => handleSelectCheckbox(e, -1, order.OrderInfo.order_id)} id={`Table_column-${index}`} ></input>
+                        <input type="checkbox" defaultChecked={order.OrderInfo.selected} onClick={(e) => handleSelectCheckbox(e, -1, order.OrderInfo.order_id)} id={`Table_column-${index}`} ></input>
                         <span>{order.OrderInfo.order_id}</span>
                       </div>
                     </td>
@@ -373,13 +411,23 @@ const PageFour = () => {
                       : order.OrderInfo.order_type}
                     </td>
                     <td>
+                      <div className={styles['invoice-button-div']}>
+                        {order.OrderInfo.invoiceLoading
+                          ? <AiOutlineLoading3Quarters className={styles['invoice-loading-button-icon']} />
+                          : order.OrderInfo.invoice_status === 0
+                            ? <button onClick={() => handleInvoiceChange(order.OrderInfo.order_id)} className={styles['invoice-button']}> <IoShieldCheckmarkOutline className={styles['invoice-button-icon-inactive']} /></button>
+                            : <button className={styles['invoice-button']}><IoShieldCheckmark className={styles['invoice-button-icon-active']} /></button>
+                        }
+                      </div>
+                    </td>
+                    <td>
                       <select className={styles.dropdown} style={{ backgroundColor: getActionText(order.OrderInfo.order_status) }} value={order.OrderInfo.order_status} onChange={(e) => handleActionChange(e)}>
-                        <option value={null}></option>
-                        <option value="Order is Processing" selected={order.OrderInfo.order_status === "Order is Processing"}> Order Is Processing</option>
-                        <option value="Order Placed" selected={order.OrderInfo.order_status === "Order Placed"}>Order Placed</option>
-                        <option value="Way to Destination" selected={order.OrderInfo.order_status === "Way to Destination"}>Way to Destination</option>
-                        <option value="Ready to Collect" selected={order.OrderInfo.order_status === "Ready to Collect"}>Ready to Collect</option>
-                        <option value="Canceled" selected={order.OrderInfo.order_status === "Canceled"}>Canceled</option>
+                        <option value={''}></option>
+                        <option value="Order is Processing" > Order Is Processing</option>
+                        <option value="Order Placed" >Order Placed</option>
+                        <option value="Way to Destination" >Way to Destination</option>
+                        <option value="Ready to Collect" >Ready to Collect</option>
+                        <option value="Canceled" >Canceled</option>
                       </select>
                     </td>
                   </tr>

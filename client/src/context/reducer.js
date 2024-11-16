@@ -164,11 +164,11 @@ const reducer = (state, action) => {
                 Report_Page: { ...state.Report_Page, report_data: action.payload }
             }
 
-            case 'set_users_page':
-                return {
-                    ...state,
-                    Users_Page: action.payload,
-                }
+        case 'set_users_page':
+            return {
+                ...state,
+                Users_Page: action.payload,
+            }
 
         case 'set_report_page':
             return {
@@ -296,6 +296,13 @@ const reducer = (state, action) => {
                 ...state,
                 ScrollRef: action.payload
             }
+
+        case 'set_profile_button_state':
+            return {
+                ...state,
+                ProfileButtonState: action.payload
+            }
+
 
         case 'toggle_loading':
             return {

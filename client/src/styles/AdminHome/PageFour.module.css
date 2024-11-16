@@ -426,3 +426,47 @@
     background-color: #383838;
     color: white;
 }
+
+.invoice-button-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.invoice-button{
+    border: none;
+    outline: none;
+    text-align: center;
+    background-color: transparent;
+}
+
+.invoice-button-icon-inactive{
+    color: rgb(226, 24, 24);
+    font-weight: 600;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.invoice-button-icon-active{
+    color: rgb(108, 226, 24);
+    font-weight: 600;
+    font-size: 25px;
+    cursor: no-drop;
+}
+
+
+.invoice-loading-button-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border-top-color: #0051404d;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

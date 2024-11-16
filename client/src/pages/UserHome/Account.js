@@ -16,7 +16,6 @@ import UserMessages from '../../components/UserHome/Account/UserMessages';
 const Account = () => {
     const { dataState, dispatch } = useContext(useData);
     const navigate = useNavigate();
-    const [ButtonState, setButtonState] = useState(0);
     const [UserInformation, setUserInformation] = useState({});
     const [UserAddress, setUserAddress] = useState({});
     const [Orders, setOrders] = useState([]);
@@ -47,7 +46,7 @@ const Account = () => {
     }, [dataState.token, navigate]);
 
     const RenderPages = useCallback(() => {
-        switch (ButtonState) {
+        switch (dataState.ProfileButtonState) {
             case 1: return <UserMessages Orders={Orders} />
             case 2: return <MyOrders Orders={Orders} />
             case 3: return <Report />
@@ -55,11 +54,11 @@ const Account = () => {
             case 5: return <ChangePassword />
             default: return <PersonalInformation UserInformation={UserInformation} />
         }
-    }, [ButtonState, UserAddress, UserInformation]);
+    }, [UserAddress, UserInformation, dataState.ProfileButtonState]);
 
     return (
         <section className={styles.OuterMain}>
-            <AccountButtonStates setButtonState={setButtonState} UserInformation={UserInformation} />
+            <AccountButtonStates UserInformation={UserInformation} />
             {RenderPages()}
         </section>
     )

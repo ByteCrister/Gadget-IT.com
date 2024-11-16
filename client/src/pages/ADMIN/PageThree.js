@@ -37,7 +37,7 @@ const PageThree = React.memo(({setErrorCategory}) => {
       <div className={styles.ProductionContents}>
         {
           pageThreeCurrentPage === 1 ?
-            <ProductionTable />
+            <ProductionTable setErrorCategory={setErrorCategory} />
             : pageThreeCurrentPage === 2 ?
               <ManageColumns />
               : <CreateNewCategory setErrorCategory={setErrorCategory}/>
