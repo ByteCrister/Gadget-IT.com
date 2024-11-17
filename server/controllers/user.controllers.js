@@ -7,7 +7,18 @@ const passport = require('passport');
 
 const secretKey = process.env.JWT_SECRET_KEY;
 const { SendUserMail } = require('../config/send.mail.controller.js');
+const productOuterModel = require('../models/product.outer.model.js');
+const { SendOrderConfirmationMail } = require('../config/send.order.confirmation.email.js');
 const saltRounds = 10;
+
+const performQuery = async (queryFunction, ...params) => {
+    return await new Promise((resolve, reject) => {
+        queryFunction(...params, (err, data) => {
+            if (err) reject(err);
+            else resolve(data);
+        });
+    });
+};
 
 module.exports = {
 
@@ -113,19 +124,15 @@ module.exports = {
                 });
             });
 
-            console.log('User saved:', results);
-
-            await new Promise((resolve, reject) => {
-                req.session.save((err) => {
-                    if (err) {
-                        console.error('Error saving session:', err);
-                        return reject(err);
-                    }
-                    resolve();
-                });
-            });
-
-            console.log('New user registered with id:', req.session.userId);
+            //* Insert new admin notification
+            const payload = {
+                type: 'New User Signed in',
+                sender_type: 'User',
+                page: 6
+            };
+            await performQuery(userModel.setNewAdminNotification, payload);
+            await performQuery(productOuterModel.insertNewUserCountQuery, results.insertId);
+            console.log('New user registered with id:', results.insertId);
 
             //* Redirect the user to the home route
             return res.redirect('http://localhost:3000');
@@ -322,9 +329,43 @@ module.exports = {
             }
             return res.status(200).json({
                 success: true,
-                email: user.email
+                email: user.email,
+                user
             });
         })(req, res, next);
-    }
+    },
 
+    orderEmailConfirmation: async (req, res, next) => {
+        const { email, digits } = req.body;
+        try {
+            passport.authenticate('jwt', { session: false }, async (err, user, info) => {
+                if (err) {
+                    return res.status(500).json({ message: 'An error occurred during authentication' });
+                }
+
+                if (!user) {
+                    if (info && info.name === 'JsonWebTokenError') {
+                        return res.status(401).json({ success: false, message: 'Invalid token. Authentication failed.' });
+                    } else {
+                        return res.status(401).json({ success: false, message: 'Unauthorized. Token is missing or invalid.' });
+                    }
+                }
+
+                //* Send confirmation email
+                const emailSent = await SendOrderConfirmationMail(email, 'Email Confirmation', digits);
+                console.log('Email send ? ' + emailSent);
+                if (emailSent) {
+                    //* Email sent successfully
+                    return res.status(200).json({ success: true, message: 'Email Confirmation Sent' });
+                } else {
+                    //* Failed to send email
+                    return res.status(200).json({ success: false, message: 'Failed to send email confirmation' });
+                }
+
+            })(req, res, next);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send(error.message);
+        }
+    }
 };

@@ -3,12 +3,9 @@ import reducer from "./reducer";
 import { useData } from "./useData";
 import { GetMenuItems } from "../api/GetMenuItems";
 import { AdminRenderApi } from "../api/AdminRenderApi";
-import { Api_Inventory } from "../api/Api_Inventory";
-import { Api_Production } from "../api/Api_Production";
-import { Api_Setting } from "../api/Api_Setting";
 import { User_Home } from "../api/User_Home";
 import { User_Products } from "../api/User_Products";
-import { Api_Support } from "../api/Api_Support";
+import Admin_Api from "../api/Admin_Api";
 
 const admin_token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`;
 const tokenString = window.localStorage.getItem("token");
@@ -25,6 +22,7 @@ const CartStorage = window.localStorage.getItem("CartStorage")
   : [];
 
 const initialValues = {
+  // * User interface states
   menuItems: [],
   productStorage: null,
   UserHomeContents: [],
@@ -32,11 +30,24 @@ const initialValues = {
   subCategoryName: [],
   RecentProducts: RecentProducts,
   CartStorage: [],
+  ViewProductScrollRef: null,
+  ScrollRef: null,
+  User_Notifications: null,
+  ProfileButtonState: 0,
+  pathSettings: { prevPath: "/", currPath: "/" },
+
+  //* Admin interface states
+  Outer_Page: null,// * - Admin dashboard notifications management
+  Order_Page: [],
   Inventory_Page: [],
   Production_Page: [],
+  Report_Page: null,
+  Users_Page: [],
   Support_Page: [],
   Setting_Page: [],
-  pathSettings: { prevPath: "/", currPath: "/" },
+  Search_Function: null,
+
+  // * states for both interface
   isLoading: false,
   isError: false,
   isServerIssue: false,
@@ -56,17 +67,13 @@ const UseProvider = ({ children }) => {
 
       await AdminRenderApi(dispatch);
       if (dataState.isAdmin) {
-        await Api_Inventory(dispatch);
-        await Api_Production(dispatch);
-        await Api_Support(dispatch);
-        await Api_Setting(dispatch);
+        await Admin_Api(dispatch);
       } else {
         await GetMenuItems(dispatch);
         await User_Home(dispatch);
         await User_Products(dispatch);
         dispatch({ type: "initialize_cart", payload: CartStorage });
       }
-
       dispatch({ type: "toggle_loading", payload: false });
     };
 

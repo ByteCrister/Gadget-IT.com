@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
-import styles from '../../../styles/HomePageStyles/PersonalInformation.module.css';
 import axios from 'axios';
+
+import styles from '../../../styles/HomePageStyles/PersonalInformation.module.css';
 import { useData } from '../../../context/useData';
 
 const PersonalInformation = ({ UserInformation }) => {
@@ -59,33 +60,35 @@ const PersonalInformation = ({ UserInformation }) => {
     }
 
     return (
-        <section className={styles.PersonalInformationOuter}>
-            {
-                updateMessage.isSuccess && <span className={styles.updateLine}><sup>*</sup>Your Information updated successfully.</span>
-            }
-            {
-                updateMessage.isError && <span className={styles.updateLine}><sup>***</sup>There occurs an error!. Please try again later.</span>
-            }
-            <span className={styles.headline}>Personal Info</span>
+        <section className={styles.MainPersonalFormOuter}>
+            <section className={styles.PersonalInformationOuter}>
+                {
+                    updateMessage.isSuccess && <span className={styles.updateLine}><sup>*</sup>Your Information updated successfully.</span>
+                }
+                {
+                    updateMessage.isError && <span className={styles.updateLine}><sup>***</sup>There occurs an error!. Please try again later.</span>
+                }
+                <span className={styles.headline}>Personal Info</span>
 
-            <section>
-                <div>
-                    <label>First Name</label>
-                    <input type='text' name='f_name' placeholder={userForm.f_name} value={userForm.f_name} onChange={(e) => handleChange(e)}></input>
+                <section>
+                    <div>
+                        <label>First Name</label>
+                        <input type='text' name='f_name' placeholder={userForm.f_name} value={userForm.f_name} onChange={(e) => handleChange(e)}></input>
+                    </div>
+
+                    <div>
+                        <label>Last Name</label>
+                        <input type='text' name='l_name' placeholder={userForm.l_name} value={userForm.l_name} onChange={(e) => handleChange(e)}></input>
+                    </div>
+                </section>
+
+                <div className={styles.userEmail}>
+                    <label>Email</label>
+                    <input type='text' name='email' value={userForm.email} disabled></input>
                 </div>
 
-                <div>
-                    <label>Last Name</label>
-                    <input type='text' name='l_name' placeholder={userForm.l_name} value={userForm.l_name} onChange={(e) => handleChange(e)}></input>
-                </div>
+                <button onClick={handleChangeInformation}>Update</button>
             </section>
-
-            <div className={styles.userEmail}>
-                <label>Email</label>
-                <input type='text' name='email' value={userForm.email} disabled></input>
-            </div>
-
-            <button onClick={handleChangeInformation}>Update</button>
         </section>
     )
 }

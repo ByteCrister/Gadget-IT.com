@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 #mainSection {
     display: flex;
     flex-direction: column;
@@ -7,20 +9,6 @@
     position: relative;
 }
 
-#section_1 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#section_1 span {
-    font-size: 25px;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: 600;
-    color: grey;
-}
-
-#section_1 button,
 #FilterButton {
     padding: 8px 16px;
     background-color: #b1b1b1;
@@ -34,11 +22,6 @@
     transition: ease-in-out 0.5s;
 }
 
-#section_1 button:focus {
-    outline: none;
-}
-
-#section_1 button:hover,
 #FilterButton:hover {
     background-color: #6a6a6a;
 }
@@ -63,18 +46,16 @@
     cursor: pointer;
     transition: ease-in-out 0.3s;
     /* background-color: #6a6a6a; */
-
 }
 
 #OrderStateButtons div:hover {
     background-color: #f5f5f5;
-
 }
 
 #OrderStateButtons div span {
     color: #b1b1b1;
     font-weight: 600;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: "Times New Roman", Times, serif;
     font-size: 15px;
 }
 
@@ -108,10 +89,6 @@
 
 /* ------------------------------------------------------- */
 
-
-
-
-
 .container {
     width: 100%;
     overflow-x: auto;
@@ -136,11 +113,6 @@
     text-align: left;
 }
 
-.table th {
-    background-color: #f2f2f2;
-    color: #333;
-}
-
 .table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
@@ -154,7 +126,7 @@
     padding: 12px 15px;
 }
 
-.table th {
+.default-th {
     background-color: #8d8d8d;
     color: white;
 }
@@ -172,7 +144,8 @@
     gap: 5px;
     align-items: center;
 }
-.container table thead tr th div span{
+
+.container table thead tr th div span {
     color: white;
 }
 
@@ -181,7 +154,6 @@
     padding: 10px 15px;
     border-radius: 5px;
 }
-
 
 /* ---------------------------------------------- */
 .dropdown {
@@ -192,7 +164,7 @@
     font-size: 15px;
     color: #333;
     font-weight: 600;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: "Times New Roman", Times, serif;
 }
 
 .dropdown:focus {
@@ -200,10 +172,7 @@
     border-color: #bebebe;
 }
 
-
-
 /* ---------------------------------------------- */
-
 
 #filterFormContainer {
     text-align: right;
@@ -234,7 +203,6 @@
     background-color: #6a6a6a;
 }
 
-
 #filterForm {
     position: relative;
     background-color: #f3f3f3;
@@ -246,9 +214,10 @@
     padding: 10px;
     border-radius: 5px;
     text-align: left;
-
 }
-#resetAction, #resetDate{
+
+#resetAction,
+#resetDate {
     cursor: pointer;
 }
 
@@ -268,7 +237,8 @@
 }
 
 #div_1,
-#div_3, #div_5 {
+#div_3,
+#div_5 {
     display: flex;
     justify-content: space-between;
     gap: 20px;
@@ -282,7 +252,6 @@
     font-size: 18px;
     color: #8d8d8d;
     font-weight: 600;
-
 }
 
 #div_2 {
@@ -298,7 +267,6 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-
 }
 
 #div_2 div span {
@@ -315,38 +283,190 @@
     color: #424242;
 }
 
-#actionType div select, #inventoryState div select{
+#actionType div select,
+#inventoryState div select {
     padding: 10px;
-   border: none;
-   background-color: #dfdfdf;
-   border-radius: 5px;
-   font-size: 15px;
-   font-weight: 600;
-   font-family: 'Times New Roman', Times, serif;
-   color:#424242 ;
+    border: none;
+    background-color: #dfdfdf;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: "Times New Roman", Times, serif;
+    color: #424242;
 }
-#actionType div select:focus, #inventoryState div select:focus{
+
+#actionType div select:focus,
+#inventoryState div select:focus {
     outline: none;
 }
 
-#resetAndApply{
+#resetAndApply {
     display: flex;
     justify-content: space-between;
     gap: 20px;
 }
-#resetButton, #applyButton{
+
+#resetButton,
+#applyButton {
     padding: 10px 20px;
     border-radius: 5px;
     border: none;
     outline: none;
     background-color: #bebebe;
     font-weight: 600;
-    color:#424242 ;
+    color: #424242;
     cursor: pointer;
     transition: ease-in-out 0.3s;
-
 }
-#resetButton:hover, #applyButton:hover{
+
+#resetButton:hover,
+#applyButton:hover {
     background-color: #424242;
     color: #bebebe;
+}
+
+.product-detail-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    min-width: 400px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 5px 0px rgb(165, 165, 165);
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.product-detail-user-info {
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.product-detail-user-info span {
+    font-family: "Roboto", serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #616161;
+}
+
+.product-detail-table-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.product-detail-table-section table th,
+.product-detail-table-section table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.product-detail-table-section table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.product-detail-table-section table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.product-detail-table-section table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.product-detail-table-section table th,
+.product-detail-table-section table td {
+    padding:5px 10px;
+}
+
+.product-detail-table-section table th {
+    background-color: #8d8d8d;
+    color: white;
+}
+
+.product-detail-table-section table td {
+    padding:5px 10px;
+    border-bottom: 1px solid #ddd;
+    font-size: 18px;
+    color: #5f5f5f;
+    font-weight: 600;
+}
+
+
+
+.product-detail-section button{
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #353535;
+    font-family: "Roboto", serif;
+    color: white;
+
+}
+
+.page-four-order-trash{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.page-four-order-trash-btn:hover{
+    font-weight: 500;
+    color: #000000;
+    cursor: pointer;
+}
+
+.pageFour-order-page-filter-style{
+    background-color: #383838;
+    color: white;
+}
+
+.invoice-button-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.invoice-button{
+    border: none;
+    outline: none;
+    text-align: center;
+    background-color: transparent;
+}
+
+.invoice-button-icon-inactive{
+    color: rgb(226, 24, 24);
+    font-weight: 600;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.invoice-button-icon-active{
+    color: rgb(108, 226, 24);
+    font-weight: 600;
+    font-size: 25px;
+    cursor: no-drop;
+}
+
+
+.invoice-loading-button-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border-top-color: #0051404d;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }

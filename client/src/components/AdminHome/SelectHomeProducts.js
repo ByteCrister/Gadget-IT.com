@@ -32,9 +32,9 @@ const SelectHomeProducts = () => {
     new_arrival: [],
   });
   const [serial_noState, setSerial_no_State] = useState({
-    ready_for_orders_serial: 0,
-    featured_products_serial: 0,
-    new_arrival_serial: 0,
+    ready_for_orders: 0,
+    featured_products: 0,
+    new_arrival: 0,
   });
   const [isRotating, setIsRotating] = useState(false);
   const searchRef = useRef();
@@ -60,37 +60,43 @@ const SelectHomeProducts = () => {
         new_arrival: initialValues("new_arrival"),
       };
 
-      setProductPosition(initialProductPosition);
+
 
       const maxSerialNumbers = {
-        ready_for_orders_serial: Math.max(
+        ready_for_orders: Math.max(
           0,
           ...initialProductPosition.ready_for_orders.map(
             (item) => item.serial_no
           )
         ),
-        featured_products_serial: Math.max(
+        featured_products: Math.max(
           0,
           ...initialProductPosition.featured_products.map(
             (item) => item.serial_no
           )
         ),
-        new_arrival_serial: Math.max(
+        new_arrival: Math.max(
           0,
           ...initialProductPosition.new_arrival.map((item) => item.serial_no)
         ),
       };
 
+      setProductPosition(initialProductPosition);
       setSerial_no_State(maxSerialNumbers);
       setProductsData(dataState.Production_Page.TableRows);
+
+      // console.log(initialProductPosition);
+      // console.log(maxSerialNumbers);
+      // console.log(dataState.Production_Page.TableRows);
     };
 
     initializeData();
-  }, [dataState]);
+  }, [dataState.Production_Page.TableRows]);
 
   // *------------------ Refresh Button ---------------------
   const handleRefresh = async () => {
     try {
+      // console.log(productPosition);
       await axios.post("http://localhost:7000/home-product-select/crud", {
         productPosition: productPosition,
       });
@@ -129,23 +135,13 @@ const SelectHomeProducts = () => {
       search,
       dataState.Production_Page.TableRows,
       setProductsData,
-      productsData
+      GetSerialNo
     );
   };
 
   // *------------------ Parent Function of Pagination ----------------------------
   const handleFilteredData = (data) => {
     setFilteredProducts((prev) => data);
-  };
-
-  //*--------------------------- Is Checked? ----------------------------
-  const isChecked = (productId) => {
-    return ["ready_for_orders", "featured_products", "new_arrival"].some(
-      (position) =>
-        productPosition[position].some(
-          (item) => item.product_id === productId && item.serial_no !== 0
-        )
-    );
   };
 
   //*--------------------------- PositionDropdown ---------------------
@@ -159,110 +155,14 @@ const SelectHomeProducts = () => {
           : "#c3dfff";
   };
 
-  const optionSelected = (productId, position) => {
-    return productPosition[position].filter(
-      (item) => productId === item.product_id && item.position === position
-    ).length > 0
-      ? true
-      : false;
-  };
-
-  const PositionDropdown = (productId, productType) => {
-    return (
-      <select
-        style={{ backgroundColor: getActionText(GetPositionName(productId)) }}
-        className={styles.page_eight_product_select}
-        value={GetPositionName(productId)}
-        onChange={(e) =>
-          handlePosition(e, productId, GetPositionName(productId), productType)
-        }
-      >
-        <option
-          value=""
-          selected={!optionSelected(productId, "ready_for_orders")}
-        >
-          Select Position
-        </option>
-        <option
-          value="ready_for_orders"
-          selected={optionSelected(productId, "ready_for_orders")}
-        >
-          Ready for Orders
-        </option>
-        <option
-          value="featured_products"
-          selected={optionSelected(productId, "featured_products")}
-        >
-          Featured Products
-        </option>
-        <option
-          value="new_arrival"
-          selected={optionSelected(productId, "new_arrival")}
-        >
-          New Arrival
-        </option>
-      </select>
+  //*--------------------------- Is Checked? ----------------------------
+  const isChecked = (productId) => {
+    return ["ready_for_orders", "featured_products", "new_arrival"].some(
+      (position) =>
+        productPosition[position].some(
+          (item) => item.product_id === productId && item.serial_no !== 0
+        )
     );
-  };
-  //*------------------------------------- remove position ---------------------
-  const removePosition = (productId, keyState) => {
-    setProductPosition((prev) => ({
-      ...prev,
-      [keyState]: prev[keyState].filter(
-        (item) => item.product_id !== productId
-      ),
-    }));
-  };
-
-  //*-------------------------------- handlePosition ------------------------
-  const handlePosition = (e, productId, prevPosition, productType) => {
-    const newPosition = e.target.value;
-
-    console.log("curr - " + newPosition + "  prev - " + prevPosition);
-
-    // Ensure prevPosition and newPosition are valid
-    if (prevPosition && newPosition) {
-      // Find the product details in the previous position
-      const product = productPosition[prevPosition]?.find(
-        (item) => item.product_id === productId
-      );
-
-      if (product) {
-        // Add product to the new position
-        setProductPosition((prev) => ({
-          ...prev,
-          [newPosition]: [
-            ...(prev[newPosition] || []),
-            {
-              product_id: product.product_id,
-              main_category: product.main_category,
-              position: newPosition,
-              serial_no: 0,
-            },
-          ],
-        }));
-
-        // Remove product from the previous position
-        removePosition(productId, prevPosition);
-      }
-    } else if (!prevPosition && newPosition) {
-      // Handle case where there's no previous position (initial assignment)
-      setProductPosition((prev) => ({
-        ...prev,
-        [newPosition]: [
-          ...(prev[newPosition] || []),
-          {
-            product_id: productId,
-            main_category: productType,
-            position: newPosition,
-            serial_no: 0,
-          },
-        ],
-      }));
-    } else {
-      removePosition(productId, prevPosition);
-      console.log(JSON.stringify(productPosition[prevPosition]));
-    }
   };
 
   //* ------------------------------------- GetPositionName -------------------------------
@@ -281,7 +181,6 @@ const SelectHomeProducts = () => {
   //* ----------------------------------- GetSerialNo -----------------------
   const GetSerialNo = (productId) => {
     // console.log(productId);
-
     const product = ["ready_for_orders", "featured_products", "new_arrival"]
       .map((position) =>
         productPosition[position].find((item) => item.product_id === productId)
@@ -290,52 +189,82 @@ const SelectHomeProducts = () => {
     return product ? product.serial_no : 0;
   };
 
-  //*---------------------------------- handleSerialNo ---------------------------
-  const handleSerialNo = (e, productID, currPosition) => {
-    const isChecked = e.target.checked;
-    const serialState = currPosition + "_serial";
+  // const optionSelected = (productId, position) => {
+  //   return productPosition[position].filter(
+  //     (item) => productId === item.product_id && item.position === position
+  //   ).length > 0
+  //     ? true
+  //     : false;
+  // };
 
-    console.log(isChecked + "- position :  " + currPosition);
 
-    !isChecked && removePosition(productID, currPosition);
-
-    if (currPosition && currPosition.length !== 0) {
-      const currSerial = productPosition[currPosition].filter(
-        (item) => item.product_id === productID
-      )[0].serial_no;
-      console.log(
-        "current serial of productID : " + productID + " - " + currSerial
-      );
-
+  // ****************** handlePositionChange ********************
+  const handlePositionChange = (e, productId, MainCategory) => {
+    const prevPosition = GetPositionName(productId);
+    const currPosition = e.target.value;
+    const currSerial = GetSerialNo(productId);
+    console.log('curr: ' + currPosition + ' - prev: ' + prevPosition + ' - currSerial: ' + currSerial);
+    if (!prevPosition || prevPosition.length === 0) {
+      // for first select
       setProductPosition((prev) => ({
         ...prev,
-        [currPosition]: prev[currPosition].map((item, i) =>
-          item.product_id === productID
-            ? {
-              ...item,
-              serial_no: isChecked ? serial_noState[serialState] + 1 : 0,
-              position: isChecked ? item.position : "ready_for_orders",
-            } // ready_for_orders - not a valid position
-            : !isChecked && item.serial_no !== 0 && currSerial < item.serial_no
-              ? { ...item, serial_no: item.serial_no - 1 }
-              : item
-        ),
+        [currPosition]: [...prev[currPosition], { product_id: productId, main_category: MainCategory, position: currPosition, serial_no: 0 }]
       }));
-
-      setSerial_no_State((prev) => ({
+    } else if (!currPosition || currPosition.length === 0) {
+      //if unselect
+      setProductPosition((prev) => ({
         ...prev,
-        [serialState]: isChecked
-          ? prev[serialState] + 1
-          : prev[serialState] !== 0 && prev[serialState] - 1,
+        [prevPosition]: [...prev[prevPosition].filter((product) => product.product_id !== productId).map((product) => ({ ...product, serial_no: currSerial !== 0 && currSerial < product.serial_no ? product.serial_no - 1 : product.serial_no }))]
       }));
+      setSerial_no_State((prev) => ({ ...prev, [prevPosition]: currSerial !== 0 ? prev[prevPosition] - 1 : prev[prevPosition] }));
+      // console.log('serial after unselect: ' + JSON.stringify(serial_noState, null, 2));
+    } else {
+      // if position shift
+      setProductPosition((prev) => ({
+        ...prev,
+        [prevPosition]: [...prev[prevPosition].filter((product) => product.product_id !== productId)],
+        [currPosition]: [...prev[currPosition], { product_id: productId, main_category: MainCategory, position: currPosition, serial_no: 0 }]
+      }));
+      setSerial_no_State((prev) => ({ ...prev, [prevPosition]: currSerial !== 0 ? prev[prevPosition] - 1 : prev[prevPosition] }));
     }
+    // console.log(productPosition);
+  };
+
+  const handleCheckChange = (e, productId) => {
+    const isChecked = e.target.checked;
+    const position = GetPositionName(productId);
+    const currSerial = GetSerialNo(productId);
+    console.log('isChecked: ' + isChecked + ' - position: ' + position + ' - currSerial: ' + currSerial);
+    if (isChecked && position && position.length !== 0) {
+      setProductPosition((prev) => ({
+        ...prev,
+        [position]: [...prev[position].map((product) => product.product_id === productId ? { ...product, serial_no: serial_noState[position] + 1 } : product)]
+      }));
+      setSerial_no_State((prev) => ({ ...prev, [position]: prev[position] + 1 }));
+      // console.log(serial_noState);
+    } else if (currSerial !== 0) {
+      setProductPosition((prev) => ({
+        ...prev,
+        [position]: [...prev[position].map((product) => product.product_id === productId ? { ...product, serial_no: 0 } : { ...product, serial_no: currSerial !== 0 && currSerial < product.serial_no ? product.serial_no - 1 : product.serial_no })]
+      }));
+      setSerial_no_State((prev) => ({ ...prev, [position]: prev[position] - 1 }));
+    }
+
   };
 
   useEffect(() => {
-    console.log(
-      "setSerial_no_State : " + JSON.stringify(serial_noState, null, 2)
-    );
-  }, [productPosition, serial_noState]);
+    dispatch({
+      type: 'set_search_function',
+      payload: {
+        function: SearchSelectHomeProducts,
+        params: {
+          1: dataState.Production_Page.TableRows,
+          2: setProductsData,
+          3: GetSerialNo
+        }
+      }
+    })
+  }, [dataState.Production_Page.TableRows, GetSerialNo]);
 
   return (
     <div>
@@ -417,13 +346,42 @@ const SelectHomeProducts = () => {
                   <input
                     type="checkbox"
                     checked={isChecked(product.id)}
-                    onChange={(e) =>
-                      handleSerialNo(e, product.id, GetPositionName(product.id))
-                    }
-                  ></input>{" "}
+                    onChange={(e) => handleCheckChange(e, product.id)}
+                  ></input>
                   <span>{GetSerialNo(product.id)}</span>
                 </td>
-                <td>{PositionDropdown(product.id, product.type)}</td>
+                <td>
+                  <select
+                    style={{ backgroundColor: getActionText(GetPositionName(product.id)) }}
+                    className={styles.page_eight_product_select}
+                    value={GetPositionName(product.id)}
+                    onChange={(e) => handlePositionChange(e, product.id, product.type)}
+                  >
+                    <option
+                      value=""
+                    >
+                      Select Position
+                    </option>
+                    <option
+                      value="ready_for_orders"
+                      selected={GetPositionName(product.id) === 'ready_for_orders'}
+                    >
+                      Ready for Orders
+                    </option>
+                    <option
+                      value="featured_products"
+                      selected={GetPositionName(product.id) === 'featured_products'}
+                    >
+                      Featured Products
+                    </option>
+                    <option
+                      value="new_arrival"
+                      selected={GetPositionName(product.id) === 'new_arrival'}
+                    >
+                      New Arrival
+                    </option>
+                  </select>
+                </td>
               </tr>
             ))}
           </tbody>

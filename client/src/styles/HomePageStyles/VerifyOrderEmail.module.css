@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.verification-order-email-main-section{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+}
+
+.verification-order-email-inner-main-section{
+    min-width: 350px;
+    max-width: 500px;
+    padding: 10px;
+    box-shadow: 0px 0px 10px 1px rgb(240, 240, 240);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border-radius: 5px;
+}
+
+.text-span{
+    font-family: "Roboto", serif;
+    font-weight: 500;
+    color: #ff8a2b;
+    text-align: center;
+}
+
+.verification-inner-input-div{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.verification-inner-input-div input{
+    max-width: 50px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    outline: none;
+    border: 2px solid rgb(113, 113, 113);
+    font-family: "Roboto", serif;
+    text-align: center;
+    font-weight: 600;
+}
+
+.verification-inner-button-div{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.verification-inner-button-div button{
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-family: "Roboto", serif;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    background-color: #ff8a2b;
+    border: none;
+    outline: none;
+    transition: ease-in-out 0.2s;
+}
+
+.verification-inner-button-div button:hover{
+    background-color: #ffba82;
+}

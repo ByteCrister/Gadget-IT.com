@@ -7,23 +7,8 @@ import { useData } from '../../context/useData';
 import { Link } from 'react-router-dom';
 import { GetDate } from '../../HOOKS/GetDate';
 
-const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement }) => {
+const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement, ratingRef }) => {
     const { dataState } = useContext(useData);
-
-    const [Ratings, setRatings] = useState([
-        {
-            name: 'Maynul Islam',
-            date: '18 Sep 2024',
-            review: 'I have a Dual Band router at my home, I want to purchase the TCL 40 SE, my question is does the smartphone support 5Ghz Wifi ?',
-            rating: 4
-        },
-        {
-            name: 'Aziz Ahmad Oli',
-            date: '12 May 2024',
-            review: 'Does this phone have a type-c charging port?',
-            rating: 5
-        }
-    ]);
     const [RatingStars, setRatingStars] = useState([]);
 
     useEffect(() => {
@@ -42,7 +27,7 @@ const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement }) =>
     }, [ratings]);
 
     return (
-        <section className={styles.MainQuestion}>
+        <section className={styles.MainQuestion} ref={ratingRef}>
             <div className={styles.Upper}>
                 <section>
                     <div>
@@ -86,4 +71,4 @@ const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement }) =>
     )
 }
 
-export default UserRating
+export default UserRating;

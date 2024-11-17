@@ -13,6 +13,54 @@ const getTableName = (table, MainTables, SubTables) => {
     }
 };
 
+const getMainTableName = (category, SubCategory) => {
+    while (1) {
+        let parentCategory = SubCategory.find((item) => item.sub_category_name === category);
+        if (!parentCategory) {
+            return category;
+        }
+        category = parentCategory.main_category_name;
+    }
+};
+
+const isChildEmpty = async (MainTable, category, SubCategory) => {
+    let child = [category];
+    while (true) {
+        const isChild = SubCategory.find((item) => item.main_category_name === category);
+        if (!isChild) {
+            break;
+        }
+        child.push(isChild.sub_category_name);
+        category = isChild.sub_category_name;
+    }
+
+    console.log(child);
+
+    if (child && child.length !== 0) {
+        for (let i = 0; i < child.length; i++) {
+            try {
+                const ProductsBySubCategory = await new Promise((resolve, reject) => {
+                    productionManageModel.getProductsBySub(MainTable, child[i], (err, data) => {
+                        if (err) reject(err);
+                        resolve(data);
+                    });
+                });
+                if (ProductsBySubCategory && ProductsBySubCategory.length > 0) {
+                    console.log('length: ');
+                    console.log(ProductsBySubCategory.length);
+                    return true;
+                }
+            } catch (err) {
+                console.error("Error fetching products:", err);
+                return false;
+            }
+        }
+    }
+
+    return false;
+};
+
+
 
 const DeletingSubCategory = async (category, subCategoryArr) => {
     try {
@@ -94,6 +142,7 @@ module.exports = {
         console.log('Main : ' + req.body.main + '  Sub : ' + req.body.sub);
         try {
             if (req.body.main === req.body.sub) {
+           
                 //Delete the main category table
                 await new Promise((resolve, reject) => {
                     productionManageModel.deleteMainCategoryTable(req.body.main, (err, data) => {
@@ -150,42 +199,35 @@ module.exports = {
                         else resolve(data)
                     })
                 });
+                //Delete from home product select
+                await new Promise((resolve, reject) => {
+                    productionManageModel.deleteHome_product_select(req.body.main, (err, data) => {
+                        if (err) reject(err)
+                        else resolve(data)
+                    })
+                });
 
 
-                //Delete sub category's of this main category
+                //*Delete sub category's of this main category
                 await DeletingSubCategory(req.body.main, [req.body.main]);
             } else {
-                // Deleting product's with this sub category names
+                //*Deleting product's with this sub category names
                 const ReturnedNames = await new Promise((resolve, reject) => {
                     productionManageModel.getMainCategoryNames(req.body.main, (err, data) => {
                         if (err) reject(err)
                         resolve(data);
                     });
                 });
+                console.log(ReturnedNames);
                 if (ReturnedNames && ReturnedNames.length > 0) {
-                    productionManageModel.deleteProductsWithSubNames(req.body.sub, req.body.main, (err, data) => {
-                        if (err) reject(err)
-                        resolve(data);
+                    await new Promise((resolve, reject) => {
+                        productionManageModel.deleteProductsWithSubNames(req.body.sub, req.body.main, (err, data) => {
+                            if (err) reject(err)
+                            resolve(data);
+                        });
                     });
-                } else {
-                    //Have to find out the table name first
-                    const MainCategory = productionManageModel.getMainCategory((err, data) => {
-                        if (err) reject(err)
-                        resolve(data);
-                    });
-                    const SubCategory = productionManageModel.getSubCategory((err, data) => {
-                        if (err) reject(err)
-                        resolve(data);
-                    });
-
-                    const MainTable = getTableName(req.body.sub, MainCategory, SubCategory);
-                    productionManageModel.deleteProductsWithSubNames(req.body.sub, MainTable, (err, data) => {
-                        if (err) reject(err)
-                        resolve(data);
-                    });
-
                 }
-                //Delete this subCategory and it's other sub category's
+                //*Delete this subCategory and it's other sub category's
                 await new Promise((resolve, reject) => {
                     productionManageModel.deleteSingleSubCategory(req.body.sub, req.body.main, (err, data) => {
                         if (err) reject(err)
@@ -205,9 +247,9 @@ module.exports = {
     renameCategoryController: async (req, res) => {
         console.log('Main : ' + req.body.main + '  Sub : ' + req.body.sub);
         try {
-            //* Is current category main or sub?
+            // **Is current category main or sub?**
             const CurrentCategory = req.body.main === req.body.sub ? req.body.main : req.body.sub
-            if (req.body.main === req.body.sub) {
+            if (req.body.main === CurrentCategory) {
                 await new Promise((resolve, reject) => {
                     productionManageModel.renameMainCategoryTable(req.body.main, req.body.newName, (err, data) => {
                         if (err) reject(err)
@@ -382,6 +424,52 @@ module.exports = {
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: "Failed deleting key feature." });
+        }
+    },
+
+    getIsCategoryEmpty: async (req, res) => {
+        const { category } = req.params;
+        console.log('sub:', category);
+        try {
+            let isEmpty = false;
+
+            // Check if it is a main category
+            const MainCategory = await new Promise((resolve, reject) => {
+                productionManageModel.getCat((err, data) => {
+                    if (err) reject(err);
+                    resolve(data);
+                });
+            });
+
+            if (MainCategory.some((product) => product.category_name === category)) {
+                const Products = await new Promise((resolve, reject) => {
+                    productionManageModel.getProducts(category, (err, data) => {
+                        if (err) reject(err);
+                        resolve(data);
+                    });
+                });
+                isEmpty = Products && Products.length > 0;
+                return res.send(isEmpty);
+            } else {
+                // Check if it's a subcategory
+                const SubCategory = await new Promise((resolve, reject) => {
+                    productionManageModel.getSubCat((err, data) => {
+                        if (err) reject(err);
+                        resolve(data);
+                    });
+                });
+
+                const MainTable = getMainTableName(category, SubCategory);
+                console.log('Table:', MainTable);
+
+                const isCategoryHasProduct = await isChildEmpty(MainTable, category, SubCategory);
+                console.log('isCategoryHasProduct?:', isCategoryHasProduct);
+                return res.send(isCategoryHasProduct);
+            }
+
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: "Failed finding category empty status." });
         }
     }
 

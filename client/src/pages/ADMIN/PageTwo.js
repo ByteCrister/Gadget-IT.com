@@ -14,7 +14,7 @@ import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import { SearchInventory } from '../../HOOKS/SearchInventory';
 import { Api_Inventory } from '../../api/Api_Inventory';
 
-const PageTwo = React.memo(() => {
+const PageTwo = React.memo(({setErrorCategory}) => {
   const { dataState, dispatch } = useContext(useData);
 
   const [productsData, setProductsData] = useState(dataState.Inventory_Page);
@@ -27,11 +27,26 @@ const PageTwo = React.memo(() => {
 
   useEffect(() => {
     console.log('page two renders');
-    setProductsData(dataState.Inventory_Page);
-    initializeCheck();
-    sortProducts(filterState.state);
+    if (dataState?.Inventory_Page) {
+      setProductsData(dataState.Inventory_Page);
+      initializeCheck();
+      sortProducts(filterState.state);
+    }
 
   }, [dataState, dispatch]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'set_search_function',
+      payload: {
+        function: SearchInventory,
+        params: {
+          p_1: dataState.Inventory_Page,
+          p_2: setProductsData
+        }
+      }
+    })
+  }, []);
 
 
   //* ------------------------------ product checked ------------------------
@@ -110,15 +125,15 @@ const PageTwo = React.memo(() => {
     } else if (state === 2) {
       sortedData.sort((a, b) => Number(a.id) - Number(b.id));
     } else if (state === 3) {
-      sortedData.sort((a, b) => Number(a.quantity) - Number(b.quantity));
-    } else if (state === 4) {
       sortedData.sort((a, b) => Number(a.incoming) - Number(b.incoming));
-    } else if (state === 5) {
+    } else if (state === 4) {
       sortedData.sort((a, b) => Number(a.reserved) - Number(b.reserved));
+    } else if (state === 5) {
+      sortedData.sort((a, b) => Number(a.quantity) - Number(b.quantity));
     } else if (state === 6) {
       sortedData.sort((a, b) => Number(a.price) - Number(b.price));
     } else {
-      sortedData = dataState.Inventory_Page;
+      sortedData = [...dataState.Inventory_Page];
     }
     setProductsData(sortedData);
   };
@@ -268,11 +283,11 @@ const PageTwo = React.memo(() => {
       </section>
 
       {
-        addProductState && <AddProducts setAddProductState={setAddProductState} />
+        addProductState && <AddProducts setAddProductState={setAddProductState} setErrorCategory={setErrorCategory}/>
       }
     </div>
   );
 }
-)
+);
 
-export default PageTwo;
+export default React.memo(PageTwo);

@@ -145,7 +145,8 @@ module.exports = {
                 });
             });
             const TableName = await getTableName(category, MainTables, SubTables);
-            console.log(TableName);
+            console.log('Table: '+TableName+', ID: '+id);
+            // console.log(MainTableEndIndex);
 
             //*------------------- Update Stock Values ------------------
             await new Promise((resolve, reject) => {

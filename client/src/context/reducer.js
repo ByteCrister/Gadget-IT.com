@@ -9,7 +9,7 @@ const addRecent = (CurrProduct, RecentProducts) => {
             return updatedRecentProducts;
         }
 
-        if (RecentProducts.length >= 10) {
+        if (RecentProducts.length >= 5) {
             RecentProducts.pop();
         }
 
@@ -43,7 +43,9 @@ const initializeCart = (productStorage, payload, CartStorage) => {
     return [...initialCartProduct];
 };
 
-const addProductToCart = (ProductStorage, product_id, CartStorage) => {
+const addProductToCart = (ProductStorage, payload, CartStorage) => {
+    const product_id = payload.product_id;
+    const quantity = payload.quantity;
     console.log(`Product ID : ${product_id} added to cart.`);
     let allProducts = [];
     const initialProducts = window.localStorage.getItem('CartStorage') ? JSON.parse(window.localStorage.getItem('CartStorage')) : [];
@@ -60,9 +62,9 @@ const addProductToCart = (ProductStorage, product_id, CartStorage) => {
     allProducts.forEach((product) => {
         if (Number(product.product_id) === Number(product_id)) {
             const productPrice = ProductStorage.product_prices.find((product_) => product_.product_id === product.product_id)?.price;
-            initialProducts.unshift({ product_id: product_id, quantity: 1 });
+            initialProducts.unshift({ product_id: product_id, quantity: quantity, main_category: product.main_category });
             window.localStorage.setItem('CartStorage', JSON.stringify(initialProducts));
-            CartStorage.unshift({ product_id: product_id, quantity: 1, image: product.image, product_name: product.product_name, brand: product.brand, price: productPrice });
+            CartStorage.unshift({ product_id: product_id, quantity: quantity, image: product.image, product_name: product.product_name, brand: product.brand, price: productPrice, main_category: product.main_category });
             return [...CartStorage];
         }
     });
@@ -82,6 +84,12 @@ const removeProductFromCart = (product_id, CartStorage) => {
 const reducer = (state, action) => {
 
     switch (action.type) {
+
+        case 'set_order_page':
+            return {
+                ...state,
+                Order_Page: action.payload
+            }
 
         case 'update_product_from_cart':
             return {
@@ -150,6 +158,23 @@ const reducer = (state, action) => {
                 }
             }
 
+        case 'update_user_report':
+            return {
+                ...state,
+                Report_Page: { ...state.Report_Page, report_data: action.payload }
+            }
+
+        case 'set_users_page':
+            return {
+                ...state,
+                Users_Page: action.payload,
+            }
+
+        case 'set_report_page':
+            return {
+                ...state,
+                Report_Page: action.payload
+            }
         case 'set_support_page':
             return {
                 ...state,
@@ -191,6 +216,30 @@ const reducer = (state, action) => {
                 Production_Page: action.payload
             }
 
+        case 'set_new_notification_admin':
+            return {
+                ...state,
+                Outer_Page: {
+                    ...state.Outer_Page,
+                    notification_admin: action.payload
+                }
+            }
+
+        case 'set_new_admin_count':
+            return {
+                ...state,
+                Outer_Page: {
+                    ...state.Outer_Page,
+                    admin_count: action.payload
+                }
+            }
+
+        case 'set_outer_page':
+            return {
+                ...state,
+                Outer_Page: action.payload
+            }
+
         case 'set_categories':
             return {
                 ...state,
@@ -211,6 +260,58 @@ const reducer = (state, action) => {
                 isUserLoggedIn: action.payload.isUserLoggedIn,
                 token: action.payload.token
             }
+
+        case 'set_user_new_notification_count':
+            return {
+                ...state,
+                User_Notifications: {
+                    ...state.User_Notifications,
+                    user_notification_count: action.payload
+                }
+            }
+
+        case 'set_user_notifications':
+            return {
+                ...state,
+                User_Notifications: action.payload
+            }
+
+        case 'set_search_function':
+            return {
+                ...state,
+                Search_Function: {
+                    function: action.payload.function,
+                    params: action.payload.params
+                }
+            }
+
+        case 'set_view_product_scroll_ref':
+            return {
+                ...state,
+                ViewProductScrollRef: action.payload
+            }
+
+        case 'set_scroll_ref':
+            return {
+                ...state,
+                ScrollRef: action.payload
+            }
+
+        case 'set_profile_button_state':
+            return {
+                ...state,
+                ProfileButtonState: action.payload
+            }
+
+        case 'insert_new_product_rating':
+            return {
+                ...state,
+                productStorage: {
+                    ...state.productStorage,
+                    product_ratings: [...state.productStorage.product_ratings, action.payload]
+                }
+            }
+
 
         case 'toggle_loading':
             return {

@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
-import { useData } from "../context/useData";
-import styles from '../styles/HomePageStyles/CategoryChildContainer.module.css';
 import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
+
+import styles from '../styles/HomePageStyles/CategoryChildContainer.module.css';
+import { useData } from "../context/useData";
 import { GetCategoryName } from '../HOOKS/GetCategoryName';
 
 export const getCategoryChild = (categoryName, Subcategory) => {
@@ -28,7 +30,7 @@ const CategoryChildContainer = ({ category }) => {
     return (
         <>
             {categoryChildren.map((item, index) => (
-                <Link to={`/products/${category}/${item}`} className={styles.categoryChildren}>
+                <Link key={uuidv4()} to={`/products/${category}/${item}`} className={styles.categoryChildren}>
                     <div key={index}>{GetCategoryName(item)}</div>
                 </Link>
             ))}

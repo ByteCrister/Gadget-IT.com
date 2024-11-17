@@ -10,7 +10,7 @@ export const SearchOffers = (searchValue, offerCarts, dataStateOffers, setOfferC
         return;
     }
 
-    searchValue = isNaN(searchValue) ? GetCategoryName(searchValue).toLowerCase() : String(searchValue);
+    searchValue = isNaN(searchValue) ? String(GetCategoryName(searchValue).toLowerCase()) : String(searchValue);
 
     setOfferCarts((prev) => ({
         ...prev,
@@ -21,9 +21,9 @@ export const SearchOffers = (searchValue, offerCarts, dataStateOffers, setOfferC
     offerCarts.MainOfferCarts.forEach((offer) => {
         let totalPoint = 0;
         Object.entries(offer).forEach(([key, value]) => {
-            if (key !== 'point' && key !== 'cart_no' && key !== 'cart_image') {
+            if (key !== 'point' && key !== 'cart_image') {
                 totalPoint += String(value).toLowerCase().includes(searchValue) ? 1 : 0;
-                totalPoint += String(value).toLowerCase() === value ? 10 : 0;
+                totalPoint += String(value).toLowerCase() === searchValue ? 10 : 0;
             }
         });
         setOfferCarts((prev) => ({

@@ -45,12 +45,50 @@ module.exports = {
         db.query('update user set password = ? where user_id = ? ;', [newPassword, user_id], callback);
     },
 
-    InsertPreOrder : (preOrderState, callback)=>{
+    InsertPreOrder: (preOrderState, callback) => {
         db.query(
             'insert into preorder (user_id, product_name, image, name, phone_no, email, address) values (?, ?, ?, ?, ?, ?, ?) ;',
             [preOrderState.user_id, preOrderState.product_name, preOrderState.product_image, preOrderState.user_name, preOrderState.phone_number, preOrderState.email, preOrderState.address],
             callback
         );
+    },
+
+    getMainReportQuery: (callback) => {
+        db.query('select * from report_main ;', callback);
+    },
+
+    getSubReportQuery: (callback) => {
+        db.query('select * from report_sub ;', callback);
+    },
+
+    postNewUserReportQuery: (user_id, reportStr, report_description, callback) => {
+        db.query('insert into user_report (user_id, report_string, report_description) values ( ?, ?, ? ) ;',
+            [user_id, reportStr, report_description],
+            callback);
+    },
+
+    getUserOrderInfoQuery: (user_id, callback) => {
+        db.query('select * from user_order where user_id = ?  order by order_id desc ; ', [user_id], callback);
+    },
+
+    getUserOrderProduct: (order_id, callback) => {
+        db.query('select * from user_order_products where order_id = ? ; ', [order_id], callback);
+    },
+
+    getUserNotificationCountQuery: (user_id, callback) => {
+        db.query('select notification_count from notification_user_count where user_id = ? ; ', [user_id], callback);
+    },
+
+    getUserNotifications: (user_id, callback) => {
+        db.query('select * from notification_user where user_id = ? order by notification_user_no desc; ', [user_id], callback);
+    },
+
+    updateUserNotificationViewQuery: (notification_user_no, callback) => {
+        db.query('update notification_user set viewed  = ? where notification_user_no = ? ;', [1, notification_user_no], callback);
+    },
+
+    updateUserNotificationCountQuery: (count, user_id, callback) => {
+        db.query('update notification_user_count set notification_count = ? where user_id = ? ; ', [count, user_id], callback);
     }
 
 }

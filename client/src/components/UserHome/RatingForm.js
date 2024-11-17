@@ -10,16 +10,19 @@ const RatingForm = () => {
   const { 'product-id': product_id, 'product-name': product_name } = useParams();
   const navigate = useNavigate();
   const [rating, setRating] = useState('5');
+  const [User, setUser] = useState(null);
   const UserReview = useRef();
 
   useEffect(() => {
     const GetEmail = async () => {
       try {
-        await axios.get('http://localhost:7000/get/user-email', {
+        const res = await axios.get('http://localhost:7000/get/user-email', {
           headers: {
             Authorization: dataState.token
           }
-        })
+        });
+        setUser(res.data.user);
+
       } catch (error) {
         dispatch({ type: 'toggle_isServerIssue', payload: true });
         window.localStorage.removeItem('token');
@@ -52,6 +55,19 @@ const RatingForm = () => {
         });
 
         navigate(dataState.pathSettings.currPath);
+        if(User){
+          dispatch({
+            type: 'insert_new_product_rating',
+            payload: {
+              fname: User.first_name,
+              name: User.last_name,
+              product_id: Number(product_id),
+              rating: rating,
+              rating_date: new Date().toISOString(),
+              review: UserReview.current.value.trim()
+            }
+          });
+        }
       } catch (error) {
         dispatch({ type: 'toggle_isServerIssue', payload: true });
         window.localStorage.removeItem('token');
@@ -59,7 +75,7 @@ const RatingForm = () => {
       }
     }
 
-  }, [dispatch, product_id, rating]);
+  }, [ User, navigate, rating, dispatch, product_id, dataState.pathSettings.currPath, dataState.token]);
 
   return (
     dataState.isServerIssue === true
@@ -128,4 +144,4 @@ const RatingForm = () => {
   )
 }
 
-export default RatingForm
+export default React.memo(RatingForm);

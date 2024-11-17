@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.offer-main-products-container{
+    width: 100%;
+    padding: 10px;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.offer-main-products-upper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 5px;
+    /* background-color: aqua; */
+}
+
+.offer-main-products-sort-section{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f6f6f6;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.offer-main-products-sort-text{
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: #424242;
+}
+
+.offer-main-products-sort-section-div{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.offer-main-products-sort-section-div span{
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: #424242;
+}
+
+.offer-main-products-sort-section-div select{
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    color: #424242;
+    text-align: center;
+    outline: none;
+    border: 1.5px solid rgb(203, 203, 203);
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.offer-main-products-lower{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ------------------------ */
+.offer-time-section{
+    display: flex;
+    gap: 10px;
+}
+
+.offer-time-section div{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+.offer-time-section-text{
+    font-family: "Poppins", sans-serif;
+    color: #f27f20;
+}
+
+.offer-time-section-time-text-main{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.offer-time-section-time-text-main div{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.offer-time-section-time-text{
+    width: 20px;
+    height: 20px;
+    background-color: #f27f20;
+    color: aliceblue;
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 2px 3px;
+    border-radius: 2px;
+    
+}
+.offer-time-section-time-text-main div span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+}
+
+.offer-time-section-time-text-times{
+    font-family: "Poppins", sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: grey;
+}
+
+@media (max-width: 450px){
+    .offer-main-products-container{
+        padding-top: 100px;
+    }
+}

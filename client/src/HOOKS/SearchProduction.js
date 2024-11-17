@@ -2,22 +2,19 @@ import { GetCategoryName } from './GetCategoryName';
 const getStock = (item) => {
     return Number(item.quantity) <= 0 ? 'out of stock' : Number(item.reserved) > Number(item.quantity) ? 'low stock' : 'in stock';
 }
+const vendorStr = 'low stock  out of stock in stock';
 
 export const SearchProduction = (searchValue, products, setProductsData) => {
-
+    searchValue = isNaN(searchValue) ? String(GetCategoryName(searchValue)).toLowerCase() : String(searchValue);
     setProductsData(products.map((item) => ({ ...item, point: 0 })));
-    console.log(products);
     products.forEach((item, index) => {
         let totalPoint = 0;
         Object.entries(item).forEach(([key, value]) => {
             if (key !== 'incoming' && key !== 'reserved' && key !== 'quantity') {
-                if (key === 'type' || key === 'vendor' || key === 'name') {
-                    totalPoint += GetCategoryName(value).toLowerCase().includes(searchValue.toLowerCase()) ? 1 : 0;
-                    totalPoint += GetCategoryName(value).toLowerCase() === searchValue.toLowerCase() ? 10 : 0;
-                }
-                if (key === 'id') {
-                    totalPoint += String(value).includes(searchValue.trim()) ? 1 : 0;
-                    totalPoint += String(value) === searchValue.trim() ? 10 : 0;
+                totalPoint += String(value).includes(searchValue) ? 1 : 0;
+                totalPoint += String(value) === searchValue ? 10 : 0;
+                if (key === 'vendor') {
+                    totalPoint += vendorStr.includes(searchValue) ? 3 : 0;
                 }
             }
         });

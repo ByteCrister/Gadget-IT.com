@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -25,13 +26,14 @@ const SwiperMainAdd = () => {
                         autoplay={{ delay: 3000, disableOnInteraction: false }}
                         loop={true}
                         className={styles.mySwiper}
+                        key={uuidv4()}
                     >
                         {
                             dataState.UserHomeContents?.advertisements.filter((item) => {
                                 return item.position === 'main'
                             }).map((item, i) => {
-                                return <SwiperSlide>
-                                    <img src={item.img} alt={`Advertisement-${i}`} />
+                                return <SwiperSlide key={uuidv4()}>
+                                    <img key={uuidv4()} src={item.img} alt={`Advertisement-${i}`} />
                                 </SwiperSlide>
                             })
                         }
@@ -43,7 +45,7 @@ const SwiperMainAdd = () => {
                         dataState.UserHomeContents?.advertisements.filter((item) => {
                             return item.position === 'sub'
                         }).slice(0, 2).map((item, i) => {
-                            return <img src={item.img} alt={`Advertisement-${i}`} />
+                            return <img key={uuidv4()} src={item.img} alt={`Advertisement-${i}`} />
                         })
                     }
                 </div>

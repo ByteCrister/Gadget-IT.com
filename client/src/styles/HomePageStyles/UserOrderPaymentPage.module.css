@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.main-payment-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    gap: 20px;
+}
+.main-payment-section > div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    box-shadow: 0px 0px 10px 1px rgb(238, 238, 238);
+    padding: 10px 15px;
+    border-radius: 5px;
+    gap: 10px;
+    min-width: 300px;
+}
+
+.payment-div-error-span{
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgb(255, 66, 66);
+}
+
+.payment-default-span{
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgb(57, 119, 255);
+}
+
+.payment-div-amount-span{
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(53, 53, 53);
+}
+
+.main-payment-section > div input{
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 13px;
+    color: rgb(31, 31, 31);
+    padding: 5px 10px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    outline: none;
+    width: 100%;
+    transition: ease-in-out 0.2s;
+}
+
+.main-payment-section > div input:focus{
+    border: 1px solid #f27f20;
+
+}
+
+.main-payment-section > div button{
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    padding: 5px 15px;
+    background-color: #f27f20;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+}

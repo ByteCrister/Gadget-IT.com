@@ -1,194 +1,448 @@
-import React, { useState } from 'react';
-import OrdersTable from '../../OrdersTable.json';
-import styles from '../../styles/AdminHome/PageFour.module.css';
+import React, { useContext, useEffect, useState } from "react";
 import { IoFilter } from "react-icons/io5";
-import OrderPageFilter from '../../components/AdminHome/OrderPageFilter';
-import NewOrderPlaced from '../../components/AdminHome/NewOrderPlaced';
-import Pagination from '../../HOOKS/Pagination';
+import { TbTrashOff } from "react-icons/tb";
+import { IoShieldCheckmark, IoShieldCheckmarkOutline } from "react-icons/io5";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+
+
+import styles from "../../styles/AdminHome/PageFour.module.css";
+import Pagination from "../../HOOKS/Pagination";
+import { useData } from "../../context/useData";
+import axios from "axios";
 
 const PageFour = () => {
+  const { dataState, dispatch } = useContext(useData);
+  const [OrderStore, setOrderStore] = useState({
+    MainProducts: [],
+    filteredProducts: [],
+  });
+  const [filterState, setFilterState] = useState(0);
   const [currentOrderPage, setCurrentOrderPage] = useState(1);
-  const [mainProducts, setMainProduct] = useState(OrdersTable.orders);
-  const [filteredProducts, setFilteredProducts] = useState(OrdersTable.orders);
+  // const [newOrderPage, setNewOrderPage] = useState(false);
+  const [OrderCount, setOrderCount] = useState({});
 
-  const [filterActiveState, setFilterActiveState] = useState(false);
-  const [newOrderPage, setNewOrderPage] = useState(false);
+  const [OrderDetail, setOrderDetail] = useState({
+    isOrderDetailOn: false,
+    UserOrderInfo: {},
+    OrderProductInfo: []
+  });
 
-  const handleOrderPageData = (state, actionText) => {
-    if (state === 1) {
-      setMainProduct(OrdersTable.orders);
-    } else {
-      setMainProduct(
-        OrdersTable.orders.filter((data) => {
-          return data.action === actionText;
-        })
-      )
+  useEffect(() => {
+    if (dataState?.Order_Page && dataState.Order_Page.length !== 0) {
+      const PageData = [...dataState.Order_Page];
+      setOrderStore((prev) => ({
+        ...prev,
+        MainProducts: PageData,
+        filteredProducts: PageData,
+      }));
+      setOrderCount({
+        AllOrders: PageData.length,
+        Processing:
+          PageData.filter(
+            (order) => order.OrderInfo.order_status === "Order is Processing"
+          ).length,
+        OrderPlaced:
+          PageData.filter((order) => order.OrderInfo.order_status === "Order Placed")
+            .length,
+        OnTheWay:
+          PageData.filter(
+            (order) => order.OrderInfo.order_status === "Way to Destination"
+          ).length,
+        ReadyToCollect:
+          PageData.filter((order) => order.OrderInfo.order_status === "Ready to Collect")
+            .length,
+        Cancel:
+          PageData.filter((order) => order.OrderInfo.order_status === "Canceled")
+            .length,
+      });
+      console.log(PageData);
     }
-  }
+  }, [dataState.Order_Page]);
 
-  const handleFilteredData = (data) => {
-    setFilteredProducts((prev) => data);
-  }
+  const handleFilter = () => {
+    setFilterState(prev => prev === 10 ? 0 : prev + 1);
+    let Updated = [...dataState.Order_Page];
+    console.log(filterState);
+    const state = filterState + 1;
+    if (state >= 1 && state <= 2) {
+      Updated = Updated.sort((a, b) => state === 1 ? a.OrderInfo.order_id - b.OrderInfo.order_id : b.OrderInfo.order_id - a.OrderInfo.order_id);
+    } else if (state >= 3 && state <= 4) {
+      Updated = Updated.sort((a, b) => state === 3 ? a.OrderInfo.user_id - b.OrderInfo.user_id : b.OrderInfo.user_id - a.OrderInfo.user_id);
+    } else if (state >= 5 && state <= 6) {
+      Updated = Updated.sort((a, b) => state === 5 ? a.OrderInfo.phone_number.localeCompare(b.OrderInfo.phone_number) : b.OrderInfo.phone_number.localeCompare(a.OrderInfo.phone_number));
+    } else if (state >= 7 && state <= 8) {
+      Updated = Updated.sort((a, b) => state === 7 ? new Date(a.OrderInfo.order_date) - new Date(b.OrderInfo.order_date) : new Date(b.OrderInfo.order_date) - new Date(a.OrderInfo.order_date));
+    } else if (state >= 9 && state <= 10) {
+      Updated = Updated.sort((a, b) => state === 9 ? a.OrderInfo.order_status.localeCompare(b.OrderInfo.order_status) : b.OrderInfo.order_status.localeCompare(a.OrderInfo.order_status));
+    }
 
-  const orderCount = {
-    AllOrders: OrdersTable.orders.length,
-    Processing: OrdersTable.orders.filter((value) => value.action === 'Order Is Processing').length,
-    OrderPlaced: OrdersTable.orders.filter((value) => value.action === 'Order Placed').length,
-    OnTheWay: OrdersTable.orders.filter((value) => value.action === 'Way to Destination').length,
-    ReadyToCollect: OrdersTable.orders.filter((value) => value.action === 'Ready to Collect').length,
-    Cancel: OrdersTable.orders.filter((value) => value.action === 'Canceled').length,
+    setOrderStore((prev) => ({
+      ...prev,
+      MainProducts: [...Updated]
+    }));
   };
+
+  const renderProductDetail = () => {
+    return (
+      <section className={styles['product-detail-section']}>
+        <div className={styles['product-detail-user-info']}>
+          <span>Name: {OrderDetail.UserOrderInfo.name}</span>
+          <span>Address: {OrderDetail.UserOrderInfo.full_address}</span>
+        </div>
+        <section className={styles['product-detail-table-section']}>
+          <table>
+            <thead>
+              <tr>
+                <th>Product ID</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                OrderDetail.OrderProductInfo.map((product) => {
+                  return <tr>
+                    <td>{product.product_id}</td>
+                    <td>{product.quantity}</td>
+                  </tr>
+                })
+              }
+            </tbody>
+          </table>
+        </section>
+        <button onClick={() => setOrderDetail(prev => ({ ...prev, isOrderDetailOn: false }))}>Back</button>
+      </section>
+    )
+  };
+
+  const performDeleteData = async (order_id) => {
+    try {
+      await axios.delete(`http://localhost:7000/delete-order/${order_id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteOrder = async (selected, order_id) => {
+    if (selected && window.confirm(`Do you want to delete order - ${order_id}?`)) {
+      let Updated = [...dataState.Order_Page];
+      Updated = Updated.filter((order) => {
+        return order.OrderInfo.order_id !== order_id
+      });
+      setOrderStore((prev) => ({
+        ...prev,
+        MainProducts: Updated,
+      }));
+      dispatch({ type: "set_order_page", payload: Updated });
+      await performDeleteData(order_id);
+    }
+  };
+
+  const handleOrderDetail = (Order) => {
+    setOrderDetail({
+      isOrderDetailOn: true,
+      UserOrderInfo: Order.OrderInfo,
+      OrderProductInfo: Order.OrderProducts
+    });
+  };
+
+  const handleOrderPageData = (keyState) => {
+    let Updated = [...dataState.Order_Page];
+    if (keyState && keyState.length > 0) {
+      Updated = Updated.filter((item) => {
+        return item.OrderInfo.order_status === keyState;
+      });
+    }
+    setOrderStore((prev) => ({
+      ...prev,
+      MainProducts: Updated,
+    }));
+  };
+
+  const handleFilteredData = async (data) => {
+    const resolvedData = await data;
+    setOrderStore((prev) => ({
+      ...prev,
+      filteredProducts: resolvedData,
+    }));
+  };
+
   const getActionText = (text) => {
-    return text === 'Order Is Processing' ? '#d0ffd4' : text === 'Order Placed' ? '#a9fffb' : text === 'Way to Destination' ? '#c3dfff' : text === 'Ready to Collect' ? '#74ff74' : '#ffc0a7';
+    return text === "Order is Processing"
+      ? "#d0ffd4"
+      : text === "Order Placed"
+        ? "#a9fffb"
+        : text === "Way to Destination"
+          ? "#c3dfff"
+          : text === "Ready to Collect"
+            ? "#74ff74"
+            : "#ffc0a7";
+  };
 
-  }
-  const handleActionChange = (event, orderIndex) => {
-    // Handle action change logic here
+  const getNewOrderStatus = (currStatus, newStatus) => {
+    if (currStatus === "Canceled") return currStatus;
 
-    console.log(`Order ${orderIndex} action changed to ${event.target.value}`);
+    if (currStatus === "Order is Processing" && newStatus === "Order Placed")
+      return newStatus;
+
+    if (currStatus === "Order Placed" && newStatus === "Way to Destination")
+      return newStatus;
+
+    if (currStatus === "Way to Destination" && newStatus === "Ready to Collect")
+      return newStatus;
+
+    return currStatus;
+  };
+
+  const handleNewUserOrderNotification = async (user_id, order_id, status) => {
+    try {
+      await axios.post('http://localhost:7000/new-order-user-notification', {
+        user_id: user_id,
+        order_id: order_id,
+        status: status
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateOrderStatus = async (newStatus, order_id) => {
+    try {
+      await axios.patch(`http://localhost:7000/update/order-status`, {
+        newStatus: newStatus,
+        order_id: order_id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleActionChange = async (e) => {
+    let Updated = await Promise.all(OrderStore.MainProducts.map(async (item) => {
+      const newStatus = getNewOrderStatus(item.OrderInfo.order_status, e.target.value);
+      if (item.OrderInfo.selected && newStatus === e.target.value) {
+        await handleUpdateOrderStatus(newStatus, item.OrderInfo.order_id);
+        await handleNewUserOrderNotification(item.OrderInfo.user_id, item.OrderInfo.order_id, newStatus);
+        return {
+          ...item,
+          OrderInfo: {
+            ...item.OrderInfo,
+            order_status: newStatus,
+          },
+        };
+      }
+      return item;
+    }));
+    dispatch({ type: "set_order_page", payload: Updated });
+  };
+
+
+  const handleSelectCheckbox = (e, state, order_id) => {
+    const isChecked = e.target.checked;
+    let Updated = [...OrderStore.MainProducts];
+
+    if (state === 0) {
+      Updated = Updated.map((item) => {
+        return {
+          ...item,
+          OrderInfo: { ...item.OrderInfo, selected: isChecked ? true : false },
+        };
+      });
+    } else {
+      Updated = Updated.map((item) => {
+        return item.OrderInfo.order_id === order_id
+          ? {
+            ...item,
+            OrderInfo: {
+              ...item.OrderInfo,
+              selected: isChecked ? true : false,
+            },
+          }
+          : item;
+      });
+    }
+    setOrderStore((prev) => ({
+      ...prev,
+      MainProducts: Updated,
+    }));
+  };
+
+  const renderInvoiceChange_Api = async (Order) => {
+    try {
+      await axios.post('http://localhost:7000/post-new-order-invoice', {
+        Order
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  const handleInvoiceChange = async (order_id) => {
+    const isSelected = OrderStore.MainProducts.find((Order) => Order.OrderInfo.order_id === order_id)?.OrderInfo?.selected || false;
+    if (isSelected) {
+      setOrderStore((prev) => ({
+        MainProducts: prev.MainProducts.map((order) => order.OrderInfo.order_id === order_id ? { ...order, OrderInfo: { ...order.OrderInfo, invoiceLoading: true } } : order)
+      }));
+
+      let Updated = OrderStore.MainProducts.map((Order) => {
+        return Order.OrderInfo.order_id === order_id
+          ? { ...Order, OrderInfo: { ...Order.OrderInfo, invoice_status: 1 } }
+          : Order
+      });
+
+      const Order = OrderStore.MainProducts.find((Order) => Order.OrderInfo.order_id === order_id);
+      await renderInvoiceChange_Api(Order);
+
+      setOrderStore((prev) => ({
+        MainProducts: prev.MainProducts.map((order) => order.OrderInfo.order_id === order_id ? { ...order, OrderInfo: { ...order.OrderInfo, invoiceLoading: false, selected: false } } : order)
+      }));
+      dispatch({ type: "set_order_page", payload: Updated });
+    }
   };
 
   // ----------------------------------------------------------------------------------------------
 
-
   return (
     <>
       <section id={styles.mainSection}>
-        {/* --------------------------------------- */}
-        <section id={styles.section_1}>
-          <span>Orders</span>
-          <button onClick={() => { setNewOrderPage(!newOrderPage) }}>+New Order</button>
-        </section>
-        {/* --------------------------------------- */}
-
-
 
         {/* --------------------------------------- */}
         <section id={styles.OrderButtons}>
           <div id={styles.OrderStateButtons}>
-            <div
-              className={currentOrderPage === 1 ? styles.active_button : ''}
-              onClick={() => { setCurrentOrderPage(1); handleOrderPageData(1, '') }}
-            >
+
+            <div className={currentOrderPage === 1 ? styles.active_button : ""}
+              onClick={() => { setCurrentOrderPage(1); handleOrderPageData(""); }} >
               <span>All Orders</span>
-              <span>{orderCount.AllOrders}</span>
+              <span>{OrderCount.AllOrders}</span>
             </div>
-            <div
-              className={currentOrderPage === 2 ? styles.active_button : ''}
-              onClick={() => { setCurrentOrderPage(2); handleOrderPageData(2, 'Order Is Processing') }}
-            >
+
+            <div className={currentOrderPage === 2 ? styles.active_button : ""}
+              onClick={() => { setCurrentOrderPage(2); handleOrderPageData("Order is Processing"); }} >
               <span>Processing</span>
-              <span>{orderCount.Processing}</span>
+              <span>{OrderCount.Processing}</span>
             </div>
-            <div
-              className={currentOrderPage === 3 ? styles.active_button : ''}
-              onClick={() => { setCurrentOrderPage(3); handleOrderPageData(3, 'Order Placed') }}
-            >
+
+            <div className={currentOrderPage === 3 ? styles.active_button : ""}
+              onClick={() => { setCurrentOrderPage(3); handleOrderPageData("Order Placed"); }} >
               <span>Order Placed</span>
-              <span>{orderCount.OrderPlaced}</span>
+              <span>{OrderCount.OrderPlaced}</span>
             </div>
-            <div
-              className={currentOrderPage === 4 ? styles.active_button : ''}
-              onClick={() => { setCurrentOrderPage(4); handleOrderPageData(4, 'Way to Destination') }}
-            >
+
+            <div className={currentOrderPage === 4 ? styles.active_button : ""}
+              onClick={() => { setCurrentOrderPage(4); handleOrderPageData("Way to Destination"); }} >
               <span>On The Way</span>
-              <span>{orderCount.OnTheWay}</span>
+              <span>{OrderCount.OnTheWay}</span>
             </div>
-            <div
-              className={currentOrderPage === 5 ? styles.active_button : ''}
-              onClick={() => { setCurrentOrderPage(5); handleOrderPageData(5, 'Ready to Collect') }}
-            >
+
+            <div className={currentOrderPage === 5 ? styles.active_button : ""}
+              onClick={() => { setCurrentOrderPage(5); handleOrderPageData("Ready to Collect"); }} >
               <span>Ready To Collect</span>
-              <span>{orderCount.ReadyToCollect}</span>
+              <span>{OrderCount.ReadyToCollect}</span>
             </div>
-            <div
-              className={currentOrderPage === 6 ? styles.active_button : ''}
-              onClick={() => { setCurrentOrderPage(6); handleOrderPageData(6, 'Canceled') }}
-            >
+
+            <div className={currentOrderPage === 6 ? styles.active_button : ""}
+              onClick={() => { setCurrentOrderPage(6); handleOrderPageData("Canceled"); }}>
               <span>Canceled</span>
-              <span>{orderCount.Cancel}</span>
+              <span>{OrderCount.Cancel}</span>
             </div>
           </div>
 
-          <div id={styles.FilterButton} onClick={() => { setFilterActiveState(!filterActiveState) }}>
+          <button id={styles.FilterButton} onClick={handleFilter}>
             <IoFilter id={styles.filterIcon} />
             <span>Filter</span>
-          </div>
+          </button>
         </section>
         {/* --------------------------------------- */}
-
-
 
         <section id={styles.percentage}>
-          <div style={{ width: `${(100 / 6) * currentOrderPage}%`, height: '3px', backgroundColor: '#bbbbbb', transition: 'ease-in-out 0.3s' }}></div>
+          <div
+            style={{
+              width: `${(100 / 6) * currentOrderPage}%`,
+              height: "3px",
+              backgroundColor: "#bbbbbb",
+              transition: "ease-in-out 0.3s",
+            }}
+          ></div>
         </section>
         {/* --------------------------------------- */}
-
-
-
 
         <section className={styles.container}>
           <table className={styles.table}>
             <thead>
               <tr>
-                <th><div id={styles.HeadCheckBox}><input type='checkbox' id='Table_head'></input><span>Product Name</span></div></th>
-                <th>Product ID</th>
-                <th>Incoming</th>
-                <th>Category</th>
-                <th>Date</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Action</th>
+                <th className={filterState >= 1 && filterState <= 2 ?
+                  styles['pageFour-order-page-filter-style'] : styles['default-th']}>
+                  <div id={styles.HeadCheckBox}>
+                    <input type="checkbox" onClick={(e) => handleSelectCheckbox(e, 0, 0)} id="Table_head"></input>
+                    <span>Order ID</span>
+                  </div>
+                </th>
+                <th className={filterState >= 3 && filterState <= 4 ?
+                  styles['pageFour-order-page-filter-style'] : styles['default-th']}>User ID</th>
+                <th className={filterState >= 5 && filterState <= 6 ?
+                  styles['pageFour-order-page-filter-style'] : styles['default-th']}>Phone</th>
+                <th className={filterState >= 7 && filterState <= 8 ?
+                  styles['pageFour-order-page-filter-style'] : styles['default-th']}>Date</th>
+                <th className={styles['default-th']}>Order Type</th>
+                <th className={styles['default-th']}>Invoice Status</th>
+                <th className={filterState >= 9 && filterState <= 10 ?
+                  styles['pageFour-order-page-filter-style'] : styles['default-th']}>Order Status</th>
               </tr>
             </thead>
             <tbody>
-              {filteredProducts.map((order, index) => (
-                <tr key={index}>
-                  <td><div id={styles.HeadCheckBox}><input type='checkbox' id={`Table_column-${index}`}></input><span>{order.productName}</span></div></td>
-                  <td>{order.productID}</td>
-                  <td>{order.incoming}</td>
-                  <td>{order.category}</td>
-                  <td>{order.date}</td>
-                  <td>{order.quantity}</td>
-                  <td>{order.price}</td>
-                  <td><select
-                    className={styles.dropdown}
-                    style={{ backgroundColor: getActionText(order.action) }}
-                    value={order.action}
-                    onChange={(event) => handleActionChange(event, index)}
-                  >
-                    <option value="Order Is Processing">Order Is Processing</option>
-                    <option value="Order Placed">Order Placed</option>
-                    <option value="Way to Destination">Way to Destination</option>
-                    <option value="Ready to Collect">Ready to Collect</option>
-                    <option value="Canceled">Canceled</option>
-                  </select></td>
-                </tr>
-              ))}
+              {OrderStore?.filteredProducts &&
+                OrderStore.filteredProducts.length > 0 &&
+                OrderStore.filteredProducts.map((order, index) => (
+                  <tr key={index}>
+                    <td>
+                      <div id={styles.HeadCheckBox}>
+                        <input type="checkbox" defaultChecked={order.OrderInfo.selected} onClick={(e) => handleSelectCheckbox(e, -1, order.OrderInfo.order_id)} id={`Table_column-${index}`} ></input>
+                        <span>{order.OrderInfo.order_id}</span>
+                      </div>
+                    </td>
+                    <td onClick={() => handleOrderDetail(order)}>{order.OrderInfo.user_id}</td>
+                    <td onClick={() => handleOrderDetail(order)}>{order.OrderInfo.phone_number}</td>
+                    <td onClick={() => handleOrderDetail(order)}>
+                      {new Date(order.OrderInfo.order_date).toLocaleString()}
+                    </td>
+                    <td>{order.OrderInfo.order_type === 'Cash on Delivery'
+                      ? <span className={styles['page-four-order-trash']}>{order.OrderInfo.order_type}<TbTrashOff onClick={() => handleDeleteOrder(order.OrderInfo.selected, order.OrderInfo.order_id)} className={styles['page-four-order-trash-btn']} /></span>
+                      : order.OrderInfo.order_type}
+                    </td>
+                    <td>
+                      <div className={styles['invoice-button-div']}>
+                        {order.OrderInfo.invoiceLoading
+                          ? <AiOutlineLoading3Quarters className={styles['invoice-loading-button-icon']} />
+                          : order.OrderInfo.invoice_status === 0
+                            ? <button onClick={() => handleInvoiceChange(order.OrderInfo.order_id)} className={styles['invoice-button']}> <IoShieldCheckmarkOutline className={styles['invoice-button-icon-inactive']} /></button>
+                            : <button className={styles['invoice-button']}><IoShieldCheckmark className={styles['invoice-button-icon-active']} /></button>
+                        }
+                      </div>
+                    </td>
+                    <td>
+                      <select className={styles.dropdown} style={{ backgroundColor: getActionText(order.OrderInfo.order_status) }} value={order.OrderInfo.order_status} onChange={(e) => handleActionChange(e)}>
+                        <option value={''}></option>
+                        <option value="Order is Processing" > Order Is Processing</option>
+                        <option value="Order Placed" >Order Placed</option>
+                        <option value="Way to Destination" >Way to Destination</option>
+                        <option value="Ready to Collect" >Ready to Collect</option>
+                        <option value="Canceled" >Canceled</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
 
-
-          <Pagination productsData={mainProducts} handleFilteredData={handleFilteredData} />
-
+          <Pagination productsData={OrderStore.MainProducts || []} handleFilteredData={handleFilteredData} />
         </section>
-
-
       </section>
 
-
-
-      {/* ------------------------------------------------------------ */}
-      {
-        filterActiveState && <OrderPageFilter filterActiveState={filterActiveState} setFilterActiveState={setFilterActiveState} />
-      }
-      {
-        newOrderPage && <NewOrderPlaced newOrderPage={newOrderPage} setNewOrderPage={setNewOrderPage} />
-      }
-
-
+      {/* ---------------------------- Extra Section -------------------------------- */}
+      {OrderDetail.isOrderDetailOn && renderProductDetail()}
     </>
   );
 };
 
-export default PageFour;
+export default React.memo(PageFour);

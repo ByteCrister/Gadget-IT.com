@@ -4,7 +4,7 @@ import ProductionTable from '../../components/AdminHome/ProductionTable';
 import ManageColumns from '../../components/AdminHome/ManageColumns';
 import CreateNewCategory from '../../components/AdminHome/CreateNewCategory';
 
-const PageThree = React.memo(() => {
+const PageThree = React.memo(({setErrorCategory}) => {
   const [pageThreeCurrentPage, setPageThreeCurrentPage] = useState(1);
 
 
@@ -37,10 +37,10 @@ const PageThree = React.memo(() => {
       <div className={styles.ProductionContents}>
         {
           pageThreeCurrentPage === 1 ?
-            <ProductionTable />
+            <ProductionTable setErrorCategory={setErrorCategory} />
             : pageThreeCurrentPage === 2 ?
               <ManageColumns />
-              : <CreateNewCategory />
+              : <CreateNewCategory setErrorCategory={setErrorCategory}/>
         }
       </div>
 
@@ -48,4 +48,4 @@ const PageThree = React.memo(() => {
   )
 }
 )
-export default PageThree;
+export default React.memo(PageThree);

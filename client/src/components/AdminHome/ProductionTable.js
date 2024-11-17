@@ -21,7 +21,7 @@ import { Api_Inventory } from '../../api/Api_Inventory';
 import { Api_Production } from '../../api/Api_Production';
 
 
-const ProductionTable = React.memo(() => {
+const ProductionTable = React.memo(({ setErrorCategory }) => {
   const { dataState, dispatch } = useContext(useData);
 
   const [productsData, setProductsData] = useState(dataState.Production_Page.TableRows);
@@ -42,10 +42,24 @@ const ProductionTable = React.memo(() => {
       console.log('page three renders');
       setProductsData(dataState.Production_Page.TableRows);
       setHasInitialized(true);
+
     }
     if (!hasInitialized) {
       initializeData();
     }
+  }, []);
+
+  useEffect(() => {
+    dispatch({
+      type: 'set_search_function',
+      payload: {
+        function: SearchProduction,
+        params: {
+          p_1: dataState.Production_Page.TableRows,
+          p_2: setProductsData
+        }
+      }
+    })
   }, []);
 
   // *------------------ Parent Function of Pagination ----------------------------
@@ -148,7 +162,7 @@ const ProductionTable = React.memo(() => {
 
 
       {
-        isProductionManagement && <ProductionTableManage id={selectedId} category={selectCategory} setIsProductionManagement={setIsProductionManagement} />
+        isProductionManagement && <ProductionTableManage id={selectedId} category={selectCategory} setIsProductionManagement={setIsProductionManagement} setErrorCategory={setErrorCategory}/>
       }
 
     </section>
@@ -156,4 +170,4 @@ const ProductionTable = React.memo(() => {
 }
 )
 
-export default ProductionTable
+export default React.memo(ProductionTable);

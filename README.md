@@ -2,20 +2,6 @@
 
 **GadgetIT.com** is a comprehensive full-stack e-commerce platform designed for managing gadgets and PC components. The platform includes a dynamic user interface and a <b>powerful admin dashboard</b>, built with React.js, Node.js, Express.js, and MySQL.
 
-## **Table of Contents**
-
-1. [Project Overview](#project-overview)
-2. [Features](#features)
-   - [User Interface Features](#user-interface-features)
-   - [Admin Interface Features](#admin-interface-features)
-3. [Technologies Used](#technologies-used)
-4. [Installation](#installation)
-5. [Usage](#usage)
-6. [Project Structure](#project-structure)
-7. [Future Enhancements](#future-enhancements)
-8. [Contributing](#contributing)
-9. [License](#license)
-
 ## **Project Overview**
 
 GadgetIT.com is an e-commerce platform with a user-friendly frontend and an extensive admin dashboard. It is designed to facilitate the management of products, users, and orders, providing both customers and administrators with a seamless and efficient experience.

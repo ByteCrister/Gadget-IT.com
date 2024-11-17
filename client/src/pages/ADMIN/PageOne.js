@@ -220,4 +220,4 @@ const PageOne = () => {
   )
 }
 
-export default PageOne
+export default React.memo(PageOne);

@@ -24,8 +24,12 @@ app.use(require('./routes/users.home.contents'));
 app.use(require('./routes/products.router'));
 app.use(require('./routes/product.post.router'));
 
+app.use(require('./routes/product.outer.router'));
 app.use(require('./routes/product.inventory.router'));
 app.use(require('./routes/product.production.router'));
+app.use(require('./routes/product.order.router'));
+app.use(require('./routes/product.report.router'));
+app.use(require('./routes/product.users.page.router'));
 app.use(require('./routes/product.support.router'));
 app.use(require('./routes/product.setting.router'));
 /*---------------------------------------------*/

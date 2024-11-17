@@ -1,4 +1,14 @@
 const productInventoryModel = require("../models/product.inventory.model");
+const productionManageModel = require("../models/production.manage.model");
+
+const performQuery = async (queryFunction, ...params) => {
+    return await new Promise((resolve, reject) => {
+        queryFunction(...params, (err, data) => {
+            if (err) reject(err)
+            else resolve(data);
+        });
+    });
+};
 
 const getTableName = (table, MainTables, SubTables) => {
     const mainTableExists = MainTables.some((item) => item.category_name === table);
@@ -54,7 +64,7 @@ module.exports = {
         try {
             const CheckedProducts = checkedItems.filter((items) => items.check === true);
             // console.log(CheckedProducts);
-            
+
             // Fetching Main and Sub Tables
             const MainTables = await new Promise((resolve, reject) => {
                 productInventoryModel.getMainTables((err, data) => {
@@ -62,14 +72,14 @@ module.exports = {
                     else resolve(data);
                 });
             });
-    
+
             const SubTables = await new Promise((resolve, reject) => {
                 productInventoryModel.getSubTables((err, data) => {
                     if (err) reject(err);
                     else resolve(data);
                 });
             });
-    
+
             // If there are checked products
             if (CheckedProducts.length !== 0) {
                 const promises = CheckedProducts.map(async (items) => {
@@ -81,8 +91,8 @@ module.exports = {
                         });
                     });
                 });
-                
-                await Promise.all(promises); 
+
+                await Promise.all(promises);
                 console.log('Products hide successfully!');
                 res.json({ message: 'Products hide successfully' });
             } else {
@@ -102,63 +112,34 @@ module.exports = {
             const CheckedProducts = checkedItems.filter(item => item.check === true);
 
             // Get main and sub tables
-            const [MainTables, SubTables] = await Promise.all([
-                new Promise((resolve, reject) => {
-                    productInventoryModel.getMainTables((err, data) => {
-                        if (err) reject(err);
-                        else resolve(data);
-                    });
-                }),
-                new Promise((resolve, reject) => {
-                    productInventoryModel.getSubTables((err, data) => {
-                        if (err) reject(err);
-                        else resolve(data);
-                    });
-                })
-            ]);
+            const MainTables = await performQuery(productInventoryModel.getMainTables);
+            const SubTables = await performQuery(productInventoryModel.getSubTables);
 
             if (CheckedProducts.length === 0) {
                 return res.json({ message: 'No products found to delete' });
             }
 
-            // Perform delete operations
-            await Promise.all(CheckedProducts.map(async (item) => {
+            //* Perform delete operations
+            CheckedProducts.map(async (item) => {
                 const TableName = await getTableName(item.table, MainTables, SubTables);
+                console.log('Table: ' + TableName + ' - product: ' + item.id);
 
+                // **Deleting products from the offer carts, rating, question & product stock**
+                await performQuery(productionManageModel.deleteProductOfferCartQuery, Number(item.id));
+                await performQuery(productionManageModel.deleteProductRatingQuery, Number(item.id));
+                await performQuery(productionManageModel.deleteProductQuestionQuery, Number(item.id));
+                await performQuery(productionManageModel.deleteProductStockQuery, Number(item.id));
+                //-------------------------------------------------------------------------
                 // Delete from main table
-                await new Promise((resolve, reject) => {
-                    productInventoryModel.deleteProductsFromMainTable(item.id, TableName, (err, data) => {
-                        if (err) reject(err);
-                        else resolve(data);
-                    });
-                });
-
-                // Delete from description table
-                await new Promise((resolve, reject) => {
-                    productInventoryModel.deleteProductsFromDescriptionTable(item.id, (err, data) => {
-                        if (err) reject(err);
-                        else resolve(data);
-                    });
-                });
-
+                await performQuery(productInventoryModel.deleteProductsFromMainTable, item.id, TableName);
+                // Delete from description table -
+                await performQuery(productInventoryModel.deleteProductsFromDescriptionTable, item.id);
                 // Delete from extra image table
-                await new Promise((resolve, reject) => {
-                    productInventoryModel.deleteProductsFromExtraImageTable(item.id, (err, data) => {
-                        if (err) reject(err);
-                        else resolve(data);
-                    });
-                });
+                await performQuery(productInventoryModel.deleteProductsFromExtraImageTable, item.id);
+                // Delete from home product select
+                await performQuery(productInventoryModel.deleteHomeProductQuery, item.id);
 
-                // Delete from stock_products table
-                await new Promise((resolve, reject) => {
-                    productInventoryModel.deleteProductsStockFromTable(item.id, (err, data) => {
-                        if (err) reject(err);
-                        else resolve(data);
-                    });
-                });
-
-            }));
-
+            });
 
             res.json({ message: 'Products deleted successfully' });
 

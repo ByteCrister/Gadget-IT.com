@@ -10,7 +10,6 @@ module.exports = {
         p_s.reserved as reserved,
         p_s.quantity as quantity,
         p_s.price as price,
-        p_s.cut_price as cut_price,
         v.vendor_name as vendor
 
         FROM ${table} as p
@@ -48,7 +47,6 @@ module.exports = {
         incoming = ?,
         reserved = ?,
         quantity = ?,
-        cut_price = ?,
         price = ?
         WHERE product_id = ?`;
 
@@ -56,15 +54,14 @@ module.exports = {
             MainTableEndIndex[0].value, // incoming
             MainTableEndIndex[1].value, // reserved
             MainTableEndIndex[2].value, // quantity
-            MainTableEndIndex[3].value, // cut_price
-            MainTableEndIndex[4].value, // price
+            MainTableEndIndex[3].value, // price
             id
         ];
         db.query(sql, values, callback);
     },
     updateProductMainTable: (id, table, MainTableEndIndex, callback) => {
         let sql = `update ${table} set `;
-        for (i = 6; i < MainTableEndIndex.length; i++) {
+        for (i = 4; i < MainTableEndIndex.length; i++) {
             if (MainTableEndIndex.length - 1 === i) {
                 sql += `${MainTableEndIndex[i].column}='${MainTableEndIndex[i].value}' `
             } else {
@@ -73,7 +70,7 @@ module.exports = {
         }
 
         sql += ` where product_id=${id};`
-
+        // console.log(sql);
         db.query(sql, callback);
     },
     updateProductOldDescription: (value, no, callback) => {

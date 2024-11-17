@@ -3,9 +3,10 @@ import styles from '../../styles/AdminHome/ProductionDetails.module.css';
 import { useData } from '../../context/useData';
 import axios from 'axios';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
+import Admin_Api from '../../api/Admin_Api';
 
-const ProductionTableManage = React.memo(({ id, category, setIsProductionManagement }) => {
-  const { dataState } = useContext(useData);
+const ProductionTableManage = React.memo(({ id, category, setIsProductionManagement, setErrorCategory }) => {
+  const { dataState, dispatch } = useContext(useData);
 
   const [mainTable, setMainTable] = useState(dataState.Production_Page.TableFullRows || []);
 
@@ -15,6 +16,7 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
   const [DesEndIndex, setDesEndIndex] = useState([]);
   const [ExtraImgEndIndex, setExtraImgEndIndex] = useState([]);
   const [tableColumns, setTableColumns] = useState({ TableColumns: [], Vendors: [] });
+  const [subCategory, setSubCategory] = useState([]);
 
   // *--------------------- Filtering Products By ID -----------------------
   useEffect(() => {
@@ -25,6 +27,10 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
       const filteredStockValuesByID = dataState.Production_Page.TableRows.filter(item => item.id === id);
 
       setMainTable(filteredMainTable);
+      const subCategories = dataState.subCategoryName.filter(
+        (values) => values.main_category_name === category
+      ).map(item => item.sub_category_name);
+      setSubCategory(subCategories);
 
       let states1 = [];
       if (filteredStockValuesByID.length > 0) {
@@ -32,9 +38,24 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
         states1.push({ column: 'incoming', value: stock.incoming });
         states1.push({ column: 'reserved', value: stock.reserved });
         states1.push({ column: 'quantity', value: stock.quantity });
-        states1.push({ column: 'cut_price', value: stock.cut_price });
         states1.push({ column: 'price', value: stock.price });
-        states1.push({ column: 'vendor', value: stock.vendor });
+        try {
+          if (filteredStockValuesByID.length > 0) {
+            const res = await axios.get(`http://localhost:7000/production/get/columns/${filteredStockValuesByID[0].type}`);
+            setTableColumns({
+              TableColumns: res.data.TableColumns,
+              Vendors: res.data.Vendors
+            });
+            // console.log(JSON.stringify(tableColumns.Vendors, null, 2));
+            // console.log(stock.vendor);
+            // console.log(tableColumns.Vendors.find((item) => item.vendor_name === stock.vendor).vendor_no);
+            states1.push({ column: 'vendor_no', value: res.data.Vendors.find((item) => item.vendor_name === stock.vendor).vendor_no || 0 });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+
+
 
         filteredMainTable.forEach(item => {
           for (const key in item) {
@@ -43,6 +64,7 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
             }
           }
         });
+        // console.log(states1);
         setMainTableEndIndex(states1);
       }
 
@@ -59,24 +81,10 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
       setExtraImgEndIndex(states3);
 
       // console.log(JSON.stringify(filteredMainTable, null, 2));
-
-      try {
-        if (filteredStockValuesByID.length > 0) {
-          const res = await axios.get(`http://localhost:7000/production/get/columns/${filteredStockValuesByID[0].type}`);
-          setTableColumns({
-            TableColumns: res.data.TableColumns,
-            Vendors: res.data.Vendors
-          });
-
-          console.log(JSON.stringify(tableColumns.Vendors, null, 2));
-        }
-      } catch (error) {
-        console.log(error);
-      }
     }
 
     initializeColumns();
-  }, [id, dataState]);
+  }, [id, dataState, category]);
 
 
 
@@ -91,8 +99,9 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
         DesEndIndex: DesEndIndex,
         ExtraImgEndIndex: ExtraImgEndIndex
       });
-      setIsProductionManagement(false);
       console.log('Product updated successfully');
+      setIsProductionManagement(false);
+      await Admin_Api(dispatch);
 
     } catch (error) {
       console.error('Error updating product:', error.response ? error.response.data : error.message);
@@ -105,31 +114,66 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
   // * Handler to convert file to base64 and include MIME type
   const handleImageFileChange = (e, index, state) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        const mimeType = file.type;
-        const base64WithMimeType = `data:${mimeType};base64,${base64String.split(',')[1]}`;
 
+    if (!file) return; // Handle case where no file is selected
+
+    // Check if the file is an image
+    if (!file.type.startsWith('image/')) {
+      setErrorCategory({ isError: true, message: 'The file is not an Image! Please enter a valid Image file.' });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result;
+      const img = new Image();
+      img.onload = () => {
+        const MAX_SIZE_KB = 50;
+        const MAX_SIZE_BYTES = MAX_SIZE_KB * 1024;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        let quality = 0.9; // Start with high quality
+        let compressedDataURL = canvas.toDataURL(file.type, quality);
+        let compressedDataSize = (compressedDataURL.length * 3) / 4; // Base64 size approximation
+
+        // Compress image until it's below the size limit
+        while (compressedDataSize > MAX_SIZE_BYTES && quality > 0) {
+          quality -= 0.05;
+          compressedDataURL = canvas.toDataURL(file.type, quality);
+          compressedDataSize = (compressedDataURL.length * 3) / 4;
+        }
+
+        // Final base64 string with MIME type
+        const base64WithMimeType = `data:${file.type};base64,${compressedDataURL.split(',')[1]}`;
+
+        // Update the appropriate state
         if (state === 'main') {
           setMainTableEndIndex(prevState =>
             prevState.map((item, i) => i === index ? { ...item, value: base64WithMimeType } : item)
           );
         } else if (state === 'extra') {
-          setExtraImgEndIndex((prevState) =>
+          setExtraImgEndIndex(prevState =>
             prevState.map((item, i) => i === index ? { ...item, value: base64WithMimeType } : item)
           );
         } else {
-          setNewChanges((prev) => ({
+          setNewChanges(prev => ({
             ...prev,
             newAddedImg: prev.newAddedImg.map((item, i) => i === index ? { ...item, value: base64WithMimeType } : item)
-          }))
+          }));
         }
       };
-      reader.readAsDataURL(file);
-    }
+
+      img.src = base64String;
+    };
+
+    reader.readAsDataURL(file);
   };
+
   //-----------------------------------------------------------------------------------------------
 
 
@@ -197,7 +241,15 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
     } else {
       setNewChanges((prev) => ({ ...prev, newAddedImg: prev.newAddedImg.filter((item, i) => i !== index) }))
     }
-  }
+  };
+
+
+  const getVendorName = (vendor_no) => {
+    const Vendor = tableColumns.Vendors.find((item) => item.vendor_no === vendor_no);
+    return Vendor.vendor_name || '';
+  };
+
+
   // --------------------------------------------------------------------------------------------------
 
 
@@ -217,22 +269,22 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
 
         {/* ***************************** Product Stock Values ********************************/}
         <div className={styles.DigitNames}>
-          {MainTableEndIndex.slice(0, 6).map((item, i) => (
+          {MainTableEndIndex.slice(0, 5).map((item, i) => (
             <div key={i} className={styles.DigitGroup}>
               <label htmlFor={`stock-product-${i}`} className={styles.DigitLabel}>
                 {GetCategoryName(item.column)}
               </label>
               {
-                item.column === 'vendor' ? (
+                item.column === 'vendor_no' ? (
                   <select
-                    value={item.value || ''}
+                    value={item.value}
                     onChange={(e) => {
                       handlerMainTableChange(e, i)
                     }}
                   >
                     {tableColumns.Vendors.map((vendor, index) => (
-                      <option key={index} value={vendor.vendor_name}>
-                        {vendor.vendor_name}
+                      <option key={index} value={vendor.vendor_no}>
+                        {getVendorName(vendor.vendor_no)}
                       </option>
                     ))}
                   </select>
@@ -256,7 +308,7 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
 
         {/* ***************************** Product Main Table Information's ********************************/}
         <div className={styles.DigitNames}>
-          {MainTableEndIndex.slice(6).map((item, i) => (
+          {MainTableEndIndex.slice(5).map((item, i) => (
             <div key={i} className={styles.DigitGroup}>
               <label htmlFor={`main-product-${i}`} className={styles.DigitLabel}>
                 {GetCategoryName(item.column)}
@@ -266,11 +318,29 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
                   {item.value && item.value.startsWith('data:image') && (
                     <img src={item.value} alt="Product" className={styles.ProductImage} />
                   )}
-                  <input type="file" id={`main-product-${i}`} className={styles.DigitInput} onChange={(e) => handleImageFileChange(e, i + 6, 'main')} />
+                  <input type="file" id={`main-product-${i}`} className={styles.DigitInput} onChange={(e) => handleImageFileChange(e, i + 5, 'main')} />
                 </>
-              ) : (
-                <input type="text" value={item.value} id={`main-product-${i}`} className={styles.DigitInput} onChange={(e) => { handlerMainTableChange(e, i + 6) }} />
-              )}
+              ) :
+                item.column === 'discount_type' ? (
+                  <select id={`main-product-${i}`} value={item.value} onChange={(e) => { handlerMainTableChange(e, i + 5) }}>
+                    {
+                      ['amount', 'percentage'].map((item_, index) => {
+                        return <option key={index} value={item_}>{item_}</option>
+                      })
+                    }
+                  </select>
+                ) : item.column === 'sub_category' ? (
+                  <select id={`main-product-${i}`} value={item.value} onChange={(e) => { handlerMainTableChange(e, i + 5) }}>
+                    {
+                      subCategory.map((item_, index) => {
+                        return <option key={index} value={item_}>{item_}</option>
+                      })
+                    }
+                  </select>
+                ) :
+                  (
+                    <input type="text" value={item.value} id={`main-product-${i}`} className={styles.DigitInput} onChange={(e) => { handlerMainTableChange(e, i + 5) }} />
+                  )}
             </div>
           ))}
         </div>

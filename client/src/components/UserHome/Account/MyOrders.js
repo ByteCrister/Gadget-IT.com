@@ -1,23 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react';
 import { LuInbox } from "react-icons/lu";
 
 import styles from '../../../styles/HomePageStyles/MyOrders.module.css';
+import UserOrders from './UserOrders';
 
-const MyOrders = () => {
-    const [OrderMessages, setOrderMessages] = useState([]);
+const MyOrders = ({ Orders }) => {
     return (
         <section className={styles.OuterMainOrderHistory}>
-            <span className={styles.OrderHeadLine}>Order Messages</span>
+            <span className={styles.OrderHeadLine}>My Orders</span>
             {
-                OrderMessages && OrderMessages.length === 0
+                Orders && Orders.length === 0
                     ? <section className={styles.EmptyData}>
                         <LuInbox className={styles.LuInbox} />
-                        <span>No Messages are Found!</span>
+                        <span>No messages found!</span>
                     </section>
 
-                    : <section>
-
-                    </section>
+                    : <UserOrders Orders={Orders} />
             }
         </section>
     )

@@ -50,9 +50,9 @@ module.exports = {
                 });
             });
             const productId = newProductID[0].product_id;
-            console.log(productId);
+            // console.log(mandatoryValues);
 
-            // Posting stock values
+            // *Posting stock values
             await new Promise((resolve, reject) => {
                 productPostModels.PostStockValues(mandatoryValues, productId, (err, result) => {
                     if (err) reject(err);
@@ -60,8 +60,8 @@ module.exports = {
                 });
             });
 
+            // *Creating new columns
             if (newKeyValue.length > 0) {
-                // Creating new columns
                 await new Promise((resolve, reject) => {
                     productPostModels.createNewColumn(Table, newKeyValue, (err, result) => {
                         if (err) reject(err);
@@ -69,7 +69,8 @@ module.exports = {
                     });
                 });
             }
-            // Creating new description row
+
+            // *Creating new description row
             if (newDescriptionHeadValue.length > 0) {
                 await new Promise((resolve, reject) => {
                     productPostModels.createNewDescriptionColumn(productId, Table, newDescriptionHeadValue, (err, result) => {
@@ -79,7 +80,7 @@ module.exports = {
                 });
             }
 
-            // Posting new product
+            // *Posting new product
             await new Promise((resolve, reject) => {
                 productPostModels.newProductPostModel(Table, newKeyValue, tableColumnValue, mandatoryValues, productId, (err, result) => {
                     if (err) reject(err);
@@ -88,7 +89,7 @@ module.exports = {
             });
 
 
-            //inserting new extraImages
+            // *Inserting new extraImages
             if (extraImages.length > 0) {
                 await new Promise((resolve, reject) => {
                     productPostModels.insertExtraImages(Table, productId, extraImages, (err, data) => {
@@ -99,7 +100,7 @@ module.exports = {
             }
 
 
-            console.log("Product added successfully");
+            console.log("Product added successfully. Product ID: "+productId);
             res.status(200).json({ message: "Product added successfully" });
         } catch (err) {
             console.log(err);
