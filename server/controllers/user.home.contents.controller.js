@@ -71,7 +71,7 @@ module.exports = {
             });
 
         } catch (error) {
-            console.log("Failed getUserHomeContents");
+            console.log("Failed getUserHomeContents: "+error);
             res.status(500).json({ error });
         }
     },

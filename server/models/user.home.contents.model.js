@@ -15,7 +15,8 @@ module.exports = {
             p.product_name product_name,
             p.main_category main_category,
             p.image image,
-            p_s.cut_price cut_price,
+            p.discount_type discount_type,
+            p.discount_value discount_value,
             p_s.price price,
             h_p.position position
 

@@ -30,6 +30,8 @@ module.exports = {
                 sub_category varchar(255),
                 product_name varchar(100),
                 image mediumtext,
+                discount_type varchar(255),
+                discount_value int,
                 vendor_no int,
 
                 primary key(product_id)

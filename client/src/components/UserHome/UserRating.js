@@ -71,4 +71,4 @@ const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement, rati
     )
 }
 
-export default UserRating
+export default UserRating;

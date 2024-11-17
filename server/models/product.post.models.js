@@ -30,15 +30,14 @@ module.exports = {
     PostStockValues: (mandatoryValues, newProductID, callback) => {
         db.query(
             `
-            INSERT INTO product_stock(product_id, incoming, reserved, quantity, cut_price, price)
-            VALUES(?, ?, ?, ?, ?, ?);
+            INSERT INTO product_stock(product_id, incoming, reserved, quantity, price)
+            VALUES(?, ?, ?, ?, ?);
             `,
             [
                 newProductID,
                 mandatoryValues.incoming,
                 mandatoryValues.reserved,
                 mandatoryValues.quantity,
-                mandatoryValues.cut_price,
                 mandatoryValues.price,
             ],
             callback
@@ -49,7 +48,7 @@ module.exports = {
         let open = " (";
         let close = ")";
         let questionMarks = '';
-        let columnNames = `product_id, brand, main_category, sub_category ,product_name, image, vendor_no`;
+        let columnNames = `product_id, brand, main_category, sub_category ,product_name, image, discount_type, discount_value, vendor_no`;
         let arrValues = [];
         arrValues.push(newProductID);
         arrValues.push(mandatoryValues.brand);
@@ -57,6 +56,8 @@ module.exports = {
         arrValues.push(mandatoryValues.subCategory);
         arrValues.push(mandatoryValues.product_name);
         arrValues.push(`data:${mandatoryValues.image.mimeType};base64,${mandatoryValues.image.base64}`);
+        arrValues.push(mandatoryValues.discount_type);
+        arrValues.push(mandatoryValues.discount_value);
         arrValues.push(mandatoryValues.vendor);
 
         if (tableColumnValue.length === 0) {

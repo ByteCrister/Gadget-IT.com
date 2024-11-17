@@ -2,8 +2,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import style from '../../styles/AdminHome/addproducts.module.css';
 import { useData } from '../../context/useData';
 import axios from 'axios';
-import { Api_Inventory } from '../../api/Api_Inventory';
-import { Api_Production } from '../../api/Api_Production';
+import Admin_Api from '../../api/Admin_Api';
 
 const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
     const { dataState, dispatch } = useContext(useData);
@@ -28,11 +27,12 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
         incoming: '',
         reserved: '',
         quantity: '',
-        cut_price: '',
         price: '',
         image: null,
         product_name: '',
-        vendor: ''
+        vendor: '',
+        discount_type: '',
+        discount_value: null
 
     });
 
@@ -152,7 +152,9 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
                 columnName !== 'image' &&
                 columnName !== 'vendor_no' &&
                 columnName !== 'brand' &&
-                columnName !== 'hide'
+                columnName !== 'hide' &&
+                columnName !== 'discount_type' &&
+                columnName !== 'discount_value'
         );
         setTableColumnValue(filteredColumns.map((columnName) => ({
             key: columnName,
@@ -278,12 +280,21 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
         if (!mandatoryValues.incoming) errors.incoming = "Incoming value is required.";
         if (!mandatoryValues.reserved) errors.reserved = "Reserved value is required.";
         if (!mandatoryValues.quantity) errors.quantity = "Quantity is required.";
-        if (!mandatoryValues.cut_price) errors.cut_price = "Cut Price is required.";
         if (!mandatoryValues.price) errors.price = "Price is required.";
         if (!mandatoryValues.image) errors.image = "Image is required.";
+        if (!mandatoryValues.discount_type) errors.discount_type = "Discount type is required.";
+        if (!mandatoryValues.discount_value) errors.discount_value = "Discount value is required.";
         if (!mainCategory) errors.mainCategory = "Main Category is required.";
         if (!subCategory) errors.subCategory = "Sub Category is required.";
         if (!mandatoryValues.vendor) errors.vendor = "Vendor is required.";
+
+        if (mandatoryValues.incoming < 0 || mandatoryValues.reserved < 0 || mandatoryValues.quantity < 0) {
+            errors.incoming = "Stock value can't negative!!";
+        }
+        if (mandatoryValues.discount_value <= 0) errors.discount_value = "Invalid Discount Value!!.";
+        if (mandatoryValues.discount_type === 'percentage' && mandatoryValues.discount_value >= 100) {
+            errors.discount_value = "Invalid Discount!!.";
+        }
 
         setErrors(errors);
         return Object.keys(errors).length === 0;
@@ -291,11 +302,10 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
 
 
     // ************************************ Post New Product ********************************************
-    const handleAddProduct = () => {
+    const handleAddProduct = async () => {
         if (!validateForm()) {
             return;
         }
-
         const payload = {
             table: tableName,
             newKeyValue: newKeyValue,
@@ -304,23 +314,13 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
             newDescriptionHeadValue: newDescriptionHeadValue,
             extraImages: extraImages
         };
-        // console.log(tableName);
-        // console.log(JSON.stringify(extraImages));
-        // console.log(JSON.stringify(tableColumnValue));
-        // console.log(JSON.stringify(mandatoryValues));
-
-        axios
-            .post('http://localhost:7000/post/new/product', payload)
-            .then((response) => {
-                setAddProductState(false);
-                Api_Inventory(dispatch);
-                Api_Production(dispatch);
-
-                console.log('Product added successfully:', response.data);
-            })
-            .catch((error) => {
-                console.error('Error adding product:', error);
-            });
+        try {
+            await axios.post('http://localhost:7000/post/new/product', payload);
+            setAddProductState(false);
+            Admin_Api(dispatch);
+        } catch (error) {
+            console.error('Error adding product:', error);
+        }
     };
 
     return (
@@ -368,27 +368,22 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
                             </div>
                             <div>
                                 <label htmlFor='incoming'><sup>*</sup>Incoming</label>
-                                <input type='number' id='incoming' onChange={handleChange} />
+                                <input type='number' id='incoming' onChange={handleChange} min={1} />
                                 {errors.incoming && <p className={style.error}>{errors.incoming}</p>}
                             </div>
                             <div>
                                 <label htmlFor='reserved'><sup>*</sup>Reserved</label>
-                                <input type='number' id='reserved' onChange={handleChange} />
+                                <input type='number' id='reserved' onChange={handleChange} min={1} />
                                 {errors.reserved && <p className={style.error}>{errors.reserved}</p>}
                             </div>
                             <div>
                                 <label htmlFor='quantity'><sup>*</sup>Quantity</label>
-                                <input type='number' id='quantity' onChange={handleChange} />
+                                <input type='number' id='quantity' onChange={handleChange} min={1} />
                                 {errors.quantity && <p className={style.error}>{errors.quantity}</p>}
                             </div>
                             <div>
-                                <label htmlFor='cut_price'><sup>*</sup>Cut Price</label>
-                                <input type='number' id='cut_price' onChange={handleChange} />
-                                {errors.cut_price && <p className={style.error}>{errors.cut_price}</p>}
-                            </div>
-                            <div>
                                 <label htmlFor='price'><sup>*</sup>Price</label>
-                                <input type='number' id='price' onChange={handleChange} />
+                                <input type='number' id='price' onChange={handleChange} min={0} />
                                 {errors.price && <p className={style.error}>{errors.price}</p>}
                             </div>
                             <div id={style.vendor_select}>
@@ -400,6 +395,21 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
                                     ))}
                                 </select>
                                 {errors.vendor && <p className={style.error}>{errors.vendor}</p>}
+                            </div>
+                            <div id={style.vendor_select}>
+                                <label htmlFor='discount_type'><sup>*</sup>Discount Type</label>
+                                <select id='discount_type' onChange={handleChange}>
+                                    <option value=''>Select Discount type...</option>
+                                    {['percentage', 'amount'].map((type, index) => (
+                                        <option key={index} value={type}>{type}</option>
+                                    ))}
+                                </select>
+                                {errors.discount_type && <p className={style.error}>{errors.discount_type}</p>}
+                            </div>
+                            <div>
+                                <label htmlFor='discount_value'><sup>*</sup>Discount Value</label>
+                                <input type='number' id='discount_value' onChange={handleChange} min={0} />
+                                {errors.discount_value && <p className={style.error}>{errors.discount_value}</p>}
                             </div>
                             <div>
                                 <label htmlFor='image'><sup>*</sup>Image</label>

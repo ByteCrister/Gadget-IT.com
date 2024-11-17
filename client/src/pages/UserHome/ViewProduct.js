@@ -81,7 +81,7 @@ const ViewProduct = ({ setUserEntryState }) => {
 
         setMainTableData(relatedProducts || []);
         window.scrollTo(0, 0);
-    }, [dataState?.productStorage?.product_ratings, product_id, category]);
+    }, [dataState.productStorage.product_ratings, product_id, category]);
 
     useEffect(() => {
         if (viewProduct.productInformation && viewProduct.productInformation.product_name && viewProduct.productInformation.product_id) {
@@ -127,6 +127,22 @@ const ViewProduct = ({ setUserEntryState }) => {
             dispatch({ type: 'set_scroll_ref', payload: null });
         }
     }, [dataState.ScrollRef]);
+
+
+    useEffect(() => {
+        const productRatings = dataState?.productStorage?.product_ratings.filter((rating) => rating.product_id === Number(product_id));
+        setViewProduct(prev => ({
+            ...prev,
+            product_ratings: productRatings
+        }));
+    }, [dataState.productStorage?.product_ratings, product_id]);
+
+
+    useEffect(() => {
+        console.log("New rating & user review added successfully.");
+        // console.log(dataState.productStorage.product_ratings);
+        // console.log(viewProduct.product_ratings);
+    }, [viewProduct?.product_ratings, dataState.productStorage.product_ratings]);
 
 
 
@@ -176,7 +192,7 @@ const ViewProduct = ({ setUserEntryState }) => {
             {/* ----------------------------------- upper_image_and_feature ------------------------------ */}
             <section className={styles.upper_image_and_feature}>
                 <UpperImage viewProduct={viewProduct} product_id={product_id} />
-                <UpperFeature viewProduct={viewProduct} product_id={product_id} price={viewProduct.product_prices.price} image={viewProduct.images[0]} category={category} product_name={viewProduct.productInformation.product_name} />
+                <UpperFeature productInformation={viewProduct.productInformation} viewProduct={viewProduct} product_id={product_id} price={viewProduct.product_prices.price} image={viewProduct.images[0]} category={category} product_name={viewProduct.productInformation.product_name} />
             </section>
 
 
@@ -237,6 +253,8 @@ const ViewProduct = ({ setUserEntryState }) => {
                                     key !== 'main_category' &&
                                     key !== 'sub_category' &&
                                     key !== 'image' &&
+                                    key !== 'discount_type' &&
+                                    key !== 'discount_value' &&
                                     key !== 'vendor_no' &&
                                     value && (
                                         <tr key={key}>

@@ -5,8 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 import styles from '../../styles/HomePageStyles/ViewProduct.module.css';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import { useData } from '../../context/useData';
+import GetDiscountedPrice from '../../HOOKS/GetDiscountedPrice';
 
-const UpperFeature = ({ viewProduct, product_id, price, image, category, product_name }) => {
+const UpperFeature = ({productInformation, viewProduct, product_id, price, image, category, product_name }) => {
 
     const { dispatch } = useContext(useData);
     const [stateNumber, setStateNumber] = useState(1);
@@ -29,8 +30,8 @@ const UpperFeature = ({ viewProduct, product_id, price, image, category, product
             <section className={styles.name_status}>
                 <span className={styles.product_name}>{viewProduct.productInformation.product_name}</span>
                 <div className={styles.product_status}>
-                    <span>Price: <b>{viewProduct.product_prices.price}৳</b></span>
-                    <span>Regular Price: <b><del>{viewProduct.product_prices.cut_price}৳</del></b></span>
+                    <span>Price: <b>{GetDiscountedPrice(viewProduct.product_prices.price, productInformation.discount_type, productInformation.discount_value)}৳</b></span>
+                    <span>Regular Price: <b><del>{viewProduct.product_prices.price}৳</del></b></span>
                     <span>Status: <b>{getStatus()}</b></span>
                     <span>Brand: <b>{viewProduct.productInformation.brand}</b></span>
                 </div>

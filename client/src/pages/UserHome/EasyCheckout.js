@@ -5,7 +5,7 @@ import { FaCheck } from 'react-icons/fa';
 import { useData } from '../../context/useData';
 
 const EasyCheckout = () => {
-    const {  dispatch } = useContext(useData);
+    const { dispatch } = useContext(useData);
     const location = useLocation();
     const navigate = useNavigate();
     const [store, setStore] = useState([]);
@@ -106,7 +106,7 @@ const EasyCheckout = () => {
                     payMethodState: payMethodState === 1 ? 'Cash on Delivery' : 'Online Payment'
                 }
             });
-          
+
         } else {
             console.log("Form has errors. Fix errors before submitting.");
             dispatch({ type: 'toggle_isServerIssue', payload: true });

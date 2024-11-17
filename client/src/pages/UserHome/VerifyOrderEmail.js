@@ -55,7 +55,7 @@ const VerifyOrderEmail = () => {
             }
         }
 
-    }, [OrderInformation]);
+    }, [OrderInformation, location.state]);
 
     const handleDigitInput = (e) => {
         const value = e.target.value;
@@ -106,22 +106,29 @@ const VerifyOrderEmail = () => {
                 OrderInformation &&
                 <div className={styles['verification-order-email-inner-main-section']}>{
                     isLoading ? <span className={styles['text-span']}>
-                        Loading...
+                        Loading... please wait...
                     </span>
                         : <span className={styles['text-span']}> {isErrorState.message}</span>
                 }
 
                     <div className={styles['verification-inner-input-div']}>
-                        <input type='text' value={InputDigits['1']} onChange={handleDigitInput} id='1'></input>
-                        <input type='text' value={InputDigits['2']} onChange={handleDigitInput} id='2'></input>
-                        <input type='text' value={InputDigits['3']} onChange={handleDigitInput} id='3'></input>
-                        <input type='text' value={InputDigits['4']} onChange={handleDigitInput} id='4'></input>
-                        <input type='text' value={InputDigits['5']} onChange={handleDigitInput} id='5'></input>
-                        <input type='text' value={InputDigits['6']} onChange={handleDigitInput} id='6'></input>
+                        {Array.from({ length: 6 }).map((_, index) => {
+                            const id = (index + 1).toString(); 
+                            return (
+                                <input
+                                    key={id}
+                                    type='text'
+                                    value={InputDigits[id] || ''} 
+                                    onChange={handleDigitInput}
+                                    id={id}
+                                />
+                            );
+                        })}
                     </div>
+
                     <div className={styles['verification-inner-button-div']}>
                         <button onClick={handleConfirm}>Confirm</button>
-                        <button onClick={() => renderSixDigitVerification_Api()}>Resend</button>
+                        <button onClick={() => !isLoading && renderSixDigitVerification_Api()}>Resend</button>
                     </div>
                 </div>
             }
@@ -129,4 +136,4 @@ const VerifyOrderEmail = () => {
     )
 }
 
-export default VerifyOrderEmail
+export default VerifyOrderEmail;

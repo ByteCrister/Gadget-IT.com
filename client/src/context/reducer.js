@@ -303,6 +303,15 @@ const reducer = (state, action) => {
                 ProfileButtonState: action.payload
             }
 
+        case 'insert_new_product_rating':
+            return {
+                ...state,
+                productStorage: {
+                    ...state.productStorage,
+                    product_ratings: [...state.productStorage.product_ratings, action.payload]
+                }
+            }
+
 
         case 'toggle_loading':
             return {

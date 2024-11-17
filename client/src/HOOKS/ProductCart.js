@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styles from '../styles/HomePageStyles/ProductCart.module.css';
 import { Link } from 'react-router-dom';
 import { useData } from '../context/useData';
+import GetDiscountedPrice from '../HOOKS/GetDiscountedPrice';
 
 const ProductCart = ({ product }) => {
     const { dataState, dispatch } = useContext(useData);
@@ -12,23 +13,28 @@ const ProductCart = ({ product }) => {
     };
 
     const price = product.price !== undefined && product.price !== null ? product.price : getPrices(product.product_id, 'price');
-    const cutPrice = product.cut_price !== undefined && product.cut_price !== null ? product.cut_price : getPrices(product.product_id, 'cut_price');
+    // console.log(product);
+    const calculatedDiscountPrice = GetDiscountedPrice(price, product.discount_type, product.discount_value);
+    const DiscountPrice = product.discount_type === 'percentage' ? `${product.discount_value}% OFF` : `৳${calculatedDiscountPrice}`;
 
-    const discount = cutPrice ? Math.floor(((cutPrice - price) / cutPrice) * 100) : 0;
 
     return (
         <div className={styles['product-cart']}>
             <Link to={`/view/${product.main_category}/${product.product_id}`} className={styles.mainProductLink}>
-                <div className={styles['discount-info']}>
-                    {discount} % OFF
-                </div>
+                {
+                    product.discount_value !== 0 &&
+                    <div className={styles['discount-info']}>
+                        {DiscountPrice}
+                    </div>
+
+                }
                 <div className={styles['product-image']}>
                     <img src={product.image} alt={`ready-for-order-image-${product.product_id}`} />
                 </div>
                 <div className={styles['product-name']}>{product.product_name}</div>
                 <div className={styles['product-prices']}>
-                    <span className={styles['price']}>{price}</span>
-                    <span className={styles['crossed-price']}>{cutPrice}</span>
+                    <span className={styles['price']}>{calculatedDiscountPrice}৳</span>
+                    <span className={styles['crossed-price']}>৳{price}</span>
                 </div>
             </Link>
             <div className={styles['buttons']}>
