@@ -8,7 +8,9 @@ exports.SendOrderConfirmationMail = (To, subject, digits) => {
             auth: {
                 user: process.env.EMAIL,
                 pass: process.env.PASSWORD
-            }
+            },
+            connectionTimeout: 60000, 
+            socketTimeout: 60000
         });
 
         let mailOptions = {

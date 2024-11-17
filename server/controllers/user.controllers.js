@@ -329,7 +329,8 @@ module.exports = {
             }
             return res.status(200).json({
                 success: true,
-                email: user.email
+                email: user.email,
+                user
             });
         })(req, res, next);
     },

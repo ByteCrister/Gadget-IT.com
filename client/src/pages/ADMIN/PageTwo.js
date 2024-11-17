@@ -288,6 +288,6 @@ const PageTwo = React.memo(({setErrorCategory}) => {
     </div>
   );
 }
-)
+);
 
 export default React.memo(PageTwo);

@@ -3,10 +3,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from '../../styles/HomePageStyles/EasyCheckout.module.css';
 import { FaCheck } from 'react-icons/fa';
 import { useData } from '../../context/useData';
-import axios from 'axios';
 
 const EasyCheckout = () => {
-    const { dataState, dispatch } = useContext(useData);
+    const { dispatch } = useContext(useData);
     const location = useLocation();
     const navigate = useNavigate();
     const [store, setStore] = useState([]);
@@ -107,28 +106,7 @@ const EasyCheckout = () => {
                     payMethodState: payMethodState === 1 ? 'Cash on Delivery' : 'Online Payment'
                 }
             });
-            // if (payMethodState === 1) {
-            //     const res = await axios.post('http://localhost:7000/insert-new-order', {
-            //         store: store,
-            //         FormInfo: FormInfo,
-            //         payMethodState: payMethodState === 1 ? 'Cash on Delivery' : 'Online Payment'
-            //     }, {
-            //         headers: {
-            //             Authorization: dataState.token
-            //         }
-            //     });
-            //     navigate('/user-orders-page', {
-            //         state: { OrderInfo: res.data.OrderInfo[0], OrderProducts: res.data.OrderProducts }
-            //     });
-            // } else {
-            //     navigate('/user-orders-payment-page', {
-            //         state: {
-            //             store: store,
-            //             FormInfo: FormInfo,
-            //             payMethodState: payMethodState === 1 ? 'Cash on Delivery' : 'Online Payment'
-            //         }
-            //     });
-            // }
+
         } else {
             console.log("Form has errors. Fix errors before submitting.");
             dispatch({ type: 'toggle_isServerIssue', payload: true });
