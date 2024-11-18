@@ -142,6 +142,7 @@ module.exports = {
             // console.log(ProductInfo);
             await sendInvoice(Order, ProductInfo);
             await performQuery(productOrderModel.updateInvoice, Order.OrderInfo.order_id);
+            await performQuery(productOrderModel.postInvoiceNotification, Order.OrderInfo);
 
             res.status(201).send({ success: true });
         } catch (error) {

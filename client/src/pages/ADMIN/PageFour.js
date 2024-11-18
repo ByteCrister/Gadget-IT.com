@@ -279,8 +279,10 @@ const PageFour = () => {
 
 
   const handleInvoiceChange = async (order_id) => {
-    const isSelected = OrderStore.MainProducts.find((Order) => Order.OrderInfo.order_id === order_id)?.OrderInfo?.selected || false;
-    if (isSelected) {
+    const product = OrderStore.MainProducts.find((Order) => Order.OrderInfo.order_id === order_id);
+    const isSelected = product?.OrderInfo?.selected || false;
+
+    if (isSelected && !product.OrderInfo.invoiceLoading) {
       setOrderStore((prev) => ({
         MainProducts: prev.MainProducts.map((order) => order.OrderInfo.order_id === order_id ? { ...order, OrderInfo: { ...order.OrderInfo, invoiceLoading: true } } : order)
       }));
@@ -291,8 +293,7 @@ const PageFour = () => {
           : Order
       });
 
-      const Order = OrderStore.MainProducts.find((Order) => Order.OrderInfo.order_id === order_id);
-      await renderInvoiceChange_Api(Order);
+      await renderInvoiceChange_Api(product);
 
       setOrderStore((prev) => ({
         MainProducts: prev.MainProducts.map((order) => order.OrderInfo.order_id === order_id ? { ...order, OrderInfo: { ...order.OrderInfo, invoiceLoading: false, selected: false } } : order)

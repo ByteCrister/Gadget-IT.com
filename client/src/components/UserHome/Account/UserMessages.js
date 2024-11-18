@@ -18,6 +18,7 @@ const UserMessages = ({ Orders }) => {
     // console.log(Orders);
   }, [dataState?.User_Notifications?.notifications]);
 
+  // *Count message time
   const timeAgo = (time) => {
     const now = new Date();
     const notificationTime = new Date(time);
@@ -38,6 +39,7 @@ const UserMessages = ({ Orders }) => {
   };
 
 
+  // *viewed 0 to 1 for changing the use'r not view message-symbol in DATABASE
   const UpdateViewApi = async (notification_user_no) => {
     try {
       await axios.get(`http://localhost:7000/update-user-notification-view/${notification_user_no}`, {
@@ -51,6 +53,7 @@ const UserMessages = ({ Orders }) => {
     }
   };
 
+  // *Directing into the order's card while clicking on the message
   const getOrderPayload = (order_id) => {
     const payload = Orders.find((order) => order.OrderInfo.order_id === order_id);
     return {
@@ -59,12 +62,15 @@ const UserMessages = ({ Orders }) => {
     }
   };
 
+  // *The destination of ordered card
   const handleOrderClick = (message_token) => {
     navigate('/user-orders-page', {
       state: getOrderPayload(message_token)
     });
   };
 
+
+  // *viewed 0 to 1 for changing the use'r not view message-symbol in FRONTEND
   const handleViewChange = async (notification_user_no) => {
     const Updated = {
       notifications: dataState?.User_Notifications?.notifications?.map((item) => {
@@ -77,6 +83,7 @@ const UserMessages = ({ Orders }) => {
     dispatch({ type: 'set_user_notifications', payload: Updated });
   };
 
+  // *Admin replayed user question - Extract product id, category, active scroll_ref && direct into the product link
   const handleSupportQuestionClick = (message_token) => {
     // "product_id: 1, category: 'phone'"
     message_token = String(message_token);
@@ -90,6 +97,8 @@ const UserMessages = ({ Orders }) => {
     navigate(`/view/${category}/${product_id}`);
   };
 
+
+  // *User's pre-ordered product inserted into the website - Extract product id, category, && direct into the product link
   const handleSupportPreOrderClick = (message_token) => {
     message_token = String(message_token);
     const productIdMatch = message_token.match(/product_id:\s*(\d+)/);
@@ -100,12 +109,21 @@ const UserMessages = ({ Orders }) => {
     navigate(`/view/${category}/${product_id}`);
   };
 
+
+  // *Rendering notifications based on notification type
   const renderNotification = (notification) => {
     switch (notification.type) {
 
       case 'order':
         return <section key={uuidv4()} className={styles['user-message-main-section']} onClick={() => { handleOrderClick(Number(notification.message_token)); handleViewChange(notification.notification_user_no); }}>
           <span className={styles['main-message-span']}>New status of ORDER ID - {notification.message_token} has been arrived on {new Date(notification.notification_date).toLocaleString()}!</span>
+          <span className={styles['time-ago-span']}>{timeAgo(notification.notification_date)}</span>
+          <div className={notification.viewed === 0 ? styles['message-icon-active'] : styles['.message-icon-inactive']}></div>
+        </section>
+
+      case 'invoice-message':
+        return <section key={uuidv4()} className={styles['user-message-main-section']} onClick={() => { handleOrderClick(Number(notification.message_token)); handleViewChange(notification.notification_user_no); }}>
+          <span className={styles['main-message-span']}>We have send the payment invoice on the customer's ordered email for ORDER ID - {notification.message_token} on {new Date(notification.notification_date).toLocaleString()}!</span>
           <span className={styles['time-ago-span']}>{timeAgo(notification.notification_date)}</span>
           <div className={notification.viewed === 0 ? styles['message-icon-active'] : styles['.message-icon-inactive']}></div>
         </section>

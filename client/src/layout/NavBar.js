@@ -7,8 +7,8 @@ import { VscAccount } from "react-icons/vsc";
 
 import { GetMainTable } from '../HOOKS/GetMainTable';
 import { GetCategoryName } from '../HOOKS/GetCategoryName';
-import styles from '../styles/HomePageStyles/uppernav.module.css'
 import { useData } from '../context/useData';
+import styles from '../styles/HomePageStyles/uppernav.module.css'
 
 const NavBar = ({ handleUserEntryPage }) => {
   const { dataState } = useContext(useData);
@@ -22,60 +22,74 @@ const NavBar = ({ handleUserEntryPage }) => {
   const [searchState, setSearchState] = useState('');
   useEffect(() => {
     if (dataState?.CartStorage && dataState?.productStorage?.product_prices) {
-      setTotalCart(dataState.CartStorage.length);
+      setTotalCart(dataState?.CartStorage?.length);
       setSearchedProductStore((prev) => ({
         ...prev,
         prices: [...dataState.productStorage.product_prices]
       }));
+      // console.log(searchedProductStore.prices);
+      // console.log(dataState.productStorage.product_prices);
     }
   }, [dataState.CartStorage]);
 
 
-  const findPrice = (product_id, keyState) => {
-    return searchedProductStore.prices.find(product => product.product_id === product_id)[keyState];
+  const findPrice = (product_id) => {
+    const Product = searchedProductStore?.prices.find(product => product.product_id === product_id)
+    return Product ? Product.price : 0;
   };
 
   const getProductPoint = (product_name, searchedStr) => {
     let point = 0;
-    product_name = product_name.split(' ').map((item) => item.toLowerCase());
-    searchedStr.split(' ').forEach((_) => {
-      searchedStr = searchedStr.replace(' ', '');
-    });
-    // console.log(product_name);
-    // console.log(searchedStr_);
-    // console.log(searchedStr);
+    let sequenceBreak = 0;
+    let isSubString = false;
 
-    product_name.forEach((product_name_sub) => {
-      let product_name_sub_dummy = product_name_sub;
-      // console.log('product_name_sub_dummy: '+product_name_sub_dummy)
-      if (searchedStr.includes(product_name_sub_dummy)) {
-        point += 10;
-      } else {
-        let cutIteration = 1;
-        while (cutIteration <= 2) {
-          product_name_sub_dummy = cutIteration === 1 ? product_name_sub.substring(1) : product_name_sub.slice(0, -1);
-          // console.log('product_name_sub_dummy: - '+product_name_sub_dummy)
-          while (product_name_sub_dummy.length >= 2) {
-            if (searchedStr.toLowerCase().includes(product_name_sub_dummy.toLowerCase())) {
-              for (let i = 0; i < product_name_sub_dummy.length; i++) {
-                for (let j = 0; j < searchedStr.length; j++) {
-                  if (product_name_sub_dummy.charAt(i).toLowerCase() === searchedStr.charAt(j).toLowerCase()) {
-                    point++;
-                    // console.log(product_name_sub_dummy)
-                    break;
-                  }
-                }
-              }
-            }
-            product_name_sub_dummy = cutIteration === 1 ? product_name_sub_dummy.substring(1) : product_name_sub_dummy.slice(0, -1);
-            // console.log('product_name_sub_dummy: - '+product_name_sub_dummy)
-          }
-          cutIteration++;
+    // Normalize and split input strings for word-level matching
+    const productWords = product_name.toLowerCase().split(' ');
+    const searchWords = searchedStr.toLowerCase().split(' ');
+
+    // Prioritize word matches
+    productWords.forEach((productWord) => {
+      searchWords.forEach((searchWord) => {
+        // Exact match
+        if (productWord === searchWord) {
+          point += 30; // Higher points for exact match
         }
-      }
+        // Substring match
+        else if (productWord.includes(searchWord) || searchWord.includes(productWord)) {
+          if (!isSubString) {
+            isSubString = true;
+            point += 20; // Moderate points for substring match
+          }
+        }
+      });
     });
-    return point;
+
+    // Remove spaces for character-level matching
+    product_name = product_name.replace(/ /g, '').toLowerCase();
+    searchedStr = searchedStr.replace(/ /g, '').toLowerCase();
+
+    // Character-level scoring with penalty for breaks
+    let lastMatchIndex = -1;
+    for (let i = 0; i < searchedStr.length; i++) {
+      const char = searchedStr[i];
+      const matchIndex = product_name.indexOf(char, lastMatchIndex + 1);
+
+      if (matchIndex !== -1) {
+        point += 1; // Base point for character match
+        if (matchIndex === lastMatchIndex + 1) {
+          point += 2; // Bonus for sequential matches
+        } else {
+          sequenceBreak++;
+          point -= sequenceBreak; // Penalty for sequence break
+        }
+        lastMatchIndex = matchIndex;
+      }
+    }
+
+    // Cap minimum points to zero to avoid negative scores
+    return Math.max(point, 0);
   };
+
 
   const renderSearchedProducts = () => {
     if (searchedProductStore.product.length === 0) {
@@ -94,7 +108,7 @@ const NavBar = ({ handleUserEntryPage }) => {
                 <span className={styles.Name}>{row.name} | {row.brand} |</span>
                 <div>
                   <span className={styles.Price}>{row.price}৳</span>
-                  {row.cut_price && <span className={styles.CutPrice}>{row.cut_price}৳</span>}
+                  {/* {row.cut_price && <span className={styles.CutPrice}>{row.cut_price}৳</span>} */}
                 </div>
               </div>
             </Link>
@@ -129,26 +143,32 @@ const NavBar = ({ handleUserEntryPage }) => {
   };
 
   const handleSearching = () => {
-    // console.log(dataState.productStorage.product_table[0].table_products);
     let productStore = [];
     let categoryStore = [];
     let namePoint = 0;
     if (dataState?.productStorage?.product_table) {
       dataState.productStorage.product_table.forEach((table) => {
-        console.log(table.table_products);
+
+        // *params @table contains main table of products
         table.table_products.forEach((product) => {
+
+          // *table.@table_products is an array of objects - contains different product rows
           let point = 0;
           let appendedStr = '';
+
+          // * converting @Product Object into array filed
           Object.entries(product).forEach(([key, value]) => {
-            if (key !== 'product_id' && key !== 'hide' && key !== 'vendor_no' && key !== 'image') {
-              const isInclude = value && String(value).toLowerCase().includes(String(searchState).toLowerCase());
+            if (key !== 'product_id' && key !== 'hide' && key !== 'discount_type' && key !== 'discount_value' && key !== 'image' && key !== 'vendor_no') {
+
+              const isInclude = String(value) && String(value).toLowerCase().includes(String(searchState).toLowerCase());
+
               point += isInclude ? 1 : 0;
               point += key === 'brand' && isInclude ? 2 : 0;
               if (key === 'product_name') {
-                namePoint = getProductPoint(value, searchState)
+                namePoint = getProductPoint(String(value), String(searchState))
                 point += namePoint;
               }
-              appendedStr += key !== 'product_name' && key !== 'main_category' && key !== 'sub_category' && isInclude && value && String(value).length !== 0 ? ` |${GetCategoryName(String(value))}|` : '';
+              appendedStr += key !== 'product_name' && key !== 'main_category' && key !== 'sub_category' && isInclude && value && String(value).length !== 0 ? ` |${String(value)}|` : '';
             }
           });
           if (point !== 0) {
@@ -157,8 +177,7 @@ const NavBar = ({ handleUserEntryPage }) => {
               name: product.product_name + appendedStr,
               brand: product.brand,
               image: product.image,
-              price: findPrice(product.product_id, 'price'),
-              cut_price: findPrice(product.product_id, 'cut_price'),
+              price: findPrice(product.product_id),
               main_category: product.main_category,
               sub_category: product.sub_category,
               point: point,
@@ -168,8 +187,21 @@ const NavBar = ({ handleUserEntryPage }) => {
         });
       });
 
+      // *filtering most matched substring's
+      productStore = productStore.filter((item) => {
+        return Object.entries(item).some(([key, value]) => {
+          if (key !== 'product_id' && key !== 'hide' && key !== 'discount_type' && key !== 'discount_value' && key !== 'image' && key !== 'vendor_no') {
+            return String(value).toLowerCase().includes(String(searchState).toLowerCase()) || String(searchState).toLowerCase().includes(String(value).toLowerCase());
+          }
+          return false;
+        });
+      });
+
+      // *sorting matched product based on point's
       productStore.sort((a, b) => b.point - a.point);
-      productStore.slice(0, 10).forEach((product) => {
+
+      // *finding matched product's unique category's
+      productStore.forEach((product) => {
         const MainCategory = GetMainTable(product.main_category, dataState.productStorage.category, dataState.productStorage.subCategory);
         const isMainStored = categoryStore.some((product_) => product_.main.toLowerCase() === product.main_category.toLowerCase());
         const isSubStored = categoryStore.some((product_) => product_.sub.toLowerCase() === product.sub_category.toLowerCase());
@@ -188,11 +220,13 @@ const NavBar = ({ handleUserEntryPage }) => {
           });
         }
       });
-      console.log(productStore);
-      // console.log(categoryStore);
+
+      //// console.log(productStore);
+      // // console.log(categoryStore);
+      // *updating state values
       setSearchedProductStore((prev) => ({
         ...prev,
-        product: [...productStore.slice(0, 10)],
+        product: [...productStore],
         category: [...categoryStore]
       }));
     }
@@ -300,4 +334,4 @@ const NavBar = ({ handleUserEntryPage }) => {
   )
 }
 
-export default NavBar
+export default React.memo(NavBar);

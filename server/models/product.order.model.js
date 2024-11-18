@@ -58,5 +58,11 @@ module.exports = {
     },
     updateInvoice: (order_id, callback) => {
         db.query('update user_order set invoice_status = ? where order_id = ?;', [1, order_id], callback);
+    },
+    postInvoiceNotification: (OrderInfo, callback) => {
+        db.query('insert into notification_user (user_id, message_token, type) values (?, ?, ?) ;',
+            [OrderInfo.user_id, OrderInfo.order_id, 'invoice-message'],
+            callback
+        );
     }
-}
+};

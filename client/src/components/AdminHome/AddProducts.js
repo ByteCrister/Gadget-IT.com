@@ -291,7 +291,7 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
         if (mandatoryValues.incoming < 0 || mandatoryValues.reserved < 0 || mandatoryValues.quantity < 0) {
             errors.incoming = "Stock value can't negative!!";
         }
-        if (mandatoryValues.discount_value <= 0) errors.discount_value = "Invalid Discount Value!!.";
+        if (mandatoryValues.discount_value < 0) errors.discount_value = "Invalid Discount Value!!.";
         if (mandatoryValues.discount_type === 'percentage' && mandatoryValues.discount_value >= 100) {
             errors.discount_value = "Invalid Discount!!.";
         }

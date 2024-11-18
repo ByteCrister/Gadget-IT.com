@@ -13,6 +13,7 @@ import { useData } from '../../context/useData';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import { SearchInventory } from '../../HOOKS/SearchInventory';
 import { Api_Inventory } from '../../api/Api_Inventory';
+import Admin_Api from '../../api/Admin_Api';
 
 const PageTwo = React.memo(({setErrorCategory}) => {
   const { dataState, dispatch } = useContext(useData);
@@ -175,7 +176,7 @@ const PageTwo = React.memo(({setErrorCategory}) => {
     const checkedItems = isChecked.filter((item) => item.check === true);
     try {
       await axios.post('http://localhost:7000/delete/products', { checkedItems });
-      await Api_Inventory(dispatch);
+      await Admin_Api(dispatch);
       setProductsData((prevData) => prevData.filter((item) => !checkedItems.some((checkedItem) => checkedItem.id === item.id)));
       initializeCheck();
     } catch (error) {

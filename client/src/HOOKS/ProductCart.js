@@ -34,7 +34,7 @@ const ProductCart = ({ product }) => {
                 <div className={styles['product-name']}>{product.product_name}</div>
                 <div className={styles['product-prices']}>
                     <span className={styles['price']}>{calculatedDiscountPrice}৳</span>
-                    <span className={styles['crossed-price']}>৳{price}</span>
+                    {product.discount_value !== 0 && <span className={styles['crossed-price']}>৳{price}</span>}
                 </div>
             </Link>
             <div className={styles['buttons']}>
