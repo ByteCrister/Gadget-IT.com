@@ -113,12 +113,12 @@ const VerifyOrderEmail = () => {
 
                     <div className={styles['verification-inner-input-div']}>
                         {Array.from({ length: 6 }).map((_, index) => {
-                            const id = (index + 1).toString(); 
+                            const id = (index + 1).toString();
                             return (
                                 <input
                                     key={id}
                                     type='text'
-                                    value={InputDigits[id] || ''} 
+                                    value={InputDigits[id] || ''}
                                     onChange={handleDigitInput}
                                     id={id}
                                 />
@@ -136,4 +136,4 @@ const VerifyOrderEmail = () => {
     )
 }
 
-export default VerifyOrderEmail;
+export default React.memo(VerifyOrderEmail);

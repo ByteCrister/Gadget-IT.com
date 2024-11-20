@@ -5,6 +5,8 @@ const userCrudModel = require('../models/user.crud.model');
 const bcrypt = require('bcrypt');
 const productOrderModel = require('../models/product.order.model');
 const userModel = require('../models/user.model');
+const { encryptBankSourceId } = require('../config/auth.crypto');
+
 
 const authenticateUser = (req, res, next, callback) => {
     passport.authenticate('jwt', { session: false }, (err, user, info) => {
@@ -246,15 +248,18 @@ module.exports = {
     },
 
     insertNewOrder: async (req, res, next) => {
+        const { FormInfo, payMethodState, store, bank_src } = req.body;
         try {
             authenticateUser(req, res, next, async (user) => {
+                const encrypted = encryptBankSourceId(bank_src || "");
                 const resData = await performQuery(productOrderModel.insertNewOrderProductQuery, {
-                    ...req.body.FormInfo,
+                    ...FormInfo,
                     user_id: user.user_id,
-                    payMethodState: req.body.payMethodState
+                    payMethodState: payMethodState,
+                    bank_src: encrypted
                 });
                 console.log('New Order arrived: ' + resData.insertId);
-                req.body.store.forEach(async (product) => {
+                store.forEach(async (product) => {
                     await performQuery(productOrderModel.insertNewOrderQuery, product, resData.insertId);
                 });
 

@@ -1,3 +1,4 @@
+const { decryptBankSourceId } = require("../config/auth.crypto");
 const sendInvoice = require("../config/invoice.send");
 const productOrderModel = require("../models/product.order.model");
 const productsModels = require("../models/products.models")
@@ -11,6 +12,13 @@ const performQuery = async (queryFunction, ...params) => {
             else resolve(data);
         });
     });
+};
+
+// Helper function to get the exchange rate
+const getExchangeRate = async (apiKey) => {
+    const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/BDT`;
+    const response = await axios.get(url);
+    return response.data.conversion_rates.USD;
 };
 
 // Helper function to get the access token from Dwolla
@@ -36,6 +44,35 @@ const checkTransferStatus = async (accessToken, transferId) => {
     });
     return response.data.status;
 };
+
+
+// Helper function to perform the transfer
+const performTransfer = async (accessToken, fundingSource, destinationSource, amount) => {
+    const url = 'https://api-sandbox.dwolla.com/transfers';
+    const transferData = {
+        _links: {
+            source: {
+                href: `https://api-sandbox.dwolla.com/funding-sources/${fundingSource}`,
+            },
+            destination: {
+                href: `https://api-sandbox.dwolla.com/funding-sources/${destinationSource}`,
+            },
+        },
+        amount: {
+            currency: 'USD',
+            value: String(amount.toFixed(2)),
+        },
+    };
+    const response = await axios.post(url, transferData, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/vnd.dwolla.v1.hal+json',
+        },
+    });
+    return response;
+};
+
 
 module.exports = {
     getOrdersPage: async (req, res) => {
@@ -148,6 +185,32 @@ module.exports = {
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: 'error on postNewInvoice - ', error: error });
+        }
+    },
+
+    postReturnMoney: async (req, res) => {
+        // console.log(req.body);
+        const apiKey = process.env.EXCHANGERATE_API_KEY;
+        const clientId = process.env.DWOLLA_API_KEY;
+        const clientSecret = process.env.DWOLLA_API_SECRET_KEY;
+        const fundingSource = process.env.DWOLLA_FUNDING_SOURCE_ID
+        const destinationSource = decryptBankSourceId(req.body.OrderInfo.bank_src);
+        try {
+            const rate = await getExchangeRate(apiKey);
+            const convertedAmount = req.body.OrderInfo.price * rate;
+            console.log('Converted Amount: ' + convertedAmount.toFixed(2) + '$');
+            
+            const accessToken = await getAccessToken(clientId, clientSecret);
+            console.log('Access Token: ' + accessToken);
+
+            await performTransfer(accessToken, fundingSource, destinationSource, convertedAmount);
+            console.log('Return Money Transfer successfully');
+
+            res.status(201).send({ success: true });
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).send({ message: error.message });
         }
     }
 };

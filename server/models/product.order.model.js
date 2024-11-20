@@ -14,9 +14,9 @@ module.exports = {
     insertNewOrderProductQuery: (order, callback) => {
         db.query(`
             insert into user_order 
-            (user_id, name, email, phone_number, full_address, order_status, order_type)
-            values (?, ?, ?, ?, ?, ?, ?)`,
-            [order.user_id, order.full_name, order.email, order.phone_number, order.address, 'Order is Processing', order.payMethodState],
+            (user_id, name, email, phone_number, full_address, order_status, order_type, bank_src)
+            values (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [order.user_id, order.full_name, order.email, order.phone_number, order.address, 'Order is Processing', order.payMethodState, order.bank_src],
             callback);
     },
     // *used in user crud controller

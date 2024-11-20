@@ -9,5 +9,6 @@ OrderRouter.get('/get-payment-status/:bank_transfer_id', productOrderController.
 OrderRouter.patch('/update-payment-status', productOrderController.updatePaymentStatus);
 OrderRouter.delete('/delete-order/:order_id', productOrderController.deleteOrder);
 OrderRouter.post('/post-new-order-invoice', productOrderController.postNewInvoice);
+OrderRouter.post('/post-return-money', productOrderController.postReturnMoney);
 
 module.exports = OrderRouter;

@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import { IoFilter } from "react-icons/io5";
 import { TbTrashOff } from "react-icons/tb";
 import { IoShieldCheckmark, IoShieldCheckmarkOutline } from "react-icons/io5";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 
-import styles from "../../styles/AdminHome/PageFour.module.css";
 import Pagination from "../../HOOKS/Pagination";
 import { useData } from "../../context/useData";
-import axios from "axios";
+import styles from "../../styles/AdminHome/PageFour.module.css";
 
 const PageFour = () => {
   const { dataState, dispatch } = useContext(useData);
@@ -55,7 +55,8 @@ const PageFour = () => {
           PageData.filter((order) => order.OrderInfo.order_status === "Canceled")
             .length,
       });
-      console.log(PageData);
+      // console.log(PageData);
+      // console.log(dataState.Production_Page.TableRows);
     }
   }, [dataState.Order_Page]);
 
@@ -88,6 +89,7 @@ const PageFour = () => {
         <div className={styles['product-detail-user-info']}>
           <span>Name: {OrderDetail.UserOrderInfo.name}</span>
           <span>Address: {OrderDetail.UserOrderInfo.full_address}</span>
+          <span>Email: {OrderDetail.UserOrderInfo.email}</span>
         </div>
         <section className={styles['product-detail-table-section']}>
           <table>
@@ -119,21 +121,26 @@ const PageFour = () => {
       await axios.delete(`http://localhost:7000/delete-order/${order_id}`);
     } catch (error) {
       console.log(error);
+      throw error;
     }
   };
 
   const handleDeleteOrder = async (selected, order_id) => {
     if (selected && window.confirm(`Do you want to delete order - ${order_id}?`)) {
-      let Updated = [...dataState.Order_Page];
-      Updated = Updated.filter((order) => {
-        return order.OrderInfo.order_id !== order_id
-      });
-      setOrderStore((prev) => ({
-        ...prev,
-        MainProducts: Updated,
-      }));
-      dispatch({ type: "set_order_page", payload: Updated });
-      await performDeleteData(order_id);
+      try {
+        await performDeleteData(order_id);
+        let Updated = [...dataState.Order_Page];
+        Updated = Updated.filter((order) => {
+          return order.OrderInfo.order_id !== order_id
+        });
+        setOrderStore((prev) => ({
+          ...prev,
+          MainProducts: Updated,
+        }));
+        dispatch({ type: "set_order_page", payload: Updated });
+      } catch (error) {
+        window.alert("Error on deleting data: " + error.message);
+      }
     }
   };
 
@@ -190,7 +197,7 @@ const PageFour = () => {
     if (currStatus === "Way to Destination" && newStatus === "Ready to Collect")
       return newStatus;
 
-    return currStatus;
+    return "Canceled";
   };
 
   const handleNewUserOrderNotification = async (user_id, order_id, status) => {
@@ -202,6 +209,7 @@ const PageFour = () => {
       });
     } catch (error) {
       console.log(error);
+      throw error;
     }
   };
 
@@ -213,26 +221,47 @@ const PageFour = () => {
       });
     } catch (error) {
       console.log(error);
+      throw error;
+    }
+  };
+
+  const handleReturnMoneyApi = async (OrderInfo, OrderProducts) => {
+    try {
+      const Products = dataState.Production_Page.TableRows.filter((item) => OrderProducts.some((item_) => item_.product_id === item.id));
+      const price = Products.reduce((s, c) => s + c.price, 0);
+      await axios.post('http://localhost:7000/post-return-money', { OrderInfo: { ...OrderInfo, price }, OrderProducts: OrderProducts });
+    } catch (error) {
+      console.log("handle Return Money Api error: " + error);
+      throw error;
     }
   };
 
   const handleActionChange = async (e) => {
-    let Updated = await Promise.all(OrderStore.MainProducts.map(async (item) => {
-      const newStatus = getNewOrderStatus(item.OrderInfo.order_status, e.target.value);
-      if (item.OrderInfo.selected && newStatus === e.target.value) {
-        await handleUpdateOrderStatus(newStatus, item.OrderInfo.order_id);
-        await handleNewUserOrderNotification(item.OrderInfo.user_id, item.OrderInfo.order_id, newStatus);
-        return {
-          ...item,
-          OrderInfo: {
-            ...item.OrderInfo,
-            order_status: newStatus,
-          },
-        };
-      }
-      return item;
-    }));
-    dispatch({ type: "set_order_page", payload: Updated });
+    try {
+      dispatch({ type: "toggle_loading", payload: true });
+      let Updated = await Promise.all(OrderStore.MainProducts.map(async (item) => {
+        const newStatus = getNewOrderStatus(item.OrderInfo.order_status, e.target.value);
+        console.log('new status: ' + newStatus + ', enteredStatus: ' + e.target.value);
+        if (item.OrderInfo.selected && newStatus === e.target.value) {
+          await handleUpdateOrderStatus(newStatus, item.OrderInfo.order_id);
+          await handleNewUserOrderNotification(item.OrderInfo.user_id, item.OrderInfo.order_id, newStatus);
+          if (item.OrderInfo.order_type === 'Online Payment' && item.OrderInfo.order_status !== 'Canceled' && newStatus === 'Canceled') await handleReturnMoneyApi(item.OrderInfo, item.OrderProducts);
+          return {
+            ...item,
+            OrderInfo: {
+              ...item.OrderInfo,
+              order_status: newStatus,
+            },
+          };
+        }
+        return item;
+      }));
+      dispatch({ type: "set_order_page", payload: Updated });
+      dispatch({ type: "toggle_loading", payload: false });
+    } catch (error) {
+      window.alert('Error on action change: ' + error.message);
+      dispatch({ type: "toggle_loading", payload: false });
+    }
   };
 
 
@@ -274,35 +303,64 @@ const PageFour = () => {
 
     } catch (error) {
       console.log(error);
+      throw error;
     }
   };
 
 
   const handleInvoiceChange = async (order_id) => {
+
     const product = OrderStore.MainProducts.find((Order) => Order.OrderInfo.order_id === order_id);
     const isSelected = product?.OrderInfo?.selected || false;
 
     if (isSelected && !product.OrderInfo.invoiceLoading) {
-      setOrderStore((prev) => ({
-        MainProducts: prev.MainProducts.map((order) => order.OrderInfo.order_id === order_id ? { ...order, OrderInfo: { ...order.OrderInfo, invoiceLoading: true } } : order)
-      }));
+      try {
+        //* Set invoice loading state to true (optimizing state update by only calling setOrderStore once)
+        setOrderStore((prev) => ({
+          MainProducts: prev.MainProducts.map((order) =>
+            order.OrderInfo.order_id === order_id
+              ? { ...order, OrderInfo: { ...order.OrderInfo, invoiceLoading: true } }
+              : order
+          )
+        }));
 
-      let Updated = OrderStore.MainProducts.map((Order) => {
-        return Order.OrderInfo.order_id === order_id
-          ? { ...Order, OrderInfo: { ...Order.OrderInfo, invoice_status: 1 } }
-          : Order
-      });
+        //* Update invoice status in the local store
+        const updated = OrderStore.MainProducts.map((Order) =>
+          Order.OrderInfo.order_id === order_id
+            ? { ...Order, OrderInfo: { ...Order.OrderInfo, invoice_status: 1 } }
+            : Order
+        );
 
-      await renderInvoiceChange_Api(product);
+        // *Call the API to render the invoice
+        await renderInvoiceChange_Api(product);
 
-      setOrderStore((prev) => ({
-        MainProducts: prev.MainProducts.map((order) => order.OrderInfo.order_id === order_id ? { ...order, OrderInfo: { ...order.OrderInfo, invoiceLoading: false, selected: false } } : order)
-      }));
-      dispatch({ type: "set_order_page", payload: Updated });
+        //* After API call succeeds, reset the invoice loading and selected state
+        setOrderStore((prev) => ({
+          MainProducts: prev.MainProducts.map((order) =>
+            order.OrderInfo.order_id === order_id
+              ? { ...order, OrderInfo: { ...order.OrderInfo, invoiceLoading: false, selected: false } }
+              : order
+          )
+        }));
+
+        //* Update the page state with the updated order status
+        dispatch({ type: "set_order_page", payload: updated });
+      } catch (error) {
+        //* Reset loading and selection state in case of error
+        setOrderStore((prev) => ({
+          MainProducts: prev.MainProducts.map((order) =>
+            order.OrderInfo.order_id === order_id
+              ? { ...order, OrderInfo: { ...order.OrderInfo, invoiceLoading: false, selected: false } }
+              : order
+          )
+        }));
+        window.alert(`Error: ${error.message}`);
+        console.error('Invoice change failed:', error);
+      }
     }
   };
 
-  // ----------------------------------------------------------------------------------------------
+
 
   return (
     <>
