@@ -53,5 +53,42 @@ module.exports = {
             console.log('error on deleteAdminView: ' + error);
             res.status(500).json({ error });
         }
+    },
+
+    // * vendor CRUD
+    getVendors: async (req, res) => {
+        try {
+            res.status(201).send(await performQuery(productOuterModel.getVendorsQuery));
+        } catch (error) {
+            console.log('error on getVendors: ' + error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    postVendor: async (req, res) => {
+        try {
+            await performQuery(productOuterModel.postVendorQuery, req.body.vendor_name);
+            res.status(201).send({ success: true });
+        } catch (error) {
+            console.log('error on postVendor: ' + error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    putVendor: async (req, res) => {
+        try {
+            await performQuery(productOuterModel.putVendorQuery, req.body.new_vendor_name, req.body.vendor_no);
+            res.status(201).send({ success: true });
+        } catch (error) {
+            console.log('error on putVendor: ' + error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+    deleteVendor: async (req, res) => {
+        try {
+            await performQuery(productOuterModel.deleteVendorQuery, req.params.vendor_no);
+            res.status(201).send({ success: true });
+        } catch (error) {
+            console.log('error on deleteVendor: ' + error);
+            res.status(500).json({ message: error.message });
+        }
     }
-}
+};

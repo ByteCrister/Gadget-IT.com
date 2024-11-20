@@ -1,11 +1,34 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styles from '../../styles/AdminHome/PageThree.module.css'
 import ProductionTable from '../../components/AdminHome/ProductionTable';
 import ManageColumns from '../../components/AdminHome/ManageColumns';
 import CreateNewCategory from '../../components/AdminHome/CreateNewCategory';
+import ManageVendors from '../../components/AdminHome/ManageVendors';
 
-const PageThree = React.memo(({setErrorCategory}) => {
+const PageThree = React.memo(({ setErrorCategory }) => {
   const [pageThreeCurrentPage, setPageThreeCurrentPage] = useState(1);
+
+
+  const renderCurrentPage = useCallback(() => {
+    switch (pageThreeCurrentPage) {
+      case 1:
+        return <ProductionTable setErrorCategory={setErrorCategory} />
+
+      case 2:
+        return <ManageColumns />
+
+      case 3:
+        return <CreateNewCategory setErrorCategory={setErrorCategory} />
+
+      default:
+        return <ManageVendors />;
+    }
+  }, [pageThreeCurrentPage, setErrorCategory]);
+
+  const getCurrentButtonClassName = useCallback((page) => {
+    return pageThreeCurrentPage === page ? styles.production_button_active : styles.production_button;
+  }, [pageThreeCurrentPage]);
+
 
 
   return (
@@ -13,35 +36,25 @@ const PageThree = React.memo(({setErrorCategory}) => {
       <span className={styles.ProductionText}>Productions Management</span>
 
       <div className={styles.production_buttons}>
-        <button
-          className={pageThreeCurrentPage === 1 ? styles.production_button_active : styles.production_button}
-          onClick={() => { setPageThreeCurrentPage(1) }}
-        >
+
+        <button className={getCurrentButtonClassName(1)} onClick={() => { setPageThreeCurrentPage(1) }} >
           Manage Inventory
         </button>
-        <button
-          className={pageThreeCurrentPage === 2 ? styles.production_button_active : styles.production_button}
-          onClick={() => { setPageThreeCurrentPage(2) }}
-        >
-          Manage Columns && Sorting
+
+        <button className={getCurrentButtonClassName(2)} onClick={() => { setPageThreeCurrentPage(2) }} >
+          Columns && Sorting
         </button>
-        <button
-          className={pageThreeCurrentPage === 3 ? styles.production_button_active : styles.production_button}
-          onClick={() => { setPageThreeCurrentPage(3) }}
-        >
-          Manage Category's
+
+        <button className={getCurrentButtonClassName(3)} onClick={() => { setPageThreeCurrentPage(3) }} >
+          Category's
+        </button>
+        <button className={getCurrentButtonClassName(4)} onClick={() => { setPageThreeCurrentPage(4) }} >
+          Vendors
         </button>
       </div>
 
-
       <div className={styles.ProductionContents}>
-        {
-          pageThreeCurrentPage === 1 ?
-            <ProductionTable setErrorCategory={setErrorCategory} />
-            : pageThreeCurrentPage === 2 ?
-              <ManageColumns />
-              : <CreateNewCategory setErrorCategory={setErrorCategory}/>
-        }
+        {renderCurrentPage()}
       </div>
 
     </div>

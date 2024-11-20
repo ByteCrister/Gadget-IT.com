@@ -18,5 +18,20 @@ module.exports = {
     },
     deleteAdminViewQuery: (notification_no, callback) => {
         db.query('delete from notification_admin where notification_no = ? ; ', [notification_no], callback);
+    },
+
+
+    // * vendor - CRUD
+    getVendorsQuery: (callback) => {
+        db.query('select * from vendors; ', callback);
+    },
+    postVendorQuery: (vendor_name, callback) => {
+        db.query('insert into vendors (vendor_name) values (?) ;', [vendor_name], callback);
+    },
+    putVendorQuery: (new_vendor_name, vendor_no, callback) => {
+        db.query('update vendors set vendor_name = ? where vendor_no = ? ; ', [new_vendor_name, vendor_no], callback);
+    },
+    deleteVendorQuery: (vendor_no, callback)=>{
+        db.query('delete from vendors where vendor_no = ? ;', [vendor_no], callback);
     }
 };
