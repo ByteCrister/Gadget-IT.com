@@ -9,6 +9,7 @@ const secretKey = process.env.JWT_SECRET_KEY;
 const { SendUserMail } = require('../config/send.mail.controller.js');
 const productOuterModel = require('../models/product.outer.model.js');
 const { SendOrderConfirmationMail } = require('../config/send.order.confirmation.email.js');
+const adminDashboardController = require('./admin.dashboard.controller.js');
 const saltRounds = 10;
 
 const performQuery = async (queryFunction, ...params) => {
@@ -130,6 +131,14 @@ module.exports = {
                 sender_type: 'User',
                 page: 6
             };
+
+            //* incrementing number of users
+            const incrementUser = {
+                column: 'total_customers',
+                operator: '+',
+                value: 1
+            };
+            await performQuery(adminDashboardController.changeStaticValues, incrementUser.column, incrementUser.operator, incrementUser.value);
             await performQuery(userModel.setNewAdminNotification, payload);
             await performQuery(productOuterModel.insertNewUserCountQuery, results.insertId);
             console.log('New user registered with id:', results.insertId);

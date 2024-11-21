@@ -85,6 +85,12 @@ const reducer = (state, action) => {
 
     switch (action.type) {
 
+        case 'set_dashboard_page':
+            return {
+                ...state,
+                Dashboard_Page: action.payload
+            }
+
         case 'set_order_page':
             return {
                 ...state,

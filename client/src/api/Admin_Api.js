@@ -6,9 +6,12 @@ import { Api_Report } from './Api_Report';
 import { Api_Users } from './Api_Users';
 import { Api_Support } from './Api_Support';
 import { Api_Setting } from './Api_Setting';
+import { Api_Dashboard } from './Api_Dashboard';
+
 
 const Admin_Api = async (dispatch) => {
   try {
+    await Api_Dashboard(dispatch);
     await Api_Outer_Page(dispatch);
     await Api_Inventory(dispatch);
     await Api_Production(dispatch);
@@ -19,6 +22,7 @@ const Admin_Api = async (dispatch) => {
     await Api_Setting(dispatch);
   } catch (error) {
     console.log(error);
+    window.alert(error.message);
   }
 };
 

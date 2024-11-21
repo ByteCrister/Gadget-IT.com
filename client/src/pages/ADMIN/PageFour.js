@@ -118,7 +118,10 @@ const PageFour = () => {
 
   const performDeleteData = async (order_id) => {
     try {
-      await axios.delete(`http://localhost:7000/delete-order/${order_id}`);
+      const OrderProducts = OrderStore.MainProducts.find((item) => item.OrderInfo.order_id === order_id).OrderProducts;
+      const Products = dataState.Production_Page.TableRows.filter((item) => OrderProducts.some((item_) => item_.product_id === item.id));
+      const price = Products.reduce((s, c) => s + c.price, 0);
+      await axios.delete(`http://localhost:7000/delete-order/${order_id}/${price}`);
     } catch (error) {
       console.log(error);
       throw error;
@@ -213,11 +216,13 @@ const PageFour = () => {
     }
   };
 
-  const handleUpdateOrderStatus = async (newStatus, order_id) => {
+  const handleUpdateOrderStatus = async (currStatus, newStatus, order_id, price) => {
     try {
       await axios.patch(`http://localhost:7000/update/order-status`, {
+        currStatus: currStatus,
         newStatus: newStatus,
         order_id: order_id,
+        price: price
       });
     } catch (error) {
       console.log(error);
@@ -243,9 +248,14 @@ const PageFour = () => {
         const newStatus = getNewOrderStatus(item.OrderInfo.order_status, e.target.value);
         console.log('new status: ' + newStatus + ', enteredStatus: ' + e.target.value);
         if (item.OrderInfo.selected && newStatus === e.target.value) {
-          await handleUpdateOrderStatus(newStatus, item.OrderInfo.order_id);
+
+          const Products = dataState.Production_Page.TableRows.filter((item_1) => item.OrderProducts.some((item_2) => item_2.product_id === item_1.id));
+          const price = Products.reduce((s, c) => s + c.price, 0);
+
+          await handleUpdateOrderStatus(item.OrderInfo.order_status, newStatus, item.OrderInfo.order_id, price);
           await handleNewUserOrderNotification(item.OrderInfo.user_id, item.OrderInfo.order_id, newStatus);
           if (item.OrderInfo.order_type === 'Online Payment' && item.OrderInfo.order_status !== 'Canceled' && newStatus === 'Canceled') await handleReturnMoneyApi(item.OrderInfo, item.OrderProducts);
+
           return {
             ...item,
             OrderInfo: {
@@ -465,7 +475,7 @@ const PageFour = () => {
                     <td onClick={() => handleOrderDetail(order)}>
                       {new Date(order.OrderInfo.order_date).toLocaleString()}
                     </td>
-                    <td>{order.OrderInfo.order_type === 'Cash on Delivery'
+                    <td>{order.OrderInfo.order_type === 'Cash on Delivery' && order.OrderInfo.order_status !== 'Canceled'
                       ? <span className={styles['page-four-order-trash']}>{order.OrderInfo.order_type}<TbTrashOff onClick={() => handleDeleteOrder(order.OrderInfo.selected, order.OrderInfo.order_id)} className={styles['page-four-order-trash-btn']} /></span>
                       : order.OrderInfo.order_type}
                     </td>

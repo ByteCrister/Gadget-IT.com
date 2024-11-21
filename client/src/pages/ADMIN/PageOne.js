@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
-import styles from '../../styles/AdminHome/page.one.module.css';
 
 import { FcBullish } from "react-icons/fc";
 import { FcSalesPerformance } from "react-icons/fc";
@@ -19,12 +18,15 @@ import { GoContainer } from "react-icons/go";
 import { FaUsers } from "react-icons/fa";
 import { HiMiniUsers } from "react-icons/hi2";
 
+
+import styles from '../../styles/AdminHome/page.one.module.css';
 import MyChart from '../../components/AdminHome/MyChart';
-
-
-
+import { useData } from '../../context/useData';
 
 const PageOne = () => {
+
+  const { dataState, dispatch } = useContext(useData);
+
   const salesOverview = {
     totalSales: '789',
     revenue: '17583',
@@ -193,12 +195,12 @@ const PageOne = () => {
           <label className={styles.userLabel}>No. of Users</label>
           <div className={styles.UserInnerDiv}>
             <div className={styles.UserInner}>
-              <span id={styles.UserLogo_1}><FaUsers/></span>
+              <span id={styles.UserLogo_1}><FaUsers /></span>
               <span id={styles.UserHeader}>Total Customers</span>
               <span id={styles.UserNumbers}>{noOfUsers.totalUsers}</span>
             </div>
             <div className={styles.UserInner}>
-              <span id={styles.UserLogo_2}><HiMiniUsers/></span>
+              <span id={styles.UserLogo_2}><HiMiniUsers /></span>
               <span id={styles.UserHeader}>Total suppliers</span>
               <span id={styles.UserNumbers}>{noOfUsers.totalUsers}</span>
             </div>
@@ -211,13 +213,13 @@ const PageOne = () => {
 
 
 
-        <section className={styles.graph}>
-          <MyChart />
-        </section>
+      <section className={styles.graph}>
+        <MyChart />
+      </section>
 
 
     </div>
   )
-}
+};
 
 export default React.memo(PageOne);

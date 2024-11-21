@@ -1,8 +1,10 @@
 const { decryptBankSourceId } = require("../config/auth.crypto");
 const sendInvoice = require("../config/invoice.send");
+const adminDashboardModel = require("../models/admin.dashboard.model");
 const productOrderModel = require("../models/product.order.model");
 const productsModels = require("../models/products.models")
 const axios = require('axios');
+
 require('dotenv').config();
 
 const performQuery = async (queryFunction, ...params) => {
@@ -107,6 +109,22 @@ module.exports = {
     updateOrderStatus: async (req, res) => {
         try {
             await performQuery(productOrderModel.updateOrderStatus, req.body.newStatus, req.body.order_id);
+
+            if (req.body.currStatus === 'Ready to Collect' && req.body.newStatus === 'Canceled') {
+                await performQuery(adminDashboardModel.changeStaticValuesQuery, 'returns', '+', 1);
+
+            } else if (req.body.currStatus !== 'Ready to Collect' && req.body.newStatus === 'Canceled') {
+                await performQuery(adminDashboardModel.changeStaticValuesQuery, 'cancle_order', '+', 1);
+
+            }
+
+            if (req.body.newStatus === 'Canceled') {
+                //* Decrementing total_sales
+                await performQuery(adminDashboardModel.changeStaticValuesQuery, 'total_sales', '-', req.body.price);
+                //* Decrementing number of purchase
+                await performQuery(adminDashboardModel.changeStaticValuesQuery, 'number_of_purchase', '-', 1);
+            }
+
             res.status(200).send({ success: true });
 
         } catch (error) {
@@ -147,6 +165,19 @@ module.exports = {
         try {
             await performQuery(productOrderModel.deleteOrderQuery, req.params.order_id);
             await performQuery(productOrderModel.deleteOrderProductQuery, req.params.order_id);
+
+            const userOrderMessages = await performQuery(productOrderModel.getUserIdQuery, req.params.order_id);
+
+            if (userOrderMessages && userOrderMessages.length > 0) {
+                await performQuery(productOrderModel.updateUserNotificationCount, userOrderMessages[0].user_id, userOrderMessages.length);
+                await performQuery(productOrderModel.deleteUserOrderNotifications, req.params.order_id);
+            }
+
+            // //* Decrementing total sales
+            await performQuery(adminDashboardModel.changeStaticValuesQuery, 'total_sales', '-', req.params.total);
+            // //* Decrementing number of purchase
+            await performQuery(adminDashboardModel.changeStaticValuesQuery, 'number_of_purchase', '-', 1);
+
             res.status(200).send(true);
         } catch (error) {
             console.log(error);
@@ -199,7 +230,7 @@ module.exports = {
             const rate = await getExchangeRate(apiKey);
             const convertedAmount = req.body.OrderInfo.price * rate;
             console.log('Converted Amount: ' + convertedAmount.toFixed(2) + '$');
-            
+
             const accessToken = await getAccessToken(clientId, clientSecret);
             console.log('Access Token: ' + accessToken);
 

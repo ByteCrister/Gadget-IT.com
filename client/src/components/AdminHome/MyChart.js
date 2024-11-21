@@ -32,4 +32,4 @@ const MyChart = () => {
   );
 };
 
-export default MyChart;
+export default React.memo(MyChart);

@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const productOrderModel = require('../models/product.order.model');
 const userModel = require('../models/user.model');
 const { encryptBankSourceId } = require('../config/auth.crypto');
+const adminDashboardModel = require('../models/admin.dashboard.model');
 
 
 const authenticateUser = (req, res, next, callback) => {
@@ -263,6 +264,15 @@ module.exports = {
                     await performQuery(productOrderModel.insertNewOrderQuery, product, resData.insertId);
                 });
 
+                //* incrementing total sales
+                const totalAmount = store.reduce((s, c) => s + c.price, 0);
+                await performQuery(adminDashboardModel.changeStaticValuesQuery, 'total_sales', '+', totalAmount);
+
+
+                //* incrementing number of purchase
+                await performQuery(adminDashboardModel.changeStaticValuesQuery, 'number_of_purchase', '+', 1);
+
+                //* inserting admin new notification
                 const payload = {
                     type: 'Order Arrived',
                     sender_type: 'Order',

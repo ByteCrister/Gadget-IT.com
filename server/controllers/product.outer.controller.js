@@ -1,3 +1,4 @@
+const adminDashboardModel = require("../models/admin.dashboard.model");
 const productOuterModel = require("../models/product.outer.model");
 
 const performQuery = async (queryFunction, ...params) => {
@@ -67,6 +68,7 @@ module.exports = {
     postVendor: async (req, res) => {
         try {
             await performQuery(productOuterModel.postVendorQuery, req.body.vendor_name);
+            await performQuery(adminDashboardModel.changeStaticValuesQuery, 'total_suppliers', '+', 1);
             res.status(201).send({ success: true });
         } catch (error) {
             console.log('error on postVendor: ' + error);
@@ -85,6 +87,8 @@ module.exports = {
     deleteVendor: async (req, res) => {
         try {
             await performQuery(productOuterModel.deleteVendorQuery, req.params.vendor_no);
+            await performQuery(adminDashboardModel.changeStaticValuesQuery, 'total_suppliers', '-', 1);
+
             res.status(201).send({ success: true });
         } catch (error) {
             console.log('error on deleteVendor: ' + error);

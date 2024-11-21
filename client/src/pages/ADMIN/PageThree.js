@@ -4,6 +4,7 @@ import ProductionTable from '../../components/AdminHome/ProductionTable';
 import ManageColumns from '../../components/AdminHome/ManageColumns';
 import CreateNewCategory from '../../components/AdminHome/CreateNewCategory';
 import ManageVendors from '../../components/AdminHome/ManageVendors';
+import SalesManagement from '../../components/AdminHome/SalesManagement';
 
 const PageThree = React.memo(({ setErrorCategory }) => {
   const [pageThreeCurrentPage, setPageThreeCurrentPage] = useState(1);
@@ -20,8 +21,11 @@ const PageThree = React.memo(({ setErrorCategory }) => {
       case 3:
         return <CreateNewCategory setErrorCategory={setErrorCategory} />
 
+      case 4:
+        return <ManageVendors />
+
       default:
-        return <ManageVendors />;
+        return <SalesManagement />;
     }
   }, [pageThreeCurrentPage, setErrorCategory]);
 
@@ -50,6 +54,9 @@ const PageThree = React.memo(({ setErrorCategory }) => {
         </button>
         <button className={getCurrentButtonClassName(4)} onClick={() => { setPageThreeCurrentPage(4) }} >
           Vendors
+        </button>
+        <button className={getCurrentButtonClassName(5)} onClick={() => { setPageThreeCurrentPage(5) }} >
+          Sales
         </button>
       </div>
 

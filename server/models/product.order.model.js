@@ -64,5 +64,17 @@ module.exports = {
             [OrderInfo.user_id, OrderInfo.order_id, 'invoice-message'],
             callback
         );
+    },
+
+
+    getUserIdQuery: (order_id, callback)=>{
+        db.query('select * from notification_user where message_token = ? ; ', [order_id], callback);
+    },
+    updateUserNotificationCount: (user_id, decreaseCount, callback)=>{
+        db.query(`update notification_user_count set notification_count = notification_count - ${decreaseCount} where user_id = ? ; `, [user_id], callback);
+    },
+    deleteUserOrderNotifications: (order_id, callback)=>{
+        db.query('delete from notification_user where message_token = ? ; ', [order_id], callback);
     }
+    
 };
