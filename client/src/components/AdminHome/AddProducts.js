@@ -54,27 +54,26 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
         }
     }, [dataState.subCategoryName]);
 
-    const handleSubCategoryChange = useCallback((e) => {
+    const handleSubCategoryChange = async (e) => {
         const value = e.target.value;
         if (value) {
-            axios
-                .get(`http://localhost:7000/product_key_values/${mainCategory}`)
-                .then((res) => {
-                    setSubCategory(value);
-                    setKeyAndValue(res.data.tableColumnNames);
-                    setTableName(res.data.tableName);
-                    setVendors(res.data.vendorNames);
-                    setMandatoryValues((prev) => ({ ...prev, subCategory: value }));
-                })
-                .catch((err) => {
-                    console.error('Error fetching product key values:', err);
-                });
+            try {
+                const res = await axios.get(`http://localhost:7000/product_key_values/${mainCategory}`);
+                setSubCategory(value);
+                setKeyAndValue(await res.data.tableColumnNames);
+                setTableName(await res.data.tableName);
+                setVendors(await res.data.vendorNames);
+                setMandatoryValues((prev) => ({ ...prev, subCategory: value }));
+                setIsSubCategorySelected(true);
+            } catch (error) {
+                console.log(error);
+                window.alert("Error fetching product key values: " + error.message);
+            }
 
-            setIsSubCategorySelected(true);
         } else {
             setIsSubCategorySelected(false);
         }
-    }, [mainCategory]);
+    };
 
     const handleChange = useCallback((e) => {
         const { id, value, type, files } = e.target;
@@ -82,7 +81,6 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
         if (type === 'file') {
             const file = files[0];
 
-            // Check if the file is an image
             if (!file || !file.type.startsWith('image/')) {
                 setErrorCategory({
                     message: 'The file is not an Image! Please give a valid image file.',
@@ -98,25 +96,49 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
 
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const MAX_SIZE_KB = 50; // Maximum size in KB
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 800;
+                    const MAX_SIZE_KB = 50;
                     const MAX_SIZE_BYTES = MAX_SIZE_KB * 1024;
 
-                    canvas.width = img.width;
-                    canvas.height = img.height;
+                    // Resize canvas if necessary
+                    if (img.width > MAX_WIDTH || img.height > MAX_HEIGHT) {
+                        if (img.width > img.height) {
+                            canvas.width = MAX_WIDTH;
+                            canvas.height = (img.height / img.width) * MAX_WIDTH;
+                        } else {
+                            canvas.height = MAX_HEIGHT;
+                            canvas.width = (img.width / img.height) * MAX_HEIGHT;
+                        }
+                    } else {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                    }
 
                     const ctx = canvas.getContext('2d');
-                    let quality = 0.9; //90%
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
+                    let quality = 0.9; // Initial quality
                     let compressedDataURL = canvas.toDataURL(file.type, quality);
-                    let compressedDataSize = (compressedDataURL.length * 3) / 4; // Approximate base64 size in bytes
+                    let base64Length = atob(compressedDataURL.split(',')[1]).length;
+                    let compressedDataSize = base64Length;
 
-                    // Reduce image quality until size is less than 50KB or quality limit is reached
+                    // Check size and reduce quality if needed
                     while (compressedDataSize > MAX_SIZE_BYTES && quality > 0) {
+                        quality -= 0.05;
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                         compressedDataURL = canvas.toDataURL(file.type, quality);
-                        compressedDataSize = (compressedDataURL.length * 3) / 4;
-                        quality -= 0.05;
+                        base64Length = atob(compressedDataURL.split(',')[1]).length;
+                        compressedDataSize = base64Length;
+                    }
+
+                    if (compressedDataSize > MAX_SIZE_BYTES) {
+                        setErrorCategory({
+                            message: 'Image size is greater than 50kb. Image size reduce under 50kb.',
+                            isError: true
+                        });
+                        return;
                     }
 
                     // Set the compressed image in state
@@ -129,7 +151,21 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
                     }));
                 };
 
+                img.onerror = () => {
+                    setErrorCategory({
+                        message: 'Failed to process the image. Please try again.',
+                        isError: true
+                    });
+                };
+
                 img.src = base64String;
+            };
+
+            reader.onerror = () => {
+                setErrorCategory({
+                    message: 'Failed to read the file. Please try again.',
+                    isError: true
+                });
             };
 
             reader.readAsDataURL(file);
@@ -140,6 +176,7 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
             }));
         }
     }, [setErrorCategory, setMandatoryValues]);
+
 
 
     const setKeyAndValue = useCallback((columns) => {
@@ -249,23 +286,109 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
         setExtraImages((prev) => [...prev, { base64: '', mimeType: '' }]);
     }, []);
 
+
     const handleNewExtraImage = useCallback((e, index) => {
         const { type, files } = e.target;
+
         if (type === 'file') {
             const file = files[0];
+
+            if (!file || !file.type.startsWith('image/')) {
+                setErrorCategory({
+                    message: 'The file is not an Image! Please give a valid image file.',
+                    isError: true
+                });
+                return;
+            }
+
             const reader = new FileReader();
+
             reader.onloadend = () => {
-                const base64String = reader.result.replace(/^data:.+\/(.+);base64,/, '');
-                const mimeType = file.type;
-                setExtraImages((prev) => {
-                    const updatedImages = [...prev];
-                    updatedImages[index] = { base64: base64String, mimeType: mimeType };
-                    return updatedImages;
+                const base64String = reader.result;
+                const img = new Image();
+
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 800;
+                    const MAX_SIZE_KB = 50;
+                    const MAX_SIZE_BYTES = MAX_SIZE_KB * 1024;
+
+                    // Resize canvas if necessary
+                    if (img.width > MAX_WIDTH || img.height > MAX_HEIGHT) {
+                        if (img.width > img.height) {
+                            canvas.width = MAX_WIDTH;
+                            canvas.height = (img.height / img.width) * MAX_WIDTH;
+                        } else {
+                            canvas.height = MAX_HEIGHT;
+                            canvas.width = (img.width / img.height) * MAX_HEIGHT;
+                        }
+                    } else {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                    }
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    let quality = 0.9; // Initial quality
+                    let compressedDataURL = canvas.toDataURL(file.type, quality);
+                    let base64Length = atob(compressedDataURL.split(',')[1]).length;
+                    let compressedDataSize = base64Length;
+
+                    // Reduce quality if size exceeds limit
+                    while (compressedDataSize > MAX_SIZE_BYTES && quality > 0) {
+                        quality -= 0.05;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        compressedDataURL = canvas.toDataURL(file.type, quality);
+                        base64Length = atob(compressedDataURL.split(',')[1]).length;
+                        compressedDataSize = base64Length;
+                    }
+
+                    if (compressedDataSize > MAX_SIZE_BYTES) {
+                        setErrorCategory({
+                            message: 'Image size is greater than 50KB. Please reduce it under 50KB.',
+                            isError: true
+                        });
+                        return;
+                    }
+
+                    const mimeType = file.type;
+
+                    // Update the state with the compressed image
+                    setExtraImages((prev) => {
+                        const updatedImages = [...prev];
+                        updatedImages[index] = {
+                            base64: compressedDataURL.replace(/^data:.+\/(.+);base64,/, ''),
+                            mimeType: mimeType
+                        };
+                        return updatedImages;
+                    });
+                };
+
+                img.onerror = () => {
+                    setErrorCategory({
+                        message: 'Failed to process the image. Please try again.',
+                        isError: true
+                    });
+                };
+
+                img.src = base64String;
+            };
+
+            reader.onerror = () => {
+                setErrorCategory({
+                    message: 'Failed to read the file. Please try again.',
+                    isError: true
                 });
             };
+
             reader.readAsDataURL(file);
         }
-    }, []);
+    }, [setErrorCategory, setExtraImages]);
+
+
     const handleDeleteExtraImages = useCallback((index) => {
         setExtraImages((prev) =>
             prev.filter((_, i) => i !== index));
@@ -320,6 +443,7 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
             Admin_Api(dispatch);
         } catch (error) {
             console.error('Error adding product:', error);
+            window.alert(error.message);
         }
     };
 
