@@ -1,42 +1,35 @@
 require('dotenv').config();
+const performQuery = require('../config/performQuery');
 const productSettingModel = require("../models/product.setting.model");
 const productsModels = require("../models/products.models");
 const userHomeContentsModel = require("../models/user.home.contents.model");
 
 const passport = require('passport');
-const authenticateUser = (req, res, next, callback) => {
-    passport.authenticate('jwt', { session: false }, (err, user, info) => {
-        if (err) {
-            return res.status(500).json({ message: 'An error occurred during authentication' });
-        }
-        if (!user) {
-            if (info && info.name === 'TokenExpiredError') {
-                return res.status(401).json({ message: 'Token has expired. Please log in again.' });
-            } else if (info && info.name === 'JsonWebTokenError') {
-                return res.status(401).json({ message: 'Invalid token. Authentication failed.' });
-            } else {
-                return res.status(401).json({ message: 'Unauthorized. Token is missing or invalid.' });
-            }
-        }
-        callback(user);
-    })(req, res, next);
-};
+// const authenticateUser = (req, res, next, callback) => {
+//     passport.authenticate('jwt', { session: false }, (err, user, info) => {
+//         if (err) {
+//             return res.status(500).json({ message: 'An error occurred during authentication' });
+//         }
+//         if (!user) {
+//             if (info && info.name === 'TokenExpiredError') {
+//                 return res.status(401).json({ message: 'Token has expired. Please log in again.' });
+//             } else if (info && info.name === 'JsonWebTokenError') {
+//                 return res.status(401).json({ message: 'Invalid token. Authentication failed.' });
+//             } else {
+//                 return res.status(401).json({ message: 'Unauthorized. Token is missing or invalid.' });
+//             }
+//         }
+//         callback(user);
+//     })(req, res, next);
+// };
 
-const performQuery = async (queryFunction, ...params) => {
-    return await new Promise((resolve, reject) => {
-        queryFunction(...params, (err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-        });
-    });
-}
 
 module.exports = {
     getUserHomeContents: async (req, res) => {
         try {
             let user_home_products = [];
 
-            // Fetch category names
+            // *Fetch category names
             const category = await performQuery(productsModels.getProductsCategoryNamesModel);
 
             for (const item of category) {
@@ -54,24 +47,21 @@ module.exports = {
                 }
             }
 
-            // Fetch advertisements
             const advertisements = await performQuery(userHomeContentsModel.getAdvertisement);
-
-            // Fetch home descriptions
             const home_descriptions = await performQuery(userHomeContentsModel.getHomeDescription);
-
-            // Fetch home featured icons
             const featured_icon = await performQuery(userHomeContentsModel.getFeaturedIcon);
+            const footer_information = await performQuery(productSettingModel.productSettingModel_footer);
 
             res.json({
-                user_home_products: user_home_products,
-                advertisements: advertisements,
-                home_descriptions: home_descriptions,
-                featured_icon: featured_icon
+                user_home_products,
+                advertisements,
+                home_descriptions,
+                featured_icon,
+                footer_information: footer_information[0]
             });
 
         } catch (error) {
-            console.log("Failed getUserHomeContents: "+error);
+            console.log("Failed getUserHomeContents: " + error);
             res.status(500).json({ error });
         }
     },

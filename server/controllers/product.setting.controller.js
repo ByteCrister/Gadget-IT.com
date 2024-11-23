@@ -1,67 +1,25 @@
+const performQuery = require("../config/performQuery");
 const productSettingModel = require("../models/product.setting.model");
-
-const performQuery = async (queryFunction, ...params) => {
-    return await new Promise((resolve, reject) => {
-        queryFunction(...params, (err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-        });
-    });
-};
 
 module.exports = {
     getProductSetting: async (req, res) => {
         try {
-            const advertisement_img = await new Promise((resolve, reject) => {
-                productSettingModel.productSettingModel_advertisement((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-            const featured_category_icon = await new Promise((resolve, reject) => {
-                productSettingModel.productSettingModel_featured_category(
-                    (err, data) => {
-                        if (err) reject(err);
-                        else resolve(data);
-                    }
-                );
-            });
-            const home_product_select = await new Promise((resolve, reject) => {
-                productSettingModel.productSettingModel_home_product_select(
-                    (err, data) => {
-                        if (err) reject(err);
-                        else resolve(data);
-                    }
-                );
-            });
-            const home_description = await new Promise((resolve, reject) => {
-                productSettingModel.productSettingModel_home_description(
-                    (err, data) => {
-                        if (err) reject(err);
-                        else resolve(data);
-                    }
-                );
-            });
-            const offer_carts = await new Promise((resolve, reject) => {
-                productSettingModel.productSettingModel_OfferCarts((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
-            const offer_carts_products = await new Promise((resolve, reject) => {
-                productSettingModel.productSettingModel_OfferCartsProducts((err, data) => {
-                    if (err) reject(err);
-                    else resolve(data);
-                });
-            });
+            const advertisement_img = await performQuery(productSettingModel.productSettingModel_advertisement);
+            const featured_category_icon = await performQuery(productSettingModel.productSettingModel_featured_category);
+            const home_product_select = await performQuery(productSettingModel.productSettingModel_home_product_select);
+            const home_description = await performQuery(productSettingModel.productSettingModel_home_description);
+            const offer_carts = await performQuery(productSettingModel.productSettingModel_OfferCarts);
+            const offer_carts_products = await performQuery(productSettingModel.productSettingModel_OfferCartsProducts);
+            const footer_information = await performQuery(productSettingModel.productSettingModel_footer);
 
             res.json({
-                advertisement_img: advertisement_img,
-                featured_category_icon: featured_category_icon,
-                home_product_select: home_product_select,
-                home_description: home_description,
-                offer_carts: offer_carts,
-                offer_carts_products: offer_carts_products
+                advertisement_img,
+                featured_category_icon,
+                home_product_select,
+                home_description,
+                offer_carts,
+                offer_carts_products,
+                footer_information: footer_information[0]
             });
         } catch (error) {
             console.log("Error in getProductSetting: ", error);
@@ -75,37 +33,22 @@ module.exports = {
         try {
             // Handle update of current images
             if (currentImages && currentImages.length > 0) {
-                await Promise.all(currentImages.map(item =>
-                    new Promise((resolve, reject) => {
-                        productSettingModel.updateAdvertiseImages(item, (err, data) => {
-                            if (err) reject(err);
-                            else resolve(data);
-                        });
-                    })
+                await Promise.all(currentImages.map(async (item) =>
+                    await performQuery(productSettingModel.updateAdvertiseImages, item)
                 ));
             }
 
             // Handle addition of new images
             if (addNewImages && addNewImages.length > 0) {
-                await Promise.all(addNewImages.map(item =>
-                    new Promise((resolve, reject) => {
-                        productSettingModel.addNewAdvertisementImages(item, (err, data) => {
-                            if (err) reject(err);
-                            else resolve(data);
-                        });
-                    })
+                await Promise.all(addNewImages.map(async (item) =>
+                    await performQuery(productSettingModel.addNewAdvertisementImages, item)
                 ));
             }
 
             // Handle deletion of images
             if (deleteImages && deleteImages.length > 0) {
-                await Promise.all(deleteImages.map(item =>
-                    new Promise((resolve, reject) => {
-                        productSettingModel.deleteAdvertisementImages(item, (err, data) => {
-                            if (err) reject(err);
-                            else resolve(data);
-                        });
-                    })
+                await Promise.all(deleteImages.map(async (item) =>
+                    await performQuery(productSettingModel.deleteAdvertisementImages, item)
                 ));
             }
 
@@ -216,36 +159,22 @@ module.exports = {
 
         try {
             if (deleteDes && deleteDes.length > 0) {
-                deleteDes.map(async (item) => {
-                    await new Promise((resolve, reject) => {
-                        productSettingModel.deleteHomeDes(item, (err, data) => {
-                            if (err) reject(err)
-                            else resolve(data)
-                        });
-                    });
-                });
+                await Promise.all(deleteDes.map(async (item) => {
+                    await performQuery(productSettingModel.deleteHomeDes, item)
+                })
+                )
             }
 
             if (mainDes && mainDes.length > 0) {
-                mainDes.map(async (item) => {
-                    await new Promise((resolve, reject) => {
-                        productSettingModel.updateHomeDes(item, (err, data) => {
-                            if (err) reject(err)
-                            else resolve(data)
-                        });
-                    });
-                });
+                await Promise.all(mainDes.map(async (item) => {
+                    await performQuery(productSettingModel.updateHomeDes, item)
+                }));
             }
 
             if (newDes && newDes.length > 0) {
-                newDes.map(async (item) => {
-                    await new Promise((resolve, reject) => {
-                        productSettingModel.newHomeDes(item, (err, data) => {
-                            if (err) reject(err)
-                            else resolve(data)
-                        });
-                    });
-                });
+                await Promise.all(newDes.map(async (item) => {
+                    await performQuery(productSettingModel.newHomeDes, item);
+                }));
             }
 
             console.log('Home view description updated successfully!');
@@ -333,9 +262,19 @@ module.exports = {
 
         } catch (error) {
             console.log("Error in Crud Offer Products: ", error);
-            res.status(500).send("Server Error");
+            res.status(500).send(error);
         }
     },
+
+    updateFooter: async (req, res) => {
+        try {
+            await performQuery(productSettingModel.updateFooterQuery, req.body);
+            res.status(201).send({ success: true });
+        } catch (error) {
+            console.log("Error in updateFooter: " + error.message);
+            res.status(500).send(error);
+        }
+    }
 
 };
 

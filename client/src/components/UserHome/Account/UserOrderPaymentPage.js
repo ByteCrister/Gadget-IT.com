@@ -59,7 +59,8 @@ const UserOrderPaymentPage = () => {
         const resData = await axios.post('http://localhost:7000/insert-new-order', {
           store: location.state.store,
           FormInfo: location.state.FormInfo,
-          payMethodState: location.state.payMethodState
+          payMethodState: location.state.payMethodState,
+          bank_src: SourceIdRef.current.value
         }, {
           headers: {
             Authorization: dataState.token

@@ -1,13 +1,6 @@
+const performQuery = require("../config/performQuery");
 const productReportModel = require("../models/product.report.model");
 
-const performQuery = async (queryFunction, ...params) => {
-    return await new Promise((resolve, reject) => {
-        queryFunction(...params, (err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-        });
-    });
-};
 
 module.exports = {
     getReportData: async (req, res) => {

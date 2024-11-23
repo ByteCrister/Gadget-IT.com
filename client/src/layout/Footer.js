@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok, FaLinkedinIn } from 'react-icons/fa';
 import { FaPhoneAlt } from "react-icons/fa";
 import { HiLocationMarker } from "react-icons/hi";
-import styles from '../styles/HomePageStyles/Footer.module.css';
 
+import styles from '../styles/HomePageStyles/Footer.module.css';
+import { useData } from '../context/useData';
 
 const Footer = () => {
+  const { dataState } = useContext(useData);
+
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContainer}>
@@ -16,13 +19,13 @@ const Footer = () => {
             <div className={styles.phone}>
               <FaPhoneAlt className={styles.icon} />
               <span className={styles.stick}></span>
-              <span>09678148148</span>
+              <span>{dataState?.UserHomeContents?.footer_information?.phone}</span>
             </div>
-            <div className={styles.storeLocator}>
+            <a  href={dataState?.UserHomeContents?.footer_information?.location} className={styles.storeLocator} target='_blank'  rel="noopener noreferrer" >
               <HiLocationMarker className={styles.icon} />
               <span className={styles.stick}></span>
               <span>Find Our Stores</span>
-            </div>
+            </a>
             <div className={styles.socialIcons}>
               <FaFacebookF className={styles.icon} />
               <FaInstagram className={styles.icon} />
@@ -66,17 +69,17 @@ const Footer = () => {
           <h2>Stay Connected</h2>
           <section className={styles.address}>
             <p>GadgetIT.com</p>
-            <p>Basement 2, Shop 26, Bashundhara City Shopping Complex</p>
-            <p>Level 6, Block D, Shop 72-73, Bashundhara City Shopping Complex</p>
-            <p>Level 4, Zone A (West Court), Shop 2BD, Jamuna Future Park</p>
-            <p>Level 4, Shop 505, Mascot Plaza - Uttara</p>
-            <p>Email: contact@gadgetIT.com</p>
+            {
+              dataState?.UserHomeContents?.footer_information?.connected_text?.split('|').map((item, index) => {
+                return <p key={index}>{item}</p>
+              })
+            }
           </section>
         </div>
       </div>
 
       <div className={styles.footerBottom}>
-        <p>© 2024 Thanks From GadgetIT.com | All rights reserved</p>
+        <p>© Thanks From GadgetIT.com | All rights reserved</p>
       </div>
     </footer>
   );

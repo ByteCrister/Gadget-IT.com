@@ -1,13 +1,6 @@
+const performQuery = require("../config/performQuery");
 const productUsersPageModel = require("../models/product.users.page.model");
 
-const performQuery = async (queryFunction, ...params) => {
-    return await new Promise((resolve, reject) => {
-        queryFunction(...params, (err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-        });
-    });
-};
 
 module.exports = {
     getUsersPageData: async (req, res) => {

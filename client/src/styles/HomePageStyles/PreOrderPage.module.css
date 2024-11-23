@@ -119,6 +119,9 @@
   }
 
 @media (max-width : 880px){
+    .main-pre-order-outer-section{
+        padding-top: 100px;
+    }
     .pre-order-form{
         width: 100%;
     }

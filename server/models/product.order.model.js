@@ -14,9 +14,9 @@ module.exports = {
     insertNewOrderProductQuery: (order, callback) => {
         db.query(`
             insert into user_order 
-            (user_id, name, email, phone_number, full_address, order_status, order_type)
-            values (?, ?, ?, ?, ?, ?, ?)`,
-            [order.user_id, order.full_name, order.email, order.phone_number, order.address, 'Order is Processing', order.payMethodState],
+            (user_id, name, email, phone_number, full_address, order_status, order_type, bank_src)
+            values (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [order.user_id, order.full_name, order.email, order.phone_number, order.address, 'Order is Processing', order.payMethodState, order.bank_src],
             callback);
     },
     // *used in user crud controller
@@ -64,5 +64,17 @@ module.exports = {
             [OrderInfo.user_id, OrderInfo.order_id, 'invoice-message'],
             callback
         );
+    },
+
+
+    getUserIdQuery: (order_id, callback)=>{
+        db.query('select * from notification_user where message_token = ? ; ', [order_id], callback);
+    },
+    updateUserNotificationCount: (user_id, decreaseCount, callback)=>{
+        db.query(`update notification_user_count set notification_count = notification_count - ${decreaseCount} where user_id = ? ; `, [user_id], callback);
+    },
+    deleteUserOrderNotifications: (order_id, callback)=>{
+        db.query('delete from notification_user where message_token = ? ; ', [order_id], callback);
     }
+    
 };

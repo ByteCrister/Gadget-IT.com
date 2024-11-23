@@ -7,7 +7,8 @@ OrderRouter.patch('/update/order-status', productOrderController.updateOrderStat
 OrderRouter.post('/new-order-user-notification', productOrderController.postOrderUserNotification)
 OrderRouter.get('/get-payment-status/:bank_transfer_id', productOrderController.getPaymentStatus);
 OrderRouter.patch('/update-payment-status', productOrderController.updatePaymentStatus);
-OrderRouter.delete('/delete-order/:order_id', productOrderController.deleteOrder);
+OrderRouter.delete('/delete-order/:order_id/:total', productOrderController.deleteOrder);
 OrderRouter.post('/post-new-order-invoice', productOrderController.postNewInvoice);
+OrderRouter.post('/post-return-money', productOrderController.postReturnMoney);
 
 module.exports = OrderRouter;

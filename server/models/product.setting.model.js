@@ -40,6 +40,12 @@ module.exports = {
     productSettingModel_OfferCartsProducts: (callback) => {
         db.query('select * from offer_carts_products ;', callback);
     },
+    productSettingModel_footer: (callback) => {
+        db.query('select * from footer where id = 1;', callback);
+    },
+    updateFooterQuery: (footer, callback) => {
+        db.query('update footer set phone = ?, location = ?, connected_text = ? where id = 1; ', [footer.phone, footer.location, footer.connected_text], callback);
+    },
     updateAdvertiseImages: (item, callback) => {
         db.query(`update advertisement_img set img = ?, position = ? where img_no = ? `,
             [item.img, item.position, item.img_no],

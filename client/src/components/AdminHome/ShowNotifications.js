@@ -86,7 +86,7 @@ const ShowNotifications = ({ handleUpper, handlePage }) => {
               <div className={styles.notificationHeader}>
                 <span className={styles.notificationTime}>{timeAgo(notification.notification_date)}</span>
                 <span className={styles.notificationType}>{notification.type}</span>
-                <button className={styles.deleteButton} onClick={() => handleDelete(notification.notification_no)}>
+                <button className={styles.deleteButton} onClick={(e) => { e.stopPropagation();; handleDelete(notification.notification_no) }}>
                   <AiOutlineClose />
                 </button>
               </div>

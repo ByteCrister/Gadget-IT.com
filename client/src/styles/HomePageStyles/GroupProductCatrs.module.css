@@ -81,6 +81,7 @@
 
 .sort_click_button {
     padding: 10px 15px;
+    min-width: 100px;
     border-radius: 5px;
     border: none;
     outline: none;
@@ -121,6 +122,7 @@
         background-color: #ffffff;
         transition: right 0.3s ease-in-out;
         z-index: 100;
+        padding-top: 220px;
     }
 
     .filtering_sorting.active {

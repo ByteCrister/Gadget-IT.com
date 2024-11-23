@@ -74,26 +74,6 @@
 }
 
 
-@media (max-width : 650px) {
-    .OuterMain {
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .MainOuterStates {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        align-items: center;
-        gap: 20px;
-        width: 100%;
-    }
-
-    .MainOuterStates section hr {
-        display: none;
-    }
-}
-
 .count-of-message-main-div {
     position: relative;
 }
@@ -107,4 +87,37 @@
     left: 40%;
     top: -15px;
     text-decoration: none;
+}
+
+@media (max-width : 650px) {
+    .OuterMain {
+        flex-direction: column;
+        gap: 20px;
+        padding-top: 100px;
+    }
+
+    .OuterMainMyOrder {
+        padding-top: 100px;
+        width: 100%;
+        min-width: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .MainOuterStates {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+        min-width: 0px;
+    }
+
+    .MainOuterStates section hr {
+        display: none;
+    }
+
+   
 }

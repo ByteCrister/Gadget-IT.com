@@ -1,13 +1,6 @@
+const performQuery = require("../config/performQuery");
 const productSupportModel = require("../models/product.support.model");
 
-const performQuery = async (queryFunction, ...params) => {
-    return new Promise((resolve, reject) => {
-        queryFunction(...params, (err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-        });
-    });
-}
 
 module.exports = {
     getSupportData: async (req, res) => {

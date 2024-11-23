@@ -37,6 +37,7 @@ const initialValues = {
   pathSettings: { prevPath: "/", currPath: "/" },
 
   //* Admin interface states
+  Dashboard_Page: null,
   Outer_Page: null,// * - Admin dashboard notifications management
   Order_Page: [],
   Inventory_Page: [],
