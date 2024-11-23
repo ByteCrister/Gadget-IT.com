@@ -1,20 +1,12 @@
 const { decryptBankSourceId } = require("../config/auth.crypto");
 const sendInvoice = require("../config/invoice.send");
+const performQuery = require("../config/performQuery");
 const adminDashboardModel = require("../models/admin.dashboard.model");
 const productOrderModel = require("../models/product.order.model");
 const productsModels = require("../models/products.models")
 const axios = require('axios');
 
 require('dotenv').config();
-
-const performQuery = async (queryFunction, ...params) => {
-    return await new Promise((resolve, reject) => {
-        queryFunction(...params, (err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-        });
-    });
-};
 
 // Helper function to get the exchange rate
 const getExchangeRate = async (apiKey) => {

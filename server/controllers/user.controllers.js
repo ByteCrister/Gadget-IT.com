@@ -10,16 +10,9 @@ const { SendUserMail } = require('../config/send.mail.controller.js');
 const productOuterModel = require('../models/product.outer.model.js');
 const { SendOrderConfirmationMail } = require('../config/send.order.confirmation.email.js');
 const adminDashboardController = require('./admin.dashboard.controller.js');
+const performQuery = require('../config/performQuery.js');
 const saltRounds = 10;
-
-const performQuery = async (queryFunction, ...params) => {
-    return await new Promise((resolve, reject) => {
-        queryFunction(...params, (err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-        });
-    });
-};
+;
 
 module.exports = {
 

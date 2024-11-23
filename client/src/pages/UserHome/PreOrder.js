@@ -42,22 +42,76 @@ const PreOrder = ({ setUserEntryState }) => {
     }));
   }, []);
 
+
   const handleImageChange = useCallback((e) => {
     const { id, type, files } = e.target;
+
     if (type === "file") {
       const file = files[0];
+
+      const isImage = file.type.startsWith("image/");
+      if (!isImage) {
+        alert("Please upload a valid image file.");
+        return null;
+      }
+
       const reader = new FileReader();
+
       reader.onloadend = () => {
         const base64WithMimeType = reader.result;
 
-        setPreOrderState((prevState) => ({
-          ...prevState,
-          [id]: base64WithMimeType,
-        }));
+        // *Check if the file size exceeds 50KB
+        if (base64WithMimeType.length <= 50 * 1024) {
+          // *If file size is under 50KB, save it directly
+          setPreOrderState((prevState) => ({
+            ...prevState,
+            [id]: base64WithMimeType,
+          }));
+          return;
+        }
+
+        const img = new Image();
+        img.src = base64WithMimeType;
+
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          canvas.width = img.width;
+          canvas.height = img.height;
+
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          const mimeType = file.type;
+
+          // *Define a compression function
+          const compressImage = (canvas, mimeType, quality) => {
+            return canvas.toDataURL(mimeType, quality);
+          };
+
+          // *Start with 90% quality and reduce if needed
+          let quality = 0.9;
+          let compressedBase64 = compressImage(canvas, mimeType, quality);
+
+          // *Reduce size iteratively until it's under 50KB
+          while (compressedBase64.length > 50 * 1024 && quality > 0.1) {
+            quality -= 0.1;
+            compressedBase64 = compressImage(canvas, mimeType, quality);
+          }
+
+          // *Update state with the compressed image
+          setPreOrderState((prevState) => ({
+            ...prevState,
+            [id]: compressedBase64,
+          }));
+        };
       };
+
       reader.readAsDataURL(file);
     }
   }, []);
+
+
 
   const handlePreOrderSubmit = async (e) => {
     e.preventDefault();

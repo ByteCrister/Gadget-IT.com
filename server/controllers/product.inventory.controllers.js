@@ -1,14 +1,6 @@
+const performQuery = require("../config/performQuery");
 const productInventoryModel = require("../models/product.inventory.model");
 const productionManageModel = require("../models/production.manage.model");
-
-const performQuery = async (queryFunction, ...params) => {
-    return await new Promise((resolve, reject) => {
-        queryFunction(...params, (err, data) => {
-            if (err) reject(err)
-            else resolve(data);
-        });
-    });
-};
 
 const getTableName = (table, MainTables, SubTables) => {
     const mainTableExists = MainTables.some((item) => item.category_name === table);

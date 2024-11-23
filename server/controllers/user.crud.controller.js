@@ -7,6 +7,7 @@ const productOrderModel = require('../models/product.order.model');
 const userModel = require('../models/user.model');
 const { encryptBankSourceId } = require('../config/auth.crypto');
 const adminDashboardModel = require('../models/admin.dashboard.model');
+const performQuery = require('../config/performQuery');
 
 
 const authenticateUser = (req, res, next, callback) => {
@@ -27,18 +28,6 @@ const authenticateUser = (req, res, next, callback) => {
     })(req, res, next);
 };
 
-
-const performQuery = async (queryFunction, ...params) => {
-    return await new Promise((resolve, reject) => {
-        queryFunction(...params, (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(data);
-            }
-        });
-    });
-};
 
 // Helper function to get the exchange rate
 const getExchangeRate = async (apiKey) => {

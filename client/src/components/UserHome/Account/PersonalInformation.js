@@ -93,4 +93,4 @@ const PersonalInformation = ({ UserInformation }) => {
     )
 }
 
-export default PersonalInformation
+export default React.memo(PersonalInformation);

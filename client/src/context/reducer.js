@@ -85,6 +85,18 @@ const reducer = (state, action) => {
 
     switch (action.type) {
 
+        case 'update_setting_footer':
+            return {
+                ...state,
+                Setting_Page: {
+                    ...state.Setting_Page,
+                    footer_information: {
+                        ...state.Setting_Page.footer_information,
+                        ...action.payload
+                    }
+                }
+            }
+
         case 'set_dashboard_page':
             return {
                 ...state,

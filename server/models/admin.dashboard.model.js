@@ -29,7 +29,7 @@ module.exports = {
             SELECT 
             COUNT(*) AS no_of_items, 
             SUM(incoming) AS will_be_received,
-            SUM(CASE WHEN quantity < reserved THEN 1 ELSE 0 END) AS low_stock,
+            SUM(CASE WHEN quantity <= reserved THEN 1 ELSE 0 END) AS low_stock,
             SUM(CASE WHEN quantity > reserved THEN 1 ELSE 0 END) AS in_stock
             FROM product_stock;
             `,

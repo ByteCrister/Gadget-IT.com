@@ -1,14 +1,6 @@
+const performQuery = require("../config/performQuery");
 const adminDashboardModel = require("../models/admin.dashboard.model");
 const productOuterModel = require("../models/product.outer.model");
-
-const performQuery = async (queryFunction, ...params) => {
-    return await new Promise((resolve, reject) => {
-        queryFunction(...params, (err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-        });
-    });
-};
 
 module.exports = {
     getOuterInformation: async (req, res) => {

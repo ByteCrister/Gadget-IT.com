@@ -17,7 +17,7 @@ export const GetMenuItems = async (dispatch) => {
             id: generateId(subItem.title),
           })) : [],
         }));
-        console.log('Fetched menu items:', updatedData);
+        // console.log('Fetched menu items:', updatedData);
         dispatch({ type: 'set_categories', payload: updatedData });
       } else {
         throw new Error('Fetched data is not an array');

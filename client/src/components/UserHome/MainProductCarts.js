@@ -1,11 +1,12 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useData } from '../../context/useData';
+import { FaFilter } from "react-icons/fa";
+
 import styles from '../../styles/HomePageStyles/GroupProductCatrs.module.css';
+import { useData } from '../../context/useData';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
 import HomePagination from '../../HOOKS/HomePagination';
 import ProductCart from '../../HOOKS/ProductCart';
 import GroupProductSorting from './GroupProductSorting';
-import { FaFilter } from "react-icons/fa";
 
 
 const MainProductCarts = React.memo(({ MainTable, SubCategory, category }) => {
