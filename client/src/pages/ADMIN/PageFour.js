@@ -246,7 +246,7 @@ const PageFour = () => {
       dispatch({ type: "toggle_loading", payload: true });
       let Updated = await Promise.all(OrderStore.MainProducts.map(async (item) => {
         const newStatus = getNewOrderStatus(item.OrderInfo.order_status, e.target.value);
-        console.log('new status: ' + newStatus + ', enteredStatus: ' + e.target.value);
+        // console.log('new status: ' + newStatus + ', enteredStatus: ' + e.target.value);
         if (item.OrderInfo.selected && newStatus === e.target.value) {
 
           const Products = dataState.Production_Page.TableRows.filter((item_1) => item.OrderProducts.some((item_2) => item_2.product_id === item_1.id));

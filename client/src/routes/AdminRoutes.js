@@ -11,4 +11,4 @@ const AdminRoutes = () => {
     )
 }
 
-export default AdminRoutes
+export default React.memo(AdminRoutes);
