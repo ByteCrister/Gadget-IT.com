@@ -78,8 +78,6 @@ module.exports = {
             return res.status(500).json({ message: 'Error in user registration', error: error.message });
         }
     },
-
-
     newUserRegistrationController: async (req, res) => {
         const { token } = req.query;
 
@@ -152,8 +150,6 @@ module.exports = {
         }
     },
     //* ------------------------------------------ end of new user register ----------------------------------------- *
-
-
 
     // * ---------------------------------------- user/admin log in starts ------------------------------------ *
     userLogInController: async (req, res) => {
@@ -234,8 +230,6 @@ module.exports = {
         }
     },
     // * --------------------------------------- end of user/admin log in ----------------------------------------------- *
-
-
 
     // * -------------------------------------- reset password ------------------------------------ *
     UserForgotPasswordController: async (req, res) => {
@@ -337,6 +331,7 @@ module.exports = {
         })(req, res, next);
     },
 
+    // * ----------------------------------------- user order confirmation digits ---------------------------------------
     orderEmailConfirmation: async (req, res, next) => {
         const { email, digits } = req.body;
         try {
