@@ -57,7 +57,7 @@ async function sendInvoice(order, ProductInfo) {
                 doc.text(`${order.OrderProducts[i].quantity}`, 250, currentY, { width: 100, align: 'right' });
                 doc.text(`${ProductInfo[i].price} TK`, 350, currentY, { width: 100, align: 'right' });
                 if (i !== ProductInfo.length - 1) {
-                    doc.moveDown(1.5); // Spacing between rows
+                    doc.moveDown(1.5); //* Spacing between rows
                 }
             }
 
@@ -65,8 +65,14 @@ async function sendInvoice(order, ProductInfo) {
             drawDottedLine(doc, 50, doc.y, 550);
             doc.moveDown();
 
+            // console.log(order.OrderProducts);
+            // console.log(ProductInfo);
+
             // Total
-            const total = ProductInfo.reduce((s, c) => s + c.price, 0);
+            let total = 0;
+            for (let index = 0; index < ProductInfo.length; index++) {
+                total = parseInt(ProductInfo[index].price) * parseInt(order.OrderProducts[index].quantity);
+            }
             doc.text(`Total: ${total} TK`, 450, doc.y, { width: 100, align: 'right' });
             doc.moveDown();
 
