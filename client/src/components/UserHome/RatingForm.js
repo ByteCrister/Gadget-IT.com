@@ -16,7 +16,7 @@ const RatingForm = () => {
   useEffect(() => {
     const GetEmail = async () => {
       try {
-        const res = await axios.get('http://localhost:7000/get/user-email', {
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get/user-email`, {
           headers: {
             Authorization: dataState.token
           }
@@ -48,7 +48,7 @@ const RatingForm = () => {
     }
     if (RatingPayload.UserReview.length !== 0) {
       try {
-        axios.post('http://localhost:7000/post-user-rating', RatingPayload, {
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/post-user-rating`, RatingPayload, {
           headers: {
             Authorization: dataState.token
           }

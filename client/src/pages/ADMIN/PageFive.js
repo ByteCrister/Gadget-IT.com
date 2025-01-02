@@ -149,7 +149,7 @@ const PageFive = () => {
 
   const handleCreateReport = async () => {
     try {
-      const res = await axios.post('http://localhost:7000/create-new-report', {
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/create-new-report`, {
         report_name: ManageReportState.Create,
         table: ManageReportState.table
       });
@@ -162,7 +162,7 @@ const PageFive = () => {
 
   const handleUpdateReport = async () => {
     try {
-      const res = await axios.patch(`http://localhost:7000/update-report`,
+      const res = await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/update-report`,
         { body: { ...ManageReportState.Update, table: ManageReportState.table } }
       );
       dispatch({ type: 'set_report_page', payload: await res.data });
@@ -174,7 +174,7 @@ const PageFive = () => {
 
   const handleDeleteReport = async () => {
     try {
-      const res = await axios.delete(`http://localhost:7000/delete-report`,
+      const res = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/delete-report`,
         { data: { ...ManageReportState.Update, table: ManageReportState.table } }
       );
       dispatch({ type: 'set_report_page', payload: await res.data });

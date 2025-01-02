@@ -41,7 +41,7 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
         states1.push({ column: 'price', value: stock.price });
         try {
           if (filteredStockValuesByID.length > 0) {
-            const res = await axios.get(`http://localhost:7000/production/get/columns/${filteredStockValuesByID[0].type}`);
+            const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/production/get/columns/${filteredStockValuesByID[0].type}`);
             setTableColumns({
               TableColumns: res.data.TableColumns,
               Vendors: res.data.Vendors
@@ -91,7 +91,7 @@ const ProductionTableManage = React.memo(({ id, category, setIsProductionManagem
   // *------------------------- Handle Update Information's -------------------------
   const handleUpdateProduct = async () => {
     try {
-      await axios.put('http://localhost:7000/update/product', {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/update/product`, {
         id: id,
         category: category,
         newChanges: newChanges,

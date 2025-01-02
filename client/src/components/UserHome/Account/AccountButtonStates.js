@@ -26,7 +26,7 @@ const AccountButtonStates = ({ UserInformation }) => {
 
     const UpdateCountApi = async () => {
         try {
-            await axios.get(`http://localhost:7000/update-user-notification-count/${dataState.User_Notifications.notifications.length}`, {
+            await axios.get(`${process.env.REACT_APP_BACKEND_URL}/update-user-notification-count/${dataState.User_Notifications.notifications.length}`, {
                 headers: {
                     Authorization: dataState.token
                 }

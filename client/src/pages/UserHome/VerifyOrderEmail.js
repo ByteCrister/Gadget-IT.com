@@ -21,7 +21,7 @@ const VerifyOrderEmail = () => {
             const Digits = Math.floor(100000 + Math.random() * 900000);
             setSixDigitNumber(Digits);
             setError({ isError: true, message: '' });
-            const res = await axios.post('http://localhost:7000/verify-order-email', {
+            const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/verify-order-email`, {
                 email: OrderInformation.FormInfo.email,
                 digits: Digits
             }, {
@@ -74,7 +74,7 @@ const VerifyOrderEmail = () => {
             setError({ isError: true, message: 'Digits are not matching!' });
         } else {
             if (OrderInformation.payMethodState === 'Cash on Delivery') {
-                const res = await axios.post('http://localhost:7000/insert-new-order', {
+                const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/insert-new-order`, {
                     store: OrderInformation.store,
                     FormInfo: OrderInformation.FormInfo,
                     payMethodState: OrderInformation.payMethodState

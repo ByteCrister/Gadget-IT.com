@@ -177,7 +177,7 @@ const CreateNewOffer = () => {
         e.preventDefault();
         if (isValidate()) {
             try {
-                const res = await axios.post('http://localhost:7000/post-new-offer', { formFillUp });
+                const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/post-new-offer`, { formFillUp });
                 dispatch({ type: 'set_new_offer_carts', payload: res.data });
                 setFormState(false);
                 const updatedFormFillUp = {};
@@ -197,7 +197,7 @@ const CreateNewOffer = () => {
         e.preventDefault();
         if (isValidateUpdate()) {
             try {
-                const res = await axios.put('http://localhost:7000/update-offer-cart', { formUpdateFillUp });
+                const res = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/update-offer-cart`, { formUpdateFillUp });
                 dispatch({ type: 'set_new_offer_carts', payload: res.data });
                 setUpdateFormState(false);
                 const updatedFormFillUp = {};
@@ -227,7 +227,7 @@ const CreateNewOffer = () => {
     const handleDelete = async (cart_no) => {
         if (window.confirm('Do you want to delete this cart?')) {
             try {
-                const res = await axios.delete(`http://localhost:7000/delete-offer-cart/${cart_no}`);
+                const res = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/delete-offer-cart/${cart_no}`);
                 dispatch({ type: 'set_new_offer_carts', payload: res.data });
                 setUpdateFormState(false);
                 const updatedFormFillUp = {};

@@ -34,7 +34,7 @@ const FeaturedCategoryICON = () => {
 
   const handleSaveImage = useCallback(async () => {
     try {
-      await axios.post('http://localhost:7000/featured/images/crud', {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/featured/images/crud`, {
         featuredImages
       });
       // setFeaturedImages([]);

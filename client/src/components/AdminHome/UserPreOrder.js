@@ -93,8 +93,8 @@ const UserPreOrder = () => {
         if (isValid(preorder_no)) {
             console.log(JSON.stringify(PreOrders.sendPreOrder[preorder_no], null, 2));
             try {
-                await axios.put(`http://localhost:7000/update-isSend-preOrder/${preorder_no}`);
-                await axios.post('http://localhost:7000/post-user-new-perOrder-notification', {
+                await axios.put(`${process.env.REACT_APP_BACKEND_URL}/update-isSend-preOrder/${preorder_no}`);
+                await axios.post(`${process.env.REACT_APP_BACKEND_URL}/post-user-new-perOrder-notification`, {
                     user_id: user_id,
                     preOrders: PreOrders.sendPreOrder[preorder_no]
                 });

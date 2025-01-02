@@ -3,7 +3,7 @@ import axios from 'axios'
 export const Home_State = async (dispatch, token) => {
     console.log(token);
     try {
-        const response = await axios.get('http://localhost:7000/', {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/`, {
             headers: {
               Authorization: token
             }

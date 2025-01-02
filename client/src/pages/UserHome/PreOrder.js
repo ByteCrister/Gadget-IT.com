@@ -120,7 +120,7 @@ const PreOrder = ({ setUserEntryState }) => {
         <AiOutlineLoading3Quarters className={styles.LoadingBtnIcon} />
       );
       try {
-        await axios.post("http://localhost:7000/pre-order", PreOrderState, {
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/pre-order`, PreOrderState, {
           headers: {
             Authorization: dataState.token,
           },

@@ -121,7 +121,7 @@ const PageFour = () => {
       const OrderProducts = OrderStore.MainProducts.find((item) => item.OrderInfo.order_id === order_id).OrderProducts;
       const Products = dataState.Production_Page.TableRows.filter((item) => OrderProducts.some((item_) => item_.product_id === item.id));
       const price = Products.reduce((s, c) => s + c.price, 0);
-      await axios.delete(`http://localhost:7000/delete-order/${order_id}/${price}`);
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/delete-order/${order_id}/${price}`);
     } catch (error) {
       console.log(error);
       throw error;
@@ -205,7 +205,7 @@ const PageFour = () => {
 
   const handleNewUserOrderNotification = async (user_id, order_id, status) => {
     try {
-      await axios.post('http://localhost:7000/new-order-user-notification', {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/new-order-user-notification`, {
         user_id: user_id,
         order_id: order_id,
         status: status
@@ -218,7 +218,7 @@ const PageFour = () => {
 
   const handleUpdateOrderStatus = async (currStatus, newStatus, order_id, price) => {
     try {
-      await axios.patch(`http://localhost:7000/update/order-status`, {
+      await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/update/order-status`, {
         currStatus: currStatus,
         newStatus: newStatus,
         order_id: order_id,
@@ -234,7 +234,7 @@ const PageFour = () => {
     try {
       const Products = dataState.Production_Page.TableRows.filter((item) => OrderProducts.some((item_) => item_.product_id === item.id));
       const price = Products.reduce((s, c) => s + c.price, 0);
-      await axios.post('http://localhost:7000/post-return-money', { OrderInfo: { ...OrderInfo, price }, OrderProducts: OrderProducts });
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/post-return-money`, { OrderInfo: { ...OrderInfo, price }, OrderProducts: OrderProducts });
     } catch (error) {
       console.log("handle Return Money Api error: " + error);
       throw error;
@@ -246,7 +246,7 @@ const PageFour = () => {
       dispatch({ type: "toggle_loading", payload: true });
       let Updated = await Promise.all(OrderStore.MainProducts.map(async (item) => {
         const newStatus = getNewOrderStatus(item.OrderInfo.order_status, e.target.value);
-        console.log('new status: ' + newStatus + ', enteredStatus: ' + e.target.value);
+        // console.log('new status: ' + newStatus + ', enteredStatus: ' + e.target.value);
         if (item.OrderInfo.selected && newStatus === e.target.value) {
 
           const Products = dataState.Production_Page.TableRows.filter((item_1) => item.OrderProducts.some((item_2) => item_2.product_id === item_1.id));
@@ -307,7 +307,7 @@ const PageFour = () => {
 
   const renderInvoiceChange_Api = async (Order) => {
     try {
-      await axios.post('http://localhost:7000/post-new-order-invoice', {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/post-new-order-invoice`, {
         Order
       });
 

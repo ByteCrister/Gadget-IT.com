@@ -14,7 +14,7 @@ const ManageVendors = () => {
 
     const vendor_Api = async () => {
         try {
-            const response = await axios.get('http://localhost:7000/get-vendors');  //* to ---> product.outer.router
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-vendors`);  //* to ---> product.outer.router
             setVendors(await response.data);
 
         } catch (error) {
@@ -55,7 +55,7 @@ const ManageVendors = () => {
     const vendor_Create_Api = async () => {
         if (isValid()) {
             try {
-                await axios.post('http://localhost:7000/insert-new-vendor', {
+                await axios.post(`${process.env.REACT_APP_BACKEND_URL}/insert-new-vendor`, {
                     vendor_name: vendorState.newName
                 });
                 window.alert('Vendor name added successfully.');
@@ -71,7 +71,7 @@ const ManageVendors = () => {
     const vendor_update_Api = async () => {
         if (isValid()) {
             try {
-                await axios.put('http://localhost:7000/update-vendor', {
+                await axios.put(`${process.env.REACT_APP_BACKEND_URL}/update-vendor`, {
                     new_vendor_name: vendorState.newName,
                     vendor_no: vendorState.vendorNo
                 });
@@ -88,7 +88,7 @@ const ManageVendors = () => {
     const vendor_delete_Api = async () => {
         if (window.confirm('Do you want to delete this vendor?')) {
             try {
-                await axios.delete(`http://localhost:7000/delete-vendor/${vendorState.vendorNo}`);
+                await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/delete-vendor/${vendorState.vendorNo}`);
                 window.alert('Vendor deleted successfully.');
                 await vendor_Api();
                 reset();

@@ -28,14 +28,18 @@ const AdminHomePage = () => {
         message: '',
         isError: false
     });
-    
-    const handlePage = (newPage) => { setCurrentPage(newPage); window.localStorage.setItem('AdminDashboardButtonState', newPage); };
+
+    const handlePage = (newPage) => {
+        setCurrentPage(newPage);
+        console.log(newPage);
+        window.localStorage.setItem('AdminDashboardButtonState', newPage);
+    };
     const handleUpper = (newUpper) => setUpperContent(newUpper);
 
     const pages = {
         1: <PageOne />,
-        2: <PageTwo setErrorCategory={setErrorCategory}/>,
-        3: <PageThree setErrorCategory={setErrorCategory}/>,
+        2: <PageTwo setErrorCategory={setErrorCategory} />,
+        3: <PageThree setErrorCategory={setErrorCategory} />,
         4: <PageFour />,
         5: <PageFive />,
         6: <PageSix />,

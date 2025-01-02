@@ -42,7 +42,7 @@ const UserMessages = ({ Orders }) => {
   // *viewed 0 to 1 for changing the use'r not view message-symbol in DATABASE
   const UpdateViewApi = async (notification_user_no) => {
     try {
-      await axios.get(`http://localhost:7000/update-user-notification-view/${notification_user_no}`, {
+      await axios.get(`${process.env.REACT_APP_BACKEND_URL}/update-user-notification-view/${notification_user_no}`, {
         headers: {
           Authorization: dataState.token
         }

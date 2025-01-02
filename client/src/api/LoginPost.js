@@ -12,7 +12,7 @@ export const LoginPost = async (setDataState, values, dispatch, handleUserEntryP
     }));
 
     try {
-        const response = await axios.post('http://localhost:7000/user/log-in', values);
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/user/log-in`, values);
         const data = response.data;
 
         console.log('Log in message : ' + data.message);

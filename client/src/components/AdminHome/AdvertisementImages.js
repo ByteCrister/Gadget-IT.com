@@ -30,7 +30,7 @@ const AdvertisementImages = () => {
 
     const handleSaveImage = useCallback(async () => {
         try {
-            await axios.post('http://localhost:7000/advertisement/images', {
+            await axios.post(`${process.env.REACT_APP_BACKEND_URL}/advertisement/images`, {
                 currentImages: imageStates.currentImages,
                 deleteImages: imageStates.deleteImages,
                 addNewImages: imageStates.addNewImages

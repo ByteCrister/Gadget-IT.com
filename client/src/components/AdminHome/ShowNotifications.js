@@ -16,7 +16,7 @@ const ShowNotifications = ({ handleUpper, handlePage }) => {
 
   const UpdateViewApi = async (notification_no) => {
     try {
-      await axios.patch(`http://localhost:7000/toggle-admin-view/${notification_no}`);
+      await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/toggle-admin-view/${notification_no}`);
     } catch (error) {
       console.log(error);
     }
@@ -34,8 +34,8 @@ const ShowNotifications = ({ handleUpper, handlePage }) => {
 
   const handleDeleteApi = async (notification_no) => {
     try {
-      await axios.delete(`http://localhost:7000/delete-admin-view/${notification_no}`);
-      await axios.patch(`http://localhost:7000/update-admin-count/${AdminNotifications.length - 1}`);
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/delete-admin-view/${notification_no}`);
+      await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/update-admin-count/${AdminNotifications.length - 1}`);
     } catch (error) {
       console.log(error);
     }

@@ -35,7 +35,7 @@ const ManageFooter = () => {
     const handleUpdate = async () => {
         if (window.confirm('Do want to update the footer?')) {
             try {
-                await axios.patch('http://localhost:7000/update-footer-changes', Footer);
+                await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/update-footer-changes`, Footer);
                 dispatch({ type: 'update_setting_footer', payload: Footer })
             } catch (error) {
                 console.log(error);

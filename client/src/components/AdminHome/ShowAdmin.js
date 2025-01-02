@@ -5,13 +5,13 @@ import { FaSpinner, FaTimes } from 'react-icons/fa'; // Import close icon
 import styles from '../../styles/AdminHome/MoreInformation.module.css';
 import { SetAdmin } from '../../api/SetAdmin';
 
-const ShowAdmin = ({handleUpper}) => {
+const ShowAdmin = ({ handleUpper }) => {
   const [showPass, setShowPass] = useState(false);
   const [isNameShort, setIsNameShort] = useState(false);
   const [isPasswordShort, setIsPasswordShort] = useState(false);
   const [nameValue, setNameValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,11 +20,11 @@ const ShowAdmin = ({handleUpper}) => {
     const trimmedPassword = passwordValue.trim();
 
     const values = {
-      email : trimmedName,
-      password : trimmedPassword
+      email: trimmedName,
+      password: trimmedPassword
     }
     SetAdmin(values, handleUpper);
-    
+
 
     if (trimmedName.length < 5) {
       setIsNameShort(true);
@@ -40,11 +40,11 @@ const ShowAdmin = ({handleUpper}) => {
 
     if (trimmedName.length >= 5 && trimmedPassword.length >= 6) {
       setLoading(true);
-     
+
       setTimeout(() => {
         setLoading(false);
-       
-      }, 2000); 
+
+      }, 2000);
     }
   };
 
@@ -53,7 +53,7 @@ const ShowAdmin = ({handleUpper}) => {
   return (
     <div id={styles.blurBackground}>
       <div id={styles.mainAdminForm}>
-        <div id={styles.AdminCloseButton} onClick={()=>{ handleUpper(0) }}>
+        <div id={styles.AdminCloseButton} onClick={() => { handleUpper(0) }}>
           <FaTimes />
         </div>
         <div id={styles.AdminFormLogoDiv}><RiAdminFill id={styles.adminFormLogo} /></div>

@@ -63,7 +63,7 @@ const UserQuestions = () => {
         dispatch({ type: 'delete_answer', payload: questionNo });
 
         try {
-            await axios.delete(`http//:localhost:7000/delete/answer/${questionNo}`);
+            await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/delete/answer/${questionNo}`);
 
         } catch (error) {
             console.log(error);
@@ -76,7 +76,7 @@ const UserQuestions = () => {
         setAnswer('');
 
         try {
-            await axios.put('http://localhost:7000/update/answer', {
+            await axios.put(`${process.env.REACT_APP_BACKEND_URL}/update/answer`, {
                 answer: answer,
                 question_no: questionNo,
                 user_id: currentQuestion.user_id,

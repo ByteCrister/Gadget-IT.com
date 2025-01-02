@@ -33,7 +33,7 @@ const HomeViewDescriptions = () => {
 
   const handleSaveChanges = useCallback(async () => {
     try {
-      await axios.post('http://localhost:7000/home-view-description/crud', {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/home-view-description/crud`, {
         mainDes: desState.mainDes,
         newDes: desState.newDes,
         deleteDes: desState.deleteDes

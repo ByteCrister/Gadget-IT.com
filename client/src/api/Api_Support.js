@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const Api_Support = async (dispatch) => {
     try {
-        const response = await axios.get('http://localhost:7000/get/product/support');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get/product/support`);
         dispatch({ type: 'set_support_page', payload: response.data });
 
     } catch (error) {

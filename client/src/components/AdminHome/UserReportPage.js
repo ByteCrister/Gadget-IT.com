@@ -112,7 +112,7 @@ const UserReportPage = () => {
             }));
 
             try {
-                const res = await axios.delete(`http://localhost:7000/delete-user-report/${user_report_no}`);
+                const res = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/delete-user-report/${user_report_no}`);
                 dispatch({ type: 'update_user_report', payload: await res.data });
             } catch (error) {
                 console.log(error);
