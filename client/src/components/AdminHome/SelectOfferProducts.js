@@ -82,7 +82,7 @@ const SelectOfferProducts = () => {
     // 6
     const handleUpdateChanges = async () => {
         try {
-            const res = await axios.post('http://localhost:7000/offer-product-select/Crud', { UpdatedProducts: offerProducts.ProductStorage, OfferShouldDelete: [...OfferShouldDelete] });
+            const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/offer-product-select/Crud`, { UpdatedProducts: offerProducts.ProductStorage, OfferShouldDelete: [...OfferShouldDelete] });
             dispatch({ type: 'set_select_offer_products', payload: res.data });
         } catch (error) {
             console.log(error);

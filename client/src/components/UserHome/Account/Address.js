@@ -95,7 +95,7 @@ const Address = ({ AddressInfo, setUserAddress }) => {
     const handleSubmit = async () => {
         if (checkValidation()) {
             try {
-                await axios.post('http://localhost:7000/update-user-address', address, {
+                await axios.post(`${process.env.REACT_APP_BACKEND_URL}/update-user-address`, address, {
                     headers: {
                         Authorization: dataState.token
                     }

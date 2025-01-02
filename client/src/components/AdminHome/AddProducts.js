@@ -58,7 +58,7 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
         const value = e.target.value;
         if (value) {
             try {
-                const res = await axios.get(`http://localhost:7000/product_key_values/${mainCategory}`);
+                const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/product_key_values/${mainCategory}`);
                 setSubCategory(value);
                 setKeyAndValue(await res.data.tableColumnNames);
                 setTableName(await res.data.tableName);
@@ -438,7 +438,7 @@ const AddProducts = React.memo(({ setAddProductState, setErrorCategory }) => {
             extraImages: extraImages
         };
         try {
-            await axios.post('http://localhost:7000/post/new/product', payload);
+            await axios.post(`${process.env.REACT_APP_BACKEND_URL}/post/new/product`, payload);
             setAddProductState(false);
             Admin_Api(dispatch);
         } catch (error) {

@@ -21,7 +21,7 @@ const UpperSide = ({ handleUpper }) => {
 
     const UpdateAdminCountApi = async (count) => {
         try {
-            await axios.patch(`http://localhost:7000/update-admin-count/${count}`);
+            await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/update-admin-count/${count}`);
         } catch (error) {
             console.log(error);
         }

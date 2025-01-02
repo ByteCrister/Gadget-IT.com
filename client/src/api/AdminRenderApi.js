@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const AdminRenderApi = async ( dispatch ) => {
     try {
-        const response = await axios.get('http://localhost:7000/products/categoryNames');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/products/categoryNames`);
         dispatch({ type: 'set_products_render', payload: { categoryName: response.data.categoryName, subCategoryName: response.data.subCategoryName, initialMandatoryColumns:response.data.initialMandatoryColumns } });
         
 

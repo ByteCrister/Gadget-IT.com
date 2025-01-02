@@ -5,7 +5,7 @@ const generateId = (title) => title.toLowerCase().replace(/\s+/g, '-');
 export const GetMenuItems = async (dispatch) => {
     try {
      
-      const response = await axios.get('http://localhost:7000/products/category/menu/items');
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/products/category/menu/items`);
       const data = response.data;
   
       if (Array.isArray(data)) {

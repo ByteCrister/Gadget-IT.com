@@ -52,11 +52,11 @@ const UserOrderPaymentPage = () => {
       setIsLoading(true);
       setErrorState({ isError: false, message: '' });
       try {
-        await axios.post("http://localhost:7000/perform-payment", {
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/perform-payment`, {
           funding_source: SourceIdRef.current.value,
           amount_value: AmountRef.current.value,
         });
-        const resData = await axios.post('http://localhost:7000/insert-new-order', {
+        const resData = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/insert-new-order`, {
           store: location.state.store,
           FormInfo: location.state.FormInfo,
           payMethodState: location.state.payMethodState,

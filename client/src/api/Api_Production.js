@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const Api_Production = async(dispatch) => {
     try {
-        const response = await axios.get('http://localhost:7000/get/production');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get/production`);
         dispatch({ type: 'set_production_page', payload: response.data });
 
     } catch (error) {

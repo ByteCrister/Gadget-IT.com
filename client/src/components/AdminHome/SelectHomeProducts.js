@@ -97,7 +97,7 @@ const SelectHomeProducts = () => {
   const handleRefresh = async () => {
     try {
       // console.log(productPosition);
-      await axios.post("http://localhost:7000/home-product-select/crud", {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/home-product-select/crud`, {
         productPosition: productPosition,
       });
       await Api_Setting(dispatch);

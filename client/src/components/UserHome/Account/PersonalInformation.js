@@ -45,7 +45,7 @@ const PersonalInformation = ({ UserInformation }) => {
     const handleChangeInformation = async () => {
         if (userForm.f_name.trim().length !== 0 && userForm.f_name.trim().length > 3 && userForm.l_name.trim().length !== 0 && userForm.l_name.trim().length > 3) {
             try {
-                await axios.post('http://localhost:7000/update-user-personal-information', userForm, {
+                await axios.post(`${process.env.REACT_APP_BACKEND_URL}/update-user-personal-information`, userForm, {
                     headers: {
                         Authorization: dataState.token
                     }

@@ -82,7 +82,7 @@ const ChangePassword = () => {
       console.log('Password change values:', inputStates);
 
       try {
-        await axios.post('http://localhost:7000/update-user-password', inputStates, {
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/update-user-password`, inputStates, {
           headers: {
             Authorization: dataState.token
           }

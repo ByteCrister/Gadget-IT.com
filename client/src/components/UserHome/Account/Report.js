@@ -19,7 +19,7 @@ const Report = () => {
     useEffect(() => {
         const initialize = async () => {
             try {
-                const res = await axios.get('http://localhost:7000/get/user-interface-report', {
+                const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get/user-interface-report`, {
                     headers: {
                         Authorization: dataState.token
                     }
@@ -84,7 +84,7 @@ const Report = () => {
     const handleSubmit = async () => {
         if (SelectedReport.reports.length !== 0 && SelectedReport.report_description.trim().length !== 0) {
             try {
-                await axios.post('http://localhost:7000/post-new-user-report', SelectedReport, {
+                await axios.post(`${process.env.REACT_APP_BACKEND_URL}/post-new-user-report`, SelectedReport, {
                     headers: {
                         Authorization: dataState.token
                     }

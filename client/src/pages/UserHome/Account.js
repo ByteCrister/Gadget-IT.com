@@ -23,7 +23,7 @@ const Account = () => {
     useEffect(() => {
         const GetUserInfo = async () => {
             try {
-                const res = await axios.get('http://localhost:7000/get-user-information', {
+                const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-user-information`, {
                     headers: {
                         Authorization: dataState.token
                     }

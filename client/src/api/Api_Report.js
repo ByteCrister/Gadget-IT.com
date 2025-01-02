@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const Api_Report = async (dispatch) => {
     try {
-        const response = await axios.get('http://localhost:7000/get/report');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get/report`);
         dispatch({ type: 'set_report_page', payload: await response.data });
 
     } catch (error) {

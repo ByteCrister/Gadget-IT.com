@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const Api_Setting = async(dispatch) => {
     try {
-        const response = await axios.get('http://localhost:7000/get/product/setting');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get/product/setting`);
         dispatch({ type: 'set_setting_page', payload: response.data });
 
     } catch (error) {

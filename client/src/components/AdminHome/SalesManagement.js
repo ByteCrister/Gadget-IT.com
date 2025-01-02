@@ -29,7 +29,7 @@ const SalesManagement = () => {
 
     const handleSalesChange = async () => {
         try {
-            await axios.patch('http://localhost:7000/set-new-sales', { costState }); //*to -> admin.dashboard.router
+            await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/set-new-sales`, { costState }); //*to -> admin.dashboard.router
             await Api_Dashboard(dispatch);
         } catch (error) {
             console.log(error);

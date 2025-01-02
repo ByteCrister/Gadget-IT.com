@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const Api_Outer_Page = async (dispatch) => {
     try {
-        const response = await axios.get('http://localhost:7000/get/outer-page-information');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get/outer-page-information`);
         dispatch({ type: 'set_outer_page', payload: await response.data });
 
     } catch (error) {

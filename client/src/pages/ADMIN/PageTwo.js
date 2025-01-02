@@ -162,7 +162,7 @@ const PageTwo = React.memo(({setErrorCategory}) => {
     setProductsData(updatedProductsData);
     // console.log(JSON.stringify(checkedItems, null, 2));
     try {
-      await axios.post('http://localhost:7000/update/hide', { checkedItems: checkedItems });
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/update/hide`, { checkedItems: checkedItems });
       await Api_Inventory(dispatch);
     } catch (error) {
       console.log(error);
@@ -175,7 +175,7 @@ const PageTwo = React.memo(({setErrorCategory}) => {
   const handleProductDelete = async () => {
     const checkedItems = isChecked.filter((item) => item.check === true);
     try {
-      await axios.post('http://localhost:7000/delete/products', { checkedItems });
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/delete/products`, { checkedItems });
       await Admin_Api(dispatch);
       setProductsData((prevData) => prevData.filter((item) => !checkedItems.some((checkedItem) => checkedItem.id === item.id)));
       initializeCheck();

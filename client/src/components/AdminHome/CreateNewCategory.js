@@ -23,7 +23,7 @@ const CreateNewCategory = React.memo(({ setErrorCategory }) => {
     useEffect(() => {
         const getCategoryAndSubCategory = async () => {
             try {
-                const res = await axios.get('http://localhost:7000/get/category_and_sub_category');
+                const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get/category_and_sub_category`);
                 setCategory(res.data.category);
                 setCategoryState({ main: res.data.mainCategory, sub: res.data.subCategory });
                 let AllMain = [];
@@ -43,7 +43,7 @@ const CreateNewCategory = React.memo(({ setErrorCategory }) => {
             const isInMainIncludes = CategoryStates.main.some(category => category.category_name === AllCategoryRef.newCategoryRef);
             const isInSubIncludes = CategoryStates.sub.some(category => category.sub_category_name === AllCategoryRef.newCategoryRef);
             if (!(isInMainIncludes || isInSubIncludes)) {
-                await axios.post('http://localhost:7000/create/new/category', { newCategoryName: AllCategoryRef.newCategoryRef });
+                await axios.post(`${process.env.REACT_APP_BACKEND_URL}/create/new/category`, { newCategoryName: AllCategoryRef.newCategoryRef });
                 setCurrentOption(0);
             } else {
                 setErrorCategory({ message: 'This category is already exist! Please give any different name.', isError: true })
@@ -58,7 +58,7 @@ const CreateNewCategory = React.memo(({ setErrorCategory }) => {
             const isInMainIncludes = CategoryStates.main.some(category => category.category_name === AllCategoryRef.newSubRef);
             const isInSubIncludes = CategoryStates.sub.some(category => category.sub_category_name === AllCategoryRef.newSubRef);
             if (!(isInMainIncludes || isInSubIncludes)) {
-                await axios.post('http://localhost:7000/new/sub_category', { main: selectedMainCategory.trim(), newSub: AllCategoryRef.newSubRef });
+                await axios.post(`${process.env.REACT_APP_BACKEND_URL}/new/sub_category`, { main: selectedMainCategory.trim(), newSub: AllCategoryRef.newSubRef });
                 setCurrentOption(0);
             } else {
                 setErrorCategory({ message: 'This category is already exist! Please give any different name.', isError: true })
@@ -71,10 +71,10 @@ const CreateNewCategory = React.memo(({ setErrorCategory }) => {
 
     const handleDeleteCategory = async () => {
         try {
-            const res = await axios.get(`http://localhost:7000/is-category-empty/${selectedDeleteCategory.sub}`);
+            const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/is-category-empty/${selectedDeleteCategory.sub}`);
             if (window.confirm('Do you want to delete this category? There could be gone many Information!!')) {
                 if (!res.data) {
-                    await axios.post('http://localhost:7000/delete/category', selectedDeleteCategory);
+                    await axios.post(`${process.env.REACT_APP_BACKEND_URL}/delete/category`, selectedDeleteCategory);
                     setCurrentOption(0);
                 } else {
                     setErrorCategory({ message: `There are product's in this category. Delete the product first!`, isError: true });
@@ -87,7 +87,7 @@ const CreateNewCategory = React.memo(({ setErrorCategory }) => {
 
     const handleRenameChangeState = async () => {
         try {
-            await axios.post('http://localhost:7000/rename/category', { main: renameCategory.main, sub: renameCategory.sub, newName: AllCategoryRef.renamedCategoryRef })
+            await axios.post(`${process.env.REACT_APP_BACKEND_URL}/rename/category`, { main: renameCategory.main, sub: renameCategory.sub, newName: AllCategoryRef.renamedCategoryRef })
             setCurrentOption(0);
         } catch (error) {
             console.log(error);

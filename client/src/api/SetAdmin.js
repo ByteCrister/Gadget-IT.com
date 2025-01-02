@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const SetAdmin = (values, handleUpper)=>{
     axios
-    .post('http://localhost:7000/admin/email-password', values)
+    .post(`${process.env.REACT_APP_BACKEND_URL}/admin/email-password`, values)
     .then((res)=>{
         handleUpper(0);
     })

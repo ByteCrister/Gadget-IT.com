@@ -11,7 +11,7 @@ const ManageColumns = React.memo(() => {
   useEffect(() => {
     const getMainCategory = async () => {
       try {
-        const res = await axios.get('http://localhost:7000/get/category_and_sub_category');
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get/category_and_sub_category`);
         setMainCategory(res.data.mainCategory);
       } catch (error) {
         console.log(error);
