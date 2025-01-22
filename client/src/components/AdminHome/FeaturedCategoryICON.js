@@ -38,12 +38,12 @@ const FeaturedCategoryICON = () => {
         featuredImages
       });
       // setFeaturedImages([]);
-      // await Api_Setting(dispatch);
+      await Api_Setting(dispatch);
       // handleSaveText();
     } catch (error) {
       console.error(error);
     }
-  }, [featuredImages, handleSaveText, dispatch]);
+  }, [featuredImages, dispatch]);
 
 
   const getCurrentSerial = (index) => {
@@ -118,6 +118,7 @@ const FeaturedCategoryICON = () => {
       })
       ]);
     setSerialNoState((prev) => serial_no !== 0 ? prev - 1 : prev);
+
   }, []);
 
   return (
