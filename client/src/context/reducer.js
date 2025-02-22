@@ -27,8 +27,8 @@ const addRecent = (CurrProduct, RecentProducts) => {
 const initializeCart = (productStorage, payload, CartStorage) => {
     let initialCartProduct = [...CartStorage];
     let allProducts = [];
-    productStorage.product_table.forEach((table) => {
-        table.table_products.forEach((product) => {
+    productStorage?.product_table?.forEach((table) => {
+        table?.table_products?.forEach((product) => {
             allProducts.push(product);
         });
     });
@@ -36,7 +36,7 @@ const initializeCart = (productStorage, payload, CartStorage) => {
     payload.forEach((cart) => {
         const product = allProducts.find((product_) => Number(product_.product_id) === Number(cart.product_id));
         if (Number(cart.product_id) === Number(product.product_id)) {
-            const productPrice = productStorage.product_prices.find((product_) => Number(product_.product_id) === Number(cart.product_id))?.price;
+            const productPrice = productStorage?.product_prices?.find((product_) => Number(product_.product_id) === Number(cart.product_id))?.price;
             initialCartProduct.push({ ...cart, image: product.image, product_name: product.product_name, brand: product.brand, price: productPrice });
         }
     });
@@ -53,15 +53,15 @@ const addProductToCart = (ProductStorage, payload, CartStorage) => {
 
     if (productExists) return [...CartStorage];
 
-    ProductStorage.product_table.forEach((table) => {
-        table.table_products.forEach((product) => {
+    ProductStorage?.product_table.forEach((table) => {
+        table?.table_products?.forEach((product) => {
             allProducts.push(product);
         });
     });
 
     allProducts.forEach((product) => {
-        if (Number(product.product_id) === Number(product_id)) {
-            const productPrice = ProductStorage.product_prices.find((product_) => product_.product_id === product.product_id)?.price;
+        if (Number(product?.product_id) === Number(product_id)) {
+            const productPrice = ProductStorage?.product_prices?.find((product_) => product_.product_id === product.product_id)?.price;
             initialProducts.unshift({ product_id: product_id, quantity: quantity, main_category: product.main_category });
             window.localStorage.setItem('CartStorage', JSON.stringify(initialProducts));
             CartStorage.unshift({ product_id: product_id, quantity: quantity, image: product.image, product_name: product.product_name, brand: product.brand, price: productPrice, main_category: product.main_category });
