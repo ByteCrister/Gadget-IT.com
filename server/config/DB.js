@@ -11,7 +11,7 @@ require('dotenv').config();
 // });
 const db = mysql.createConnection({
     host: 'sql.freedb.tech',
-    user: `freedb_shakib's db`,
+    user: 'freedb_shakib\'s db',
     password: '!aMy7wGuU8*V3A?',
     database: 'freedb_gadget_it',
     port: 3306,
