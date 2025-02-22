@@ -5,6 +5,6 @@ require('dotenv').config();
 const PATH = process.env.BACKEND_URL;
 
 app.listen(PATH, ()=>{
-    // console.log(`Server is running on - http://localhost:${PORT}`);
+    // console.log(`Server is running on - http://localhost:${PORT}`); //For development
     console.log(`Server is running on - :${PATH}`);
 });
