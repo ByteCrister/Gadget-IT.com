@@ -81,7 +81,8 @@ const ViewProduct = ({ setUserEntryState }) => {
 
         setMainTableData(relatedProducts || []);
         window.scrollTo(0, 0);
-    }, [dataState.productStorage.product_ratings, product_id, category]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataState.productStorage?.product_ratings, product_id]);
 
     useEffect(() => {
         if (viewProduct.productInformation && viewProduct.productInformation.product_name && viewProduct.productInformation.product_id) {
@@ -126,6 +127,7 @@ const ViewProduct = ({ setUserEntryState }) => {
             }, 1);
             dispatch({ type: 'set_scroll_ref', payload: null });
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataState.ScrollRef]);
 
 
