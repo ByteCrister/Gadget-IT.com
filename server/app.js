@@ -6,12 +6,12 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
 /************** required environment setup *****************/
-app.use(cors());
-// app.use(cors({
-//     origin: "https://gadget-it-com-client.vercel.app",
-//     methods: 'GET,POST,PUT,DELETE',
-//     credentials: true
-// }));
+// app.use(cors());
+app.use(cors({
+    origin: ["https://gadget-it-com-client.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static('public'));
@@ -22,8 +22,8 @@ require('./config/passport');
 
 
 /****************** All Routes *****************/
-app.use(require('./routes/users.router'));
-app.use(require('./routes/users.home.contents'));
+app.use(cors(), require('./routes/users.router'));
+app.use(cors(), require('./routes/users.home.contents'));
 
 app.use(require('./routes/products.router'));
 app.use(require('./routes/product.post.router'));
