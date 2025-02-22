@@ -57,7 +57,7 @@ module.exports = {
             );
 
             //* Generate confirmation link with token
-            const confirmationLink = `http://localhost:7000/new/user/confirm?token=${token}`;
+            const confirmationLink = `${process.env.BACKED_URL}/new/user/confirm?token=${token}`;
 
             //* Send confirmation email
             const emailSent = await SendUserMail(email, 'Email Confirmation', confirmationLink);
@@ -135,7 +135,7 @@ module.exports = {
             console.log('New user registered with id:', results.insertId);
 
             //* Redirect the user to the home route
-            return res.redirect('http://localhost:3000');
+            return res.redirect(process.env.process.env.FRONTEND_URL);
 
         } catch (error) {
             //* Handle token expiration or invalid token errors
@@ -252,7 +252,7 @@ module.exports = {
             //* Generate JWT token with expiration of 5 minutes
             const token = jwt.sign({ email, password: hash }, secretKey, { expiresIn: '5m' });
 
-            const confirmationLink = `http://localhost:7000/user/new/pass/confirm?token=${token}`;
+            const confirmationLink = `${process.env.BACKEND_URL}/user/new/pass/confirm?token=${token}`;
             const emailSent = await SendUserMail(email, 'Forgot Password', confirmationLink);
 
             console.log(`Is email send : ` + emailSent);
@@ -283,7 +283,7 @@ module.exports = {
             });
             if (updated) {
                 console.log('Password updated for:', email);
-                return res.redirect('http://localhost:3000');
+                return res.redirect(process.env.FRONTEND_URL);
             } else {
                 throw new Error('Failed to update password');
             }
