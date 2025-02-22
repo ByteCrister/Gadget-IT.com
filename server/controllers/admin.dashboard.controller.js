@@ -8,7 +8,7 @@ module.exports = {
             const stockInformation = await performQuery(adminDashboardModel.getStockInformation);
             const chart = await performQuery(adminDashboardModel.getChartQuery);
 
-            res.status(200).send({
+            return res.status(200).send({
                 dashboard: { ...dashboard[0], ...stockInformation[0] },
                 chart
             });
@@ -23,20 +23,20 @@ module.exports = {
         const { column, operator, value } = req.body;
         try {
             await performQuery(adminDashboardModel.changeStaticValuesQuery, column, operator, value);
-            res.status(200).send({ success: true });
+            return res.status(200).send({ success: true });
         } catch (error) {
             console.log(error);
-            res.status(500).send({ error: error.message });
+            return res.status(500).send({ error: error.message });
         }
     },
 
     setNewSales: async (req, res) => {
         try {
             await performQuery(adminDashboardModel.setNewSalesQuery, req.body.costState);
-            res.status(201).send({ success: true });
+            return res.status(201).send({ success: true });
         } catch (error) {
             console.log(error);
-            res.status(500).send({ error: error.message });
+            return res.status(500).send({ error: error.message });
         }
     }
 };

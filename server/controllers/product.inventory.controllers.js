@@ -43,11 +43,11 @@ module.exports = {
             }
 
             // console.log(TableRows);
-            res.json(TableRows);
+            return res.json(TableRows);
 
         } catch (error) {
             console.log('getInventoryController error : ' + error);
-            res.status(500).send('Server Error');
+            return res.status(500).send('Server Error');
         }
     },
 
@@ -86,13 +86,13 @@ module.exports = {
 
                 await Promise.all(promises);
                 console.log('Products hide successfully!');
-                res.json({ message: 'Products hide successfully' });
+                return res.json({ message: 'Products hide successfully' });
             } else {
-                res.json({ message: 'No products selected to update' });
+                return res.json({ message: 'No products selected to update' });
             }
         } catch (error) {
             console.log('updateHideProduct error : ' + error);
-            res.status(500).send('Server Error');
+            return res.status(500).send('Server Error');
         }
     },
 
@@ -133,7 +133,7 @@ module.exports = {
 
             });
 
-            res.json({ message: 'Products deleted successfully' });
+            return res.json({ message: 'Products deleted successfully' });
 
         } catch (error) {
             console.log('Error in deleteProducts: ', error);

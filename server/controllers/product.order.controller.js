@@ -91,11 +91,11 @@ module.exports = {
                 })
             );
 
-            res.status(200).send(Orders);
+            return res.status(200).send(Orders);
 
         } catch (error) {
             console.log(error);
-            res.status(500).json({ message: 'error on getOrderPage - ', error: error });
+            return res.status(500).json({ message: 'error on getOrderPage - ', error: error });
         }
     },
     updateOrderStatus: async (req, res) => {
@@ -117,20 +117,20 @@ module.exports = {
                 await performQuery(adminDashboardModel.changeStaticValuesQuery, 'number_of_purchase', '-', 1);
             }
 
-            res.status(200).send({ success: true });
+            return res.status(200).send({ success: true });
 
         } catch (error) {
             console.log(error);
-            res.status(500).json({ message: 'error on updateOrderStatus - ', error: error });
+            return res.status(500).json({ message: 'error on updateOrderStatus - ', error: error });
         }
     },
     postOrderUserNotification: async (req, res) => {
         try {
             await performQuery(productOrderModel.postUserOrderNotification, req.body);
-            res.status(200).send({ success: true });
+            return res.status(200).send({ success: true });
         } catch (error) {
             console.log(error);
-            res.status(500).json({ message: 'error on postOrderUserNotification - ', error: error });
+            return res.status(500).json({ message: 'error on postOrderUserNotification - ', error: error });
         }
     },
     getPaymentStatus: async (req, res) => {

@@ -77,7 +77,7 @@ module.exports = {
 
                 const dropdownData = buildNestedStructure(categories, subCategories);
 
-                res.json(dropdownData);
+                return res.json(dropdownData);
             })
         })
     },
@@ -120,7 +120,7 @@ module.exports = {
                         }
 
                         // console.log('category - '+category_);
-                        res.json({ categoryName: category_, subCategoryName: subCategory_ });
+                        return res.json({ categoryName: category_, subCategoryName: subCategory_ });
                     }
                 })
             }
@@ -169,7 +169,7 @@ module.exports = {
             }
         } catch (err) {
             console.log(err);
-            res.status(500).send('Internal Server Error');
+            return res.status(500).send('Internal Server Error');
         }
     },
 
@@ -201,7 +201,7 @@ module.exports = {
 
         } catch (error) {
             console.log(error);
-            res.status(500).send('Error in fetching category information');
+            return res.status(500).send('Error in fetching category information');
         }
     },
 
@@ -242,11 +242,11 @@ module.exports = {
             })
 
             // console.log(columns);
-            res.status(200).json({ columns: columns, sorting: sorting_, keyFeature: keyFeature });
+            return res.status(200).json({ columns: columns, sorting: sorting_, keyFeature: keyFeature });
 
         } catch (error) {
             console.log(error);
-            res.status(500).send('Error in fetching column names');
+            return res.status(500).send('Error in fetching column names');
         }
     }
 
