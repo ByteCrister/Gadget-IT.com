@@ -4,12 +4,11 @@ const app = express();
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const allowedOrigins = ["https://gadget-it-com-client.vercel.app"];
 
 /************** required environment setup *****************/
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: 'https://gadget-it-com-client.vercel.app',
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
