@@ -8,8 +8,8 @@ const passport = require('passport');
 /************** required environment setup *****************/
 // app.use(cors());
 app.use(cors({
-    origin: ["https://gadget-it-com-client.vercel.app"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: "https://gadget-it-com-client.vercel.app",
+    methods: 'GET,POST,PUT,DELETE',
     credentials: true
 }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
