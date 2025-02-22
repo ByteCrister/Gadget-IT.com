@@ -6,7 +6,7 @@ export const GetMenuItems = async (dispatch) => {
     try {
      
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/products/category/menu/items`);
-      const data = response.data;
+      const data = await response.data;
   
       if (Array.isArray(data)) {
         const updatedData = data.map(item => ({
