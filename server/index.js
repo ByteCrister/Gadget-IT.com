@@ -1,10 +1,8 @@
 const app = require('./app');
 require('dotenv').config();
 
-// const PORT = process.env.PORT; //For development
-const PATH = process.env.BACKEND_URL;
+const PORT = process.env.PORT;
 
-app.listen(PATH, ()=>{
-    // console.log(`Server is running on - http://localhost:${PORT}`); //For development
-    console.log(`Server is running on - :${PATH}`);
+app.listen(PORT, ()=>{
+    console.log(`Server is running on - http://localhost:${PORT}`); // Log the port (for local development)
 });
