@@ -6,9 +6,9 @@ export const AdminRenderApi = async (dispatch) => {
         dispatch({
             type: 'set_products_render',
             payload: {
-                categoryName: await response.data.categoryName,
-                subCategoryName: await response.data.subCategoryName,
-                initialMandatoryColumns: await response.data.initialMandatoryColumns
+                categoryName: response.data.categoryName,
+                subCategoryName: response.data.subCategoryName,
+                initialMandatoryColumns: response.data.initialMandatoryColumns
             }
         });
 
