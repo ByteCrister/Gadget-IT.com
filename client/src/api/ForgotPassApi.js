@@ -12,7 +12,7 @@ export const ForgotPassApi = async (values, setDataState) => {
 
     try {
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/user/forgot/password`, values);
-        const data = response.data;
+        const data = await response.data;
 
         console.log('Forgot pass message : ' + data.message);
         if (data.message === 'Email not found') {

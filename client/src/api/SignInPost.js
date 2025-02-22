@@ -12,8 +12,8 @@ export const SignInPost = async (setDataState, values) => {
     try {
 
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/user/registration`, values);
-        const data = response.data;
-        console.log(data.message);
+        const data = await response.data;
+        // console.log(data.message);
 
         if (data.message === 'Email already exists') {
             setDataState((prev) => ({

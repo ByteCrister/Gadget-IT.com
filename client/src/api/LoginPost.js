@@ -13,7 +13,7 @@ export const LoginPost = async (setDataState, values, dispatch, handleUserEntryP
 
     try {
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/user/log-in`, values);
-        const data = response.data;
+        const data = await response.data;
 
         console.log('Log in message : ' + data.message);
         if (data.message === 'User email not found') {

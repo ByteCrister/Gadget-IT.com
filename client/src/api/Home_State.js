@@ -8,7 +8,7 @@ export const Home_State = async (dispatch, token) => {
               Authorization: token
             }
           });
-        console.log(response.data);
+        // console.log(response.data);
         dispatch({
             type: 'set_home_view', payload: {
                 isAdmin: response.data.isAdmin === "true" || response.data.isAdmin === true,
