@@ -31,9 +31,10 @@ const QuestionForm = () => {
 
     GetEmail();
     window.scrollTo(0, 0);
-  }, [dataState, dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataState]);
 
-  const QuestionSubmitHandler = useCallback((e) => {
+  const QuestionSubmitHandler = useCallback(async (e) => {
     e.preventDefault();
     if (UserQuestion.current.value.trim().length !== 0) {
       const PostQuestion = {
@@ -42,7 +43,7 @@ const QuestionForm = () => {
         email: UserEmail.current.value
       }
       try {
-        axios.post(`${process.env.REACT_APP_BACKEND_URL}/post-user-question`, PostQuestion, {
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/post-user-question`, PostQuestion, {
           headers: {
             Authorization: dataState.token
           }
@@ -55,7 +56,7 @@ const QuestionForm = () => {
       }
     }
 
-  }, [product_id, dispatch]);
+  }, [dataState.pathSettings.currPath, dataState.token, dispatch, navigate, product_id]);
 
   return (
     dataState.isServerIssue === true

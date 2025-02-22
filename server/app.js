@@ -4,10 +4,12 @@ const app = express();
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const allowedOrigins = ["https://gadget-it-com-client.vercel.app"];
 
 /************** required environment setup *****************/
+
 app.use(cors({
-    origin: ["https://gadget-it-com-client.vercel.app"],  
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
@@ -25,7 +27,7 @@ app.use((req, res, next) => {
 });
 
 // Preflight handling for CORS
-app.options('*', cors()); // Allows preflight requests to pass
+app.options('*', cors());
 
 /****************** All Routes *****************/
 app.use(cors(), require('./routes/users.router'));
