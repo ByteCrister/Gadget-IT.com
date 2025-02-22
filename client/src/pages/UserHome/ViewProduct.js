@@ -144,7 +144,7 @@ const ViewProduct = ({ setUserEntryState }) => {
         console.log("New rating & user review added successfully.");
         // console.log(dataState.productStorage.product_ratings);
         // console.log(viewProduct.product_ratings);
-    }, [viewProduct?.product_ratings, dataState.productStorage.product_ratings]);
+    }, [viewProduct?.product_ratings, dataState.productStorage?.product_ratings]);
 
 
 
