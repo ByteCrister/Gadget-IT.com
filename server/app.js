@@ -5,19 +5,10 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
-
-const corsOptions = {
-    origin: 'https://gadget-it-com-client.vercel.app',  // Only allow requests from your frontend domain
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Define allowed methods
-    allowedHeaders: ['Content-Type', 'Authorization'],  // Define allowed headers
-};
-
-app.use(cors(corsOptions));  // Apply the specific CORS configuration
-
 /************** required environment setup *****************/
+app.use(cors());
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.json({ limit: '10mb' }));
-// app.use(cors());
 app.use(express.static('public'));
 app.use(passport.initialize());
 require('./config/passport');
