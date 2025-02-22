@@ -6,7 +6,8 @@ const db = mysql.createConnection({
     user: process.env.DB_user,
     password: process.env.DB_password,
     database: process.env.DB,
-    port: process.env.PORT // for production
+    port: process.env.PORT,
+    connectTimeout: 10000
 });
 db.connect((err) => {
     if (err) {
