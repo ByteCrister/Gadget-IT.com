@@ -9,14 +9,6 @@ require('dotenv').config();
 //     port: process.env.PORT,
 //     connectTimeout: 10000
 // });
-const db = mysql.createConnection({
-    host: 'sql.freedb.tech',
-    user: 'freedb_shakib\'s db',
-    password: '!aMy7wGuU8*V3A?',
-    database: 'freedb_gadget_it',
-    port: 3306,
-    connectTimeout: 10000
-});
 db.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err.stack);
