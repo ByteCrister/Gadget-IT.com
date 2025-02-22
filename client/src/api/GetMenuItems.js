@@ -5,9 +5,8 @@ const generateId = (title) => title.toLowerCase().replace(/\s+/g, '-');
 export const GetMenuItems = async (dispatch) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/products/category/menu/items`);
-      console.log(response.status);
-      console.log(response.data);
-      const data = await response.data;
+
+      const data =  response.data;
       if (Array.isArray(data)) {
         const updatedData = data.map(item => ({
           ...item,
