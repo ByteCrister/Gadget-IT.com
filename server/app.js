@@ -6,9 +6,8 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
 /************** required environment setup *****************/
-// app.use(cors());
 app.use(cors({
-    origin: ["https://gadget-it-com-client.vercel.app"],
+    origin: ["https://gadget-it-com-client.vercel.app"],  
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
@@ -19,7 +18,14 @@ app.use(passport.initialize());
 require('./config/passport');
 
 
+// Log incoming requests for debugging
+app.use((req, res, next) => {
+    console.log('Request Origin:', req.headers.origin);
+    next();
+});
 
+// Preflight handling for CORS
+app.options('*', cors()); // Allows preflight requests to pass
 
 /****************** All Routes *****************/
 app.use(cors(), require('./routes/users.router'));
