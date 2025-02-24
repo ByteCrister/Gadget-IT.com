@@ -52,7 +52,8 @@ const SelectOfferProducts = () => {
                 }
             })
         }
-    }, [dataState.Setting_Page, dataState.Production_Page.TableRows])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataState.Setting_Page, dataState.Production_Page.TableRows, offerProducts])
 
     // 1
     const findInitialSerial = useCallback((product_id) => {

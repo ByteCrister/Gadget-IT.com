@@ -48,7 +48,7 @@ const MainProductCarts = React.memo(({ MainTable, SubCategory, category }) => {
                 console.error("Product table not found for the specified category.");
             }
         }
-    }, [MainTable, SubCategory, dataState]);
+    }, [MainTable, SubCategory, category, dataState]);
 
     const handlePaginationFilter = useCallback((newFilteredProducts) => {
         setProducts((prev) => ({

@@ -34,7 +34,8 @@ const PageTwo = React.memo(({setErrorCategory}) => {
       sortProducts(filterState.state);
     }
 
-  }, [dataState, dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataState, dispatch, filterState.state]);
 
   useEffect(() => {
     dispatch({

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
+// import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 import styles from '../styles/HomePageStyles/HomePagination.module.css';
 
 const HomePagination = ({ productsData, handleFilteredData }) => {
@@ -25,7 +25,8 @@ const HomePagination = ({ productsData, handleFilteredData }) => {
  
   useEffect(() => {
     handleFilteredData(paginateData());
-  }, [currentPage, productsData]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, handleFilteredData, productsData]);
 
   const handleCurrentPage = (index) => {
     setCurrentPage(index);
@@ -39,13 +40,13 @@ const HomePagination = ({ productsData, handleFilteredData }) => {
     }
   };
 
-  const handleFirstPage = () => {
-    setCurrentPage(0);
-  };
+  // const handleFirstPage = () => {
+  //   setCurrentPage(0);
+  // };
 
-  const handleLastPage = () => {
-    setCurrentPage(totalPages - 1);
-  };
+  // const handleLastPage = () => {
+  //   setCurrentPage(totalPages - 1);
+  // };
 
   const startPage = Math.floor(currentPage / getVisiblePages) * getVisiblePages;
   const endPage = Math.min(totalPages, startPage + getVisiblePages);

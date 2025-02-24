@@ -30,7 +30,7 @@ const NavBar = ({ handleUserEntryPage }) => {
       // console.log(searchedProductStore.prices);
       // console.log(dataState.productStorage.product_prices);
     }
-  }, [dataState.CartStorage]);
+  }, [dataState?.CartStorage, dataState?.productStorage?.product_prices]);
 
 
   const findPrice = (product_id) => {

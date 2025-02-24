@@ -51,6 +51,7 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
     if (selectedMainCategory) {
       renderColumns();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMainCategory]);
 
   const handleAddColumn = async () => {

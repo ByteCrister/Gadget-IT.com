@@ -9,7 +9,7 @@ const LoginValidations = Yup.object({
     email: Yup.string()
         .trim()
         .email('Invalid email format')
-        .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Invalid email format')
+        .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Invalid email format')
         .test('is-valid-domain', 'Email domain is not valid', emailDomainValidation)
         .required('Email is required'),
     password: Yup.string()

@@ -33,7 +33,7 @@ const PreOrder = ({ setUserEntryState }) => {
       },
     });
     dispatch({ type: "toggle_isServerIssue", payload: false });
-  }, [dispatch, location.pathname]);
+  }, [dataState.pathSettings.currPath, dispatch, location.pathname]);
 
   const handleChange = useCallback((e) => {
     setPreOrderState((prev) => ({

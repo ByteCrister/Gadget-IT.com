@@ -37,7 +37,7 @@ const GroupProducts = () => {
         if (dataState.pathSettings.currPath !== location.pathname) {
             dispatch({ type: 'set_path_setting', payload: { prevPath: dataState.pathSettings.currPath, currPath: location.pathname } });
         }
-    }, [location.pathname, dataState.pathSettings.currPath]);
+    }, [location.pathname, dataState.pathSettings.currPath, dispatch]);
 
     if (!category || !subCategory || !mainTable) {
         return <div>Loading...</div>;

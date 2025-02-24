@@ -55,7 +55,7 @@ const UserPreOrder = () => {
                 }
             }
         });
-    }, [dispatch]);
+    }, [PreOrders.PreOrderStore, dispatch]);
 
     const handleSearch = (e) => {
         SearchUserPreOrder(e.target.value, PreOrders.PreOrderStore, setPreOrders);

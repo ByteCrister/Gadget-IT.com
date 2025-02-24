@@ -43,7 +43,7 @@ const Account = () => {
 
         GetUserInfo();
         window.scrollTo(0, 0);
-    }, [dataState.token, navigate]);
+    }, [dataState.token, dispatch, navigate]);
 
     const RenderPages = useCallback(() => {
         switch (dataState.ProfileButtonState) {
@@ -54,7 +54,7 @@ const Account = () => {
             case 5: return <ChangePassword />
             default: return <PersonalInformation UserInformation={UserInformation} />
         }
-    }, [UserAddress, UserInformation, dataState.ProfileButtonState]);
+    }, [Orders, UserAddress, UserInformation, dataState?.ProfileButtonState]);
 
     return (
         <section className={styles.OuterMain}>

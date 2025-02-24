@@ -31,7 +31,7 @@ const EasyCheckout = () => {
             setStore(location.state.cartStorage || []);
         }
         window.scrollTo(0, 0);
-    }, [location]);
+    }, [location, payMethodState]);
 
     useEffect(() => {
         if (store.length > 0) {

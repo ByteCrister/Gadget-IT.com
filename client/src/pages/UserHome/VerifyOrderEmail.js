@@ -55,6 +55,7 @@ const VerifyOrderEmail = () => {
             }
         }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [OrderInformation, location.state]);
 
     const handleDigitInput = (e) => {

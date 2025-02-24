@@ -49,6 +49,7 @@ const UserHomeRoutes = () => {
     useEffect(() => {
         console.log('Current path ' + location.pathname);
         dispatch({ type: "set_view_product_scroll_ref", payload: payload });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 

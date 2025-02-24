@@ -23,7 +23,7 @@ const UserHomePage = () => {
     });
     dispatch({ type: 'toggle_isServerIssue', payload: false });
     window.scrollTo(0, 0);
-  }, [dispatch, location.pathname]);
+  }, [dataState.pathSettings.currPath, dispatch, location.pathname]);
 
   return (
     <section className={styles.userHomeContainer}>

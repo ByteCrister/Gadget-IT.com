@@ -49,6 +49,7 @@ const PageSix = () => {
         }
       }
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataState?.Users_Page?.UsersDocument]);
 
   const handleSearch = (e) => {

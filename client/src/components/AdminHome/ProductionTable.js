@@ -47,7 +47,7 @@ const ProductionTable = React.memo(({ setErrorCategory }) => {
     if (!hasInitialized) {
       initializeData();
     }
-  }, []);
+  }, [dataState.Production_Page.TableRows, hasInitialized]);
 
   useEffect(() => {
     dispatch({
@@ -60,7 +60,8 @@ const ProductionTable = React.memo(({ setErrorCategory }) => {
         }
       }
     })
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataState.Production_Page.TableRows]);
 
   // *------------------ Parent Function of Pagination ----------------------------
   const handleFilteredData = (data) => {

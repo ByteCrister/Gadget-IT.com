@@ -47,7 +47,8 @@ const UserOrders = ({ Orders }) => {
             );
             window.scrollTo(0, 0);
         }
-    }, [Orders]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [Orders, dataState?.productStorage?.product_prices]);
 
     useEffect(() => {
         window.scrollTo(0, 0);

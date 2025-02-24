@@ -63,6 +63,7 @@ const CreateNewOffer = () => {
             })
         }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataState.Setting_Page]);
 
     const handleFilteredData = (data) => {

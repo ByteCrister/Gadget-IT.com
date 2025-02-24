@@ -19,7 +19,8 @@ const Pagination = ({ productsData, handleFilteredData }) => {
 
   useEffect(() => {
     handleFilteredData(paginateData());
-  }, [currentPage, productsData]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, handleFilteredData, productsData]);
 
   useEffect(() => {
     setTotalPages(Math.ceil(productsData.length / itemsPerPage));

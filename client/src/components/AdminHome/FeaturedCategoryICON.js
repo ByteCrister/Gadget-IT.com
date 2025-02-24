@@ -27,10 +27,10 @@ const FeaturedCategoryICON = () => {
 
   }, [dataState]);
 
-  const handleSaveText = useCallback(() => {
-    setSaveText('Changes are Updated!');
-    setTimeout(() => setSaveText(''), 2500);
-  }, []);
+  // const handleSaveText = useCallback(() => {
+  //   setSaveText('Changes are Updated!');
+  //   setTimeout(() => setSaveText(''), 2500);
+  // }, []);
 
   const handleSaveImage = useCallback(async () => {
     try {
