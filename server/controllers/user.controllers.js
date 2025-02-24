@@ -58,7 +58,6 @@ module.exports = {
 
             //* Generate confirmation link with token
             const confirmationLink = `${process.env.BACKEND_URL}/new/user/confirm?token=${token}`;
-            console.log("Backend URL: " + process.env.BACKEND_URL);
 
             //* Send confirmation email
             const emailSent = await SendUserMail(email, 'Email Confirmation', confirmationLink);
