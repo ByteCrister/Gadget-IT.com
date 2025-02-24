@@ -5,14 +5,11 @@ const LoadingPage = () => {
   return (
     <section className={styles['spinner']}>
       <div className={styles["dot-spinner"]}>
-        <div className={styles["dot-spinner__dot"]}></div>
-        <div class={styles["dot-spinner__dot"]}></div>
-        <div class={styles["dot-spinner__dot"]}></div>
-        <div class={styles["dot-spinner__dot"]}></div>
-        <div class={styles["dot-spinner__dot"]}></div>
-        <div class={styles["dot-spinner__dot"]}></div>
-        <div class={styles["dot-spinner__dot"]}></div>
-        <div class={styles["dot-spinner__dot"]}></div>
+        {
+          Array.from({ length: 8 }).map((_, index) => {
+            return <div key={index} className={styles["dot-spinner__dot"]}></div>
+          })
+        }
       </div>
     </section>
   )
