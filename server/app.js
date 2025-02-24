@@ -1,22 +1,25 @@
-require('dotenv').config();
 const express = require('express');
-const app = express();
+require('dotenv').config();
+require('./config/passport');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const app = express();
 
 /************** required environment setup *****************/
 
+// Correct CORS setup (only one middleware)
 app.use(cors({
-    origin: 'https://gadget-it-com-client.vercel.app',
+    origin: 'https://gadget-it.vercel.app', // Define the exact origin (or an array of allowed origins)
     methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
     credentials: true
 }));
+
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static('public'));
 app.use(passport.initialize());
-require('./config/passport');
 
 
 // Log incoming requests for debugging
@@ -25,12 +28,13 @@ app.use((req, res, next) => {
     next();
 });
 
-// Preflight handling for CORS
+// Explicitly handle preflight requests for better debugging
 app.options('*', cors());
 
+
 /****************** All Routes *****************/
-app.use(cors(), require('./routes/users.router'));
-app.use(cors(), require('./routes/users.home.contents'));
+app.use(require('./routes/users.router'));
+app.use(require('./routes/users.home.contents'));
 
 app.use(require('./routes/products.router'));
 app.use(require('./routes/product.post.router'));
