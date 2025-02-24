@@ -10,7 +10,7 @@ const app = express();
 
 // Correct CORS setup (only one middleware)
 app.use(cors({
-    origin: 'https://gadget-it.vercel.app', // Define the exact origin (or an array of allowed origins)
+    origin: 'https://gadget-it.vercel.app',
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
     credentials: true
