@@ -5,7 +5,6 @@ const LoadingPage = () => {
   return (
    <div className={styles.mainLoadingContainer}>
     <div className={styles.loader}></div>
-    <div className={styles['loading-text']}>Loading, please wait...</div>
    </div>
   )
 }
