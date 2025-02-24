@@ -3,9 +3,16 @@ import styles from '../styles/ErrorAndLoading/loading.module.css'
 
 const LoadingPage = () => {
   return (
-   <div className={styles.mainLoadingContainer}>
-    <div className={styles.loader}></div>
-   </div>
+    <div className={styles["dot-spinner"]}>
+    <div className={styles["dot-spinner__dot"]}></div>
+    <div class={styles["dot-spinner__dot"]}></div>
+    <div class={styles["dot-spinner__dot"]}></div>
+    <div class={styles["dot-spinner__dot"]}></div>
+    <div class={styles["dot-spinner__dot"]}></div>
+    <div class={styles["dot-spinner__dot"]}></div>
+    <div class={styles["dot-spinner__dot"]}></div>
+    <div class={styles["dot-spinner__dot"]}></div>
+</div>
   )
 }
 
