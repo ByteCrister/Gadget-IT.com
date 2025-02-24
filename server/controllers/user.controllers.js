@@ -135,7 +135,7 @@ module.exports = {
             console.log('New user registered with id:', results.insertId);
 
             //* Redirect the user to the home route
-            return res.redirect(process.env.process.env.FRONTEND_URL);
+            return res.redirect(process.env.FRONTEND_URL);
 
         } catch (error) {
             //* Handle token expiration or invalid token errors
