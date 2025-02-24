@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const userModel = require('../models/user.model');
-require('dotenv').config();
 
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
@@ -13,6 +12,7 @@ const adminDashboardController = require('./admin.dashboard.controller.js');
 const performQuery = require('../config/performQuery.js');
 const saltRounds = 10;
 ;
+require('dotenv').config();
 
 module.exports = {
 
@@ -57,8 +57,8 @@ module.exports = {
             );
 
             //* Generate confirmation link with token
-            const confirmationLink = `${process.env.BACKED_URL}/new/user/confirm?token=${token}`;
-            console.log("Backend URL: "+process.env.BACKED_URL);
+            const confirmationLink = `${process.env.BACKEND_URL}/new/user/confirm?token=${token}`;
+            console.log("Backend URL: " + process.env.BACKEND_URL);
 
             //* Send confirmation email
             const emailSent = await SendUserMail(email, 'Email Confirmation', confirmationLink);
