@@ -30,13 +30,13 @@ module.exports = {
 
     getRatings: (callback) => {
         db.query(
-            `select 
+            `SELECT  
             product_id,
-            COUNT(product_id) no_of_rating,
-            AVG(rating_stars) rating_stars
+            COUNT(product_id) AS no_of_rating,
+            AVG(rating_stars) AS rating_stars
             FROM rating
             GROUP BY product_id
-            order by rating_no desc;`,
+            ORDER BY rating_no desc;`,
             callback);
     },
 
