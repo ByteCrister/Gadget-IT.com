@@ -62,7 +62,7 @@ const UseProvider = ({ children }) => {
   const [dataState, dispatch] = useReducer(reducer, initialValues);
 
   useEffect(() => {
-    console.log("Provider runs...");
+    // console.log("Provider runs...");
     const initializeData = async () => {
       dispatch({ type: "toggle_loading", payload: true });
 

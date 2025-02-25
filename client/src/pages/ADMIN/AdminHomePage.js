@@ -31,7 +31,7 @@ const AdminHomePage = () => {
 
     const handlePage = (newPage) => {
         setCurrentPage(newPage);
-        console.log(newPage);
+        // console.log(newPage);
         window.localStorage.setItem('AdminDashboardButtonState', newPage);
     };
     const handleUpper = (newUpper) => setUpperContent(newUpper);

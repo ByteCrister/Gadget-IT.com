@@ -27,7 +27,7 @@ const PageTwo = React.memo(({setErrorCategory}) => {
   const searchRef = useRef();
 
   useEffect(() => {
-    console.log('page two renders');
+    // console.log('page two renders');
     if (dataState?.Inventory_Page) {
       setProductsData(dataState.Inventory_Page);
       initializeCheck();
