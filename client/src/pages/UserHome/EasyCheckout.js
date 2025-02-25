@@ -202,4 +202,4 @@ const EasyCheckout = () => {
     );
 };
 
-export default EasyCheckout;
+export default React.memo(EasyCheckout);
