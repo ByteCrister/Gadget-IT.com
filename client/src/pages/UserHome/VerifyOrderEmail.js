@@ -42,7 +42,7 @@ const VerifyOrderEmail = ({ handleUserEntryPage }) => {
             setIsLoading(false);
             console.log(error);
             window.localStorage.removeItem('token');
-            navigate('/easy-checkout');
+            navigate('/');
             handleUserEntryPage(1); //* Toggle signup-login form
         }
     };
