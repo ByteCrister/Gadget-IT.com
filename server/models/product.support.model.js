@@ -36,7 +36,7 @@ module.exports = {
             AVG(rating_stars) AS rating_stars
             FROM rating
             GROUP BY product_id
-            ORDER BY rating_no desc;`,
+            ORDER BY COUNT(product_id) DESC;`,
             callback);
     },
 
