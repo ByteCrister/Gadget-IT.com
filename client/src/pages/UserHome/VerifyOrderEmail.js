@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useData } from '../../context/useData';
 import axios from 'axios';
 
-const VerifyOrderEmail = () => {
+const VerifyOrderEmail = ({handleUserEntryPage}) => {
     const { dataState, dispatch } = useContext(useData);
 
     const location = useLocation();
@@ -42,6 +42,7 @@ const VerifyOrderEmail = () => {
             setIsLoading(false);
             console.log(error);
             dispatch({ type: 'toggle_isServerIssue', payload: true });
+            handleUserEntryPage(1); //* Toggle signup-login form
         }
     };
 

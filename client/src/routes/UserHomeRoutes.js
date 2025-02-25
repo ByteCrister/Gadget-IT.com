@@ -95,7 +95,7 @@ const UserHomeRoutes = () => {
                         <Route path='/easy-checkout' element={<EasyCheckout />} />
                         <Route path='/user-orders-page' element={<OrdersPage />} />
                         <Route path='/user-orders-payment-page' element={<UserOrderPaymentPage />} />
-                        <Route path='/verify-order-email' element={<VerifyOrderEmail />} />
+                        <Route path='/verify-order-email' element={<VerifyOrderEmail handleUserEntryPage={handleUserEntryPage}/>} />
 
                         <Route path="*" element={<RandomErrorPage />} />
                     </Routes>
