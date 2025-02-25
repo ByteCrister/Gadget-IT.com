@@ -41,7 +41,7 @@ const VerifyOrderEmail = ({ handleUserEntryPage }) => {
         } catch (error) {
             setIsLoading(false);
             console.log(error);
-            dispatch({ type: 'toggle_isServerIssue', payload: true });
+            window.localStorage.removeItem('token');
             handleUserEntryPage(1); //* Toggle signup-login form
         }
     };
