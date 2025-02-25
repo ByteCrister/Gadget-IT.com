@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useData } from '../../context/useData';
 import axios from 'axios';
 
-const VerifyOrderEmail = ({handleUserEntryPage}) => {
+const VerifyOrderEmail = ({ handleUserEntryPage }) => {
     const { dataState, dispatch } = useContext(useData);
 
     const location = useLocation();
@@ -56,7 +56,7 @@ const VerifyOrderEmail = ({handleUserEntryPage}) => {
             }
         }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [OrderInformation, location.state]);
 
     const handleDigitInput = (e) => {
