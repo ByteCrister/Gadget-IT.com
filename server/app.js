@@ -11,6 +11,7 @@ const app = express();
 // Correct CORS setup (only one middleware)
 app.use(cors({
     origin: 'https://gadget-it.vercel.app',
+    // origin: 'http://localhost:3000',
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
     credentials: true
@@ -24,7 +25,7 @@ app.use(passport.initialize());
 
 // Log incoming requests for debugging
 app.use((req, res, next) => {
-    console.log('Request Origin:', req.headers.origin);
+    // console.log('Request Origin:', req.headers.origin);
     next();
 });
 
