@@ -5,7 +5,7 @@ import { useData } from '../../context/useData';
 import axios from 'axios';
 
 const VerifyOrderEmail = ({ handleUserEntryPage }) => {
-    const { dataState, dispatch } = useContext(useData);
+    const { dataState } = useContext(useData);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -42,6 +42,7 @@ const VerifyOrderEmail = ({ handleUserEntryPage }) => {
             setIsLoading(false);
             console.log(error);
             window.localStorage.removeItem('token');
+            navigate('/easy-checkout');
             handleUserEntryPage(1); //* Toggle signup-login form
         }
     };
