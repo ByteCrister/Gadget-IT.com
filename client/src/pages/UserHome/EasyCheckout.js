@@ -31,7 +31,7 @@ const EasyCheckout = () => {
             setStore(location.state.cartStorage || []);
         }
         window.scrollTo(0, 0);
-    }, [location, payMethodState]);
+    }, [location]);
 
     useEffect(() => {
         if (store.length > 0) {
@@ -46,7 +46,7 @@ const EasyCheckout = () => {
 
     const getButtons = (buttonNo) => {
         return payMethodState === buttonNo ?
-            <button className={styles['active-payBtn']} ><div><FaCheck className={styles['payBtn-icon']} /><span> {buttonNo === 1 ? 'Cash on Delivery' : 'Online Payment'}</span></div></button>
+            <button className={styles['active-payBtn']} onClick={() => setPayMethodState(buttonNo)}><div><FaCheck className={styles['payBtn-icon']} /><span> {buttonNo === 1 ? 'Cash on Delivery' : 'Online Payment'}</span></div></button>
             : <button className={styles['default-payBtn']} onClick={() => setPayMethodState(buttonNo)}>{buttonNo === 1 ? 'Cash on Delivery' : 'Online Payment'}</button>
     };
 
@@ -117,8 +117,11 @@ const EasyCheckout = () => {
 
     return (
         <section className={styles['main-checkout-container']}>
+
             {/* --------- section 1 ------- */}
             <section className={styles['checkout-left-container']}>
+
+                {/* Select button */}
                 <div className={styles['pay-button-section']}>
                     <span>Payment Method</span>
                     <div className={styles['pay-buttons']}>
