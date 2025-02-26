@@ -47,7 +47,8 @@ const ProductionTable = React.memo(({ setErrorCategory }) => {
     if (!hasInitialized) {
       initializeData();
     }
-  }, [dataState.Production_Page.TableRows, hasInitialized]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataState?.Production_Page?.TableRows]);
 
   useEffect(() => {
     dispatch({

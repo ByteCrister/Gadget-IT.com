@@ -58,7 +58,7 @@ const PageFour = () => {
       // console.log(PageData);
       // console.log(dataState.Production_Page.TableRows);
     }
-  }, [dataState.Order_Page]);
+  }, [dataState?.Order_Page]);
 
   const handleFilter = () => {
     setFilterState(prev => prev === 10 ? 0 : prev + 1);
@@ -101,8 +101,8 @@ const PageFour = () => {
             </thead>
             <tbody>
               {
-                OrderDetail.OrderProductInfo.map((product) => {
-                  return <tr>
+                OrderDetail.OrderProductInfo.map((product, index) => {
+                  return <tr key={`order product info-${index}`}>
                     <td>{product.product_id}</td>
                     <td>{product.quantity}</td>
                   </tr>
@@ -463,7 +463,7 @@ const PageFour = () => {
               {OrderStore?.filteredProducts &&
                 OrderStore.filteredProducts.length > 0 &&
                 OrderStore.filteredProducts.map((order, index) => (
-                  <tr key={index}>
+                  <tr key={`order store - filtered products-${index}`}>
                     <td>
                       <div id={styles.HeadCheckBox}>
                         <input type="checkbox" defaultChecked={order.OrderInfo.selected} onClick={(e) => handleSelectCheckbox(e, -1, order.OrderInfo.order_id)} id={`Table_column-${index}`} ></input>
@@ -491,12 +491,11 @@ const PageFour = () => {
                     </td>
                     <td>
                       <select className={styles.dropdown} style={{ backgroundColor: getActionText(order.OrderInfo.order_status) }} value={order.OrderInfo.order_status} onChange={(e) => handleActionChange(e)}>
-                        <option value={''}></option>
-                        <option value="Order is Processing" > Order Is Processing</option>
-                        <option value="Order Placed" >Order Placed</option>
-                        <option value="Way to Destination" >Way to Destination</option>
-                        <option value="Ready to Collect" >Ready to Collect</option>
-                        <option value="Canceled" >Canceled</option>
+                        {
+                          ["", "Order is Processing", "Order Placed", "Way to Destination", "Ready to Collect", "Canceled"].map((item, index) => {
+                            return <option key={`order status-${index}`} value={item}>{item}</option>
+                          })
+                        }
                       </select>
                     </td>
                   </tr>

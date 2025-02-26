@@ -16,9 +16,9 @@ const SalesManagement = () => {
                 cost: dataState.Dashboard_Page.dashboard.cost,
                 cost_purchase: dataState.Dashboard_Page.dashboard.cost_purchase,
             });
-            console.log(dataState.Dashboard_Page);
+            // console.log(dataState.Dashboard_Page);
         }
-    }, [dataState.Dashboard_Page]);
+    }, [dataState?.Dashboard_Page]);
 
     const handleCostChange = (e) => {
         setCostState(prev => ({
