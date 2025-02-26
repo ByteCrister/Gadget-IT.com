@@ -104,6 +104,9 @@ The admin dashboard comprises eight main pages:
   - Express.js
 - **Database**:
   - MySQL
+ 
+# Live Demo
+- [live link](https://gadget-it.vercel.app/)
 
 ## **Installation**
 
