@@ -23,7 +23,7 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
 
   const renderColumns = async () => {
     try {
-      const res = await axios.get(`http://localhost:7000/get/columns/${selectedMainCategory}`);
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get/columns/${selectedMainCategory}`);
       setAllColumnNames(res.data.columns);
       // setSelectedSorting(res.data.sorting);
 
@@ -56,7 +56,7 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
 
   const handleAddColumn = async () => {
     try {
-      await axios.post('http://localhost:7000/add/column', {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/add/column`, {
         table: selectedMainCategory,
         ...newAndRenameColumn
       });
@@ -69,7 +69,7 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
 
   const handleDeleteColumn = async () => {
     try {
-      await axios.post('http://localhost:7000/delete/column', {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/delete/column`, {
         table: selectedMainCategory,
         column: deleteColumn
       });
@@ -82,7 +82,7 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
 
   const handleRename = async () => {
     try {
-      await axios.post('http://localhost:7000/rename/column', {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/rename/column`, {
         table: selectedMainCategory,
         ...newAndRenameColumn
       });
@@ -128,7 +128,7 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
   //* ------------------------- handle save sorting ---------------------
   const handleSaveSorting = async () => {
     try {
-      await axios.post('http://localhost:7000/insert/new-sort/crud', { category: selectedMainCategory, change_sort_by_names: change_sort_by_names });
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/insert/new-sort/crud`, { category: selectedMainCategory, change_sort_by_names: change_sort_by_names });
       renderColumns()
 
     } catch (error) {
@@ -152,10 +152,10 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
   const handleKeyFeatureCheck = async (e, column) => {
     try {
       if (e.target.checked) {
-        await axios.post('http://localhost:7000/insert/new-keyFeature', { category: selectedMainCategory, column: column });
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/insert/new-keyFeature`, { category: selectedMainCategory, column: column });
         setSelectKeyFeature([...selectKeyFeature, column]);
       } else {
-        await axios.post('http://localhost:7000/remove/keyFeature', { category: selectedMainCategory, column });
+        await axios.post(`/remove/keyFeature`, { category: selectedMainCategory, column });
         setSelectKeyFeature(selectKeyFeature.filter(item => item !== column));
       }
     } catch (error) {
