@@ -256,7 +256,7 @@ const PageTwo = React.memo(({setErrorCategory}) => {
               <tr key={index}>
 
                 <td><div className={styles.firstColumn}>
-                  <input type="checkbox" checked={checkOrNot(data.id)} onChange={() => handleCheckboxChange(data.id)} />
+                  <input type="checkbox" id={index} checked={checkOrNot(data.id)} onChange={() => handleCheckboxChange(data.id)} />
                   {data.p_name}</div></td>
                 <td>{data.id}</td>
                 <td>{GetCategoryName(data.category)}</td>
