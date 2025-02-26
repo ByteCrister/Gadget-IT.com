@@ -34,36 +34,23 @@ const PageThree = React.memo(({ setErrorCategory }) => {
   }, [pageThreeCurrentPage]);
 
 
-
   return (
     <div className={styles.mainProductionContainer}>
       <span className={styles.ProductionText}>Productions Management</span>
 
       <div className={styles.production_buttons}>
-
-        <button className={getCurrentButtonClassName(1)} onClick={() => { setPageThreeCurrentPage(1) }} >
-          Manage Inventory
-        </button>
-
-        <button className={getCurrentButtonClassName(2)} onClick={() => { setPageThreeCurrentPage(2) }} >
-          Columns && Sorting
-        </button>
-
-        <button className={getCurrentButtonClassName(3)} onClick={() => { setPageThreeCurrentPage(3) }} >
-          Category's
-        </button>
-        <button className={getCurrentButtonClassName(4)} onClick={() => { setPageThreeCurrentPage(4) }} >
-          Vendors
-        </button>
-        <button className={getCurrentButtonClassName(5)} onClick={() => { setPageThreeCurrentPage(5) }} >
-          Sales
-        </button>
+        {
+          ["Manage Inventory", "Columns && Sorting", "Category's", "Vendors", "Sales"].map((item, index) => {
+            return <button key={index} className={getCurrentButtonClassName(index + 1)} onClick={() => { setPageThreeCurrentPage(index + 1) }} >
+              {item}
+            </button>
+          })
+        }
       </div>
 
       <div className={styles.ProductionContents}>
         {renderCurrentPage()}
       </div>
-
     </div>
   )
 }
