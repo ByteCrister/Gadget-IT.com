@@ -92,7 +92,7 @@ const SelectHomeProducts = () => {
 
     initializeData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataState.Production_Page.TableRows]);
+  }, [dataState?.Production_Page?.TableRows]);
 
   // *------------------ Refresh Button ---------------------
   const handleRefresh = async () => {

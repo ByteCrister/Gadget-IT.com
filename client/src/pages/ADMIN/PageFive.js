@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 import styles from '../../styles/AdminHome/PageFive.module.css';
@@ -20,10 +20,6 @@ const PageFive = () => {
       report_no_name: ''
     }
   });
-
-  // useEffect(() => {
-  //   if (dataState?.Report_Page?.report_main && dataState?.Report_Page?.report_sub) return;
-  // }, [dataState.Report_Page]);
 
 
   // * ---------------- 'Report Management' Component is created under its parent component -----------------------

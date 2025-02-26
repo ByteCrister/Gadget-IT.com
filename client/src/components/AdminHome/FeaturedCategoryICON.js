@@ -25,7 +25,7 @@ const FeaturedCategoryICON = () => {
     }
     setIndexState(featuredImagesIcon && featuredImagesIcon.length > 0 ? Math.max(...featuredImagesIcon.map(item => item.index)) : 0);
 
-  }, [dataState]);
+  }, [dataState?.Setting_Page?.featured_category_icon]);
 
   const handleSaveText = useCallback(() => {
     setSaveText('Changes are Updated!');
@@ -43,7 +43,7 @@ const FeaturedCategoryICON = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [featuredImages, dispatch]);
+  }, [featuredImages, dispatch, handleSaveText]);
 
 
   const getCurrentSerial = (index) => {
