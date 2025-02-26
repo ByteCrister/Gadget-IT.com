@@ -50,9 +50,10 @@ module.exports = {
         let open = " (";
         let close = ")";
         let questionMarks = '';
-        let columnNames = `product_id, brand, main_category, sub_category ,product_name, image, discount_type, discount_value, vendor_no`;
+        let columnNames = `product_id, hide, brand, main_category, sub_category ,product_name, image, discount_type, discount_value, vendor_no`;
         let arrValues = [];
         arrValues.push(newProductID);
+        arrValues.push(0);
         arrValues.push(mandatoryValues.brand);
         arrValues.push(mandatoryValues.mainCategory);
         arrValues.push(mandatoryValues.subCategory);
