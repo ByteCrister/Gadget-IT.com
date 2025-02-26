@@ -51,7 +51,7 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
     if (selectedMainCategory) {
       renderColumns();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMainCategory]);
 
   const handleAddColumn = async () => {
@@ -192,19 +192,20 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
     <section className={styles.manageColumnsSection}>
       {selectState === 1 && (
         <div>
-          <label>Insert After</label>
+          <label htmlFor='select-insert-after'>Insert After</label>
           <select
             value={newAndRenameColumn.insertAfter}
+            id='select-insert-after'
             onChange={(e) => setNewAndRenameColumn({ ...newAndRenameColumn, insertAfter: e.target.value })}
           >
-            <option value="">Select...</option>
+            <option id='select-insert-after-option-0' value="">Select...</option>
             {allColumnNames.map((column, index) => (
-              <option value={column} key={index}>
+              <option id={`select-insert-after-option-${index + 1}`} value={column} key={index}>
                 {column}
               </option>
             ))}
           </select>
-          <label>New Column Name</label>
+          <label htmlFor='newColumnName'>New Column Name</label>
           <input
             type="text"
             id='newColumnName'
@@ -216,14 +217,15 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
       )}
       {selectState === 2 && (
         <div>
-          <label>Which Column You Want to Delete</label>
+          <label htmlFor='select-which-column'>Which Column You Want to Delete</label>
           <select
             value={deleteColumn}
+            id='select-which-column'
             onChange={(e) => setDeleteColumn(e.target.value)}
           >
-            <option value="">Select...</option>
+            <option id='select-which-column-option-0' value="">Select...</option>
             {allColumnNames.map((column, index) => (
-              <option value={column} key={index}>
+              <option id={`select-which-column-option-${index + 1}`} value={column} key={index}>
                 {column}
               </option>
             ))}
@@ -233,22 +235,23 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
       )}
       {selectState === 3 && (
         <div>
-          <label>Rename Column Name</label>
+          <label htmlFor='select-rename'>Rename Column Name</label>
           <select
             value={newAndRenameColumn.oldName}
+            id='select-rename'
             onChange={(e) => setNewAndRenameColumn({ ...newAndRenameColumn, oldName: e.target.value })}
           >
-            <option value="">Select...</option>
+            <option id='select-rename-option-0' value="">Select...</option>
             {allColumnNames.map((column, index) => (
-              <option value={column} key={index}>
+              <option id={`select-rename-option-${index + 1}`} value={column} key={index}>
                 {column}
               </option>
             ))}
           </select>
           <input
             type="text"
-            placeholder="New Name"
             id='newName'
+            placeholder="New Name"
             value={newAndRenameColumn.newName}
             onChange={(e) => handleColumns(e)}
           />
@@ -262,12 +265,14 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
               <label htmlFor={`checkbox-${index}`}>{column}</label>
               <input
                 type='checkbox'
-                value={column}
                 id={`checkbox-${index}`}
+                value={column}
                 checked={isChecked(column)}
                 onChange={(e) => handleAddNewSort(e, column)}
               />
-              <input type='text'
+              <input
+                type='text'
+                id={`text-${index}`}
                 value={getSortByValue(column)}
                 placeholder='[ name1 : n1, n2 ], [ name2 ] ...'
                 onChange={(e) => handleSortByChange(e, column)}>
@@ -283,11 +288,11 @@ const UseManageColumns = ({ selectState, setSelectState, selectedMainCategory })
         <div>
           {allColumnNames.map((column, index) => (
             <div key={index} id={styles.sortingCheckbox}>
-              <label htmlFor={`checkbox-${index}`}>{column}</label>
+              <label htmlFor={`checkbox-column-name-${index}`}>{column}</label>
               <input
                 type='checkbox'
+                id={`checkbox-column-name-${index}`}
                 value={column}
-                id={`checkbox-${index}`}
                 checked={isCheckedKeyFeature(column)}
                 onChange={(e) => handleKeyFeatureCheck(e, column)}
               />

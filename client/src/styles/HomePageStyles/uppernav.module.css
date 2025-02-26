@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Squada+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Squada+One&display=swap');
+
 .upperNav {
   display: flex;
   justify-content: space-between;
@@ -11,21 +14,25 @@
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: rgb(255, 222, 116);
+  font-size: 30px;
+  font-family: "Squada One", sans-serif;
+  font-weight: 700;
+  color: #ff8623;
   text-decoration: none;
 }
-.InputSection{
+
+.InputSection {
   /* background-color: #ff8623; */
   width: 50%;
   position: relative;
   display: flex;
 }
-.InputSearchAnsHide{
+
+.InputSearchAnsHide {
   display: none;
 }
-.InputSearchAns{
+
+.InputSearchAns {
   position: absolute;
   width: 100%;
   z-index: 1000;
@@ -34,7 +41,8 @@
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
 }
-.InputSection input{
+
+.InputSection input {
   width: 100%;
   flex: 1;
   padding: 10px;
@@ -46,14 +54,15 @@
   outline: none;
 }
 
-.InputSearchAnsBtn{
+.InputSearchAnsBtn {
   padding: 10px;
   background-color: #f5f6fc;
   display: flex;
   gap: 10px;
 }
 
-.DefaultBtn, .ActiveBtn{
+.DefaultBtn,
+.ActiveBtn {
   font-size: 15px;
   border: none;
   outline: none;
@@ -64,16 +73,19 @@
   font-weight: 500;
   cursor: pointer;
 }
-.DefaultBtn{
+
+.DefaultBtn {
   background-color: white;
   color: black;
 }
-.ActiveBtn{
+
+.ActiveBtn {
   background-color: #ff8623;
   color: white;
 
 }
-.InputDefaultAllAnswers{
+
+.InputDefaultAllAnswers {
   padding: 10px;
   min-height: 300px;
   text-align: center;
@@ -84,10 +96,10 @@
   justify-content: center;
   align-items: center;
 }
-.InputAllAnswers{
 
-}
-.SearchedSelectedProductSection{
+.InputAllAnswers {}
+
+.SearchedSelectedProductSection {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -96,7 +108,7 @@
   max-height: 50vh;
 }
 
-.SearchedProductLink{
+.SearchedProductLink {
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -105,62 +117,68 @@
   transition: ease-in-out 0.2s;
 }
 
-.SearchedProductLink:hover{
+.SearchedProductLink:hover {
   background-color: #f5f6fc;
 }
-.SearchedProductLink:hover .Name{
+
+.SearchedProductLink:hover .Name {
   text-decoration: underline;
 }
 
-.SearchedProductImgDiv{
+.SearchedProductImgDiv {
   width: 60px;
   min-width: 60px;
   margin-left: 30px;
 }
 
-.SearchedProductImgDiv img{
+.SearchedProductImgDiv img {
   width: 100%;
 }
 
-.SearchedProductNamePrices{
+.SearchedProductNamePrices {
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 5px;
 }
 
-.SearchedProductNamePrices div{
+.SearchedProductNamePrices div {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.Name, .Price, .CutPrice{
+
+.Name,
+.Price,
+.CutPrice {
   font-family: "Roboto", serif;
   font-weight: 500;
   font-size: 13px;
   color: #1b1a1a;
 }
 
-.Price, .CutPrice{
+.Price,
+.CutPrice {
   color: #ff8623;
   font-size: 15px;
 }
-.Price{
+
+.Price {
   text-decoration: underline;
 }
 
-.CutPrice{
+.CutPrice {
   text-decoration: line-through;
 }
 
-.SearchSelectedCategory{
+.SearchSelectedCategory {
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 15px;
 }
 
-.CategoryLink{
+.CategoryLink {
   text-decoration: none;
   font-family: "Roboto", serif;
   color: #2f2f2f;
@@ -169,11 +187,13 @@
   padding: 30px 20px;
   transition: ease-in-out 0.2s;
 }
-.CategoryLink:hover{
+
+.CategoryLink:hover {
   background-color: #f5f6fc;
   color: #ff8623;
   text-decoration: underline;
 }
+
 /* ----------------------------------- */
 .navLink {
   color: white;
@@ -232,11 +252,11 @@
     align-items: flex-start;
   }
 
-  .InputSection{
+  .InputSection {
     width: 100%;
   }
 
-  .InputSection input{
+  .InputSection input {
     /* margin: 10px 0; */
     width: 100%;
   }

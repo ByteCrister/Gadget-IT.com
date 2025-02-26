@@ -22,29 +22,26 @@ const UserPreOrder = () => {
     });
 
     useEffect(() => {
-        if (dataState?.Support_Page?.perOrders) {
+        if (dataState?.Support_Page?.perOrders && PreOrders.PreOrderStore.length === 0) {
             let preOrders = {};
             dataState?.Support_Page?.perOrders?.forEach((preOrder) => {
-                preOrders = {
-                    ...preOrders,
-                    [preOrder.preorder_no]: {
-                        product_id: '',
-                        category: ''
-                    }
-                }
+                preOrders[preOrder.preorder_no] = {
+                    product_id: '',
+                    category: ''
+                };
             });
-            console.log(preOrders);
 
-            setPreOrders({
+            setPreOrders((prev) => ({
+                ...prev,
                 PreOrderStore: dataState?.Support_Page?.perOrders,
                 PreOrderMain: dataState?.Support_Page?.perOrders,
                 filteredPreOrders: dataState?.Support_Page?.perOrders,
                 sendPreOrder: preOrders
-            });
-        }
-    }, [dataState.Support_Page]);
+            }));
 
-    useEffect(() => {
+            // console.log("Updated sendPreOrder:", preOrders);
+
+        }
         dispatch({
             type: 'set_search_function',
             payload: {
@@ -55,7 +52,9 @@ const UserPreOrder = () => {
                 }
             }
         });
-    }, [PreOrders.PreOrderStore, dispatch]);
+        // console.log("User pre order page renders...");
+
+    }, [PreOrders.PreOrderStore, dataState?.Support_Page?.perOrders, dispatch]);
 
     const handleSearch = (e) => {
         SearchUserPreOrder(e.target.value, PreOrders.PreOrderStore, setPreOrders);
@@ -69,17 +68,26 @@ const UserPreOrder = () => {
     };
 
     const handleProductChange = (e, preorder_no, keyState) => {
-        setPreOrders((prev) => ({
-            ...prev,
-            sendPreOrder: {
-                ...prev.sendPreOrder,
-                [preorder_no]: {
-                    ...prev.sendPreOrder[preorder_no],
-                    [keyState]: e.target.value
-                }
+        const { value } = e.target;
+
+        setPreOrders(prev => {
+            if (prev.sendPreOrder[preorder_no]?.[keyState] === value) {
+                return prev; // Prevents unnecessary state updates
             }
-        }));
+
+            return {
+                ...prev,
+                sendPreOrder: {
+                    ...prev.sendPreOrder,
+                    [preorder_no]: {
+                        ...(prev.sendPreOrder[preorder_no] || { product_id: '', category: '' }),
+                        [keyState]: value
+                    }
+                }
+            };
+        });
     };
+
 
     const isValid = (preorder_no) => {
         if (isNaN(PreOrders.sendPreOrder[preorder_no].product_id)) return false;
@@ -164,6 +172,7 @@ const UserPreOrder = () => {
                 <div className={styles.searchFieldWrapper}>
                     <input
                         type="text"
+                        name='user-pre-order-search-bar'
                         placeholder="Search..."
                         className={styles.searchField}
                         onChange={handleSearch}
@@ -202,7 +211,7 @@ const UserPreOrder = () => {
                             <th >Image</th>
                             {
                                 ["Product Name", "User Name", "Phone", "Email", "Address"].map((item, index) => {
-                                    return <th key={index} className={sortButtonState.accedingState === index + 1 || sortButtonState.descendingState === index + 1 ? styles.activeTableBtn : null}>{item}</th>
+                                    return <th key={`table-head-${index}`} className={sortButtonState.accedingState === index + 1 || sortButtonState.descendingState === index + 1 ? styles.activeTableBtn : null}>{item}</th>
 
                                 })
                             }
@@ -224,16 +233,32 @@ const UserPreOrder = () => {
                                         <td>
                                             <div className={styles['send-pre-order-form']}>
                                                 <span> {preOrder.is_send === 0 ? 'Send pre order' : 'Update pre order'}</span>
-                                                <input type='text' placeholder='Product ID' value={PreOrders.sendPreOrder[preOrder.preorder_no].product_id} onChange={(e) => handleProductChange(e, preOrder.preorder_no, 'product_id')}></input>
-                                                <select className={styles.selectField} value={PreOrders.sendPreOrder[preOrder.preorder_no].category} onChange={(e) => handleProductChange(e, preOrder.preorder_no, 'category')}>
-                                                    <option value=""></option>
-                                                    {
-                                                        dataState.categoryName.map((items, index) => {
-                                                            return <option key={index} value={items}>{GetCategoryName(items)}</option>
-                                                        })
-                                                    }
+                                                <input
+                                                    type='text'
+                                                    name='user-pre-order-form-input'
+                                                    placeholder='Product ID'
+                                                    value={PreOrders.sendPreOrder[preOrder.preorder_no]?.product_id || ''}
+                                                    onChange={(e) => handleProductChange(e, preOrder.preorder_no, 'product_id')}
+                                                />
+
+                                                <select
+                                                    className={styles.selectField}
+                                                    name='pre-order-form-select'
+                                                    value={PreOrders.sendPreOrder[preOrder.preorder_no]?.category || ''}
+                                                    onChange={(e) => handleProductChange(e, preOrder.preorder_no, 'category')}
+                                                >
+                                                    <option key="pre-order-key-form-0" id="pre-order-form-0" value=""></option>
+                                                    {dataState?.categoryName?.length > 0 &&
+                                                        dataState?.categoryName.map((items, index) => (
+                                                            <option key={`pre-order-form-key-${index + 1}`} id={`pre-order-form-${index + 1}`} value={items}>
+                                                                {GetCategoryName(items)}
+                                                            </option>
+                                                        ))}
                                                 </select>
-                                                <button onClick={() => handleSendPreOrder(preOrder.preorder_no, preOrder.user_id)}>Send Pre Order</button>
+                                                <button
+                                                    onClick={() => handleSendPreOrder(preOrder.preorder_no, preOrder.user_id)}
+                                                >Send Pre Order
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -249,4 +274,4 @@ const UserPreOrder = () => {
     )
 }
 
-export default UserPreOrder
+export default React.memo(UserPreOrder);

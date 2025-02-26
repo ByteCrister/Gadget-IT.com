@@ -47,11 +47,11 @@ const SalesManagement = () => {
 
             <section className={styles['sales-inner-profit-input-div']}>
                 <div>
-                    <label>Management Cost: </label>
+                    <label htmlFor='cost'>Management Cost: </label>
                     <input type='number' id='cost' min={0} value={costState.cost} onChange={handleCostChange}></input>
                 </div>
                 <div>
-                    <label>Inventory Cost: </label>
+                    <label htmlFor='cost_purchase'>Inventory Cost: </label>
                     <input type='number' id='cost_purchase' min={0} value={costState.cost_purchase} onChange={handleCostChange}></input>
                 </div>
                 <button onClick={handleSalesChange}>Save Changes</button>

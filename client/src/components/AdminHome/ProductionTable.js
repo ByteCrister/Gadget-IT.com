@@ -147,7 +147,7 @@ const ProductionTable = React.memo(({ setErrorCategory }) => {
           </thead>
           <tbody>
             {filteredProducts.map((product) => (
-              <tr key={product.id} onClick={() => { setSelectedId(product.id); setSelectedCategory(product.type); setIsProductionManagement(true) }}>
+              <tr key={`table-row-product-${product.id}`} onClick={() => { setSelectedId(product.id); setSelectedCategory(product.type); setIsProductionManagement(true) }}>
                 <td>{product.id}</td>
                 <td>{product.name}</td>
                 <td>{GetCategoryName(product.type)}</td>

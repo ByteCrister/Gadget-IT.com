@@ -138,6 +138,7 @@ const PageSix = () => {
             <div className={styles.searchFieldWrapper}>
               <input
                 type="text"
+                name='page-six-users-search-bar'
                 placeholder="Search..."
                 className={styles.searchField}
                 onChange={handleSearch}

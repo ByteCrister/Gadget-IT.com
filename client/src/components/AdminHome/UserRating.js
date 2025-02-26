@@ -137,6 +137,7 @@ const UserRating = () => {
                 <div className={styles.searchFieldWrapper}>
                     <input
                         type="text"
+                        name="user-rating-search-bar"
                         placeholder="Search..."
                         className={styles.searchField}
                         ref={searchRef}

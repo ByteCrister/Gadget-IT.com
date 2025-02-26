@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { IoFilter } from "react-icons/io5";
 import { TbTrashOff } from "react-icons/tb";
@@ -30,11 +30,14 @@ const PageFour = () => {
   useEffect(() => {
     if (dataState?.Order_Page && dataState.Order_Page.length !== 0) {
       const PageData = [...dataState.Order_Page];
-      setOrderStore((prev) => ({
-        ...prev,
-        MainProducts: PageData,
-        filteredProducts: PageData,
-      }));
+      setOrderStore((prev) => {
+        if (prev.MainProducts.length === dataState.Order_Page.length) return prev; // Prevent redundant updates
+        return {
+          ...prev,
+          MainProducts: PageData,
+          filteredProducts: PageData,
+        };
+      });
       setOrderCount({
         AllOrders: PageData.length,
         Processing:
@@ -60,27 +63,38 @@ const PageFour = () => {
     }
   }, [dataState?.Order_Page]);
 
-  const handleFilter = () => {
-    setFilterState(prev => prev === 10 ? 0 : prev + 1);
-    let Updated = [...dataState.Order_Page];
-    console.log(filterState);
-    const state = filterState + 1;
-    if (state >= 1 && state <= 2) {
-      Updated = Updated.sort((a, b) => state === 1 ? a.OrderInfo.order_id - b.OrderInfo.order_id : b.OrderInfo.order_id - a.OrderInfo.order_id);
-    } else if (state >= 3 && state <= 4) {
-      Updated = Updated.sort((a, b) => state === 3 ? a.OrderInfo.user_id - b.OrderInfo.user_id : b.OrderInfo.user_id - a.OrderInfo.user_id);
-    } else if (state >= 5 && state <= 6) {
-      Updated = Updated.sort((a, b) => state === 5 ? a.OrderInfo.phone_number.localeCompare(b.OrderInfo.phone_number) : b.OrderInfo.phone_number.localeCompare(a.OrderInfo.phone_number));
-    } else if (state >= 7 && state <= 8) {
-      Updated = Updated.sort((a, b) => state === 7 ? new Date(a.OrderInfo.order_date) - new Date(b.OrderInfo.order_date) : new Date(b.OrderInfo.order_date) - new Date(a.OrderInfo.order_date));
-    } else if (state >= 9 && state <= 10) {
-      Updated = Updated.sort((a, b) => state === 9 ? a.OrderInfo.order_status.localeCompare(b.OrderInfo.order_status) : b.OrderInfo.order_status.localeCompare(a.OrderInfo.order_status));
+  const sortedOrders = useMemo(() => {
+    let Updated = [...OrderStore.MainProducts];
+    switch (filterState) {
+      case 1:
+      case 2:
+        Updated.sort((a, b) => filterState === 1 ? a.OrderInfo.order_id - b.OrderInfo.order_id : b.OrderInfo.order_id - a.OrderInfo.order_id);
+        break;
+      case 3:
+      case 4:
+        Updated.sort((a, b) => filterState === 3 ? a.OrderInfo.user_id - b.OrderInfo.user_id : b.OrderInfo.user_id - a.OrderInfo.user_id);
+        break;
+      case 5:
+      case 6:
+        Updated.sort((a, b) => filterState === 5 ? a.OrderInfo.phone_number.localeCompare(b.OrderInfo.phone_number) : b.OrderInfo.phone_number.localeCompare(a.OrderInfo.phone_number));
+        break;
+      case 7:
+      case 8:
+        Updated.sort((a, b) => filterState === 7 ? new Date(a.OrderInfo.order_date) - new Date(b.OrderInfo.order_date) : new Date(b.OrderInfo.order_date) - new Date(a.OrderInfo.order_date));
+        break;
+      case 9:
+      case 10:
+        Updated.sort((a, b) => filterState === 9 ? a.OrderInfo.order_status.localeCompare(b.OrderInfo.order_status) : b.OrderInfo.order_status.localeCompare(a.OrderInfo.order_status));
+        break;
+      default:
+        break;
     }
+    return Updated;
+  }, [filterState, OrderStore.MainProducts]);
 
-    setOrderStore((prev) => ({
-      ...prev,
-      MainProducts: [...Updated]
-    }));
+  const handleFilter = () => {
+    setFilterState(prev => (prev === 10 ? 0 : prev + 1));
+    setOrderStore(prev => ({ ...prev, MainProducts: sortedOrders }));
   };
 
   const renderProductDetail = () => {
@@ -168,13 +182,12 @@ const PageFour = () => {
     }));
   };
 
-  const handleFilteredData = async (data) => {
-    const resolvedData = await data;
-    setOrderStore((prev) => ({
-      ...prev,
-      filteredProducts: resolvedData,
-    }));
-  };
+const handleFilteredData = async (data) => {
+  const resolvedData = await data;
+  if (JSON.stringify(OrderStore.filteredProducts) !== JSON.stringify(resolvedData)) {
+    setOrderStore(prev => ({ ...prev, filteredProducts: resolvedData }));
+  }
+};
 
   const getActionText = (text) => {
     return text === "Order is Processing"
@@ -218,15 +231,27 @@ const PageFour = () => {
 
   const handleUpdateOrderStatus = async (currStatus, newStatus, order_id, price) => {
     try {
+      dispatch({ type: "toggle_loading", payload: true });
+
       await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/update/order-status`, {
-        currStatus: currStatus,
-        newStatus: newStatus,
-        order_id: order_id,
-        price: price
+        currStatus,
+        newStatus,
+        order_id,
+        price
       });
+
+      setOrderStore(prev => ({
+        ...prev,
+        MainProducts: prev.MainProducts.map(order =>
+          order.OrderInfo.order_id === order_id
+            ? { ...order, OrderInfo: { ...order.OrderInfo, order_status: newStatus } }
+            : order
+        )
+      }));
     } catch (error) {
-      console.log(error);
-      throw error;
+      console.error(error);
+    } finally {
+      dispatch({ type: "toggle_loading", payload: false });
     }
   };
 
@@ -277,31 +302,13 @@ const PageFour = () => {
 
   const handleSelectCheckbox = (e, state, order_id) => {
     const isChecked = e.target.checked;
-    let Updated = [...OrderStore.MainProducts];
-
-    if (state === 0) {
-      Updated = Updated.map((item) => {
-        return {
-          ...item,
-          OrderInfo: { ...item.OrderInfo, selected: isChecked ? true : false },
-        };
-      });
-    } else {
-      Updated = Updated.map((item) => {
-        return item.OrderInfo.order_id === order_id
-          ? {
-            ...item,
-            OrderInfo: {
-              ...item.OrderInfo,
-              selected: isChecked ? true : false,
-            },
-          }
-          : item;
-      });
-    }
-    setOrderStore((prev) => ({
+    setOrderStore(prev => ({
       ...prev,
-      MainProducts: Updated,
+      MainProducts: prev.MainProducts.map(order =>
+        (state === 0 || order.OrderInfo.order_id === order_id)
+          ? { ...order, OrderInfo: { ...order.OrderInfo, selected: isChecked } }
+          : order
+      ),
     }));
   };
 
@@ -463,10 +470,10 @@ const PageFour = () => {
               {OrderStore?.filteredProducts &&
                 OrderStore.filteredProducts.length > 0 &&
                 OrderStore.filteredProducts.map((order, index) => (
-                  <tr key={`order store - filtered products-${index}`}>
+                  <tr key={`order-store-filtered-products-${index}`}>
                     <td>
                       <div id={styles.HeadCheckBox}>
-                        <input type="checkbox" defaultChecked={order.OrderInfo.selected} onClick={(e) => handleSelectCheckbox(e, -1, order.OrderInfo.order_id)} id={`Table_column-${index}`} ></input>
+                        <input type="checkbox" name="order-info-checkbox" defaultChecked={order.OrderInfo.selected} onClick={(e) => handleSelectCheckbox(e, -1, order.OrderInfo.order_id)} id={`Table_column-${index}`} ></input>
                         <span>{order.OrderInfo.order_id}</span>
                       </div>
                     </td>
@@ -490,10 +497,10 @@ const PageFour = () => {
                       </div>
                     </td>
                     <td>
-                      <select className={styles.dropdown} style={{ backgroundColor: getActionText(order.OrderInfo.order_status) }} value={order.OrderInfo.order_status} onChange={(e) => handleActionChange(e)}>
+                      <select id="select-order-status" className={styles.dropdown} style={{ backgroundColor: getActionText(order.OrderInfo.order_status) }} value={order.OrderInfo.order_status} onChange={(e) => handleActionChange(e)}>
                         {
                           ["", "Order is Processing", "Order Placed", "Way to Destination", "Ready to Collect", "Canceled"].map((item, index) => {
-                            return <option key={`order status-${index}`} value={item}>{item}</option>
+                            return <option id={`order-status-option-${index}`} key={`order status-${index}`} value={item}>{item}</option>
                           })
                         }
                       </select>

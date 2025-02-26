@@ -127,6 +127,7 @@ const UserReportPage = () => {
                 <div className={styles.searchFieldWrapper}>
                     <input
                         type="text"
+                        name='user-report-page-search-bar'
                         placeholder="Search..."
                         className={styles.searchField}
                         onChange={handleSearch}

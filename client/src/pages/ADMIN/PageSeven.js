@@ -8,7 +8,20 @@ import styles from '../../styles/AdminHome/PageSeven.module.css';
 import UserRating from '../../components/AdminHome/UserRating';
 import UserPreOrder from '../../components/AdminHome/UserPreOrder';
 
-
+const QuestionStateBtn = [
+  {
+    title: "User Question's",
+    icon: <BsFillQuestionSquareFill />
+  },
+  {
+    title: "User Rating's",
+    icon: <GiVibratingShield />
+  },
+  {
+    title: "User Pre Orders",
+    icon: <MdLocalGroceryStore />
+  },
+];
 
 const PageSeven = () => {
   const [activeButton, setButtonActive] = useState(1);
@@ -20,9 +33,16 @@ const PageSeven = () => {
       </span>
 
       <section id={styles.ButtonSections}>
-        <button className={activeButton === 1 ? styles.activeSupportButton : styles.supportButton} onClick={() => { setButtonActive(1) }}> <span><BsFillQuestionSquareFill /></span><span>User Question's</span></button>
-        <button className={activeButton === 2 ? styles.activeSupportButton : styles.supportButton} onClick={() => { setButtonActive(2) }}> <span><GiVibratingShield /></span><span>User Rating's</span></button>
-        <button className={activeButton === 3 ? styles.activeSupportButton : styles.supportButton} onClick={() => { setButtonActive(3) }}> <span><MdLocalGroceryStore /></span><span>User Pre Orders</span></button>
+        {
+          QuestionStateBtn.map((item, index) => {
+            return <button
+              className={activeButton === index + 1 ? styles.activeSupportButton : styles.supportButton}
+              onClick={() => { setButtonActive(index + 1) }}>
+              <span>{item.icon}</span>
+              <span>{item.title}</span>
+            </button>
+          })
+        }
       </section>
 
       <section id={styles.PageSevenTables}>

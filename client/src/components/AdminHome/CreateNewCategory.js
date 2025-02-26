@@ -138,7 +138,7 @@ const CreateNewCategory = React.memo(({ setErrorCategory }) => {
             case 2:
                 return (
                     <div className={styles.CreateNewSubCategory}>
-                        <label>Select Main Category</label>
+                        <label htmlFor='createCategory'>Select Main Category</label>
                         <CategoryRadioGroup
                             category={category}
                             AllMainCategory={AllMainCategory}
@@ -156,7 +156,7 @@ const CreateNewCategory = React.memo(({ setErrorCategory }) => {
             case 3:
                 return (
                     <div className={styles.DeleteCategory}>
-                        <label>Select Category You Want to Delete</label>
+                        <label htmlFor='deleteCategory'>Select Category You Want to Delete</label>
                         <CategoryRadioGroup
                             category={category}
                             AllMainCategory={AllMainCategory}
@@ -173,7 +173,7 @@ const CreateNewCategory = React.memo(({ setErrorCategory }) => {
             case 4:
                 return (
                     <div className={styles.RenameCategory}>
-                        <label>Rename Category's</label>
+                        <label htmlFor='renameCategory'>Rename Category's</label>
                         <CategoryRadioGroup
                             category={category}
                             AllMainCategory={AllMainCategory}
@@ -196,12 +196,12 @@ const CreateNewCategory = React.memo(({ setErrorCategory }) => {
     return (
         <div className={styles.createTableMainContainer}>
             <section className={styles.DifferentOption}>
-                <select value={currentOption} onChange={(e) => { setCurrentOption(Number(e.target.value)); handleResetValues() }}>
-                    <option value={0}>Select...</option>
-                    <option value={1}>Create New Category</option>
-                    <option value={2}>Create New Sub Category</option>
-                    <option value={3}>Delete Old Category</option>
-                    <option value={4}>Rename Existing Category's</option>
+                <select id='select-create-new-category' value={currentOption} onChange={(e) => { setCurrentOption(Number(e.target.value)); handleResetValues() }}>
+                    <option id='select-create-new-category-option-0' value={0}>Select...</option>
+                    <option id='select-create-new-category-option-1' value={1}>Create New Category</option>
+                    <option id='select-create-new-category-option-2' value={2}>Create New Sub Category</option>
+                    <option id='select-create-new-category-option-3' value={3}>Delete Old Category</option>
+                    <option id='select-create-new-category-option-4' value={4}>Rename Existing Category's</option>
                 </select>
             </section>
             {renderOptionContent()}

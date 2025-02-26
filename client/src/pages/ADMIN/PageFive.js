@@ -61,10 +61,10 @@ const PageFive = () => {
   const renderSelectReport = () => {
     return (
       <div className={styles['manage-report-inner-section-select-option']}>
-        <select onChange={handleSelectReportChange}>
-          <option value={''}></option>
-          <option value={'report_main'}>Main</option>
-          <option value={'report_sub'}>Sub</option>
+        <select id='select-report' onChange={handleSelectReportChange}>
+          <option id='option-1' value={''}></option>
+          <option id='option-1' value={'report_main'}>Main</option>
+          <option id='option-1' value={'report_sub'}>Sub</option>
         </select>
       </div>
     );
@@ -78,7 +78,12 @@ const PageFive = () => {
           ManageReportState.table &&
           ManageReportState.table.length !== 0 &&
           (<section className={styles['create-new-report-section']}>
-            <input type='text' value={ManageReportState.Create} onChange={(e) => setManageReportState((prev) => ({ ...prev, Create: e.target.value }))}></input>
+            <input
+              type='text'
+              name='page-five-user-reports-create-input'
+              value={ManageReportState.Create}
+              onChange={(e) => setManageReportState((prev) => ({ ...prev, Create: e.target.value }))}
+            ></input>
             <button onClick={handleCreateReport}>Create New Report</button>
           </section>)
         }
@@ -96,10 +101,10 @@ const PageFive = () => {
           (<section className={styles['create-new-report-section']}>
             <div>
               <select value={ManageReportState.Update.curr_report_name} onChange={handleUpdateSelectChange}>
-                <option id='' key={uuidv4()} value={''}></option>
+                <option id='create-report-option-0' key={uuidv4()} value={''}></option>
                 {
-                  dataState?.Report_Page[ManageReportState.table].map((option) => {
-                    return <option key={uuidv4()} value={option.report_name} data-id={option[ManageReportState.Update.report_no_name]}>{option.report_name}</option>
+                  dataState?.Report_Page[ManageReportState.table].map((option, index) => {
+                    return <option key={uuidv4()} id={`create-report-option-${index + 1}`} value={option.report_name} data-id={option[ManageReportState.Update.report_no_name]}>{option.report_name}</option>
                   })
                 }
               </select>
@@ -128,10 +133,10 @@ const PageFive = () => {
           (<section className={styles['create-new-report-section']}>
             <div>
               <select value={ManageReportState.Update.curr_report_name} onChange={handleUpdateSelectChange}>
-                <option key={uuidv4()} value={''}></option>
+                <option key={uuidv4()} id='delete-report-0' value={''}></option>
                 {
-                  dataState?.Report_Page[ManageReportState.table].map((option) => {
-                    return <option key={uuidv4()} value={option.report_name} data-id={option[ManageReportState.Update.report_no_name]}>{option.report_name}</option>
+                  dataState?.Report_Page[ManageReportState.table].map((option, index) => {
+                    return <option key={uuidv4()} id={`delete-report-${index + 1}`} value={option.report_name} data-id={option[ManageReportState.Update.report_no_name]}>{option.report_name}</option>
                   })
                 }
               </select>
@@ -175,7 +180,7 @@ const PageFive = () => {
       );
       dispatch({ type: 'set_report_page', payload: await res.data });
     } catch (error) {
-      console.error("Error in handleUpdateReport:", error.message);
+      console.error("Error in handleDeleteReport:", error.message);
       console.error("Full error:", error);
     }
   };

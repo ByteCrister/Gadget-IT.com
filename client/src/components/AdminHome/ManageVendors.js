@@ -124,10 +124,10 @@ const ManageVendors = () => {
 
     const renderVendorSelectOption = useMemo(() => {
         return (<div className={styles['vendor-select']}>
-            <select value={vendorState.selectedVendor} onChange={handleVendorSelect}>
+            <select id='select-vendor-options' value={vendorState.selectedVendor} onChange={handleVendorSelect}>
                 {
                     Vendors.map((item, index) => {
-                        return <option key={index} value={item.vendor_name}>
+                        return <option id={`select-vendor-option-${index}`} key={index} value={item.vendor_name}>
                             {item.vendor_name}
                         </option>
                     })
@@ -141,7 +141,7 @@ const ManageVendors = () => {
     // * Create vendor *
     const createVendor = () => {
         return (<div className={styles['create-section']}>
-            <input type='text' value={vendorState.newName} onChange={handleVendorNameChange} placeholder='name'></input>
+            <input type='text' id='create-vendor-input-text' value={vendorState.newName} onChange={handleVendorNameChange} placeholder='name'></input>
             {vendorState.buttonState === 1 && <button className={styles['vendor-buttons']} onClick={vendor_Create_Api}>Create</button>}
         </div>)
     };

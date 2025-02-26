@@ -116,6 +116,7 @@ const UserQuestions = () => {
                 <div className={styles.searchFieldWrapper}>
                     <input
                         type="text"
+                        name='user-question-search-bar'
                         placeholder="Search..."
                         className={styles.searchField}
                         ref={searchRef}
@@ -125,12 +126,12 @@ const UserQuestions = () => {
                 </div>
                 <div id={styles.UserQuestionSortBar}>
                     <span>Sort By</span>
-                    <select onChange={handleOption}>
-                        <option value=""></option>
-                        <option value={'product_id'}>Product Id</option>
-                        <option value={'user_id'}>User Id</option>
-                        <option value={'user_name'}>User Name</option>
-                        <option value={'question_date'}>Date</option>
+                    <select name='user-question-sort-select' onChange={handleOption}>
+                        <option id='user-question-sort-1' value=""></option>
+                        <option id='user-question-sort-2' value={'product_id'}>Product Id</option>
+                        <option id='user-question-sort-3' value={'user_id'}>User Id</option>
+                        <option id='user-question-sort-4' value={'user_name'}>User Name</option>
+                        <option id='user-question-sort-5' value={'question_date'}>Date</option>
                     </select>
                 </div>
             </section>

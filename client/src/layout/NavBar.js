@@ -234,7 +234,7 @@ const NavBar = ({ handleUserEntryPage }) => {
 
   return (
     <div className={styles.upperNav}>
-      <div ><Link to={'/'} className={styles.logo}>Gadget It</Link></div>
+      <div ><Link to={'/'} className={styles.logo}>GADGET IT</Link></div>
       <section className={styles.InputSection}>
         <input type="text" onChange={(e) => { setSearchState(e.target.value); handleSearching(); }} placeholder="Search..." />
         <div className={searchState.length !== 0 ? styles.InputSearchAns : styles.InputSearchAnsHide}>

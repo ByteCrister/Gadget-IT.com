@@ -15,7 +15,7 @@ import { SearchInventory } from '../../HOOKS/SearchInventory';
 import { Api_Inventory } from '../../api/Api_Inventory';
 import Admin_Api from '../../api/Admin_Api';
 
-const PageTwo = React.memo(({setErrorCategory}) => {
+const PageTwo = React.memo(({ setErrorCategory }) => {
   const { dataState, dispatch } = useContext(useData);
 
   const [productsData, setProductsData] = useState(dataState.Inventory_Page);
@@ -34,7 +34,7 @@ const PageTwo = React.memo(({setErrorCategory}) => {
       sortProducts(filterState.state);
     }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataState, dispatch, filterState.state]);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const PageTwo = React.memo(({setErrorCategory}) => {
         }
       }
     })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataState.Inventory_Page]);
 
 
@@ -198,6 +198,7 @@ const PageTwo = React.memo(({setErrorCategory}) => {
           <div className={styles.searchFieldWrapper}>
             <input
               type="text"
+              name='page-two-inventory-search'
               placeholder="Search..."
               className={styles.searchField}
               ref={searchRef}
@@ -214,10 +215,10 @@ const PageTwo = React.memo(({setErrorCategory}) => {
           <div className={styles.formControl}>
             <label htmlFor="categorySelect">Category</label>
             <select id="categorySelect" className={styles.selectField} onChange={handleCategoryChange}>
-              <option value=""></option>
+              <option id='category-select-option-0' key={'category-select-option-key-0'} value=""></option>
               {
                 dataState.categoryName.map((items, index) => {
-                  return <option key={index} value={items}>{GetCategoryName(items)}</option>
+                  return <option id={`category-select-option-${index + 1}`} key={`category-select-option-key-${index + 1}`} value={items}>{GetCategoryName(items)}</option>
                 })
               }
             </select>
@@ -241,7 +242,7 @@ const PageTwo = React.memo(({setErrorCategory}) => {
         <table>
           <thead>
             <tr>
-              <th style={filterState.state === 1 ? filterState.filterStyle : null}><div id={styles.firstColumn}><input type="checkbox" id={styles.ProductName} onClick={handleAllChecked}></input>Product Name</div></th>
+              <th style={filterState.state === 1 ? filterState.filterStyle : null}><div id={styles.firstColumn}><input type="checkbox" id='product-inventory-checkbox-0' onClick={handleAllChecked}></input>Product Name</div></th>
               <th style={filterState.state === 2 ? filterState.filterStyle : null}>Product ID</th>
               <th>Category</th>
               <th style={filterState.state === 3 ? filterState.filterStyle : null}>Incoming</th>
@@ -253,10 +254,10 @@ const PageTwo = React.memo(({setErrorCategory}) => {
           </thead>
           <tbody>
             {filteredProducts.map((data, index) => (
-              <tr key={index}>
+              <tr key={`product-inventory-table-row-${index}`}>
 
                 <td><div className={styles.firstColumn}>
-                  <input type="checkbox" id={index} checked={checkOrNot(data.id)} onChange={() => handleCheckboxChange(data.id)} />
+                  <input type="checkbox" id={`product-inventory-checkbox-${index+1}`} checked={checkOrNot(data.id)} onChange={() => handleCheckboxChange(data.id)} />
                   {data.p_name}</div></td>
                 <td>{data.id}</td>
                 <td>{GetCategoryName(data.category)}</td>
@@ -286,7 +287,7 @@ const PageTwo = React.memo(({setErrorCategory}) => {
       </section>
 
       {
-        addProductState && <AddProducts setAddProductState={setAddProductState} setErrorCategory={setErrorCategory}/>
+        addProductState && <AddProducts setAddProductState={setAddProductState} setErrorCategory={setErrorCategory} />
       }
     </div>
   );
