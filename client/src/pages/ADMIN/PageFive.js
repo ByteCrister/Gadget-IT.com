@@ -21,9 +21,9 @@ const PageFive = () => {
     }
   });
 
-  useEffect(() => {
-    if (dataState?.Report_Page?.report_main && dataState?.Report_Page?.report_sub) return;
-  }, [dataState.Report_Page]);
+  // useEffect(() => {
+  //   if (dataState?.Report_Page?.report_main && dataState?.Report_Page?.report_sub) return;
+  // }, [dataState.Report_Page]);
 
 
   // * ---------------- 'Report Management' Component is created under its parent component -----------------------

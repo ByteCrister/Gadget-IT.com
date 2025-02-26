@@ -52,7 +52,7 @@ const UserRating = () => {
         }
         // console.log(dataState.Production_Page.TableFullRows);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dataState.Support_Page.rating, dataState.Production_Page, dispatch, RatingProducts]);
+    }, [dataState?.Support_Page?.rating, dataState?.Production_Page]);
     const findCategory = (productId) => {
         return dataState.Production_Page.TableFullRows.find(
             (product) => product.product_id === productId

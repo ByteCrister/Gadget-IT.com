@@ -27,10 +27,6 @@ const PageOne = () => {
 
   const { dataState } = useContext(useData);
 
-  useEffect(() => {
-    // console.log(dataState.Dashboard_Page);
-  }, [dataState.Dashboard_Page]);
-
 
   return (
     <div className={styles.container}>

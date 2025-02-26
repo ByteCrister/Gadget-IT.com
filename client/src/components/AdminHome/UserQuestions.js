@@ -46,7 +46,7 @@ const UserQuestions = () => {
         }
         // console.log(dataState.Production_Page.TableFullRows);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dataState.Support_Page.questions, dataState.Production_Page, dispatch, SearchQuestion]);
+    }, [dataState.Support_Page?.questions]);
 
 
 

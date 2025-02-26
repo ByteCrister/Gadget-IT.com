@@ -200,11 +200,12 @@ const UserPreOrder = () => {
                     <thead>
                         <tr>
                             <th >Image</th>
-                            <th className={sortButtonState.accedingState === 1 || sortButtonState.descendingState === 1 ? styles.activeTableBtn : null}>Product Name</th>
-                            <th className={sortButtonState.accedingState === 2 || sortButtonState.descendingState === 2 ? styles.activeTableBtn : null}>User Name</th>
-                            <th className={sortButtonState.accedingState === 3 || sortButtonState.descendingState === 3 ? styles.activeTableBtn : null}>Phone</th>
-                            <th className={sortButtonState.accedingState === 4 || sortButtonState.descendingState === 4 ? styles.activeTableBtn : null}>Email</th>
-                            <th className={sortButtonState.accedingState === 5 || sortButtonState.descendingState === 5 ? styles.activeTableBtn : null}>Address</th>
+                            {
+                                ["Product Name", "User Name", "Phone", "Email", "Address"].map((item, index) => {
+                                    return <th key={index} className={sortButtonState.accedingState === index + 1 || sortButtonState.descendingState === index + 1 ? styles.activeTableBtn : null}>{item}</th>
+
+                                })
+                            }
                             <th>Status</th>
                         </tr>
                     </thead>

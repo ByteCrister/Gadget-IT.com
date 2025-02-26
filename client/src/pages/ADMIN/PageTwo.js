@@ -48,7 +48,8 @@ const PageTwo = React.memo(({setErrorCategory}) => {
         }
       }
     })
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataState.Inventory_Page]);
 
 
   //* ------------------------------ product checked ------------------------
