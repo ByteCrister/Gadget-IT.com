@@ -108,6 +108,10 @@ The admin dashboard comprises eight main pages:
 # Live Demo
 - [live link](https://gadget-it.vercel.app/)
 
+## For Admin access
+- Email: admin@gmail.com
+- Password: aA1!123 ``I trust you, do not request unnecessary server request and not change huge amount of data please!``
+
 ## **Installation**
 
 To set up the project locally:
