@@ -1,18 +1,20 @@
 const db = require("../config/DB");
 
-const makeValidStr = (str)=>{
+const makeValidStr = (str) => {
     let ansStr = [];
-    str.split(' ').map((Str)=> Str.length!== 0 ? ansStr.push(Str) : null);
+    str.split(' ').map((Str) => Str.length !== 0 ? ansStr.push(Str) : null);
     return ansStr.join('_').trim();
-  }
+}
 
 module.exports = {
     updateProductIDModel: (callback) => {
         db.query(
             `
-            UPDATE static_values SET product_id = 1 + (
-                SELECT product_id FROM static_values WHERE value_no = 0
-            ) WHERE value_no = 0;
+            UPDATE static_values 
+            SET product_id = 1 + (
+            SELECT product_id_value FROM (SELECT product_id AS product_id_value FROM static_values WHERE value_no = 0) AS temp_table
+            ) 
+            WHERE value_no = 0;
             `,
             callback
         );

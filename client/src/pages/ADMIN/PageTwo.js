@@ -121,6 +121,7 @@ const PageTwo = React.memo(({ setErrorCategory }) => {
     }));
     sortProducts(filterState.state + 1);
   };
+  
   const sortProducts = (state) => {
     let sortedData = [...productsData];
     if (state === 1) {
