@@ -31,7 +31,7 @@ const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement, rati
             <div className={styles.Upper}>
                 <section>
                     <div>
-                        <span className={styles.Question}>Reviews {'('}{ratings.length}{')'}</span>
+                        <span className={styles.Question}>Reviews {'('}{ratings?.length}{')'}</span>
                         <span className={styles.QuestionText}>Get specific details about this product from customers who own it.</span>
                         <span className={styles.AvgRating}>{RatingStars.map((stars, i) => i < GetAvgRating() ? stars : null)}{GetAvgRating()} out of 5</span>
                     </div>
