@@ -1,3 +1,7 @@
+import { useContext } from "react";
+import { GetCategoryName } from "./GetCategoryName";
+import { useData } from "../context/useData";
+
 export const MakeDefendants = (mainCategory, subCategory) => {
   const { dataState } = useContext(useData);
   
