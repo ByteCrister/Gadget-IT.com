@@ -20,7 +20,7 @@ const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement, rati
     }, []);
 
     const GetAvgRating = useCallback(() => {
-        if (ratings.length === 0) return 0;
+        if (ratings?.length === 0) return 0;
 
         let sum = ratings.reduce((a, c) => a + Number(c.rating), 0);
         return Math.floor(sum / ratings.length);
@@ -33,7 +33,7 @@ const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement, rati
                     <div>
                         <span className={styles.Question}>Reviews {'('}{ratings?.length}{')'}</span>
                         <span className={styles.QuestionText}>Get specific details about this product from customers who own it.</span>
-                        <span className={styles.AvgRating}>{RatingStars.map((stars, i) => i < GetAvgRating() ? stars : null)}{GetAvgRating()} out of 5</span>
+                        <span className={styles.AvgRating}>{RatingStars?.map((stars, i) => i < GetAvgRating() ? stars : null)}{GetAvgRating()} out of 5</span>
                     </div>
                     {
                         !dataState.isAdmin && !dataState.isUserLoggedIn
@@ -47,13 +47,13 @@ const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement, rati
 
             <div className={styles.Lower}>
                 {
-                    ratings && ratings.length === 0 ? <div className={styles.LogoAndText}>
+                    ratings && ratings?.length === 0 ? <div className={styles.LogoAndText}>
                         <span className={styles.Logo}><CgNotes className={styles.innerLogo} /></span>
                         <span className={styles.q_text}>This product has no reviews yet. Be the first one to write a review.</span>
                     </div>
                         : <div className={styles.AllMainQuestions}>
                             {
-                                ratings.map((rating) => {
+                                ratings?.map((rating) => {
                                     return <>
                                         <div className={styles.AllQuestions}>
                                             <span className={styles.UserRating}>{RatingStars.map((stars, i) => i < rating.rating ? stars : null)}</span>
