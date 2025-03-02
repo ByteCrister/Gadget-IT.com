@@ -20,11 +20,17 @@ const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement, rati
     }, []);
 
     const GetAvgRating = useCallback(() => {
-        if (ratings?.length === 0) return 0;
+        // Ensure ratings is an array before using .reduce()
+        if (!Array.isArray(ratings) || ratings.length === 0) return 0;
 
         let sum = ratings.reduce((a, c) => a + Number(c.rating), 0);
         return Math.floor(sum / ratings.length);
     }, [ratings]);
+
+    if (!ratings || !Array.isArray(ratings)) {
+        return <div>Loading...</div>; // or a fallback UI
+    }
+
 
     return (
         <section className={styles.MainQuestion} ref={ratingRef}>
@@ -56,7 +62,7 @@ const UserRating = ({ setUserEntryState, ratings, QuestionAndReviewElement, rati
                                 ratings?.map((rating) => {
                                     return <>
                                         <div className={styles.AllQuestions}>
-                                            <span className={styles.UserRating}>{RatingStars.map((stars, i) => i < rating.rating ? stars : null)}</span>
+                                            <span className={styles.UserRating}>{RatingStars?.map((stars, i) => i < rating.rating ? stars : null)}</span>
                                             <span className={styles.answerText}>{rating.review}</span>
                                             <span className={styles.Date}>By <span className={styles.question_name}>{rating.fname} {rating.lname}</span> on {GetDate(rating.rating_date)}</span>
                                         </div>
