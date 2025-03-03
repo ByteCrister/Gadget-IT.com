@@ -5,9 +5,9 @@ import { useData } from "../context/useData";
 export const MakeDefendants = (mainCategory, subCategory) => {
   const { dataState } = useContext(useData);
 
-  // ✅ If data is still loading, return an empty string (or a loading state)
+  // If data is still loading, return an empty string (or a loading state)
   if (!dataState?.productStorage?.subCategory || !Array.isArray(dataState.productStorage.subCategory)) {
-    console.log('⏳ Data is still loading...');
+    console.log('Data is still loading...');
     return '';  // Prevents breaking the app during the initial render
   }
 
@@ -27,9 +27,9 @@ export const MakeDefendants = (mainCategory, subCategory) => {
 
   const parent = findParent(mainCategory, [subCategory, mainCategory]);
 
-  // ✅ Ensure `parent` is an array before using `.map()`
+  // Ensure `parent` is an array before using `.map()`
   if (!Array.isArray(parent)) {
-    console.log('🚨 Parent categories are invalid.');
+    console.log('Parent categories are invalid.');
     return '';
   }
 

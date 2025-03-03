@@ -39,7 +39,7 @@ const EasyCheckout = () => {
                 subTotal: store.reduce((s, c) => s + Number(c.price), 0),
                 total: store.reduce((s, c) => s + Number(c.price * c.quantity), 0),
             });
-            console.log(store);
+            // console.log(store);
         }
     }, [store]);
 
