@@ -14,17 +14,17 @@
 
 .skeletonText {
     width: 100%;
-    height: 50px;
+    height: 300px;
 }
 
 .skeletonAvatar {
     width: 70%;
-    height: 50px;
+    height: 30px;
 }
 
 .skeletonButton {
     width: 50%;
-    height: 40px;
+    height: 30px;
 }
 
 @keyframes pulse {
