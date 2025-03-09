@@ -9,7 +9,7 @@ const FeaturedProducts = () => {
     const userHomeProducts =
         dataState?.UserHomeContents?.user_home_products || [];
 
-    if (!dataState?.UserHomeContents?.user_home_products || dataState?.UserHomeContents) return <SkeletonLoader />
+    if (!dataState?.UserHomeContents?.user_home_products || !dataState?.UserHomeContents) return <SkeletonLoader />
 
     return (
         userHomeProducts.length > 0 &&
