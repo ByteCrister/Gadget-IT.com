@@ -14,17 +14,22 @@
 
 .skeletonText {
     width: 100%;
+    border-radius: 10px;
     height: 300px;
 }
 
 .skeletonAvatar {
     width: 70%;
     height: 30px;
+    border-radius: 10px;
+
 }
 
 .skeletonButton {
     width: 50%;
     height: 30px;
+    border-radius: 10px;
+
 }
 
 @keyframes pulse {
