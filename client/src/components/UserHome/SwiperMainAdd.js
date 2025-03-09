@@ -15,7 +15,7 @@ const SwiperMainAdd = () => {
     const hasAdvertisements = dataState.UserHomeContents?.advertisements?.length > 0;
     const advertisements = dataState.UserHomeContents?.advertisements || [];
 
-    // Filter advertisements for main and sub positions
+    // ? Filter advertisements for main and sub positions
     const mainAds = advertisements.filter((item) => item.position === 'main');
     const subAds = advertisements.filter((item) => item.position === 'sub').slice(0, 2);
 
