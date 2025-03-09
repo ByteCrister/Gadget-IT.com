@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import styles from '../../styles/HomePageStyles/UserFeaturedIcons.module.css';
 import { useData } from '../../context/useData';
 import { GetCategoryName } from '../../HOOKS/GetCategoryName';
+import SkeletonLoader from '../ui/SkeletonLoader';
 
 const UserFeaturedIcons = () => {
     const { dataState } = useContext(useData);
+
+    if(!dataState.UserHomeContents?.featured_icon || !dataState.UserHomeContents) return <SkeletonLoader />
 
     return (
         <section>

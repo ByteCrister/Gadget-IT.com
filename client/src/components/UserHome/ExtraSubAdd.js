@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
 import { useData } from '../../context/useData';
 import styles from '../../styles/HomePageStyles/ExtraAdd.module.css';
+import SkeletonLoader from '../ui/SkeletonLoader';
 
 const ExtraSubAdd = () => {
     const { dataState } = useContext(useData);
 
     const advertisements = dataState.UserHomeContents?.advertisements || [];
+
+    if(!dataState.UserHomeContents?.advertisements || !dataState.UserHomeContents) return <SkeletonLoader />
 
     const filteredAds = advertisements
         .filter(item => item.position === 'sub')

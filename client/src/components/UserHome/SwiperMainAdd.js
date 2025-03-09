@@ -8,9 +8,12 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import styles from '../../styles/HomePageStyles/SwiperMainAdd.module.css';
 import { useData } from '../../context/useData';
+import SkeletonLoader from '../ui/SkeletonLoader';
 
 const SwiperMainAdd = () => {
     const { dataState } = useContext(useData);
+
+    if(!dataState.UserHomeContents?.advertisements || !dataState.UserHomeContents) return <SkeletonLoader />
 
     return (
         dataState.UserHomeContents?.advertisements?.length > 0 && (

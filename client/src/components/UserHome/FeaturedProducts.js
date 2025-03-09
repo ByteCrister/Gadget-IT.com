@@ -2,11 +2,14 @@ import React, { useContext } from "react";
 import { useData } from "../../context/useData";
 import ProductCart from "../../HOOKS/ProductCart";
 import styles from "../../styles/HomePageStyles/FeaturedProducts.module.css";
+import SkeletonLoader from "../ui/SkeletonLoader";
 
 const FeaturedProducts = () => {
     const { dataState } = useContext(useData);
     const userHomeProducts =
         dataState?.UserHomeContents?.user_home_products || [];
+
+    if (!dataState?.UserHomeContents?.user_home_products || dataState?.UserHomeContents) return <SkeletonLoader />
 
     return (
         userHomeProducts.length > 0 &&

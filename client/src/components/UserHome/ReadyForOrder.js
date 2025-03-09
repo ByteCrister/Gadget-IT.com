@@ -10,10 +10,13 @@ import { Navigation } from 'swiper/modules';
 import styles from '../../styles/HomePageStyles/ReadyForOrder.module.css';
 import { useData } from '../../context/useData';
 import ProductCart from '../../HOOKS/ProductCart';
+import SkeletonLoader from '../ui/SkeletonLoader';
 
 const ReadyForOrder = () => {
     const { dataState } = useContext(useData);
     const userHomeProducts = dataState?.UserHomeContents?.user_home_products || [];
+
+    if(!dataState?.UserHomeContents?.user_home_products || dataState?.UserHomeContents) return <SkeletonLoader />
 
     return (
         userHomeProducts.length > 0 && userHomeProducts &&
