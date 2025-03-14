@@ -112,6 +112,316 @@ The admin dashboard comprises eight main pages:
 - Email: admin@gmail.com
 - Password: aA1!123 ``I trust you, do not request unnecessary server request and not change huge amount of data please!``
 
+## Folder Structure
+- ``
+├── client
+    ├── .env
+    ├── .gitignore
+    ├── package.json
+    ├── public
+    │   ├── index.css
+    │   └── index.html
+    └── src
+    │   ├── App.js
+    │   ├── HOOKS
+    │       ├── CategoryChildContainer.js
+    │       ├── CategoryRadioGroup.js
+    │       ├── DisplayBangladeshTime.js
+    │       ├── GetCategoryName.js
+    │       ├── GetDate.js
+    │       ├── GetDiscountedPrice.js
+    │       ├── GetMainTable.js
+    │       ├── GetSortObjects.js
+    │       ├── HomePagination.js
+    │       ├── MakeDefendants.js
+    │       ├── OfferCountdown.js
+    │       ├── Pagination.js
+    │       ├── ParentDescendant.js
+    │       ├── ProductCart.js
+    │       ├── SearchInventory.js
+    │       ├── SearchOfferProducts.js
+    │       ├── SearchOffers.js
+    │       ├── SearchProduction.js
+    │       ├── SearchQuestions.js
+    │       ├── SearchRatings.js
+    │       ├── SearchSelectHomeProducts.js
+    │       ├── SearchUserPreOrder.js
+    │       ├── SearchUserReport.js
+    │       ├── SearchUsersPage.js
+    │       └── UseManageColumns.js
+    │   ├── api
+    │       ├── AdminRenderApi.js
+    │       ├── Admin_Api.js
+    │       ├── Api_Dashboard.js
+    │       ├── Api_Inventory.js
+    │       ├── Api_Order.js
+    │       ├── Api_Outer_Page.js
+    │       ├── Api_Production.js
+    │       ├── Api_Report.js
+    │       ├── Api_Setting.js
+    │       ├── Api_Support.js
+    │       ├── Api_Users.js
+    │       ├── ForgotPassApi.js
+    │       ├── GetMenuItems.js
+    │       ├── Home_State.js
+    │       ├── LoginPost.js
+    │       ├── Reset_HomeState.js
+    │       ├── SetAdmin.js
+    │       ├── SignInPost.js
+    │       ├── User_Home.js
+    │       └── User_Products.js
+    │   ├── assets
+    │       ├── main
+    │       │   ├── Galaxy-Z-Fold6-Slider-3091.webp
+    │       │   └── iPhone-15-Pro-Max-Slider-2949.webp
+    │       └── sub
+    │       │   ├── 07_01-6712.jpg
+    │       │   ├── Apple-Airpods-pro-2nd-Gen-Type-C-4990.webp
+    │       │   ├── Middle-Banner_02-5038.png
+    │       │   └── OnePlus-Watch-2-1578.webp
+    │   ├── components
+    │       ├── AdminHome
+    │       │   ├── AddProducts.js
+    │       │   ├── AdminSearchBar.js
+    │       │   ├── AdvertisementImages.js
+    │       │   ├── CreateNewCategory.js
+    │       │   ├── CreateNewOffer.js
+    │       │   ├── FeaturedCategoryICON.js
+    │       │   ├── HomeViewDescriptions.js
+    │       │   ├── LeftSide.js
+    │       │   ├── MainBody.js
+    │       │   ├── ManageColumns.js
+    │       │   ├── ManageFooter.js
+    │       │   ├── ManageOffers.js
+    │       │   ├── ManageVendors.js
+    │       │   ├── MyChart.js
+    │       │   ├── ProductionTable.js
+    │       │   ├── ProductionTableManage.js
+    │       │   ├── SalesManagement.js
+    │       │   ├── SelectHomeProducts.js
+    │       │   ├── SelectOfferProducts.js
+    │       │   ├── ShowAdmin.js
+    │       │   ├── ShowNotifications.js
+    │       │   ├── UpperSide.js
+    │       │   ├── UserPreOrder.js
+    │       │   ├── UserQuestions.js
+    │       │   ├── UserRating.js
+    │       │   └── UserReportPage.js
+    │       ├── UserHome
+    │       │   ├── Account
+    │       │   │   ├── AccountButtonStates.js
+    │       │   │   ├── Address.js
+    │       │   │   ├── ChangePassword.js
+    │       │   │   ├── MyOrders.js
+    │       │   │   ├── OrdersPage.js
+    │       │   │   ├── PersonalInformation.js
+    │       │   │   ├── Report.js
+    │       │   │   ├── UserMessages.js
+    │       │   │   ├── UserOrderPaymentPage.js
+    │       │   │   └── UserOrders.js
+    │       │   ├── ChangePasswordValidation.js
+    │       │   ├── ExtraSubAdd.js
+    │       │   ├── FeaturedProducts.js
+    │       │   ├── ForgotPass.js
+    │       │   ├── ForgotPassValidation.js
+    │       │   ├── GroupProductSorting.js
+    │       │   ├── LoginValidations.js
+    │       │   ├── MainProductCarts.js
+    │       │   ├── NewArrival.js
+    │       │   ├── ProductDescription.js
+    │       │   ├── QuestionForm.js
+    │       │   ├── RatingForm.js
+    │       │   ├── ReadyForOrder.js
+    │       │   ├── RecentProducts.js
+    │       │   ├── SignInValidations.js
+    │       │   ├── SwiperMainAdd.js
+    │       │   ├── UpperFeature.js
+    │       │   ├── UpperImage.js
+    │       │   ├── UserFeaturedIcons.js
+    │       │   ├── UserHomeDescription.js
+    │       │   ├── UserLogIn.js
+    │       │   ├── UserQuestions.js
+    │       │   ├── UserRating.js
+    │       │   ├── UserSignIn.js
+    │       │   ├── UserSupportBoxes.js
+    │       │   └── ViewProductSwiper.js
+    │       └── ui
+    │       │   ├── SkeletonLoader.js
+    │       │   └── styles
+    │       │       └── skeleton.module.css
+    │   ├── context
+    │       ├── UseProvider.js
+    │       ├── reducer.js
+    │       └── useData.js
+    │   ├── index.js
+    │   ├── layout
+    │       ├── Footer.js
+    │       ├── NavBar.js
+    │       └── TopNav.js
+    │   ├── pages
+    │       ├── ADMIN
+    │       │   ├── AdminHomePage.js
+    │       │   ├── PageEight.js
+    │       │   ├── PageFive.js
+    │       │   ├── PageFour.js
+    │       │   ├── PageOne.js
+    │       │   ├── PageSeven.js
+    │       │   ├── PageSix.js
+    │       │   ├── PageThree.js
+    │       │   └── PageTwo.js
+    │       ├── LoadingPage.js
+    │       ├── RandomErrorPage.js
+    │       ├── RouteErrorPage.js
+    │       ├── ServerIssuePage.js
+    │       └── UserHome
+    │       │   ├── Account.js
+    │       │   ├── Carts.js
+    │       │   ├── EasyCheckout.js
+    │       │   ├── GroupProducts.js
+    │       │   ├── OfferCartProducts.js
+    │       │   ├── Offers.js
+    │       │   ├── PreOrder.js
+    │       │   ├── UserHomePage.js
+    │       │   ├── VerifyOrderEmail.js
+    │       │   └── ViewProduct.js
+    │   ├── routes
+    │       ├── AdminRoutes.js
+    │       ├── RoutesHandle.js
+    │       └── UserHomeRoutes.js
+    │   └── styles
+    │       ├── AdminHome
+    │           ├── AdvertisementImages.module.css
+    │           ├── CreateNewTable.module.css
+    │           ├── HomeViewDes.module.css
+    │           ├── ManageColumns.module.css
+    │           ├── ManageFooter.module.css
+    │           ├── ManageOffers.module.css
+    │           ├── ManageVendors.module.css
+    │           ├── MoreInformation.module.css
+    │           ├── NewOrderPlaced.module.css
+    │           ├── PageEight.module.css
+    │           ├── PageFive.module.css
+    │           ├── PageFour.module.css
+    │           ├── PageSeven.module.css
+    │           ├── PageSix.module.css
+    │           ├── PageThree.module.css
+    │           ├── PageTwo.module.css
+    │           ├── Pagination.module.css
+    │           ├── ProductionDetails.module.css
+    │           ├── SalesManagement.module.css
+    │           ├── UserRating.module.css
+    │           ├── UserReportPage.module.css
+    │           ├── addproducts.module.css
+    │           ├── admin.home.module.css
+    │           ├── page.one.module.css
+    │           ├── pageseven.userquestion.module.css
+    │           └── show.notification.module.css
+    │       ├── ErrorAndLoading
+    │           ├── ServerIssuePage.module.css
+    │           ├── error.module.css
+    │           └── loading.module.css
+    │       └── HomePageStyles
+    │           ├── Account.module.css
+    │           ├── Address.module.css
+    │           ├── CategoryChildContainer.module.css
+    │           ├── ChangePassword.module.css
+    │           ├── EasyCheckout.module.css
+    │           ├── ExtraAdd.module.css
+    │           ├── FeaturedProducts.module.css
+    │           ├── Footer.module.css
+    │           ├── GroupProductCatrs.module.css
+    │           ├── GroupProductSorting.module.css
+    │           ├── GroupProducts.module.css
+    │           ├── HomePagination.module.css
+    │           ├── MainHome.css
+    │           ├── MyOrders.module.css
+    │           ├── OfferCartProducts.module.css
+    │           ├── ParentDescendant.module.css
+    │           ├── PersonalInformation.module.css
+    │           ├── PreOrderPage.module.css
+    │           ├── ProductCart.module.css
+    │           ├── ProductDEscription.module.css
+    │           ├── ProductSectionCart.module.css
+    │           ├── Questions.module.css
+    │           ├── ReadyForOrder.module.css
+    │           ├── RecentView.module.css
+    │           ├── SignIn.module.css
+    │           ├── SwiperMainAdd.module.css
+    │           ├── UserFeaturedIcons.module.css
+    │           ├── UserHomeDescription..module.css
+    │           ├── UserHomePage.module.css
+    │           ├── UserHomeRoutePage.module.css
+    │           ├── UserMessage.module.css
+    │           ├── UserOfferCartPage.module.css
+    │           ├── UserOrder.module.css
+    │           ├── UserOrderPaymentPage.module.css
+    │           ├── UserReport.module.css
+    │           ├── UserSupportBoxes..module.css
+    │           ├── VerifyOrderEmail.module.css
+    │           ├── ViewProduct.module.css
+    │           ├── topnav.module.css
+    │           └── uppernav.module.css
+└── server
+    ├── .gitignore
+    ├── app.js
+    ├── config
+        ├── DB.js
+        ├── auth.crypto.js
+        ├── invoice.send.js
+        ├── passport.js
+        ├── performQuery.js
+        ├── send.mail.controller.js.js
+        └── send.order.confirmation.email.js
+    ├── controllers
+        ├── admin.dashboard.controller.js
+        ├── product.inventory.controllers.js
+        ├── product.order.controller.js
+        ├── product.outer.controller.js
+        ├── product.post.controller.js
+        ├── product.production.controller.js
+        ├── product.report.controller.js
+        ├── product.setting.controller.js
+        ├── product.support.controller.js
+        ├── product.users.page.controller.js
+        ├── production.management.controller.js
+        ├── products.controllers.js
+        ├── user.controllers.js
+        ├── user.crud.controller.js
+        └── user.home.contents.controller.js
+    ├── index.js
+    ├── models
+        ├── admin.dashboard.model.js
+        ├── product.inventory.model.js
+        ├── product.order.model.js
+        ├── product.outer.model.js
+        ├── product.post.models.js
+        ├── product.production.model.js
+        ├── product.report.model.js
+        ├── product.setting.model.js
+        ├── product.support.model.js
+        ├── product.users.page.model.js
+        ├── production.manage.model.js
+        ├── products.models.js
+        ├── user.crud.model.js
+        ├── user.home.contents.model.js
+        └── user.model.js
+    ├── package.json
+    ├── routes
+        ├── admin.dashboard.router.js
+        ├── product.inventory.router.js
+        ├── product.order.router.js
+        ├── product.outer.router.js
+        ├── product.post.router.js
+        ├── product.production.router.js
+        ├── product.report.router.js
+        ├── product.setting.router.js
+        ├── product.support.router.js
+        ├── product.users.page.router.js
+        ├── products.router.js
+        ├── users.home.contents.js
+        └── users.router.js
+  ``
+
 ## **Installation**
 
 To set up the project locally:
