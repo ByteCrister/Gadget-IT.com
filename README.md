@@ -113,8 +113,8 @@ The admin dashboard comprises eight main pages:
 - Password: aA1!123 ``I trust you, do not request unnecessary server request and not change huge amount of data please!``
 
 ## Folder Structure
-- ``
-├── client
+- 
+``├── client
     ├── .env
     ├── .gitignore
     ├── package.json
@@ -419,8 +419,7 @@ The admin dashboard comprises eight main pages:
         ├── product.users.page.router.js
         ├── products.router.js
         ├── users.home.contents.js
-        └── users.router.js
-  ``
+        └── users.router.js``
 
 ## **Installation**
 
