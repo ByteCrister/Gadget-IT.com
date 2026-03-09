@@ -1,52 +1,40 @@
-// const mysql = require('mysql2');
-// require('dotenv').config();
-
-// function connectDatabase() {
-//     const connection = mysql.createConnection({
-//         host: process.env.DB_HOST,
-//         user: process.env.DB_USER,
-//         password: process.env.DB_PASSWORD,
-//         database: process.env.DB,
-//         port: process.env.DB_PORT || 3306,
-//         connectTimeout: 100000
-//     });
-
-//     connection.connect((err) => {
-//         if (err) {
-//             console.error('Database connection failed:', err);
-//             setTimeout(connectDatabase, 5000);
-//         } else {
-//             console.log('Connected to MySQL database.');
-//         }
-//     });
-
-//     connection.on('error', err => {
-//         console.error('Database error:', err);
-//         if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-//             connectDatabase();
-//         } else {
-//             throw err;
-//         }
-//     });
-
-//     return connection;
-// }
-
-// const db = connectDatabase();
-
-// module.exports = db;
-
-const mysql = require("mysql2");
+const mysql = require('mysql2');
 require('dotenv').config();
 
-const db = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB,
-    port: 3306,
-    waitForConnections: true,
-    connectionLimit: 10
-});
+let connection;
 
-module.exports = db.promise();
+function connectDatabase() {
+    connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB,
+        port: process.env.DB_PORT || 3306,
+        connectTimeout: 10000 // 10 seconds
+    });
+
+    connection.connect(err => {
+        if (err) {
+            console.error('Database connection failed:', err.message);
+            // Retry after 5 seconds if connection fails
+            setTimeout(connectDatabase, 5000);
+        } else {
+            console.log('Connected to MySQL database.');
+        }
+    });
+
+    connection.on('error', err => {
+        console.error('Database error:', err.message);
+        // Auto-reconnect if connection is lost
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            console.log('Reconnecting to database...');
+            connectDatabase();
+        } else {
+            throw err;
+        }
+    });
+}
+
+connectDatabase();
+
+module.exports = connection;
