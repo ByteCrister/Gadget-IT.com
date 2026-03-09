@@ -1,37 +1,52 @@
-const mysql = require('mysql2');
+// const mysql = require('mysql2');
+// require('dotenv').config();
+
+// function connectDatabase() {
+//     const connection = mysql.createConnection({
+//         host: process.env.DB_HOST,
+//         user: process.env.DB_USER,
+//         password: process.env.DB_PASSWORD,
+//         database: process.env.DB,
+//         port: process.env.DB_PORT || 3306,
+//         connectTimeout: 100000
+//     });
+
+//     connection.connect((err) => {
+//         if (err) {
+//             console.error('Database connection failed:', err);
+//             setTimeout(connectDatabase, 5000);
+//         } else {
+//             console.log('Connected to MySQL database.');
+//         }
+//     });
+
+//     connection.on('error', err => {
+//         console.error('Database error:', err);
+//         if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+//             connectDatabase();
+//         } else {
+//             throw err;
+//         }
+//     });
+
+//     return connection;
+// }
+
+// const db = connectDatabase();
+
+// module.exports = db;
+
+const mysql = require("mysql2");
 require('dotenv').config();
 
-function connectDatabase() {
-    const connection = mysql.createConnection({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB,
-        port: process.env.DB_PORT || 3306,
-        connectTimeout: 100000
-    });
+const db = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB,
+    port: 3306,
+    waitForConnections: true,
+    connectionLimit: 10
+});
 
-    connection.connect((err) => {
-        if (err) {
-            console.error('Database connection failed:', err);
-            setTimeout(connectDatabase, 5000);
-        } else {
-            console.log('Connected to MySQL database.');
-        }
-    });
-
-    connection.on('error', err => {
-        console.error('Database error:', err);
-        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-            connectDatabase();
-        } else {
-            throw err;
-        }
-    });
-
-    return connection;
-}
-
-const db = connectDatabase();
-
-module.exports = db;
+module.exports = db.promise();
