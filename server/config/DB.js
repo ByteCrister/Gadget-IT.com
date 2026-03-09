@@ -7,9 +7,10 @@ function connectDatabase() {
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
         database: process.env.DB,
-        port: process.env.PORT,
+        port: process.env.DB_PORT || 3306,
         connectTimeout: 100000
     });
+
     connection.connect((err) => {
         if (err) {
             console.error('Database connection failed:', err);
@@ -22,7 +23,6 @@ function connectDatabase() {
     connection.on('error', err => {
         console.error('Database error:', err);
         if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-            console.log('Attempting to reconnect...');
             connectDatabase();
         } else {
             throw err;
@@ -30,8 +30,7 @@ function connectDatabase() {
     });
 
     return connection;
-
-};
+}
 
 const db = connectDatabase();
 
