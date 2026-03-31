@@ -1,7 +1,8 @@
+// index.js
 const app = require('./app');
 require('dotenv').config();
 
-const PORT = process.env.DB_PORT || 7000;
+const PORT = process.env.PORT || 7000;
 
 app.listen(PORT, () => {
     console.log("Database Config:", process.env.DB_HOST, process.env.DB_USER);
